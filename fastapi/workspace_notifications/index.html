@@ -6,12 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation for the MSFLib WorkspaceConfig module, detailing how to use and integrate it with FastAPI.">
+        <meta name="description" content="Details the functionalities, integration, and setup of the Workspace Notifications module in FastAPI/MSFLib.">
       
       
       
-        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/workspace_config/">
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/workspace_notifications">
       
+      
+        <link rel="prev" href="../auth">
       
       
       
@@ -23,7 +25,7 @@
     
     
       
-        <title>Workspace Configuration Module - MSFLIB FastAPI Documentation</title>
+        <title>Workspace Notifications Module - MSFLIB FastAPI Documentation</title>
       
     
     
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#msflib-workspaceconfig-module" class="md-skip">
+        <a href="#workspace-notifications-module" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Workspace Configuration Module
+              Workspace Notifications Module
             
           </span>
         </div>
@@ -234,61 +236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../SUMMARY/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../quickstart/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Quickstart
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../account/" class="md-nav__link">
+      <a href="../account" class="md-nav__link">
         
   
   
@@ -315,34 +263,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ai_core/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AI Core
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../auth/" class="md-nav__link">
+      <a href="../auth" class="md-nav__link">
         
   
   
@@ -366,17 +287,44 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../drivelink/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workspace Notifications
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    DriveLink
+    Workspace Notifications
   
 
     
@@ -385,87 +333,98 @@
   
 
       </a>
-    </li>
-  
-
-    
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../notifications/" class="md-nav__link">
         
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  <span class="md-ellipsis">
+  
     
   
-    Notifications
   
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
       
+        Project Structure
+      
+    </span>
+  </a>
   
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../payments/" class="md-nav__link">
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
         
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Payments
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
+          <li class="md-nav__item">
+  <a href="#for-pydantic-v2-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
       
+        For Pydantic v2 (recommended):
       
+    </span>
+  </a>
   
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../INSTRUCTIONS/" class="md-nav__link">
+</li>
         
+          <li class="md-nav__item">
+  <a href="#for-pydantic-v1-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Pydantic v1 (legacy):
+      
+    </span>
+  </a>
   
+</li>
+        
+      </ul>
+    </nav>
   
-  <span class="md-ellipsis">
-    
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
   
-    Instructions
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
   
-
-    
-  </span>
+</li>
+      
+    </ul>
   
-  
-
-      </a>
+</nav>
+      
     </li>
   
 
@@ -497,13 +456,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#key-responsibilities" class="md-nav__link">
+  <a href="#project-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Responsibilities
+        Project Structure
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-pydantic-v2-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Pydantic v2 (recommended):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-pydantic-v1-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Pydantic v1 (legacy):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -519,21 +517,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tiered-configuration-role" class="md-nav__link">
+  <a href="#testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tiered Configuration Role
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#request-override-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Request Override Handling
+        Testing
       
     </span>
   </a>
@@ -557,42 +544,89 @@
 
 
 
-<h1 id="msflib-workspaceconfig-module">MSFLib WorkspaceConfig Module<a class="headerlink" href="#msflib-workspaceconfig-module" title="Permanent link">&para;</a></h1>
-<p>The <strong>MSFLib WorkspaceConfig</strong> module provides a foundational framework for building reusable modules for projects using FastAPI and MSFLib. It delivers scoped configuration persistence, catering to tenant, workspace, and user-level configurations, with predictable override behaviors.</p>
-<h2 id="key-responsibilities">Key Responsibilities<a class="headerlink" href="#key-responsibilities" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Scoped Configuration</strong>: Manages and persists configurations across various scopes like tenant, workspace, and user, ensuring precise and predictable configuration use.</li>
-<li><strong>Installation</strong>: Support for two Pydantic versions is provided. Installation is done via Poetry by fetching the <code>msflib</code> and <code>msflib-workspace_config</code> from a Git repository.</li>
-<li><strong>Request Override Allowlist</strong>: This feature prevents unauthorized configuration changes by allowing modules to define a <code>request_override_allowlist</code>. This ensures only safe modifications can be done via per-request overrides.</li>
-</ul>
+<h1 id="workspace-notifications-module">Workspace Notifications Module<a class="headerlink" href="#workspace-notifications-module" title="Permanent link">&para;</a></h1>
+<p>The <strong>Workspace Notifications</strong> module provides essential functionalities for managing and integrating workspace-specific notifications within a FastAPI application using MSFLib. This module is structured to offer a reusable scaffold for notification-related features, enabling both user and admin user notification handling.</p>
+<h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
+<p>The module is organized as follows:</p>
+<div class="codehilite"><pre><span></span><code>modules/
+└── workspace_notifications/
+    ├── pyproject.toml
+    ├── README.md
+    └── msflib/workspace_notifications/
+        ├── __init__.py
+        ├── config.py
+        ├── actions.py
+        ├── router.py
+        ├── models/
+        ├── service/
+        └── tests/
+            ├── conftest.py
+            └── test_router.py
+</code></pre></div>
+
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>To integrate this module into your project, follow the installation steps based on your Pydantic version:</p>
+<h3 id="for-pydantic-v2-recommended">For Pydantic v2 (recommended):<a class="headerlink" href="#for-pydantic-v2-recommended" title="Permanent link">&para;</a></h3>
+<p>Add the dependencies to your <code>pyproject.toml</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"dev"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-workspace-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"dev"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<h3 id="for-pydantic-v1-legacy">For Pydantic v1 (legacy):<a class="headerlink" href="#for-pydantic-v1-legacy" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">pydantic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"^1.10"</span>
+<span class="n">pydantic-settings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"^1.10"</span>
+
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.1.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-workspace-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspace_notifications-v0.1.0"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<!-- openwiki: broken internal link [../core/README.md#pydantic-version-support] file "../core/README.md" does not exist. Fix the href or restore the target, then delete this comment. -->
+<p>Refer to the <a href="../core/README.md#pydantic-version-support">Pydantic Version Compatibility</a> for migration guidance.</p>
+<p>Install the packages using Poetry:</p>
+<div class="codehilite"><pre><span></span><code>poetry<span class="w"> </span>add<span class="w"> </span>msflib<span class="w"> </span>msflib-workspace-notifications
+</code></pre></div>
+
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<p>To integrate this module in a FastAPI application, import <code>workspace_config_router</code> and include it in your FastAPI app configuration:</p>
+<p>To start using the module, you can include its routers in your FastAPI application:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">workspace_config_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.router</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">admin_user_notification_router</span><span class="p">,</span>
+    <span class="n">user_notification_router</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">workspace_config_router</span><span class="p">(</span>
+    <span class="n">user_notification_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_user</span><span class="o">=</span><span class="n">get_current_user</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/workspace_notifications/user"</span><span class="p">,</span>
+        <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"workspace_notifications"</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">admin_user_notification_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_user</span><span class="o">=</span><span class="n">get_current_user</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">admin_role_check</span><span class="o">=</span><span class="n">admin_role_check</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/workspace_config"</span><span class="p">,</span>
-        <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"workspace_config"</span><span class="p">],</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/workspace_notifications/admin"</span><span class="p">,</span>
+        <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"workspace_notifications"</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">],</span>
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>The module uses:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"WORKSPACE_CONFIG"</span><span class="p">)</span>
+<p>Configuration settings for the module are accessed using:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"WS_NOTIFICATIONS"</span><span class="p">)</span>
 </code></pre></div>
 
-<p>To read module settings.</p>
-<h2 id="tiered-configuration-role">Tiered Configuration Role<a class="headerlink" href="#tiered-configuration-role" title="Permanent link">&para;</a></h2>
-<p>The module contributes to a broader configuration management responsibility:
-- <strong>Core Module</strong>: Acts as the resolver and precedence engine.
-- <strong>WorkspaceConfig Module</strong>: Provides management APIs for scoped persistence.
-- <strong>Consuming Modules/Applications</strong>: Utilize the resolved configurations for their domain-specific operational needs.</p>
-<h2 id="request-override-handling">Request Override Handling<a class="headerlink" href="#request-override-handling" title="Permanent link">&para;</a></h2>
-<p>ScopedConfigService within the module processes request-specific configuration override actions, respecting the defined allowlist to prevent unsafe alterations.</p>
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<p>To execute tests for this module, ensure you are at the repository root and that all dependencies are installed. If you are using the project virtual environment, activate it first with <code>source .venv/bin/activate</code>.</p>
 
 
 
