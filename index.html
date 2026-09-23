@@ -3,73 +3,66 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MSFLib | Modular platform for modern product stacks</title>
+    <title>MSFLib | Documentation</title>
     <meta
       name="description"
-      content="MSFLib is a modular platform spanning FastAPI, React, Vue, Laravel, Flutter, and TypeScript packages for shipping production-ready app infrastructure."
+      content="MSFLib brings together backend, frontend, and platform modules for building modern, modular software products."
     />
     <style>
       :root {
-        --bg: #081120;
-        --bg-elevated: rgba(15, 23, 42, 0.8);
-        --panel: rgba(15, 23, 42, 0.78);
-        --panel-alt: rgba(17, 24, 39, 0.9);
-        --panel-border: rgba(148, 163, 184, 0.18);
-        --text: #e2e8f0;
-        --muted: #a5b4c8;
-        --soft: #c5d1e6;
-        --primary: #38bdf8;
-        --primary-strong: #0ea5e9;
-        --purple: #8b5cf6;
-        --cyan: #22d3ee;
-        --success: #34d399;
-        --shadow: rgba(2, 6, 23, 0.6);
+        --bg: #f7f9fc;
+        --bg-strong: #eef3fb;
+        --panel: #ffffff;
+        --panel-soft: #f4f7fb;
+        --panel-border: #dfe7f3;
+        --text: #1f2937;
+        --muted: #5b6b82;
+        --soft: #3d4d67;
+        --primary: #3f51b5;
+        --primary-strong: #2d3b8f;
+        --primary-soft: rgba(63, 81, 181, 0.12);
+        --highlight: #7c4dff;
+        --shadow: rgba(15, 23, 42, 0.08);
+        --success: #2e7d32;
       }
 
       * {
         box-sizing: border-box;
       }
-
       html {
         scroll-behavior: smooth;
       }
-
       body {
         margin: 0;
         font-family: Inter, 'Segoe UI', sans-serif;
-        background:
-          radial-gradient(
-            circle at top left,
-            rgba(56, 189, 248, 0.15),
-            transparent 28%
-          ),
-          radial-gradient(
-            circle at top right,
-            rgba(139, 92, 246, 0.16),
-            transparent 32%
-          ),
-          linear-gradient(180deg, #07101b 0%, #0b1220 32%, #0f172a 100%);
+        background: linear-gradient(
+          180deg,
+          var(--bg) 0%,
+          var(--bg-strong) 100%
+        );
         color: var(--text);
-        min-height: 100vh;
       }
 
       a {
         color: inherit;
         text-decoration: none;
       }
+      img {
+        max-width: 100%;
+      }
 
       .container {
-        width: min(1180px, calc(100% - 32px));
+        width: min(1160px, calc(100% - 32px));
         margin: 0 auto;
       }
 
       .topbar {
+        background: rgba(255, 255, 255, 0.9);
+        border-bottom: 1px solid var(--panel-border);
         position: sticky;
         top: 0;
         z-index: 20;
-        backdrop-filter: blur(14px);
-        background: rgba(8, 17, 32, 0.7);
-        border-bottom: 1px solid var(--panel-border);
+        backdrop-filter: blur(8px);
       }
 
       .topbar-inner {
@@ -77,32 +70,32 @@
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        padding: 1rem 0;
+        min-height: 72px;
       }
 
       .brand {
         display: inline-flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.7rem;
         font-weight: 800;
         letter-spacing: 0.04em;
       }
 
       .brand-mark {
-        display: inline-grid;
+        display: grid;
         place-items: center;
         width: 2rem;
         height: 2rem;
         border-radius: 0.7rem;
-        background: linear-gradient(135deg, var(--primary), var(--purple));
-        box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
-        font-size: 0.9rem;
+        background: linear-gradient(135deg, var(--primary), var(--highlight));
+        color: white;
+        box-shadow: 0 12px 24px rgba(63, 81, 181, 0.22);
       }
 
       .nav {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.1rem;
         flex-wrap: wrap;
       }
 
@@ -120,19 +113,18 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0.82rem 1.25rem;
+        padding: 0.8rem 1.2rem;
         border-radius: 999px;
         font-weight: 700;
         border: 1px solid transparent;
         transition:
           transform 0.2s ease,
-          opacity 0.2s ease,
-          border-color 0.2s ease;
+          opacity 0.2s ease;
       }
 
       .button:hover {
         transform: translateY(-1px);
-        opacity: 0.96;
+        opacity: 0.98;
       }
 
       .button.primary {
@@ -142,17 +134,17 @@
           var(--primary-strong)
         );
         color: white;
-        box-shadow: 0 14px 30px rgba(14, 165, 233, 0.28);
+        box-shadow: 0 12px 26px rgba(63, 81, 181, 0.2);
       }
 
       .button.secondary {
-        background: rgba(15, 23, 42, 0.42);
+        background: var(--panel);
         border-color: var(--panel-border);
         color: var(--text);
       }
 
       .hero {
-        padding: 5rem 0 3.5rem;
+        padding: 4rem 0 2rem;
       }
 
       .hero-grid {
@@ -166,37 +158,38 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 0.76rem;
-        padding: 0.5rem 0.8rem;
-        border: 1px solid rgba(56, 189, 248, 0.2);
-        border-radius: 999px;
-        color: var(--soft);
-        background: rgba(14, 165, 233, 0.06);
         margin-bottom: 1rem;
-        letter-spacing: 0.06em;
+        background: var(--primary-soft);
+        color: var(--primary-strong);
+        border: 1px solid rgba(63, 81, 181, 0.12);
+        border-radius: 999px;
+        padding: 0.42rem 0.75rem;
+        font-size: 0.74rem;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
+        font-weight: 700;
       }
 
       h1 {
         margin: 0 0 1rem;
-        font-size: clamp(2.7rem, 5vw, 5rem);
-        line-height: 0.98;
-        letter-spacing: -0.045em;
+        font-size: clamp(2.6rem, 5vw, 4.5rem);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
       }
 
       .hero-copy p {
-        max-width: 62ch;
-        margin: 0 0 1.8rem;
+        margin: 0 0 1.6rem;
+        color: var(--muted);
         font-size: 1.08rem;
         line-height: 1.75;
-        color: var(--muted);
+        max-width: 62ch;
       }
 
       .cta-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.85rem;
-        margin-bottom: 1.5rem;
+        gap: 0.8rem;
+        margin-bottom: 1.6rem;
       }
 
       .stats {
@@ -206,53 +199,50 @@
       }
 
       .stat {
-        min-width: 130px;
+        min-width: 120px;
       }
 
       .stat strong {
         display: block;
-        font-size: 1.5rem;
+        font-size: 1.45rem;
         margin-bottom: 0.15rem;
+        letter-spacing: -0.04em;
       }
 
       .stat span {
         color: var(--muted);
-        font-size: 0.86rem;
+        font-size: 0.85rem;
       }
 
       .hero-panel {
-        background: linear-gradient(
-          180deg,
-          rgba(15, 23, 42, 0.8),
-          rgba(15, 23, 42, 0.95)
-        );
+        background: var(--panel);
         border: 1px solid var(--panel-border);
-        border-radius: 1.5rem;
-        box-shadow: 0 30px 80px var(--shadow);
+        border-radius: 1.3rem;
         overflow: hidden;
+        box-shadow: 0 25px 60px var(--shadow);
       }
 
       .panel-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1rem 1.1rem;
+        padding: 0.95rem 1rem;
         border-bottom: 1px solid var(--panel-border);
-        background: rgba(14, 165, 233, 0.04);
+        background: var(--panel-soft);
         color: var(--soft);
+        font-size: 0.9rem;
+        font-weight: 600;
       }
 
       .dots {
         display: flex;
         gap: 0.5rem;
       }
-
       .dot {
-        width: 0.7rem;
-        height: 0.7rem;
+        width: 0.72rem;
+        height: 0.72rem;
         border-radius: 999px;
       }
-
       .dot.red {
         background: #f87171;
       }
@@ -264,35 +254,35 @@
       }
 
       .code-window {
-        padding: 1.3rem 1rem 1.1rem;
+        padding: 1.2rem 1rem 1.1rem;
       }
 
       pre {
         margin: 0;
-        white-space: pre-wrap;
-        word-break: break-word;
-        color: #cfe5ff;
+        color: var(--soft);
         font-size: 0.9rem;
         line-height: 1.7;
+        white-space: pre-wrap;
+        word-break: break-word;
         font-family:
           'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
       }
 
       .token-key {
-        color: #7dd3fc;
+        color: #5c6bc0;
       }
       .token-string {
-        color: #86efac;
+        color: #2e7d32;
       }
       .token-call {
-        color: #c084fc;
+        color: #7c4dff;
       }
       .token-attr {
-        color: #fbbf24;
+        color: #ef6c00;
       }
 
       .section {
-        padding: 2rem 0 3rem;
+        padding: 2rem 0 2.8rem;
       }
 
       .section-header {
@@ -300,7 +290,7 @@
         align-items: end;
         justify-content: space-between;
         gap: 1rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.15rem;
       }
 
       .section-header h2 {
@@ -314,10 +304,21 @@
         color: var(--muted);
       }
 
-      .feature-grid {
+      .feature-grid,
+      .repo-grid,
+      .stack-grid {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 1rem;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .repo-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .stack-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .feature-card,
@@ -325,78 +326,72 @@
       .stack-card {
         background: var(--panel);
         border: 1px solid var(--panel-border);
-        border-radius: 1.2rem;
-        box-shadow: 0 12px 35px rgba(2, 6, 23, 0.18);
+        border-radius: 1.1rem;
+        box-shadow: 0 10px 28px var(--shadow);
       }
 
       .feature-card {
-        padding: 1.25rem;
+        padding: 1.3rem;
       }
 
       .feature-card .icon {
-        display: inline-grid;
-        place-items: center;
         width: 2.5rem;
         height: 2.5rem;
+        display: grid;
+        place-items: center;
         border-radius: 0.8rem;
-        margin-bottom: 1rem;
-        background: linear-gradient(
-          135deg,
-          rgba(56, 189, 248, 0.18),
-          rgba(139, 92, 246, 0.18)
-        );
-        border: 1px solid rgba(148, 163, 184, 0.18);
+        margin-bottom: 0.9rem;
+        background: var(--primary-soft);
+        border: 1px solid rgba(63, 81, 181, 0.12);
         font-size: 1.2rem;
       }
 
       .feature-card h3 {
-        margin: 0 0 0.45rem;
+        margin: 0 0 0.5rem;
         font-size: 1.12rem;
       }
 
       .feature-card p {
         margin: 0;
         color: var(--muted);
-        line-height: 1.65;
+        line-height: 1.7;
       }
 
-      .repo-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
+      .repo-card,
+      .stack-card {
+        padding: 1.2rem;
       }
 
       .repo-card {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 1.2rem;
-        min-height: 220px;
-      }
-
-      .repo-card .meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
       }
 
       .tag {
         display: inline-flex;
         align-items: center;
         padding: 0.35rem 0.6rem;
-        background: rgba(56, 189, 248, 0.1);
-        color: var(--soft);
-        border: 1px solid rgba(56, 189, 248, 0.18);
         border-radius: 999px;
-        font-size: 0.72rem;
-        letter-spacing: 0.06em;
+        background: var(--primary-soft);
+        color: var(--primary-strong);
+        border: 1px solid rgba(63, 81, 181, 0.12);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .repo-card .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.9rem;
       }
 
       .repo-card h3 {
         margin: 0 0 0.5rem;
-        font-size: 1.28rem;
+        font-size: 1.22rem;
       }
 
       .repo-card p {
@@ -407,8 +402,8 @@
 
       .repo-links {
         display: flex;
-        gap: 0.65rem;
         flex-wrap: wrap;
+        gap: 0.6rem;
       }
 
       .small-link {
@@ -416,33 +411,23 @@
         align-items: center;
         justify-content: center;
         border-radius: 999px;
-        padding: 0.55rem 0.8rem;
-        font-size: 0.82rem;
-        font-weight: 700;
+        padding: 0.56rem 0.8rem;
         border: 1px solid var(--panel-border);
-        background: rgba(15, 23, 42, 0.4);
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: var(--panel-soft);
         color: var(--text);
       }
 
       .small-link.primary {
-        background: rgba(56, 189, 248, 0.12);
-        border-color: rgba(56, 189, 248, 0.2);
-        color: var(--soft);
-      }
-
-      .stack-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
-      }
-
-      .stack-card {
-        padding: 1.4rem;
+        background: var(--primary-soft);
+        color: var(--primary-strong);
+        border-color: rgba(63, 81, 181, 0.12);
       }
 
       .stack-card h3 {
-        margin: 0 0 0.7rem;
-        font-size: 1.16rem;
+        margin: 0 0 0.65rem;
+        font-size: 1.12rem;
       }
 
       .stack-card ul {
@@ -456,22 +441,22 @@
         margin-top: 2rem;
         background: linear-gradient(
           135deg,
-          rgba(56, 189, 248, 0.08),
-          rgba(139, 92, 246, 0.08)
+          rgba(63, 81, 181, 0.04),
+          rgba(124, 77, 255, 0.04)
         );
-        border: 1px solid rgba(148, 163, 184, 0.18);
-        border-radius: 1.4rem;
-        padding: 1.6rem;
+        border: 1px solid var(--panel-border);
+        border-radius: 1.3rem;
+        padding: 1.4rem 1.5rem;
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         gap: 1rem;
         flex-wrap: wrap;
       }
 
       .cta-block strong {
         display: block;
-        font-size: 1.35rem;
+        font-size: 1.3rem;
         margin-bottom: 0.2rem;
       }
 
@@ -481,16 +466,16 @@
       }
 
       footer {
-        padding: 1.5rem 0 4rem;
-        color: var(--muted);
         text-align: center;
+        color: var(--muted);
+        padding: 1.4rem 0 3.2rem;
       }
 
       @media (max-width: 980px) {
         .hero-grid,
+        .stack-grid,
         .feature-grid,
-        .repo-grid,
-        .stack-grid {
+        .repo-grid {
           grid-template-columns: 1fr 1fr;
         }
 
@@ -499,10 +484,10 @@
         }
       }
 
-      @media (max-width: 640px) {
+      @media (max-width: 680px) {
         .feature-grid,
-        .repo-grid,
-        .stack-grid {
+        .stack-grid,
+        .repo-grid {
           grid-template-columns: 1fr;
         }
 
@@ -541,35 +526,32 @@
         <div class="hero-grid">
           <div class="hero-copy">
             <div class="eyebrow">Modular product platform</div>
-            <h1>Build the app ecosystem once. Ship it across every stack.</h1>
+            <h1>Build once. Ship across every product layer.</h1>
             <p>
-              MSFLib is a modular software foundation for teams building modern
-              digital products. It brings together shared backend
-              infrastructure, access control, workspaces, payment and
-              notification flows, and frontend packages so product teams can
-              move faster without reinventing the same foundations in every
-              application.
+              MSFLib is a modular foundation for teams building modern
+              applications with shared backend infrastructure, secure access
+              control, workspace primitives, and a growing set of cross-platform
+              product modules. It helps teams standardize the building blocks
+              they reuse across multiple apps without sacrificing flexibility.
             </p>
             <div class="cta-row">
               <a class="button primary" href="./fastapi/"
                 >Explore FastAPI docs</a
               >
-              <a class="button secondary" href="#platforms"
-                >Browse all modules</a
-              >
+              <a class="button secondary" href="#platforms">Browse modules</a>
             </div>
-            <div class="stats" aria-label="MSFLib stats">
+            <div class="stats" aria-label="MSFLib summary stats">
               <div class="stat">
                 <strong>7+</strong>
-                <span>core platforms</span>
+                <span>platforms</span>
               </div>
               <div class="stat">
                 <strong>FastAPI</strong>
-                <span>backend foundation</span>
+                <span>backend core</span>
               </div>
               <div class="stat">
                 <strong>React</strong>
-                <span>UI module ecosystem</span>
+                <span>web modules</span>
               </div>
             </div>
           </div>
@@ -618,16 +600,16 @@
             <div class="icon">🔐</div>
             <h3>Security by default</h3>
             <p>
-              Auth, token flows, config scoping, and access-control primitives
-              are designed for real application use.
+              Authentication, token flows, scoped configuration, and
+              access-control patterns are built for real product use.
             </p>
           </article>
 
           <article class="feature-card">
             <div class="icon">🧩</div>
-            <h3>Cross-platform ecosystem</h3>
+            <h3>Cross-platform modules</h3>
             <p>
-              MSFLib spans backend packages, React/Vue frontends, Laravel
+              MSFLib spans backend packages, React and Vue frontends, Laravel
               integrations, and Flutter foundations.
             </p>
           </article>
@@ -636,8 +618,8 @@
             <div class="icon">📈</div>
             <h3>Production-ready patterns</h3>
             <p>
-              Shared services, rules for configuration precedence, seeding,
-              event hooks, and automation help scale apps cleanly.
+              Shared services, environment-driven settings, event hooks, and
+              seeding help teams scale thoughtfully.
             </p>
           </article>
         </div>
@@ -645,10 +627,10 @@
 
       <section id="platforms" class="section">
         <div class="section-header">
-          <h2>Documentation hubs</h2>
+          <h2>Documentation by platform</h2>
           <p>
-            Each repo in the workspace reflects a different part of the MSFLib
-            platform.
+            Choose the stack that matches your product and follow that section
+            for the implementation details you need.
           </p>
         </div>
 
@@ -661,19 +643,14 @@
               </div>
               <h3>FastAPI</h3>
               <p>
-                Shared core library, auth, account management, workspace
-                modules, policy infrastructure, and module-based backend
-                composition.
+                Core library, auth, account management, workspaces, policy
+                support, and modular backend composition.
               </p>
             </div>
             <div class="repo-links">
-              <a class="small-link primary" href="./fastapi/">Docs</a>
-              <a
-                class="small-link"
-                href="https://github.com/msflib/fastapi"
-                target="_blank"
-                rel="noreferrer"
-                >GitHub</a
+              <a class="small-link primary" href="./fastapi/">Open docs</a>
+              <a class="small-link" href="./fastapi/core/README.md"
+                >Core README</a
               >
             </div>
           </article>
@@ -686,18 +663,16 @@
               </div>
               <h3>FastAPI Template</h3>
               <p>
-                A ready-made application starter for wiring together the core
-                library and the auth/account/workspace packages in a real app.
+                A ready-made application starter showing how to connect the
+                shared library to a real service.
               </p>
             </div>
             <div class="repo-links">
-              <a class="small-link primary" href="./fastapi-template/">Docs</a>
-              <a
-                class="small-link"
-                href="https://github.com/msflib/fastapi-template"
-                target="_blank"
-                rel="noreferrer"
-                >GitHub</a
+              <a class="small-link primary" href="./fastapi-template/"
+                >Open docs</a
+              >
+              <a class="small-link" href="./fastapi-template/README.md"
+                >Setup guide</a
               >
             </div>
           </article>
@@ -705,30 +680,18 @@
           <article class="repo-card">
             <div>
               <div class="meta">
-                <span class="tag">Frontend</span>
+                <span class="tag">Web</span>
                 <span>React</span>
               </div>
               <h3>React Modules</h3>
               <p>
-                Standalone React modules for tasks, users, UX helpers, and
-                shared frontend patterns built around modern React tooling.
+                Standalone React modules for users, tasks, UX patterns, and
+                shared frontend utilities.
               </p>
             </div>
             <div class="repo-links">
-              <a
-                class="small-link primary"
-                href="https://github.com/msflib/react"
-                target="_blank"
-                rel="noreferrer"
-                >Repository</a
-              >
-              <a
-                class="small-link"
-                href="./react/"
-                target="_blank"
-                rel="noreferrer"
-                >Readme</a
-              >
+              <a class="small-link primary" href="./react/">Readme</a>
+              <a class="small-link" href="./react/README.md">Overview</a>
             </div>
           </article>
 
@@ -740,25 +703,13 @@
               </div>
               <h3>Laravel</h3>
               <p>
-                Laravel monorepo packages and registry tooling for consumer
-                apps, package publishing, and monorepo validation.
+                Monorepo package structure, registry workflows, and Laravel
+                package-level implementation patterns.
               </p>
             </div>
             <div class="repo-links">
-              <a
-                class="small-link primary"
-                href="https://github.com/msflib/laravel"
-                target="_blank"
-                rel="noreferrer"
-                >Repository</a
-              >
-              <a
-                class="small-link"
-                href="./laravel/"
-                target="_blank"
-                rel="noreferrer"
-                >Readme</a
-              >
+              <a class="small-link primary" href="./laravel/">Readme</a>
+              <a class="small-link" href="./laravel/README.md">Docs</a>
             </div>
           </article>
 
@@ -770,25 +721,13 @@
               </div>
               <h3>Flutter</h3>
               <p>
-                Shared foundation library for architecture, theme systems, UI
-                widgets, and mobile patterns for modern product teams.
+                Shared mobile foundation with architecture, themes, UI, and
+                product infrastructure patterns.
               </p>
             </div>
             <div class="repo-links">
-              <a
-                class="small-link primary"
-                href="https://github.com/msflib/flutter"
-                target="_blank"
-                rel="noreferrer"
-                >Repository</a
-              >
-              <a
-                class="small-link"
-                href="./flutter/"
-                target="_blank"
-                rel="noreferrer"
-                >Readme</a
-              >
+              <a class="small-link primary" href="./flutter/">Readme</a>
+              <a class="small-link" href="./flutter/README.md">Guide</a>
             </div>
           </article>
 
@@ -800,25 +739,13 @@
               </div>
               <h3>TypeScript</h3>
               <p>
-                Shared TypeScript utility packages and cross-platform helpers
-                for product teams using modern JavaScript tooling.
+                Utility packages and shared TypeScript patterns built for modern
+                product tooling and common logic reuse.
               </p>
             </div>
             <div class="repo-links">
-              <a
-                class="small-link primary"
-                href="https://github.com/msflib/typescript"
-                target="_blank"
-                rel="noreferrer"
-                >Repository</a
-              >
-              <a
-                class="small-link"
-                href="./typescript/"
-                target="_blank"
-                rel="noreferrer"
-                >Readme</a
-              >
+              <a class="small-link primary" href="./typescript/">Readme</a>
+              <a class="small-link" href="./typescript/README.md">Overview</a>
             </div>
           </article>
 
@@ -830,25 +757,13 @@
               </div>
               <h3>Vue</h3>
               <p>
-                Vue-focused packages that extend the MSFLib ecosystem with a
-                component-friendly web frontend layer.
+                Vue-oriented extensions and reusable frontend patterns that sit
+                alongside the React and TypeScript layers.
               </p>
             </div>
             <div class="repo-links">
-              <a
-                class="small-link primary"
-                href="https://github.com/msflib/vue"
-                target="_blank"
-                rel="noreferrer"
-                >Repository</a
-              >
-              <a
-                class="small-link"
-                href="./vue/"
-                target="_blank"
-                rel="noreferrer"
-                >Readme</a
-              >
+              <a class="small-link primary" href="./vue/">Readme</a>
+              <a class="small-link" href="./vue/README.md">Overview</a>
             </div>
           </article>
 
@@ -858,10 +773,10 @@
                 <span class="tag">Core</span>
                 <span>Library</span>
               </div>
-              <h3>MSFLib principles</h3>
+              <h3>Core concepts</h3>
               <p>
-                Shared product rules, configuration precedence, policy modeling,
-                and event-driven application structure.
+                Configuration precedence, policy modeling, event infrastructure,
+                and the central library conventions.
               </p>
             </div>
             <div class="repo-links">
@@ -876,48 +791,45 @@
 
       <section id="architecture" class="section">
         <div class="section-header">
-          <h2>Built for a full product stack</h2>
-          <p>One library family, multiple implementation surfaces.</p>
+          <h2>Designed as a full product stack</h2>
+          <p>One shared foundation, multiple implementation layers.</p>
         </div>
 
         <div class="stack-grid">
           <article class="stack-card">
             <h3>Backend</h3>
             <ul>
-              <li>FastAPI core services</li>
-              <li>Auth, accounts, workspaces</li>
-              <li>Policy and runtime configuration</li>
-              <li>Event-driven extension model</li>
+              <li>FastAPI services and module composition</li>
+              <li>Auth, accounts, workspaces, and policies</li>
+              <li>Configuration, seeding, and event patterns</li>
             </ul>
           </article>
 
           <article class="stack-card">
             <h3>Frontend</h3>
             <ul>
-              <li>React modules and shared patterns</li>
-              <li>Vue support and reusable primitives</li>
-              <li>TypeScript utilities</li>
-              <li>Accessible UI building blocks</li>
+              <li>React and Vue module systems</li>
+              <li>Shared TypeScript utilities</li>
+              <li>UI and product interaction primitives</li>
             </ul>
           </article>
 
           <article class="stack-card">
             <h3>Platform layers</h3>
             <ul>
-              <li>Laravel package architecture</li>
-              <li>Flutter mobile toolkit</li>
-              <li>Shared product conventions</li>
-              <li>Cross-stack integration strategy</li>
+              <li>Laravel packages and monorepo workflows</li>
+              <li>Flutter app infrastructure</li>
+              <li>Cross-stack consistency and product speed</li>
             </ul>
           </article>
         </div>
 
         <div class="cta-block">
           <div>
-            <strong>Ready to start building?</strong>
+            <strong>Choose the right starting point</strong>
             <p>
-              Choose the stack that matches your product and use the docs in
-              that repo as the implementation guide.
+              Use the docs for the stack you are implementing and build from the
+              shared patterns that already exist.
             </p>
           </div>
           <div class="cta-row" style="margin: 0">
@@ -929,75 +841,58 @@
 
       <section id="resources" class="section">
         <div class="section-header">
-          <h2>Start from the right place</h2>
-          <p>Use the docs and starter repos that match your product layer.</p>
+          <h2>Good starting points</h2>
+          <p>
+            These pages are the clearest launch points depending on the type of
+            product you are building.
+          </p>
         </div>
 
         <div class="repo-grid">
           <article class="repo-card">
             <div>
               <div class="meta"><span class="tag">Start here</span></div>
-              <h3>FastAPI Core</h3>
+              <h3>FastAPI</h3>
               <p>
-                For backend teams building with Pydantic, SQLModel, auth,
-                workspaces, and service-level abstractions.
+                Best for backend-first products that need modular auth, account
+                management, and service composition.
               </p>
             </div>
             <div class="repo-links">
               <a class="small-link primary" href="./fastapi/">Open</a>
-              <a class="small-link" href="./fastapi/core/README.md"
-                >Core README</a
-              >
+              <a class="small-link" href="./fastapi/core/README.md">Core</a>
             </div>
           </article>
 
           <article class="repo-card">
             <div>
-              <div class="meta"><span class="tag">Application</span></div>
+              <div class="meta"><span class="tag">App starter</span></div>
               <h3>Template app</h3>
               <p>
-                The repo that shows how to assemble a real MSFLib-powered app
-                from the shared modules and config stack.
+                Ideal if you want to see a working app assembled from the shared
+                backend modules and configuration layer.
               </p>
             </div>
             <div class="repo-links">
-              <a class="small-link primary" href="./fastapi-template/"
-                >App docs</a
-              >
-              <a
-                class="small-link"
-                href="https://github.com/msflib/fastapi-template"
-                target="_blank"
-                rel="noreferrer"
-                >GitHub</a
+              <a class="small-link primary" href="./fastapi-template/">Open</a>
+              <a class="small-link" href="./fastapi-template/README.md"
+                >Setup</a
               >
             </div>
           </article>
 
           <article class="repo-card">
             <div>
-              <div class="meta"><span class="tag">UI</span></div>
+              <div class="meta"><span class="tag">Frontend</span></div>
               <h3>Web modules</h3>
               <p>
-                React and Vue packages for modular frontend experiences that
-                integrate cleanly with the same platform patterns.
+                Best for product teams building client interfaces around the
+                same patterns and shared conventions.
               </p>
             </div>
             <div class="repo-links">
-              <a
-                class="small-link primary"
-                href="https://github.com/msflib/react"
-                target="_blank"
-                rel="noreferrer"
-                >React</a
-              >
-              <a
-                class="small-link"
-                href="https://github.com/msflib/vue"
-                target="_blank"
-                rel="noreferrer"
-                >Vue</a
-              >
+              <a class="small-link primary" href="./react/">React</a>
+              <a class="small-link" href="./vue/">Vue</a>
             </div>
           </article>
         </div>
