@@ -6,15 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Details the functionalities, integration, and setup of the Workspace Notifications module in FastAPI/MSFLib.">
+        <meta name="description" content="Workspace-scoped notification flows for user and admin experiences in MSFLib FastAPI apps.">
       
       
       
         <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/workspace_notifications">
       
       
-        <link rel="prev" href="../auth">
+        <link rel="prev" href="../workspace_config">
       
+      
+        <link rel="next" href="../workspaces">
       
       
         
@@ -263,6 +265,60 @@
   
   
     <li class="md-nav__item">
+      <a href="../ai_api" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ai Api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai_core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ai Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../auth" class="md-nav__link">
         
   
@@ -271,6 +327,168 @@
     
   
     Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingestion" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace_config" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workspace Config
   
 
     
@@ -350,10 +568,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-structure" class="md-nav__link">
+  <a href="#what-it-provides" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project Structure
+        What it provides
       
     </span>
   </a>
@@ -369,41 +587,13 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-pydantic-v2-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Pydantic v2 (recommended):
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-pydantic-v1-legacy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Pydantic v1 (legacy):
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#router-wiring" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Usage
+        Router wiring
       
     </span>
   </a>
@@ -411,10 +601,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#public-api-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Testing
+        Public API surface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related docs
       
     </span>
   </a>
@@ -425,6 +659,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspaces" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -456,10 +717,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-structure" class="md-nav__link">
+  <a href="#what-it-provides" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project Structure
+        What it provides
       
     </span>
   </a>
@@ -475,41 +736,13 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-pydantic-v2-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Pydantic v2 (recommended):
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-pydantic-v1-legacy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Pydantic v1 (legacy):
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#router-wiring" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Usage
+        Router wiring
       
     </span>
   </a>
@@ -517,10 +750,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#public-api-surface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Testing
+        Public API surface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related docs
       
     </span>
   </a>
@@ -545,51 +822,21 @@
 
 
 <h1 id="workspace-notifications-module">Workspace Notifications Module<a class="headerlink" href="#workspace-notifications-module" title="Permanent link">&para;</a></h1>
-<p>The <strong>Workspace Notifications</strong> module provides essential functionalities for managing and integrating workspace-specific notifications within a FastAPI application using MSFLib. This module is structured to offer a reusable scaffold for notification-related features, enabling both user and admin user notification handling.</p>
-<h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
-<p>The module is organized as follows:</p>
-<div class="codehilite"><pre><span></span><code>modules/
-└── workspace_notifications/
-    ├── pyproject.toml
-    ├── README.md
-    └── msflib/workspace_notifications/
-        ├── __init__.py
-        ├── config.py
-        ├── actions.py
-        ├── router.py
-        ├── models/
-        ├── service/
-        └── tests/
-            ├── conftest.py
-            └── test_router.py
-</code></pre></div>
-
+<p>The Workspace Notifications module adds notification flows scoped to a workspace. It is useful for apps where a user or admin needs updates tied to a specific workspace rather than a global account inbox.</p>
+<h2 id="what-it-provides">What it provides<a class="headerlink" href="#what-it-provides" title="Permanent link">&para;</a></h2>
+<ul>
+<li>User notification endpoints</li>
+<li>Admin notification endpoints for workspace-level messaging</li>
+<li>Workspace-aware route wiring</li>
+<li>Scoped configuration via <code>settings.scope("WS_NOTIFICATIONS")</code></li>
+</ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<p>To integrate this module into your project, follow the installation steps based on your Pydantic version:</p>
-<h3 id="for-pydantic-v2-recommended">For Pydantic v2 (recommended):<a class="headerlink" href="#for-pydantic-v2-recommended" title="Permanent link">&para;</a></h3>
-<p>Add the dependencies to your <code>pyproject.toml</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"dev"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-workspace-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"dev"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
-<h3 id="for-pydantic-v1-legacy">For Pydantic v1 (legacy):<a class="headerlink" href="#for-pydantic-v1-legacy" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
-<span class="n">pydantic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"^1.10"</span>
-<span class="n">pydantic-settings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"^1.10"</span>
-
-<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.1.1"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-workspace-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspace_notifications-v0.1.0"</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-
-<!-- openwiki: broken internal link [../core/README.md#pydantic-version-support] file "../core/README.md" does not exist. Fix the href or restore the target, then delete this comment. -->
-<p>Refer to the <a href="../core/README.md#pydantic-version-support">Pydantic Version Compatibility</a> for migration guidance.</p>
-<p>Install the packages using Poetry:</p>
-<div class="codehilite"><pre><span></span><code>poetry<span class="w"> </span>add<span class="w"> </span>msflib<span class="w"> </span>msflib-workspace-notifications
-</code></pre></div>
-
-<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<p>To start using the module, you can include its routers in your FastAPI application:</p>
+<h2 id="router-wiring">Router wiring<a class="headerlink" href="#router-wiring" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.router</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">admin_user_notification_router</span><span class="p">,</span>
@@ -621,12 +868,62 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<p>Configuration settings for the module are accessed using:</p>
+<h2 id="public-api-surface">Public API surface<a class="headerlink" href="#public-api-surface" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Signature</th>
+<th>Params</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user_notification_router</code></td>
+<td><code>user_notification_router(...)</code></td>
+<td>session dep, user dep, workspace dep</td>
+<td>router</td>
+<td>User-facing workspace notification routes</td>
+</tr>
+<tr>
+<td><code>admin_user_notification_router</code></td>
+<td><code>admin_user_notification_router(...)</code></td>
+<td>session dep, admin role check, workspace dep</td>
+<td>router</td>
+<td>Admin notification management routes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="example-usage">Example usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="c1"># list current workspace notifications</span>
+<span class="n">GET</span> <span class="o">/</span><span class="n">workspace_notifications</span><span class="o">/</span><span class="n">user</span>
+
+<span class="c1"># mark as read</span>
+<span class="n">PATCH</span> <span class="o">/</span><span class="n">workspace_notifications</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="p">{</span><span class="n">notification_id</span><span class="p">}</span><span class="o">/</span><span class="n">mark</span>
+
+<span class="c1"># broadcast to workspace members</span>
+<span class="n">POST</span> <span class="o">/</span><span class="n">workspace_notifications</span><span class="o">/</span><span class="n">admin</span>
+</code></pre></div>
+
+<h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"WS_NOTIFICATIONS"</span><span class="p">)</span>
 </code></pre></div>
 
-<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
-<p>To execute tests for this module, ensure you are at the repository root and that all dependencies are installed. If you are using the project virtual environment, activate it first with <code>source .venv/bin/activate</code>.</p>
+<p>This keeps workspace notification preferences and related behavior in the same tiered settings pattern used by the rest of the monorepo.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Ensure <code>get_current_workspace</code> is wired correctly when mounting the router.</li>
+<li>Admin actions need a valid <code>admin_role_check</code> dependency.</li>
+<li>Missing workspace membership will often cause 403 or 404 responses in these endpoints.</li>
+</ul>
+<h2 id="related-docs">Related docs<a class="headerlink" href="#related-docs" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../workspaces">workspaces.md</a></li>
+<li><a href="../notifications">notifications.md</a></li>
+<li><a href="../core">core.md</a></li>
+</ul>
 
 
 

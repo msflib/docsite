@@ -10,11 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/account">
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/core">
       
       
+        <link rel="prev" href="../auth">
       
-        <link rel="next" href="../ai_api">
+      
+        <link rel="next" href="../documents">
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>Account - MSFLIB FastAPI Documentation</title>
+        <title>Core - MSFLIB FastAPI Documentation</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#account-module" class="md-skip">
+        <a href="#core-module" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Account
+              Core
             
           </span>
         </div>
@@ -233,37 +235,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Account
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../account" class="md-nav__link">
         
   
   
@@ -279,186 +254,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-provides" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it provides
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#router-wiring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Router wiring
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-api-surface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public API surface
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Routes
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Routes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#user-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        User routes
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#admin-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Admin routes
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#profile-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Profile routes
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#custom-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom validation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-open-registration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example: open registration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Settings
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling-and-troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error handling and troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Testing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#related-docs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Related docs
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -548,10 +343,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../core" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
         
   
   
@@ -567,6 +389,164 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it provides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-and-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings and config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event bus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-api-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API surface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typical-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typical usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related docs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -809,10 +789,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#router-wiring" class="md-nav__link">
+  <a href="#core-concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Router wiring
+        Core concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-and-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings and config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event bus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example configuration
       
     </span>
   </a>
@@ -831,93 +872,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#routes" class="md-nav__link">
+  <a href="#typical-usage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Routes
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Routes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#user-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        User routes
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#admin-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Admin routes
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#profile-routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Profile routes
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#custom-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom validation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-open-registration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example: open registration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Settings
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling-and-troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error handling and troubleshooting
+        Typical usage
       
     </span>
   </a>
@@ -963,59 +921,58 @@
 
 
 
-<h1 id="account-module">Account Module<a class="headerlink" href="#account-module" title="Permanent link">&para;</a></h1>
-<p>The Account module provides account and profile management for MSFLib-based FastAPI projects. It covers self-service registration, profile lifecycle, admin management, and schema-based validation patterns that are easy to override in downstream applications.</p>
+<h1 id="core-module">Core Module<a class="headerlink" href="#core-module" title="Permanent link">&para;</a></h1>
+<p>The core package is the foundation for the entire MSFLib FastAPI monorepo. It provides configuration, database, security, event bus, policy, scope, and shared helper services that the feature modules build on.</p>
 <h2 id="what-it-provides">What it provides<a class="headerlink" href="#what-it-provides" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Current-account and profile endpoints</li>
-<li>Open registration support with a single configurable public route</li>
-<li>Admin account management routes</li>
-<li>Optional nested profile creation during signup</li>
-<li>Action classes such as <code>AccountAction</code> and <code>ProfileAction</code></li>
-<li>Custom schema support for account-creation validation</li>
+<li>Namespace-aware settings and tiered config resolution</li>
+<li>Database session helpers and model conventions</li>
+<li>Password and JWT utilities</li>
+<li>Event bus and hook registration patterns</li>
+<li>Scope model for tenant/workspace/account awareness</li>
+<li>Shared action and API helpers for modules</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&gt;=3.10,&lt;4.0"</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"dev"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"dev"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
-<h2 id="router-wiring">Router wiring<a class="headerlink" href="#router-wiring" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">account_router</span><span class="p">,</span> <span class="n">account_admin_router</span><span class="p">,</span> <span class="n">profile_router</span>
+<h2 id="core-concepts">Core concepts<a class="headerlink" href="#core-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="settings-and-config">Settings and config<a class="headerlink" href="#settings-and-config" title="Permanent link">&para;</a></h3>
+<p>The core package uses <code>SettingsBase</code> and <code>ModuleSettingsBase</code> to provide layered, namespace-aware configuration. Resolution typically follows:</p>
+<div class="codehilite"><pre><span></span><code>default -&gt; environment -&gt; tenant -&gt; workspace -&gt; user -&gt; request override
+</code></pre></div>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<p>This is especially important for modules like <code>workspace_config</code>, <code>ai_core</code>, and downstream integrations that need scoped behavior.</p>
+<h3 id="policy-layer">Policy layer<a class="headerlink" href="#policy-layer" title="Permanent link">&para;</a></h3>
+<p><code>msflib.policy</code> provides a consistent policy envelope and resolution service to resolve settings in a traceable way across scopes.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">,</span> <span class="n">PolicyResolutionService</span>
+</code></pre></div>
 
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">account_router</span><span class="p">(</span>
-        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
-        <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
+<h3 id="scope-model">Scope model<a class="headerlink" href="#scope-model" title="Permanent link">&para;</a></h3>
+<p>The <code>scope</code> package gives request-scoped context for tenant, workspace, and account identities.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_scope_dependencies</span>
+</code></pre></div>
 
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">account_admin_router</span><span class="p">(</span>
-        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-        <span class="n">role_check</span><span class="o">=</span><span class="n">role_check</span><span class="p">,</span>
-        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
-        <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
+<h3 id="event-bus">Event bus<a class="headerlink" href="#event-bus" title="Permanent link">&para;</a></h3>
+<p>The event bus supports app-scoped emitters and listener registration so modules can react to lifecycle changes without hard-coded coupling.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+</code></pre></div>
 
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">profile_router</span><span class="p">(</span>
-        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">get_current_active_account</span><span class="o">=</span><span class="n">get_current_active_account</span><span class="p">,</span>
-        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
-        <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
+<h2 id="example-configuration">Example configuration<a class="headerlink" href="#example-configuration" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="n">SECRET_KEY</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Then pull module-scoped settings using the <code>.scope(...)</code> pattern.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"ACCOUNT"</span><span class="p">)</span>
 </code></pre></div>
 
 <h2 id="public-api-surface">Public API surface<a class="headerlink" href="#public-api-surface" title="Permanent link">&para;</a></h2>
@@ -1031,120 +988,66 @@
 </thead>
 <tbody>
 <tr>
-<td><code>account_router</code></td>
-<td><code>account_router(...)</code></td>
-<td>session deps, current account dep, settings, types</td>
-<td>FastAPI router</td>
-<td>Registers account and self-service profile endpoints</td>
+<td><code>SettingsBase</code></td>
+<td><code>SettingsBase</code></td>
+<td>environment config</td>
+<td>settings object</td>
+<td>Base app config with namespaced access</td>
 </tr>
 <tr>
-<td><code>account_admin_router</code></td>
-<td><code>account_admin_router(...)</code></td>
-<td>admin role check, settings, account/profile types</td>
-<td>FastAPI router</td>
-<td>Registers admin-only account management routes</td>
+<td><code>ModuleSettingsBase</code></td>
+<td><code>ModuleSettingsBase</code></td>
+<td>module defaults</td>
+<td>settings class</td>
+<td>Base config for feature modules</td>
 </tr>
 <tr>
-<td><code>profile_router</code></td>
-<td><code>profile_router(...)</code></td>
-<td>session deps, current account deps, settings</td>
-<td>FastAPI router</td>
-<td>Exposes profile CRUD and avatar upload routes</td>
+<td><code>bind_app_emitter</code></td>
+<td><code>bind_app_emitter(app)</code></td>
+<td>app instance</td>
+<td><code>AppEmitter</code></td>
+<td>Bind one emitter to an app instance</td>
 </tr>
 <tr>
-<td><code>AccountAction</code></td>
-<td><code>AccountAction[...]</code></td>
-<td>settings, profile_action, custom schema hooks</td>
-<td>action instance</td>
-<td>Service layer for account lifecycle</td>
+<td><code>PolicyResolutionService</code></td>
+<td><code>PolicyResolutionService(...)</code></td>
+<td>scoped store, logger</td>
+<td>service</td>
+<td>Resolve policy settings with trace records</td>
 </tr>
 <tr>
-<td><code>ProfileAction</code></td>
-<td><code>ProfileAction[...]</code></td>
-<td>settings</td>
-<td>action instance</td>
-<td>Service layer for profile-specific logic</td>
+<td><code>get_scope_dependencies</code></td>
+<td><code>get_scope_dependencies(...)</code></td>
+<td>identity callables</td>
+<td>dependency namespace</td>
+<td>Build scoped auth dependencies</td>
 </tr>
 </tbody>
 </table>
-<h2 id="routes">Routes<a class="headerlink" href="#routes" title="Permanent link">&para;</a></h2>
-<h3 id="user-routes">User routes<a class="headerlink" href="#user-routes" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>GET /account/me</code> — current authenticated account</li>
-<li><code>PUT /account/me</code> — update current account</li>
-<li><code>POST /account/open</code> — optional public registration route</li>
-<li><code>POST /account/verify-availability</code> — check email/username/phone availability</li>
-</ul>
-<h3 id="admin-routes">Admin routes<a class="headerlink" href="#admin-routes" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>GET /admin/accounts</code> — list accounts</li>
-<li><code>POST /admin/accounts</code> — create account</li>
-<li><code>GET /admin/accounts/{account_id}</code> — fetch single account</li>
-<li><code>PUT /admin/accounts/{account_id}</code> — update account</li>
-</ul>
-<h3 id="profile-routes">Profile routes<a class="headerlink" href="#profile-routes" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>GET /profiles</code> — current profile</li>
-<li><code>GET /profiles/{account_id}</code> — profile by account id</li>
-<li><code>POST /profiles</code> — create or upsert profile</li>
-<li><code>PUT /profiles</code> — update current profile</li>
-<li><code>PUT /profiles/avatar</code> — upload avatar</li>
-</ul>
-<h2 id="custom-validation">Custom validation<a class="headerlink" href="#custom-validation" title="Permanent link">&para;</a></h2>
-<p>The module supports custom account-creation schemas via <code>account_create_type</code> without changing the route shape.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">myapp.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomAccountCreate</span>
+<h2 id="typical-usage">Typical usage<a class="headerlink" href="#typical-usage" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_scope_dependencies</span>
 
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">account_router</span><span class="p">(</span>
-        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
-        <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
-        <span class="n">account_create_type</span><span class="o">=</span><span class="n">CustomAccountCreate</span><span class="p">,</span>
-    <span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">scope_deps</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
+    <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>This is especially useful when you need extra signup fields such as company, locale, or compliance metadata.</p>
-<h2 id="example-open-registration">Example: open registration<a class="headerlink" href="#example-open-registration" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-    <span class="n">account_router</span><span class="p">(</span>
-        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
-        <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
-        <span class="n">open_registration_path</span><span class="o">=</span><span class="s2">"/signup"</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div>
-
-<p>With a default <code>/account</code> prefix, this creates <code>POST /account/signup</code>.</p>
-<h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
-<p>Account settings are read under the <code>ACCOUNT</code> namespace. Typical keys include:</p>
-<ul>
-<li><code>USERS_OPEN_REGISTRATION</code></li>
-<li><code>OPEN_REGISTRATION_PATH</code></li>
-<li><code>FIRST_SUPERUSER</code></li>
-<li><code>FIRST_SUPERUSER_PASSWORD</code></li>
-<li><code>EMAIL_TEST_ACCOUNT</code></li>
-</ul>
-<h2 id="error-handling-and-troubleshooting">Error handling and troubleshooting<a class="headerlink" href="#error-handling-and-troubleshooting" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Invalid signup payloads return validation errors before the account is created.</li>
-<li>If profile creation is enabled with a custom schema, make sure the related <code>ProfileAction</code> is passed correctly.</li>
-<li>If open registration is disabled, <code>POST /account/open</code> will not be available.</li>
-</ul>
 <h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>./scripts/test.sh<span class="w"> </span>modules/account/msflib/account/tests
+<div class="codehilite"><pre><span></span><code>./scripts/test.sh<span class="w"> </span>core
 </code></pre></div>
 
 <h2 id="related-docs">Related docs<a class="headerlink" href="#related-docs" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../core">core.md</a></li>
+<li><a href="../account">account.md</a></li>
 <li><a href="../auth">auth.md</a></li>
 <li><a href="../workspaces">workspaces.md</a></li>
+<li><a href="../workspace_config">workspace_config.md</a></li>
 </ul>
 
 
