@@ -1,0 +1,1151 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Design tokens, seed-generated light and dark themes, shape tokens, gradients and the bundled Inter font.">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/flutter/packages/kh_theme/">
+      
+      
+        <link rel="prev" href="../kh_core/">
+      
+      
+        <link rel="next" href="../kh_ui/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>kh_theme - khflutterlib Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kh_theme" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="khflutterlib Documentation" class="md-header__button md-logo" aria-label="khflutterlib Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            khflutterlib Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              kh_theme
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/msflib/flutter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    msflib/flutter
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="khflutterlib Documentation" class="md-nav__button md-logo" aria-label="khflutterlib Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    khflutterlib Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/msflib/flutter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    msflib/flutter
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hackathon-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hackathon quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packages
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Packages
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kh_core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kh_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kh_theme
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kh_theme
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-inter-in-your-own-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Inter in your own styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-text-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding text styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shapes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kh_ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kh_ui
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kh_screens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kh_screens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kh_utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kh_utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../starter-app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Starter app
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../example-gallery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example gallery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-train/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release train
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-inter-in-your-own-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Inter in your own styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-text-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding text styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shapes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- Copied from packages/kh_theme/README.md. Edit both together. -->
+
+<h1 id="kh_theme">kh_theme<a class="headerlink" href="#kh_theme" title="Permanent link">&para;</a></h1>
+<p>Design tokens (colors, typography, spacing) and assembled light/dark
+<code>ThemeData</code> for khflutterlib-based apps.</p>
+<p>The first package in the workspace with a Flutter dependency — see
+<a href="https://github.com/msflib/flutter/blob/dev/PHASE_0_ARCHITECTURE.md"><code>PHASE_0_ARCHITECTURE.md</code></a> §8 (dependency
+rules) and §16 (design rationale).</p>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p>Available. Version 0.1.2+2, shipped in release train <code>khflutterlib-v0.4.3</code>.
+Exports:</p>
+<ul>
+<li><code>KhColors</code> — <code>brandSeed</code> (the default seed color for <code>ColorScheme.fromSeed</code>) and fixed semantic <code>success</code>/<code>warning</code>/<code>info</code> colors (light + dark variants of each)</li>
+<li><code>KhTypography</code> — the Material 3 type scale (<code>displayLarge</code> … <code>labelSmall</code>), set in Inter (bundled local asset), plus <code>KhTypography.all</code></li>
+<li><code>KhSpacing</code> — 4px-based spacing scale (<code>xxs</code> … <code>xxxl</code>)</li>
+<li><code>KhRadius</code> — corner-radius scale (<code>none</code> … <code>xl</code>, plus <code>full</code> for pill/stadium shapes)</li>
+<li><code>KhElevation</code> — Material 3's six elevation levels (<code>level0</code> … <code>level5</code>)</li>
+<li><code>KhSizes</code> — component sizing: button heights (<code>buttonHeightSmall</code>/<code>buttonHeight</code>/<code>buttonHeightLarge</code>) and icon sizes (<code>iconXs</code> … <code>iconXl</code>)</li>
+<li><code>KhThemeExtension</code> — <code>ThemeExtension&lt;KhThemeExtension&gt;</code> for <code>success</code>/<code>warning</code>/<code>info</code>, with <code>.light</code>/<code>.dark</code> instances</li>
+<li><code>KhShapeTokens</code> — per-component corner radii (<code>standard</code> and <code>rounded</code> presets, <code>KhShapeTokens.of(context)</code>); see <a href="#shapes">Shapes</a></li>
+<li><code>KhGradients</code> — <code>primary</code>/<code>hero</code>/<code>surface</code> brand gradients (<code>KhGradients.of(context)</code>); see <a href="#gradients">Gradients</a></li>
+<li><code>KhTheme.light</code>/<code>KhTheme.dark</code>/<code>KhTheme.fromColorScheme</code> — assemble everything above into complete <code>ThemeData</code> instances</li>
+</ul>
+<p><code>KhTheme</code> themes all four standard Material button types
+(<code>elevatedButtonTheme</code>/<code>filledButtonTheme</code>/<code>outlinedButtonTheme</code>/<code>textButtonTheme</code>),
+plus cards, dialogs, bottom sheets, snackbars, chips and inputs, from the
+same shape tokens.</p>
+<p><strong>Note on customization:</strong> <code>kh_theme</code> does not hand-pick every color as a
+fixed constant. <code>KhTheme.light</code>/<code>KhTheme.dark</code> generate the full
+<code>ColorScheme</code> from a single seed color via Material 3's
+<code>ColorScheme.fromSeed</code> — each consuming app can supply its own brand
+color, or an exact <code>ColorScheme</code>. Component corner radii are configurable
+through <code>KhShapeTokens</code>; spacing, elevation and the type scale stay fixed
+across all apps. A
+consuming app can also override the font family (Inter by default) via
+<code>KhTheme.light(fontFamily: ...)</code> without forking the package — sizes,
+weights, letter spacing, and line heights stay as <code>KhTypography</code>
+defines them; only the family changes. See <code>PHASE_0_ARCHITECTURE.md</code>
+§16 for the full rationale.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">kh_theme</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">git</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/msflib/flutter.git</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">packages/kh_theme</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">khflutterlib-v0.4.3</span><span class="w"> </span><span class="c1"># use the same release tag for every kh_* package</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">import</span><span class="w"> </span><span class="s1">'package:kh_theme/kh_theme.dart'</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">final</span><span class="w"> </span><span class="n">defaultSeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KhColors</span><span class="p">.</span><span class="n">brandSeed</span><span class="p">;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kd">final</span><span class="w"> </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KhColors</span><span class="p">.</span><span class="n">successLight</span><span class="p">;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kd">final</span><span class="w"> </span><span class="n">headline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KhTypography</span><span class="p">.</span><span class="n">headlineSmall</span><span class="p">;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kd">final</span><span class="w"> </span><span class="n">body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KhTypography</span><span class="p">.</span><span class="n">bodyMedium</span><span class="p">;</span>
+</code></pre></div>
+<p><code>KhTypography</code> sets everything in Inter, bundled as a local font asset
+in this package (<code>assets/fonts/</code>, declared in <code>pubspec.yaml</code>) — no
+network dependency at runtime, unlike an earlier <code>google_fonts</code>-based
+draft (reverted; see this package's <code>CHANGELOG.md</code> and
+<code>PHASE_0_ARCHITECTURE.md</code> §16 for why). The <code>.ttf</code> files (weights 400,
+500, 600, 700 and 800) are committed in <code>assets/fonts/</code>, so a git
+dependency gets them automatically; <code>assets/fonts/README.md</code> records
+where each one came from.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Padding</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nl">padding:</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">EdgeInsets</span><span class="p">.</span><span class="n">all</span><span class="p">(</span><span class="n">KhSpacing</span><span class="p">.</span><span class="n">md</span><span class="p">),</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nl">child:</span><span class="w"> </span><span class="n">Container</span><span class="p">(</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nl">decoration:</span><span class="w"> </span><span class="n">BoxDecoration</span><span class="p">(</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nl">borderRadius:</span><span class="w"> </span><span class="n">BorderRadius</span><span class="p">.</span><span class="n">circular</span><span class="p">(</span><span class="n">KhRadius</span><span class="p">.</span><span class="n">sm</span><span class="p">),</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">),</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nl">child:</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Text</span><span class="p">(</span><span class="s1">'...'</span><span class="p">),</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p">),</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">);</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">Card</span><span class="p">(</span><span class="nl">elevation:</span><span class="w"> </span><span class="n">KhElevation</span><span class="p">.</span><span class="n">level1</span><span class="p">,</span><span class="w"> </span><span class="nl">child:</span><span class="w"> </span><span class="p">...);</span>
+</code></pre></div>
+<p><code>KhThemeExtension</code> carries semantic colors <code>ColorScheme</code> has no slot for.
+<code>KhTheme.light</code>/<code>KhTheme.dark</code> register <code>.light</code>/<code>.dark</code> via
+<code>ThemeData(extensions: [...])</code>; widget code reads them through the
+theme, not by importing <code>KhColors</code> directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">final</span><span class="w"> </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Theme</span><span class="p">.</span><span class="n">of</span><span class="p">(</span><span class="n">context</span><span class="p">).</span><span class="n">extension</span><span class="o">&lt;</span><span class="n">KhThemeExtension</span><span class="o">&gt;</span><span class="p">()</span><span class="o">!</span><span class="p">.</span><span class="n">success</span><span class="p">;</span>
+</code></pre></div>
+<p><code>KhTheme.light</code>/<code>KhTheme.dark</code> assemble everything above — this is the
+only class most apps touch directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">MaterialApp</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nl">theme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">light</span><span class="p">(),</span><span class="w">       </span><span class="c1">// or KhTheme.light(seedColor: myBrandColor)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nl">darkTheme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">dark</span><span class="p">(),</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">);</span>
+</code></pre></div>
+<p>A seed generates every color role for you, so the palette is always
+harmonious and correctly contrasted, but it can only <em>approximate</em> a
+brand color. When a brand has exact hex values, pass a full
+<code>ColorScheme</code> instead. Start from a seed and pin only the roles the
+brand specifies, so everything else stays generated:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">final</span><span class="w"> </span><span class="n">light</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ColorScheme</span><span class="p">.</span><span class="n">fromSeed</span><span class="p">(</span><span class="nl">seedColor:</span><span class="w"> </span><span class="n">brandBlue</span><span class="p">).</span><span class="n">copyWith</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nl">primary:</span><span class="w"> </span><span class="n">brandBlue</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nl">secondary:</span><span class="w"> </span><span class="n">brandNavy</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">);</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kd">final</span><span class="w"> </span><span class="n">dark</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ColorScheme</span><span class="p">.</span><span class="n">fromSeed</span><span class="p">(</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nl">seedColor:</span><span class="w"> </span><span class="n">brandBlue</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nl">brightness:</span><span class="w"> </span><span class="n">Brightness</span><span class="p">.</span><span class="n">dark</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">).</span><span class="n">copyWith</span><span class="p">(</span><span class="nl">primary:</span><span class="w"> </span><span class="n">brandBlue</span><span class="p">,</span><span class="w"> </span><span class="nl">secondary:</span><span class="w"> </span><span class="n">brandNavy</span><span class="p">);</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">MaterialApp</span><span class="p">(</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="nl">theme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">light</span><span class="p">(</span><span class="nl">colorScheme:</span><span class="w"> </span><span class="n">light</span><span class="p">),</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="nl">darkTheme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">dark</span><span class="p">(</span><span class="nl">colorScheme:</span><span class="w"> </span><span class="n">dark</span><span class="p">),</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">);</span>
+</code></pre></div>
+<p>With an exact scheme, your app owns contrast for every role it sets.
+Pass <code>seedColor</code> <em>or</em> <code>colorScheme</code>, not both, and the scheme's
+brightness must match the method you call. <code>KhTheme.fromColorScheme(scheme)</code>
+picks light or dark from the scheme itself.</p>
+<p>An app that already ships its own brand typeface can override Inter
+without forking <code>kh_theme</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">MaterialApp</span><span class="p">(</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nl">theme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">light</span><span class="p">(</span><span class="nl">fontFamily:</span><span class="w"> </span><span class="s1">'Roboto'</span><span class="p">),</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nl">darkTheme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">dark</span><span class="p">(</span><span class="nl">fontFamily:</span><span class="w"> </span><span class="s1">'Roboto'</span><span class="p">),</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">);</span>
+</code></pre></div>
+<p><code>fontFamily</code> only threads the family name through <code>TextTheme.apply</code> —
+the named font must already be resolvable by the Flutter engine
+(bundled as an asset and declared in <em>your app's own</em> <code>pubspec.yaml</code>,
+or a platform default). <code>kh_theme</code> doesn't load arbitrary fonts on your
+app's behalf.</p>
+<h3 id="using-inter-in-your-own-styles">Using Inter in your own styles<a class="headerlink" href="#using-inter-in-your-own-styles" title="Permanent link">&para;</a></h3>
+<p>Because Inter is bundled by <code>kh_theme</code>, Flutter registers it as
+<code>packages/kh_theme/Inter</code>, not <code>Inter</code>. A hand-written
+<code>TextStyle(fontFamily: 'Inter')</code> won't find it and silently falls back to
+the platform font. Use the constant instead, or start from a
+<code>KhTypography</code> style:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">const</span><span class="w"> </span><span class="n">TextStyle</span><span class="p">(</span><span class="nl">fontFamily:</span><span class="w"> </span><span class="n">KhTypography</span><span class="p">.</span><span class="n">fontFamily</span><span class="p">,</span><span class="w"> </span><span class="nl">fontSize:</span><span class="w"> </span><span class="m">40</span><span class="p">);</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">KhTypography</span><span class="p">.</span><span class="n">displaySmall</span><span class="p">.</span><span class="n">copyWith</span><span class="p">(</span><span class="nl">fontWeight:</span><span class="w"> </span><span class="n">FontWeight</span><span class="p">.</span><span class="n">w800</span><span class="p">);</span>
+</code></pre></div>
+<p>(Before 0.4.2, <code>kh_theme</code> itself made this mistake, so apps rendered the
+platform font instead of Inter.)</p>
+<h3 id="overriding-text-styles">Overriding text styles<a class="headerlink" href="#overriding-text-styles" title="Permanent link">&para;</a></h3>
+<p><code>textTheme</code> overrides individual <code>KhTypography</code> styles. Each style is
+merged field by field, so you only set what changes; size, letter
+spacing and line height carry over:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">MaterialApp</span><span class="p">(</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nl">theme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">light</span><span class="p">(</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nl">textTheme:</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">TextTheme</span><span class="p">(</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="nl">displaySmall:</span><span class="w"> </span><span class="n">TextStyle</span><span class="p">(</span><span class="nl">fontWeight:</span><span class="w"> </span><span class="n">FontWeight</span><span class="p">.</span><span class="n">w800</span><span class="p">),</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="nl">headlineMedium:</span><span class="w"> </span><span class="n">TextStyle</span><span class="p">(</span><span class="nl">fontWeight:</span><span class="w"> </span><span class="n">FontWeight</span><span class="p">.</span><span class="n">w700</span><span class="p">),</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="p">),</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="p">),</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="p">);</span>
+</code></pre></div>
+<p>Inter is bundled at weights 400, 500, 600, 700 and 800, so heavy headings
+render with a real face. <code>KhTypography</code>'s own styles still use only 400
+and 500. <code>textTheme</code> is applied after <code>fontFamily</code>, so a family set inside
+it wins for that style. <code>KhTypography.textTheme</code> is the base scale, if you
+want to build from it yourself.</p>
+<h3 id="shapes">Shapes<a class="headerlink" href="#shapes" title="Permanent link">&para;</a></h3>
+<p><code>KhShapeTokens</code> sets the corner radius of buttons, text inputs, cards,
+dialogs, bottom sheets, chips and snackbars. There are two presets:</p>
+<ul>
+<li><code>KhShapeTokens.standard</code> (the default): compact radii for dense,
+  data-heavy apps. It's what <code>KhTheme</code> has always rendered.</li>
+<li><code>KhShapeTokens.rounded</code>: pill buttons and chips, with generously
+  rounded cards, inputs and modal surfaces.</li>
+</ul>
+<p>Use a preset as is, or adjust individual tokens:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">final</span><span class="w"> </span><span class="n">shapes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KhShapeTokens</span><span class="p">.</span><span class="n">rounded</span><span class="p">.</span><span class="n">copyWith</span><span class="p">(</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nl">card:</span><span class="w"> </span><span class="n">BorderRadius</span><span class="p">.</span><span class="n">circular</span><span class="p">(</span><span class="m">20</span><span class="p">),</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="p">);</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">MaterialApp</span><span class="p">(</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="nl">theme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">light</span><span class="p">(</span><span class="nl">shapes:</span><span class="w"> </span><span class="n">shapes</span><span class="p">),</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="nl">darkTheme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">dark</span><span class="p">(</span><span class="nl">shapes:</span><span class="w"> </span><span class="n">shapes</span><span class="p">),</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">);</span>
+</code></pre></div>
+<p>Every token is a <code>BorderRadius</code>. For a pill, use <code>KhRadius.full</code>. The
+tokens are applied to the matching Material component themes, so plain
+Material widgets pick them up too. Widgets that draw their own shaped
+surfaces read them with <code>KhShapeTokens.of(context)</code>. The navigation
+drawer's shape stays fixed.</p>
+<h3 id="gradients">Gradients<a class="headerlink" href="#gradients" title="Permanent link">&para;</a></h3>
+<p><code>KhGradients</code> holds three brand gradients for surfaces <code>ColorScheme</code> has
+no slot for. Each is meant to carry content in a specific colour role:</p>
+<table>
+<thead>
+<tr>
+<th>Gradient</th>
+<th>Use</th>
+<th>Content colour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary</code></td>
+<td>calls to action, featured banners</td>
+<td><code>onPrimary</code></td>
+</tr>
+<tr>
+<td><code>hero</code></td>
+<td>hero headers, feature cards</td>
+<td><code>onPrimaryContainer</code></td>
+</tr>
+<tr>
+<td><code>surface</code></td>
+<td>subtle background washes</td>
+<td><code>onSurface</code></td>
+</tr>
+</tbody>
+</table>
+<p>By default they're derived from the theme's <code>ColorScheme</code>, so they follow a
+custom seed or exact scheme automatically. To use a brand's own, pass them
+to each theme (they can be linear, radial or sweep):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">MaterialApp</span><span class="p">(</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nl">theme:</span><span class="w"> </span><span class="n">KhTheme</span><span class="p">.</span><span class="n">light</span><span class="p">(</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nl">colorScheme:</span><span class="w"> </span><span class="n">brandLight</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nl">gradients:</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">KhGradients</span><span class="p">(</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="nl">primary:</span><span class="w"> </span><span class="n">LinearGradient</span><span class="p">(</span><span class="nl">colors:</span><span class="w"> </span><span class="p">[</span><span class="n">brandBlue</span><span class="p">,</span><span class="w"> </span><span class="n">brandNavy</span><span class="p">]),</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="nl">hero:</span><span class="w"> </span><span class="n">LinearGradient</span><span class="p">(</span><span class="nl">colors:</span><span class="w"> </span><span class="p">[</span><span class="n">Color</span><span class="p">(</span><span class="mh">0xFFDCE6FF</span><span class="p">),</span><span class="w"> </span><span class="n">Color</span><span class="p">(</span><span class="mh">0xFFB4C8FF</span><span class="p">)]),</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">      </span><span class="nl">surface:</span><span class="w"> </span><span class="n">LinearGradient</span><span class="p">(</span><span class="nl">colors:</span><span class="w"> </span><span class="p">[</span><span class="n">Colors</span><span class="p">.</span><span class="n">white</span><span class="p">,</span><span class="w"> </span><span class="n">Color</span><span class="p">(</span><span class="mh">0xFFEAF0FF</span><span class="p">)]),</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="p">),</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span><span class="p">),</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">);</span>
+</code></pre></div>
+<p>Widgets read them with <code>KhGradients.of(context)</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">DecoratedBox</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nl">decoration:</span><span class="w"> </span><span class="n">BoxDecoration</span><span class="p">(</span><span class="nl">gradient:</span><span class="w"> </span><span class="n">KhGradients</span><span class="p">.</span><span class="n">of</span><span class="p">(</span><span class="n">context</span><span class="p">).</span><span class="n">hero</span><span class="p">),</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nl">child:</span><span class="w"> </span><span class="p">...,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">);</span>
+</code></pre></div>
+<p>If you pass custom gradients, pass a separate set to <code>KhTheme.dark</code> that
+suits a dark background. Otherwise the dark theme uses gradients derived
+from its own scheme.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
