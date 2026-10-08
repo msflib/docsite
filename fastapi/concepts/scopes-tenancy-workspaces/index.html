@@ -2958,7 +2958,7 @@
 <p>Which identity callables to pass depends on how your site models membership:</p>
 <ul>
 <li>A membership entity distinct from the account (a per-workspace row with status and role): pass <code>get_current_workspace</code> and <code>get_current_active_user</code>. The user dependency is what verifies membership; resolving the workspace alone does not.</li>
-<li>No such entity: pass <code>get_current_account</code>, plus <code>get_current_workspace</code> only if your accounts have a workspace attribute. Nothing then checks membership, because there is no membership row.</li>
+<li>No such entity: pass <code>get_current_account</code>, plus <code>get_current_workspace</code> if your accounts have a workspace attribute, or a workspace dependency that resolves from the request (path or header). Nothing then checks membership, because there is no membership row.</li>
 <li>No tenant concept yet: omit <code>get_current_tenant</code>. The scopes then carry <code>tenant_id=None</code>.</li>
 </ul>
 <p>Passing both <code>get_current_account</code> and <code>get_current_active_user</code> raises <code>ValueError</code>, as does passing neither account nor the workspace-and-user pair.</p>
@@ -2991,7 +2991,7 @@
 <ul>
 <li><code>TenantAction.ensure_default_tenant(session, settings=...)</code> creates the default tenant if it is missing. Call it at startup. It is idempotent.</li>
 <li><code>resolve_default_tenant_id(session, settings=..., create_if_missing=True)</code> returns its id, cached per process and database.</li>
-<li><code>get_tenant_dependencies(session_dep=...)</code> from <code>msflib.tenancy.deps</code> returns a namespace with <code>get_current_tenant</code>, which loads the default tenant row for a request and answers 500 if it was never seeded. Pass that to <code>get_scope_dependencies</code>.</li>
+<li><code>get_tenant_dependencies(session_dep=..., settings=...)</code> from <code>msflib.tenancy.deps</code> returns a namespace with <code>get_current_tenant</code>, which loads the default tenant row for a request and answers 500 if it was never seeded. Pass that to <code>get_scope_dependencies</code>. Pass the same <code>settings.scope("TENANCY")</code> you seed with: with a customised <code>DEFAULT_TENANT_SLUG</code>, omitting <code>settings=</code> makes it look for the slug <code>default</code> and answer 500.</li>
 </ul>
 <p>Importing the <code>Tenant</code> table class is done explicitly (<code>from msflib.tenancy.models.tenant import Tenant</code>), because the package root does not re-export it.</p>
 <p>If the scope carries a <code>tenant_id</code>, that value wins over any default lookup. A malformed tenant id raises <code>ValueError</code> rather than silently falling back to the default tenant (see <code>msflib.tenancy.resolver.resolve_scoped_tenant_id</code>).</p>

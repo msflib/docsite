@@ -2954,7 +2954,7 @@
 <p>The ingestion queue needs a Redis broker (<code>INGESTION.BROKER_URL</code>, default <code>redis://localhost:6379/0</code>) reachable by both the web process and the worker.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>There are three parts: the router, the worker, and (optionally) the drivelink hooks.</p>
-<p><strong>1. Settings.</strong> Include <code>DocumentsSettings</code> and <code>IngestionSettings</code> in your settings class. The upload endpoint also needs the default tenant to exist (seed it at startup; see <a href="../tenancy/">tenancy</a>).</p>
+<p><strong>1. Settings.</strong> Include <code>DocumentsSettings</code> and <code>IngestionSettings</code> in your settings class. The upload endpoint also needs the default tenant to exist (seed it at startup; see <a href="../tenancy/">tenancy</a>). Import <code>msflib.tenancy.models.tenant</code>, <code>msflib.documents.models</code> and <code>msflib.ingestion.models</code> before <code>create_all</code>, so the tables and the <code>tenant_id</code> foreign keys are registered.</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentsSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
 
@@ -2979,28 +2979,32 @@
 <span class="n">register_text_document_pipeline</span><span class="p">()</span>
 </code></pre></div>
 
-<p><code>get_current_account</code> is optional in the signature but every route except <code>GET /ingestion/status</code> answers 401 without it. <code>get_current_workspace</code> and <code>get_current_tenant</code> are optional; with no tenant dependency the router falls back to the default tenant and returns 500 if it has not been seeded. <code>dispatch_task</code> lets you inject a <code>.delay(job_id)</code>-compatible object instead of the default Celery producer, which is how the tests avoid needing Redis.</p>
+<p><code>get_current_account</code> is optional in the signature but every route except <code>GET /ingestion/status</code> answers 401 without it. <code>get_current_workspace</code> and <code>get_current_tenant</code> are optional; with no tenant dependency the router falls back to the tenant with slug <code>default</code> and returns 500 if it has not been seeded. <code>dispatch_task</code> lets you inject a <code>.delay(job_id)</code>-compatible object instead of the default Celery producer, which is how the tests avoid needing Redis.</p>
 <p><strong>3. Worker.</strong> The process that runs the jobs must register the pipeline and build the Celery app:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_text_document_pipeline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">your_app.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">engine</span>   <span class="c1"># your own engine</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">session_factory</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Session</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.session</span><span class="w"> </span><span class="kn">import</span> <span class="n">engine</span>
     <span class="k">return</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 
 <span class="n">register_text_document_pipeline</span><span class="p">()</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="n">session_factory</span><span class="p">)</span>
 </code></pre></div>
 
-<p>Run it with <code>celery -A your_module worker</code>. The repository's <code>testsite/app/ingestion_worker.py</code> is a working entry point that also registers the knowledge pipelines.</p>
-<p><strong>4. Drivelink hooks (optional).</strong> Call once at startup, after you have an app emitter:</p>
+<p><code>msflib.db.session.engine</code> only works in hosts laid out as <code>app.core.config</code>, so build the session from your own engine. Run it with <code>celery -A your_module worker</code>. The repository's <code>testsite/app/ingestion_worker.py</code> is a working entry point that also registers the knowledge pipelines.</p>
+<p><strong>4. Drivelink hooks (optional).</strong> Call <code>bind_app_emitter(app)</code> when you create the app (before startup), then call this once, for example in your lifespan handler, passing <code>get_app_emitter(app)</code>. <code>get_app_emitter</code> binds on first use, and binding adds middleware, which fails with <code>RuntimeError: Cannot add middleware after an application has started</code> inside a lifespan handler if the app was not bound earlier.</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentRecordAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.drivelink</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentsIngestionDispatchService</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_app_emitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span><span class="p">,</span> <span class="n">get_app_emitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDispatchService</span>
+
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>   <span class="c1"># at app creation</span>
 
 <span class="n">record_action</span> <span class="o">=</span> <span class="n">DocumentRecordAction</span><span class="p">()</span>
 <span class="n">register_event_hooks</span><span class="p">(</span>
@@ -3009,11 +3013,15 @@
         <span class="n">dispatch</span><span class="o">=</span><span class="n">IngestionDispatchService</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">build_dispatch_task</span><span class="p">(</span><span class="n">settings</span><span class="p">)),</span>
         <span class="n">record_action</span><span class="o">=</span><span class="n">record_action</span><span class="p">,</span>
     <span class="p">),</span>
-    <span class="n">emitter</span><span class="o">=</span><span class="n">get_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span>
+    <span class="n">emitter</span><span class="o">=</span><span class="n">get_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span>   <span class="c1"># the same emitter as app_emitter</span>
     <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
 
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
+<p>The router's default-tenant fallback ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, <code>POST /upload</code> returns 500 "Default tenant has not been seeded" even though your seeding used the same settings, while the drivelink hooks (given <code>tenancy_settings</code>) resolve your tenant. Pass <code>get_current_tenant=get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY")).get_current_tenant</code> to the router.</p>
+</div>
 <p>Routes added by the router:</p>
 <table>
 <thead>
@@ -3091,7 +3099,7 @@
 </tr>
 </tbody>
 </table>
-<p>Flat aliases exist for all four keys. With mixin composition use the flat names (<code>QUEUE_ENABLED=false</code>, <code>MAX_INGEST_BYTES=...</code>); <code>DOCUMENTS__QUEUE_ENABLED</code> is only read when you declare <code>DOCUMENTS: DocumentsSettings = DocumentsSettings()</code> as a field. Both were checked.</p>
+<p>Flat aliases exist for all four keys. With mixin composition use the flat names (<code>QUEUE_ENABLED=false</code>, <code>MAX_INGEST_BYTES=...</code>); <code>DOCUMENTS__QUEUE_ENABLED</code> is only read when you declare <code>DOCUMENTS: DocumentsSettings = DocumentsSettings()</code> as a field. Both were checked. The flat alias <code>ENABLED</code> is shared with the other modules that declare it, so with documents and drivelink both composed as nested fields <code>DOCUMENTS__ENABLED=false</code> was ignored while <code>DRIVELINK__ENABLED=false</code> switched off both; set the field in code instead, for example <code>DocumentsSettings(ENABLED=False)</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
 <p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
@@ -3106,7 +3114,7 @@
 <li><strong>Source adapters</strong> (<code>msflib.documents.adapters</code>): a <code>SourceAdapter</code> resolves a record to a <code>SourceDocument</code> and reads its bytes. <code>DirectUploadAdapter</code> and, when drivelink is installed, <code>DrivelinkAdapter</code> are registered in <code>adapters.registry</code>. Register your own with <code>registry.register(adapter)</code>, keyed by its <code>source_type</code>. Any node type implementing <code>SourceNodeProtocol</code> (<code>DrivelinkNode</code> does, unchanged) can be a source.</li>
 <li><strong>Dispatch</strong>: <code>DocumentsIngestionDispatchService.enqueue_for_record(session, record=, target_version=, reason=, commit=)</code> creates an <code>IngestionJob</code> for the record. <code>IngestionReason</code> is <code>create</code>, <code>replace</code>, <code>manual_reindex</code> or <code>metadata_change</code>. With <code>commit=False</code> the Celery dispatch is deferred until the caller's own commit.</li>
 <li><strong>Pipeline</strong>: the <code>text_document</code> stage (<code>sync_document_stage</code>) resolves the record, checks the version has not been superseded, reads the bytes, extracts text with <code>msflib.ai_core.services.extraction.default_loader_registry</code>, prunes old chunks for that <code>source_key</code> and indexes the new ones. If the source is gone or the record is deleted it removes the vectors instead. Use <code>make_sync_document_stage(vector_store_factory=..., collection_name=...)</code> and <code>register_text_document_pipeline(stage=...)</code> to swap the vector store or collection (default collection name <code>documents</code>).</li>
-<li><strong>Events</strong>: after each successful stage the worker emits <code>documents.ingestion.completed</code> with a <code>DocumentIngestionCompletedEvent</code> (<code>document_record_id</code>, <code>target_version</code>, <code>reason</code>, <code>tenant_id</code>, <code>workspace_id</code>), and the drivelink hooks emit <code>documents.index.deleted</code> after commit when a drivelink file is deleted. The knowledge module listens to these.</li>
+<li><strong>Events</strong>: after each successful stage the worker emits <code>documents.ingestion.completed</code> with a <code>DocumentIngestionCompletedEvent</code> (<code>document_record_id</code>, <code>target_version</code>, <code>reason</code>, <code>tenant_id</code>, <code>workspace_id</code>), and the drivelink hooks emit <code>documents.index.deleted</code> after commit when a drivelink file is deleted. The knowledge module listens to these. The worker emits <code>documents.ingestion.completed</code> on the default emitter active in the worker process, so listeners for it must be registered in the worker process on <code>AppEmitter(get_emitter())</code> (see <a href="../../concepts/event-bus/">Event bus</a> and <a href="../ingestion/">ingestion</a>); a knowledge hook registered only in the web process never fires from a real worker. <code>documents.index.deleted</code> is emitted inside web requests, so that one needs the web registration.</li>
 <li><strong>Drivelink hooks</strong>: file nodes only. Create enqueues a <code>create</code> job. An update that changes <code>name</code>, <code>path</code>, <code>parent_id</code>, <code>mime_type</code>, <code>version</code> or <code>deleted_at</code> enqueues a job with reason <code>create</code> (never indexed), <code>metadata_change</code> (same version as the indexed one) or <code>replace</code> (version advanced); a node with <code>deleted_at</code> set marks the record deleted instead of enqueueing. Delete marks the record deleted. Folders are ignored. Hooks resolve the default tenant, so seed it at startup. Registering twice is a no-op unless <code>force=True</code>.</li>
 </ul>
 <p><code>msflib.documents</code> exposes <code>DocumentRecordAction</code>, <code>DocumentsIngestionDispatchService</code>, <code>DocumentsSettings</code>, <code>loader_registry</code> and <code>register_event_hooks</code> lazily from its package <code>__init__</code>.</p>
@@ -3168,7 +3176,7 @@
 <ul>
 <li><strong>Jobs stay <code>queued</code> and records never become <code>indexed</code>.</strong> The worker is not running, or it did not call <code>register_text_document_pipeline()</code>, or it uses a different <code>INGESTION.BROKER_URL</code> from the web process. All three are required. Check the job's status and history on the ingestion router.</li>
 <li><strong><code>503</code> on upload, promote or delete.</strong> <code>DOCUMENTS.QUEUE_ENABLED</code> is false.</li>
-<li><strong><code>500 Default tenant has not been seeded</code>.</strong> Run tenant seeding at startup, or pass <code>get_current_tenant</code>. The drivelink hooks raise the same error when no default tenant exists.</li>
+<li><strong><code>500 Default tenant has not been seeded</code>.</strong> Run tenant seeding at startup, or pass <code>get_current_tenant</code> (required if you changed <code>DEFAULT_TENANT_SLUG</code>, see the known issue under Wiring). The drivelink hooks raise the same error when no default tenant exists.</li>
 <li><strong><code>401 Authentication required</code>.</strong> <code>get_current_account</code> was not passed, or it returned <code>None</code>.</li>
 <li><strong>Record is <code>failed</code> with a <code>last_error</code> mentioning loaders.</strong> The file type needs an extraction backend that is not installed. Install the <code>llamaindex</code> or <code>community</code> extra of <code>msflib-ai-core</code>; the error names the registries that were skipped. Plain text, markdown, JSON and CSV work out of the box.</li>
 <li><strong>Record is <code>failed</code> with a size message.</strong> The file exceeds <code>MAX_INGEST_BYTES</code>.</li>

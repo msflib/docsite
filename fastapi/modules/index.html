@@ -2839,11 +2839,11 @@
 <p>Modules follow the same shape, so once you have wired one the next is familiar:</p>
 <ol>
 <li><strong>Install</strong> the package (and its extras, if any).</li>
-<li><strong>Settings</strong>: add the module's settings class to your app settings. Each has a namespace, so its values are read as <code>settings.scope("AUTH")</code> and set through environment variables like <code>AUTH__ENABLE_GOOGLE_OAUTH</code>. See <a href="../concepts/tiered-config/">Tiered configuration</a>.</li>
-<li><strong>Models</strong>: import the module's models before you create tables, so they are registered on <code>SQLModel.metadata</code>. See <a href="../quick-start/models-data-tables/">Models, data and tables</a>.</li>
+<li><strong>Settings</strong>: add the module's settings class to your app settings. Each has a namespace, so its values are read as <code>settings.scope("AUTH")</code>. They are set through environment variables: <code>AUTH__ENABLE_GOOGLE_OAUTH</code> when the settings are composed as nested fields, plain <code>ENABLE_GOOGLE_OAUTH</code> when the module's settings class is mixed into yours. See <a href="../concepts/tiered-config/">Tiered configuration</a>.</li>
+<li><strong>Models</strong>: import the module's models before you create tables, so they are registered on <code>SQLModel.metadata</code>. Modules whose tables reference others (ai-core references tenancy) need those models imported too. See <a href="../quick-start/models-data-tables/">Models, data and tables</a>.</li>
 <li><strong>Dependencies</strong>: call the module's dependency factory with your session and settings, and keep the result in one <code>deps.py</code>. See <a href="../concepts/dependency-injection/">Dependency injection</a>.</li>
 <li><strong>Routers</strong>: call the module's router factory with those dependencies and include the result in your app. See <a href="../integration/mounting-routes/">Mounting routes</a>.</li>
-<li><strong>Events</strong>: if the module exposes <code>register_event_hooks</code>, call it with your app emitter. See <a href="../concepts/event-bus/">Event bus</a>.</li>
+<li><strong>Events</strong>: if the module exposes <code>register_event_hooks</code>, call it with your app emitter (<code>app_emitter = bind_app_emitter(app)</code>). Listeners fire only for code that runs in a request, or inside <code>with use_app_emitter(app):</code>; scripts and threads in your web app's process need that wrapper. A worker process has no app object: register its listeners on the worker's emitter, <code>AppEmitter(get_emitter())</code>, as the ingestion and knowledge pages show. See <a href="../concepts/event-bus/">Event bus</a>.</li>
 </ol>
 <p>Not every module has every step. The module pages say which apply.</p>
 <div class="admonition note">

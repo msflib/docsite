@@ -2927,7 +2927,7 @@
 </code></pre></div>
 
 <h2 id="1-settings-a-namespace-of-your-own">1. Settings: a namespace of your own<a class="headerlink" href="#1-settings-a-namespace-of-your-own" title="Permanent link">&para;</a></h2>
-<p>A settings class for your feature is a <code>ModuleSettingsBase</code> with a <code>namespace</code>. Mix it into the composed <code>Settings</code> next to the modules you use.</p>
+<p>A settings class for your feature is a <code>ModuleSettingsBase</code> with a <code>namespace</code>. Mix it into the <code>Settings</code> class next to the modules you use.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># myapp/settings.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 
@@ -2952,6 +2952,11 @@
 </code></pre></div>
 
 <p>Read your values with <code>settings.scope("NOTES").MAX_NOTES_PER_ACCOUNT</code>. Setting the environment variable <code>MAX_NOTES_PER_ACCOUNT=2</code> changes it. Other code, including MSFLib modules, can be given the same <code>settings</code> object.</p>
+<p>This guide uses the mixin settings style: the auth router reads a top-level <code>SECRET_KEY</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
+<p>With composed (nested) settings, <code>POST /login</code> and the password-recovery endpoints of the auth router fail with <code>AttributeError: ... no attribute 'SECRET_KEY'</code>. Keep to the mixin style shown here when you mount the auth router.</p>
+</div>
 <h2 id="2-models-tables-and-schemas">2. Models: tables and schemas<a class="headerlink" href="#2-models-tables-and-schemas" title="Permanent link">&para;</a></h2>
 <p>The account module does not ship a table for accounts. You define <code>Account</code> and <code>Profile</code> from the module's bases, which is also where you add your own columns (see <a href="../overriding-models/">Overriding models</a>). Your own tables derive from <code>ModelBase</code>, which adds <code>id</code>, <code>created_at</code> and <code>updated_at</code>, and from <code>SchemaBase</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># myapp/models.py</span>
@@ -3178,7 +3183,7 @@
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">notes</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">api_v1</span><span class="p">)</span>
 </code></pre></div>
 
-<p><code>create_all</code> is for development. For a deployed database, use migrations (see <code>msflib.db.migrations</code> on the <a href="../../modules/core/">core page</a>). <code>bind_app_emitter(app)</code> gives the app its own event bus; actions emit lifecycle events on it during requests.</p>
+<p><code>create_all</code> is for development. For a deployed database, use migrations (see <code>msflib.db.migrations</code> on the <a href="../../modules/core/">core page</a>). <code>bind_app_emitter(app)</code> gives the app its own event bus; actions emit lifecycle events on it during requests and in <code>BackgroundTasks</code>. Register listeners with <code>@app_emitter.on("event-name")</code>; code outside a request (scripts, threads) needs <code>with use_app_emitter(app):</code>, and a worker process, which has no app, registers its listeners on <code>AppEmitter(get_emitter())</code>. See <a href="../subclassing-actions/#lifecycle-events-and-hooks">Subclassing actions</a>.</p>
 <p>Try it with the test client. Open registration is enabled in the settings above, so a client can create an account, log in, and use the notes endpoints with the returned bearer token.</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
@@ -3219,11 +3224,13 @@
 
 
 <span class="n">app</span><span class="o">.</span><span class="n">dependency_overrides</span><span class="p">[</span><span class="n">get_session</span><span class="p">]</span> <span class="o">=</span> <span class="n">override_session</span>
-<span class="n">app</span><span class="o">.</span><span class="n">dependency_overrides</span><span class="p">[</span><span class="n">get_keystore</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">MapStore</span><span class="p">()</span>
+<span class="n">store</span> <span class="o">=</span> <span class="n">MapStore</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">dependency_overrides</span><span class="p">[</span><span class="n">get_keystore</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">store</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 </code></pre></div>
 
+<p>Create the <code>MapStore</code> once, outside the lambda. If the override builds a new store per request, a token revoked by <code>DELETE /logout</code> is still accepted on the next call.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Add rules and hooks around writes: <a href="../subclassing-actions/">Subclassing actions</a>.</li>

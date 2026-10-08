@@ -3241,10 +3241,14 @@
 </tr>
 <tr>
 <td><code>settings</code></td>
-<td>Your settings object. The router reads the <code>AUTH</code> namespace and <code>SECRET_KEY</code> from it.</td>
+<td>Your settings object. The router reads the <code>AUTH</code> namespace from it and <code>SECRET_KEY</code> as a flat attribute (<code>settings.SECRET_KEY</code>).</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
+<p>The router reads <code>settings.SECRET_KEY</code> from the top level of the settings object. With fully composed settings (core only under <code>CORE</code>, as in the quick-start layout) <code>POST /auth/login</code> and the password reset endpoints raise <code>AttributeError</code>, although <code>get_account_dependencies(secret_key=settings.scope("CORE").SECRET_KEY)</code> itself works. Mix <code>CoreSettings</code> into your settings class (<code>class Settings(CoreSettings, SettingsBase)</code>, with the other modules still nested) so <code>SECRET_KEY</code> is a top-level attribute.</p>
+</div>
 <p><code>get_account_dependencies</code> also accepts <code>active_statuses</code> (default <code>["active", "online"]</code>) and <code>account_role_attr</code> (default <code>"role"</code>). <code>get_user_dependencies</code> accepts <code>user_role_attr</code> (default <code>"type"</code>), <code>current_workspace_attr</code> (default <code>"current_workspace_id"</code>) and <code>workspace_resolver</code>.</p>
 <h3 id="routes-added-by-the-router">Routes added by the router<a class="headerlink" href="#routes-added-by-the-router" title="Permanent link">&para;</a></h3>
 <table>
@@ -3481,6 +3485,7 @@
 </tr>
 </tbody>
 </table>
+<p>Register the listener on the app emitter, for example <code>@app_emitter.on("google-account-create")</code> with <code>app_emitter = bind_app_emitter(app)</code>. A listener added with <code>emitter.on(...)</code> at import time lands on the default emitter, which the router does not see, and the callback returns 500 "No listener". Sync and async listeners on the app emitter both work.</p>
 <p>See <a href="../../concepts/event-bus/">Event bus</a> for registering listeners.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="protect-routes-by-account-role-and-workspace-membership">Protect routes by account role and workspace membership<a class="headerlink" href="#protect-routes-by-account-role-and-workspace-membership" title="Permanent link">&para;</a></h3>

@@ -2864,13 +2864,14 @@
 <span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 
-<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="s2">"order-placed"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">on_order_placed</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"order </span><span class="si">%s</span><span class="s2"> placed"</span><span class="p">,</span> <span class="n">order</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"order-placed"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_order_placed</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"order"</span><span class="p">,</span> <span class="n">order</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="s2">"placed"</span><span class="p">)</span>
 </code></pre></div>
 
-<p><code>bind_app_emitter(app)</code> stores the emitter on <code>app.state</code>, adds a middleware that activates it for each HTTP and WebSocket request, and is safe to call again (<code>get_app_emitter(app)</code> returns the existing one). The <code>@app_emitter.listen(...)</code> decorator injects a <code>logger</code> keyword argument into listeners that declare <code>logger</code> (or <code>**kwargs</code>); listeners that do not declare it are called without one. The injected logger prefixes messages with the event name.</p>
-<p>Module hooks are registered by calling the module's <code>register_event_hooks</code>, usually at startup (a lifespan handler):</p>
+<p><code>bind_app_emitter(app)</code> stores the emitter on <code>app.state</code>, adds a middleware that activates it for each HTTP and WebSocket request, and is safe to call again (<code>get_app_emitter(app)</code> returns the existing one). <code>@app_emitter.on(...)</code> registers the function as a listener on that emitter.</p>
+<p>The app emitter is active for requests, for FastAPI <code>BackgroundTasks</code>, and for <code>call_later</code> and <code>create_task</code> calls started from a request. Code in your web process that runs outside the request context (scripts, threads, lifespan code, scheduler jobs) uses the default emitter instead; wrap it in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>) to make the app emitter current. A worker process has no FastAPI app: register its listeners on the worker's emitter, <code>AppEmitter(get_emitter())</code> (both from <code>msflib.eventbus</code>).</p>
+<p>Module hooks are registered by calling the module's <code>register_event_hooks</code>, at import time or in a lifespan handler:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
 
 <span class="n">register_event_hooks</span><span class="p">(</span>
@@ -2883,7 +2884,8 @@
 </code></pre></div>
 
 <p>Modules that ship hooks, with their <code>eventbus</code> packages, include account, auth, conversation, documents (<code>msflib.documents.drivelink</code>), knowledge and workspaces. Each exports its event names and, where defined, an <code>EVENT_CONTRACTS</code> map from event name to the options type. The core <code>msflib.eventbus</code> also exports <code>EventName</code> (the generic model lifecycle names), <code>EventOptions</code> and <code>merge_event_contracts</code>.</p>
-<p>The testsite in the repository (<code>testsite/app/main.py</code>) shows the full wiring.</p>
+<p>A <code>TestClient</code> that is not used as a context manager skips the lifespan, so hooks registered there are absent in such tests; use <code>with TestClient(app)</code> or register the hooks at import time.</p>
+<p>The testsite in the repository (<code>testsite/app/main.py</code>) shows how the documents and knowledge hooks are registered in a lifespan handler.</p>
 <h2 id="emitting">Emitting<a class="headerlink" href="#emitting" title="Permanent link">&para;</a></h2>
 <p>Choose the method by what should happen when nobody listens or a listener fails.</p>
 <table>
@@ -2928,10 +2930,10 @@
 <p>Model names are the lowercase class name, so a listener for the pre-commit event of <code>Customer</code> is registered on <code>"customer-create-pre-commit"</code>.</p>
 <h2 id="pitfalls">Pitfalls<a class="headerlink" href="#pitfalls" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Register listeners on the app emitter (<code>@app_emitter.listen</code> or <code>@listen(..., app=app)</code>), not at import time with a bare <code>@listen(...)</code>. The bare form registers globally and is kept only for backward compatibility.</li>
-<li>Do not register listeners with <code>emitter.on(...)</code> on the global <code>emitter</code> object. It adds them to the default emitter only, so a route that emits inside an app bound with <code>bind_app_emitter(app)</code> does not see them, and a required event fails with <code>EventBusRequiredListenerError</code>. Use <code>@app_emitter.listen</code>, <code>listen(..., app=app)</code> or the legacy bare <code>@listen(...)</code>.</li>
-<li>Background tasks run after the request middleware has exited, so the module-level <code>emitter</code> no longer points at your app's emitter. Wrap such work in <code>with use_app_emitter(app):</code>.</li>
-<li>Calling a module's <code>register_event_hooks</code> twice on the same emitter would double-register. The modules guard this with <code>HookRegistry</code>, which rebinds instead of duplicating; do the same in your own hook functions (<code>HookRegistry.bind(emitter=..., listeners=[...])</code>, <code>reset</code> for tests).</li>
+<li>Register listeners on the app emitter with <code>@app_emitter.on(...)</code>.</li>
+<li><code>emitter.on(...)</code> on the module-level <code>emitter</code> object registers on whichever emitter is current when it runs. At import time or in a lifespan handler that is the default emitter, which an app bound with <code>bind_app_emitter(app)</code> never sees, so a required event then fails with <code>EventBusRequiredListenerError</code>. Inside <code>with use_app_emitter(app):</code> or a request it is the app emitter. Prefer <code>@app_emitter.on</code>.</li>
+<li>FastAPI <code>BackgroundTasks</code> still run inside the request context, so the module-level <code>emitter</code> is your app's emitter there. Code in your web process that runs outside the request context (a <code>threading.Thread</code>, a scheduler job, a script, a lifespan task) sees the default emitter; wrap it in <code>with use_app_emitter(app):</code>. A worker process has no app, so register its listeners on <code>AppEmitter(get_emitter())</code>.</li>
+<li>Calling a module's <code>register_event_hooks</code> twice on the same emitter would double-register. The modules guard this with <code>HookRegistry</code>: register each listener with the emitter first, then call <code>registry.bind(emitter=..., listeners=[(event, listener), ...])</code> with those functions, so a second call replaces the earlier bindings rather than duplicating them. <code>bind</code> itself does not register listeners. Use <code>reset</code> in tests.</li>
 <li>Pre-commit listeners that raise abort the operation. Do slow or external work (email, HTTP calls) in post-commit listeners or a job queue.</li>
 <li>EventBus logging is silent by default (a <code>NullHandler</code>). Call <code>configure_eventbus_logger(handler=..., level=...)</code> to see warnings from failed optional listeners.</li>
 </ul>

@@ -3156,21 +3156,21 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-<span class="n">emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 
-<span class="nd">@emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="s2">"article-create-pre-commit"</span><span class="p">)</span>
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"article-create-pre-commit"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">on_pre</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="n">session</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span>
     <span class="o">...</span>  <span class="c1"># extra writes in the same transaction</span>
 
 
-<span class="nd">@emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="s2">"article-create-post-commit"</span><span class="p">)</span>
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"article-create-post-commit"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">on_post</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="o">...</span>  <span class="c1"># side effects once the row is durable</span>
 </code></pre></div>
 
-<p>Events reach the app's emitter while a request is being served. Outside a request, such as in a script or test, wrap the work in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>), or the global emitter is used and your listeners are not called.</p>
+<p>Events reach the app's emitter in request handlers, in <code>BackgroundTasks</code>, and in <code>call_later</code> or <code>create_task</code> work started from a request. Outside a request, such as in a script or test, wrap the work in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>), or the global emitter is used and your listeners are not called. The same applies to threads: a <code>threading.Thread</code> does not inherit the app emitter, so events fired there go to the global emitter. A Celery worker has no FastAPI app; register its listeners on the worker's emitter, <code>AppEmitter(get_emitter())</code>.</p>
 <p>A pre-commit listener that raises aborts the write. The row has been flushed but not committed, so roll the session back (a request that fails normally does this when the session closes).</p>
 <h3 id="on_model_write-one-callback-for-all-writes"><code>on_model_write</code>: one callback for all writes<a class="headerlink" href="#on_model_write-one-callback-for-all-writes" title="Permanent link">&para;</a></h3>
 <p>When you want the same code on create, update and delete of a model, <code>msflib.actions.on_model_write</code> is shorter than three listeners. The callback runs in a savepoint, so a failure only undoes its own writes.</p>
@@ -3182,10 +3182,10 @@
     <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">AuditEntry</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">"article"</span><span class="p">,</span> <span class="n">row_id</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">))</span>
 
 
-<span class="n">on_model_write</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">emitter</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">"myapp.audit"</span><span class="p">)</span>
+<span class="n">on_model_write</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">app_emitter</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">"myapp.audit"</span><span class="p">)</span>
 </code></pre></div>
 
-<p><code>key</code> makes the registration idempotent per emitter. With the default <code>on_error="log"</code>, a failing callback is logged and the write goes ahead; <code>on_error="raise"</code> aborts the write with <code>EventBusListenerExecutionError</code>. <code>operations=["update"]</code> limits it to some operations, and <code>reset_model_write_hooks(emitter=emitter, key="myapp.audit")</code> removes it.</p>
+<p><code>emitter</code> here is the app emitter from the previous example, not the global proxy. <code>key</code> makes the registration idempotent per emitter. With the default <code>on_error="log"</code>, a failing callback is logged and the write goes ahead; <code>on_error="raise"</code> aborts the write with <code>EventBusListenerExecutionError</code>. <code>operations=["update"]</code> limits it to some operations, and <code>reset_model_write_hooks(emitter=app_emitter, key="myapp.audit")</code> removes it.</p>
 <p>Only writes through <code>ModelAction</code> emit these events. Direct <code>session.add(...)</code>, raw SQL and <code>session.exec(update(...))</code> do not.</p>
 <h3 id="events-your-own-code-should-emit-after-commit">Events your own code should emit after commit<a class="headerlink" href="#events-your-own-code-should-emit-after-commit" title="Permanent link">&para;</a></h3>
 <p>If your action also emits events of its own, emit them with <code>msflib.actions.emit_after_commit(session, "event-name", instance, payload)</code>. It queues the event until the outermost transaction commits, which matters when a caller passed <code>commit=False</code>. A rollback discards it. The lower-level <code>run_after_commit(session, callback)</code> does the same for any callback.</p>

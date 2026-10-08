@@ -3213,7 +3213,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span><span class="p">,</span> <span class="n">get_app_emitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
@@ -3228,18 +3228,18 @@
 <span class="n">account_action</span> <span class="o">=</span> <span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-<span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">workspace_action</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">AUTO_REGISTER_EVENT_HOOKS</span><span class="p">:</span>
     <span class="n">register_event_hooks</span><span class="p">(</span>
         <span class="n">workspace_action</span><span class="o">=</span><span class="n">workspace_action</span><span class="p">,</span>
         <span class="n">user_action</span><span class="o">=</span><span class="n">user_action</span><span class="p">,</span>
         <span class="n">account_action</span><span class="o">=</span><span class="n">account_action</span><span class="p">,</span>
-        <span class="n">emitter</span><span class="o">=</span><span class="n">get_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span>
+        <span class="n">emitter</span><span class="o">=</span><span class="n">app_emitter</span><span class="p">,</span>
         <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
     <span class="p">)</span>
 
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">)</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">workspaces_router</span><span class="p">(</span>
@@ -3277,6 +3277,10 @@
 </code></pre></div>
 
 <p><code>account_deps</code> and <code>user_deps</code> are the namespaces from <a href="../auth/#wiring-into-a-host-app">auth</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
+<p>Without <code>settings=</code> on <code>get_tenant_dependencies</code> (and where the workspaces router falls back to the default tenant), a host that sets <code>DEFAULT_TENANT_SLUG</code> seeds one slug while requests look for <code>default</code>, and <code>POST /workspaces/</code> returns 500 "Default tenant has not been seeded". Pass <code>settings=settings.scope("TENANCY")</code> as shown above, and keep the slug <code>default</code> if you rely on a router's own fallback.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><code>router(...)</code> defaults <code>workspace_type</code> and <code>user_type</code> to the abstract <code>WorkspaceBase</code> and <code>UserBase</code>, which are not tables. Always pass your concrete table classes.</p>
@@ -3397,7 +3401,7 @@
 <p>Workspace create and update take <code>multipart/form-data</code> so a logo can be uploaded. <code>get_workspace_form_dependencies(workspace_create_type=, workspace_update_type=)</code> returns a mutable namespace with <code>get_workspace_create</code> and <code>get_workspace_update</code>. Wrap or replace one and pass the namespace as <code>workspace_form_dependencies=</code> to <code>router(...)</code>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="seed-a-tenant-accounts-workspace-and-membership-from-code">Seed a tenant, accounts, workspace and membership from code<a class="headerlink" href="#seed-a-tenant-accounts-workspace-and-membership-from-code" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">TenantAction</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserType</span>
@@ -3415,7 +3419,7 @@
         <span class="n">owner</span><span class="o">=</span><span class="n">ada</span><span class="p">,</span>
         <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">user_action</span><span class="o">.</span><span class="n">create_membership</span><span class="p">(</span>
+    <span class="n">user_action</span><span class="o">.</span><span class="n">create_membership</span><span class="p">(</span>  <span class="c1"># idempotent: returns the owner row if a hook already made it</span>
         <span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">owner_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span>
     <span class="p">)</span>
 
@@ -3424,6 +3428,7 @@
     <span class="k">assert</span> <span class="n">acme</span><span class="o">.</span><span class="n">tenant_id</span> <span class="o">==</span> <span class="n">tenant</span><span class="o">.</span><span class="n">id</span>
 </code></pre></div>
 
+<p>What this leaves in the database depends on the emitter context. In a host where the workspaces hooks are registered, a plain session (no emitter context) creates only <code>acme</code> and leaves <code>current_workspace_id</code> unset. Inside <code>with use_app_emitter(app):</code> the hooks also run, so a <code>default-workspace</code> owned by <code>ada</code> is created, <code>ada</code> is a member of both workspaces and her <code>current_workspace_id</code> is set. The assertions pass either way.</p>
 <h3 id="create-join-and-switch-over-http">Create, join and switch over HTTP<a class="headerlink" href="#create-join-and-switch-over-http" title="Permanent link">&para;</a></h3>
 <p>With an admin-role account <code>root@example.com</code> and a plain account <code>bob@example.com</code>, using the routers above:</p>
 <div class="codehilite"><pre><span></span><code>POST /workspaces/        (admin, form: name=Beta, description=Beta team)  -&gt; 201, slug "beta"

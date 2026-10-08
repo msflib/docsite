@@ -2853,7 +2853,7 @@
 <li><strong>Actions</strong>: service-layer classes, usually <code>ModelAction</code> subclasses, that hold the database logic.</li>
 <li><strong>Routers</strong>: factory functions that build a FastAPI <code>APIRouter</code> from the dependencies you hand them (session, identity, settings).</li>
 <li><strong>Dependencies</strong>: factories that return namespaces of FastAPI dependencies, such as "the current account".</li>
-<li><strong>Settings</strong>: a settings class with its own namespace, composed into your app's settings object.</li>
+<li><strong>Settings</strong>: a settings class with its own namespace, mixed into your app's settings class (or composed as a nested field; see the <a href="integration/authentication/">authentication guide</a> for a current limitation).</li>
 </ul>
 <p>Modules are written to be wired, not configured by import side effects. A module's router factory asks you for the session and identity dependencies it needs, so the same module works with whatever auth and database layout your app already has. Modules depend on <code>msflib</code> and, in some cases, on each other (see the table below).</p>
 <h2 id="package-map">Package map<a class="headerlink" href="#package-map" title="Permanent link">&para;</a></h2>

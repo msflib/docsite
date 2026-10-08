@@ -2924,7 +2924,7 @@
 
 
 <h1 id="seeding">Seeding<a class="headerlink" href="#seeding" title="Permanent link">&para;</a></h1>
-<p><code>msflib.seed</code> loads initial or demo data from a YAML file. Each entry names a <code>ModelAction</code>, supplies records inline or from a CSV, JSON or YAML file, and can copy values (such as a foreign key) from rows seeded earlier in the same run. It goes through your actions, so validation, hashing and lifecycle events behave exactly as in normal code.</p>
+<p><code>msflib.seed</code> loads initial or demo data from a YAML file. Each entry names a <code>ModelAction</code>, supplies records inline or from a CSV, JSON or YAML file, and can copy values (such as a foreign key) from rows seeded earlier in the same run. It goes through your actions, so validation and hashing behave as in normal code. Lifecycle events go to the current emitter, which is the default emitter unless you wrap the call in <code>with use_app_emitter(app):</code> (see below).</p>
 <p>Use it for first-run data, demo data and test fixtures. It is not a migration tool and it is not idempotent (see pitfalls).</p>
 <h2 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h2>
 <p>Keep seed code in one folder of your app:</p>
@@ -3015,9 +3015,10 @@
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
 <p><code>msflib.seed</code> exports only the command-line helpers, so <code>SeedRunner</code> is imported from <code>msflib.seed.runner</code> and <code>SeederBase</code> and <code>ActionSeeder</code> from <code>msflib.seed.base</code>.</p>
 </div>
-<p><code>SeedRunner</code> runs a file against an engine or an existing session. This example runs as written against in-memory SQLite, with the <code>Customer</code> and <code>Order</code> models and actions of the YAML above:</p>
+<p><code>SeedRunner</code> runs a file against an engine or an existing session. This example runs against in-memory SQLite, with the <code>Customer</code> and <code>Order</code> models and actions of the YAML above. Import the module that defines the models before <code>create_all</code>; without it no tables are created, both seeders are skipped and the log still ends with "Seeding completed successfully":</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">demoapp</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>  <span class="c1"># noqa: F401</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.seed.runner</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeedRunner</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
@@ -3040,13 +3041,15 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">run_seed_stats</span><span class="p">)</span>   <span class="c1"># {'Customer': 2, 'Order': 1}</span>
 </code></pre></div>
 
+<p><code>show_log=False</code> does not silence the seed summary lines, which are still printed.</p>
+<p>Listeners registered on the app emitter, such as the workspaces default-workspace hook, run for seeded rows only if the seeding call is wrapped in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>).</p>
 <p><code>run</code> also accepts <code>session=</code> instead of <code>engine=</code>, <code>models_to_seed=[...]</code>, <code>dry_run=True</code>, and a shared <code>SeedContext</code> so several runs can see each other's rows (<code>reset_context=True</code> clears it). <code>models_to_seed</code> pulls in the seeders named as <code>dependents</code> automatically and runs them in file order. Seeders run in the order they appear in the YAML, so list parents before children.</p>
 <p><code>msflib.db.init_db(engine, metadata, create_tables=False, seeder_config=...)</code> runs the same runner from a <code>SeederConfig</code>. With <code>create_tables=True</code> it first drops every table, so use it for tests and prototypes only.</p>
 <h2 id="command-line">Command line<a class="headerlink" href="#command-line" title="Permanent link">&para;</a></h2>
 <p><code>run_seed_cli</code> gives your app a seed command with dry-run and safety checks. Put it in <code>app/seed/runner.py</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.seed</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_seed_cli</span>
 
 
@@ -3069,7 +3072,11 @@
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
 
-<p>Run it with <code>python -m app.seed.runner</code>. The repository's testsite does exactly this in <code>testsite/app/seed/runner.py</code>, and <code>testsite/run_seeder.sh</code> is a thin wrapper that runs it with the repository virtualenv's Python.</p>
+<p>Run it with <code>python -m app.seed.runner</code>. The repository's testsite does the same in <code>testsite/app/seed/runner.py</code> (its settings live in <code>app.core.config</code>), and <code>testsite/run_seeder.sh</code> is a thin wrapper that runs it with the repository virtualenv's Python.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/290">#290</a>)</p>
+<p>The seed CLI (and the initial-data CLI) does not activate the app emitter. Listeners registered on it, such as the workspaces default-workspace hook, do not fire for rows the CLI creates. Wrap your own seeding script in <code>with use_app_emitter(app):</code> if you need them.</p>
+</div>
 <table>
 <thead>
 <tr>

@@ -2985,7 +2985,11 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msfl
 <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span><span class="o">.</span><span class="n">ACCESS_TOKEN_EXPIRE_MINUTES</span>  <span class="c1"># 30</span>
 </code></pre></div>
 
-<p>Pass <code>settings</code> to every router and action factory. They read their own values with <code>settings.scope("AUTH")</code>, <code>settings.scope("ACCOUNT")</code> and so on, so one object serves all modules. With this mixin style, an environment variable carries the plain field name (<code>ACCESS_TOKEN_EXPIRE_MINUTES=5</code>).</p>
+<p>Pass <code>settings</code> to every router and action factory. They read their own values with <code>settings.scope("AUTH")</code>, <code>settings.scope("ACCOUNT")</code> and so on, so one object serves all modules when the settings use this mixin style. With it, an environment variable carries the plain field name (<code>ACCESS_TOKEN_EXPIRE_MINUTES=5</code>).</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
+<p>The auth router reads <code>settings.SECRET_KEY</code> from the top level of the settings object, so composed (nested) settings fail in it with <code>AttributeError</code> on login and password recovery. Use the mixin style shown here.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
 <p>The <code>NAMESPACE__KEY</code> environment variable style (for example <code>AUTH__ACCESS_TOKEN_EXPIRE_MINUTES</code>) only works for composed (field) settings, not for mixin hosts like this one.</p>

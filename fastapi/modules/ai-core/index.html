@@ -3082,6 +3082,10 @@
 </code></pre></div>
 
 <p>In your own app, pass the <code>SettingsBase</code> instance you already have; it only needs to carry the <code>AI_CORE</code> scope. This is not the standalone <code>AICoreSettings</code> instance used in the <a href="../../integration/ai-capabilities/#1-settings">AI capabilities guide</a>. The <code>*_from_registry</code> variants additionally take a <code>session</code> and a <code>scope</code> (see <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>).</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/291">#291</a>)</p>
+<p>Importing <code>msflib.ai_core.models</code> (which the registry services and routers import) registers <code>aiproviderprofile</code> and <code>vectorstoreprofile</code>, whose <code>tenant_id</code> references <code>tenant</code>. If <code>msflib.tenancy.models.tenant</code> has not been imported, <code>create_all</code> and <code>migrate</code> fail with <code>NoReferencedTableError</code>. Import <code>msflib.tenancy.models.tenant</code> before creating tables. <code>ai_prompt_version</code> has no tenant reference, and the package root <code>msflib.ai_core</code> registers nothing by itself.</p>
+</div>
 <p>The namespace members are <code>get_llm</code>, <code>get_embeddings</code>, <code>get_vector_store</code>, their <code>*_from_registry</code> variants (which resolve database profiles for the caller's scope), <code>get_middleware_config</code> and <code>get_summarization_config</code>.</p>
 <p>To expose the profile-management HTTP API, mount the routers from <code>msflib.ai_core.router</code>. Each is a factory that returns an <code>APIRouter</code> and takes keyword arguments only. <code>get_session</code> is a callable FastAPI dependency (not a <code>Session</code> object), and <code>settings</code> is your host settings object. The identity callables differ by router:</p>
 <table>
@@ -3209,7 +3213,7 @@
 <tr>
 <td><code>PROVIDER_SECRET_ENCRYPTION_KEY</code></td>
 <td><code>None</code></td>
-<td>Encrypts API keys stored in provider profiles. When unset it falls back to the core <code>SECRET_KEY</code>; set it explicitly in production so rotating one does not break the other</td>
+<td>Encrypts API keys stored in provider profiles. When unset it falls back to the core <code>SECRET_KEY</code>; set it explicitly in production so rotating one does not break the other. <code>SECRET_KEY</code> is random per process by default, so if neither is set, stored provider keys become unreadable after a restart</td>
 </tr>
 <tr>
 <td><code>DB_VECTOR_STORE_REGISTRY_ENABLED</code>, <code>VECTOR_STORE_FAILOVER_ENABLED</code></td>

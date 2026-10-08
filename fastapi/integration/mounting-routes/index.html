@@ -3024,6 +3024,18 @@
 <p>When two routes have the same method and path, FastAPI uses the first one registered. To replace a module endpoint, declare yours before you include the module's router:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
 
+<span class="n">accounts</span> <span class="o">=</span> <span class="n">account_router</span><span class="p">(</span>
+    <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+    <span class="n">get_current_account</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+    <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
+    <span class="n">account_read_type</span><span class="o">=</span><span class="n">AccountRead</span><span class="p">,</span>
+    <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="o">=</span><span class="n">aa</span><span class="p">,</span>
+    <span class="n">profile_action</span><span class="o">=</span><span class="n">pa</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+<span class="p">)</span>
+
 <span class="n">v2</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">"/v2"</span><span class="p">)</span>
 
 
@@ -3036,7 +3048,7 @@
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
 </code></pre></div>
 
-<p><code>GET /v2/accounts/me</code> returns your response, and the module's other account routes are still served. The module's version of the route stays in the router and in the OpenAPI document, so use a distinct path if the duplicate in the docs is a problem.</p>
+<p>The module's factory prefix is empty here, so its route is <code>/me</code> before <code>include_router</code> adds <code>/accounts</code>; a route with a different factory prefix (such as <code>/people</code>) would end up at a different path and nothing would be shadowed. <code>GET /v2/accounts/me</code> returns your response, and the module's other account routes are still served. The module's version of the route stays in the router and in the OpenAPI document, so use a distinct path if the duplicate in the docs is a problem.</p>
 <h2 id="remove-routes-you-do-not-want">Remove routes you do not want<a class="headerlink" href="#remove-routes-you-do-not-want" title="Permanent link">&para;</a></h2>
 <p>A router has no option to leave routes out. The routes are a plain list, so filter it before you include the router. Paths in the list include the factory prefix.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">accounts</span> <span class="o">=</span> <span class="n">account_router</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/people"</span><span class="p">)</span>
@@ -3050,7 +3062,11 @@
 <p>Factories return fresh routers, so two calls with different arguments produce independent routers: for example a public registration surface and an admin surface for accounts, or <code>/api/v1</code> and <code>/api/v2</code> with different dependencies. Reuse the same actions and dependencies, and vary the prefix and the callables.</p>
 <h2 id="workspace-scoped-paths">Workspace-scoped paths<a class="headerlink" href="#workspace-scoped-paths" title="Permanent link">&para;</a></h2>
 <p>If routes should live under a workspace, put the path parameter in the prefix and use dependencies built with the matching resolver (see <a href="../authentication/#workspaces">Authentication</a>). The repository's workspace tests mount the AI provider router like this:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">ai_core_router</span> <span class="o">=</span> <span class="n">create_ai_core_router</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">provider_router</span> <span class="k">as</span> <span class="n">create_ai_core_router</span>
+
+<span class="n">ws_user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># as in Authentication, "Workspaces"</span>
+
+<span class="n">ai_core_router</span> <span class="o">=</span> <span class="n">create_ai_core_router</span><span class="p">(</span>
     <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
     <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">ws_user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>

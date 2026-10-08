@@ -3034,7 +3034,7 @@
 
 
 <h1 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h1>
-<p>This guide follows a request from login to a protected route, then covers token customisation, password recovery, Google sign-in and workspaces. The code comes from <a href="../../modules/auth/"><code>msflib-auth</code></a> and works with the <code>Account</code> table from <a href="../../modules/account/"><code>msflib-account</code></a>. The examples reuse the host app built in <a href="../writing-custom-code/">Writing custom code</a>: <code>settings</code>, <code>Account</code>, <code>get_session</code>, <code>get_keystore</code> and <code>auth_deps</code> are the names defined there.</p>
+<p>This guide follows a request from login to a protected route, then covers token customisation, password recovery, Google sign-in and workspaces. The code comes from <a href="../../modules/auth/"><code>msflib-auth</code></a> and works with the <code>Account</code> table from <a href="../../modules/account/"><code>msflib-account</code></a>. The examples reuse the host app built in <a href="../writing-custom-code/">Writing custom code</a>: <code>settings</code>, <code>Account</code>, <code>get_session</code>, <code>get_keystore</code> and <code>auth_deps</code> are the names defined there, and <code>app_emitter</code> comes from its <code>main.py</code>.</p>
 <h2 id="the-pieces">The pieces<a class="headerlink" href="#the-pieces" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3072,7 +3072,11 @@
 </tr>
 </tbody>
 </table>
-<p>A token is a JWT signed with <code>CORE.SECRET_KEY</code>. Its <code>sub</code> claim is the account's email. Nothing else is needed to identify the caller, so the account is loaded from the database on every request.</p>
+<p>A token is a JWT signed with the <code>SECRET_KEY</code> setting (the <code>CORE</code> namespace). The auth router reads it from the top level of your settings object, so use the mixin style. Its <code>sub</code> claim is the account's email. Nothing else is needed to identify the caller, so the account is loaded from the database on every request.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
+<p>With composed (nested) settings the auth router fails on <code>POST /login</code>, <code>POST /password-recovery</code> and <code>POST /reset-password</code> with <code>AttributeError: ... no attribute 'SECRET_KEY'</code>. Adding a top-level <code>SECRET_KEY</code> stops the error but leaves two independent values (<code>SECRET_KEY</code> and <code>CORE__SECRET_KEY</code>), so tokens signed by the router can be rejected by the dependencies. Use the mixin style.</p>
+</div>
 <h2 id="1-wire-it-up">1. Wire it up<a class="headerlink" href="#1-wire-it-up" title="Permanent link">&para;</a></h2>
 <p>You create the dependency namespace once and pass pieces of it to the routers. This is the setup from the previous guide:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
@@ -3125,7 +3129,7 @@
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventName</span>
 
 
-<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">ACCOUNT_LOGGED_IN</span><span class="p">)</span>
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">ACCOUNT_LOGGED_IN</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">on_login</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="o">...</span>  <span class="c1"># options["session"] is the request's database session</span>
 </code></pre></div>
@@ -3298,13 +3302,13 @@
 <li><code>GET /google/login?redirect_uri=...</code> redirects the browser to Google. The OAuth state is kept in the request session, so add Starlette's <code>SessionMiddleware</code> to the app, as the module's own tests do.</li>
 <li><code>POST /google/callback</code> takes a JSON body <code>{"code": ..., "redirect_uri": ..., "auth_data": ...}</code>, exchanges the code, reads the Google profile and returns the same token response as <code>/login</code>.</li>
 </ul>
-<p>If no account has the Google email, the router creates none by itself. With <code>AUTH.ALLOW_GOOGLE_OAUTH_SIGNUP</code> on, it emits <code>google-account-create</code> and requires a listener to create the account; with no listener it answers <code>500</code>. With the flag off, it answers <code>400</code> and the user must register normally. The listener receives a <code>GoogleUserInfo</code> and <code>{"session": session}</code>:</p>
+<p>If no account has the Google email, the router creates none by itself. With <code>AUTH.ALLOW_GOOGLE_OAUTH_SIGNUP</code> on, it emits <code>google-account-create</code> and requires a listener to create the account; with no listener it answers <code>500</code>. With the flag off, it answers <code>400</code> and the user must register normally. The listener receives a <code>GoogleUserInfo</code> and <code>{"session": session}</code>. Register it on the app emitter (<code>app_emitter.on</code>); a listener on the global <code>emitter</code> is not seen, and the request still answers <code>500</code>:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">secrets</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventName</span>
 
 
-<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">GOOGLE_ACCOUNT_CREATE</span><span class="p">)</span>
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">GOOGLE_ACCOUNT_CREATE</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_google_account</span><span class="p">(</span><span class="n">user_info</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="n">session</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span>
     <span class="n">aa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
@@ -3441,10 +3445,10 @@
 </div>
 <p>Creating the default workspace and membership when an account registers is done by <code>msflib.workspaces.eventbus.register_event_hooks(...)</code>, described on the <a href="../../modules/workspaces/">workspaces page</a>.</p>
 <h2 id="testing-authenticated-routes">Testing authenticated routes<a class="headerlink" href="#testing-authenticated-routes" title="Permanent link">&para;</a></h2>
-<p>Override the session and keystore as shown in <a href="../writing-custom-code/#testing-your-app">Writing custom code</a>, create an account through its action, and log in through the test client. To skip the HTTP login, create a token directly with <code>msflib.core.security.create_access_token(account.email, secret_key)</code> and send it as the bearer value.</p>
+<p>Override the session and keystore as shown in <a href="../writing-custom-code/#testing-your-app">Writing custom code</a> (create the <code>MapStore</code> once, not per request, so that logout revocation is visible), create an account through its action, and log in through the test client. To skip the HTTP login, create a token directly with <code>msflib.core.security.create_access_token(account.email, secret_key)</code> and send it as the bearer value.</p>
 <h2 id="operational-notes">Operational notes<a class="headerlink" href="#operational-notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Set <code>CORE.SECRET_KEY</code> explicitly and identically in every worker. The default is regenerated on each start.</li>
+<li>Set the <code>SECRET_KEY</code> setting explicitly and identically in every worker. The default is regenerated on each start.</li>
 <li>Serve the API over TLS. Bearer tokens are valid for anyone who holds them until they expire or the account logs out.</li>
 <li>Use a shared keystore (Redis) before relying on logout.</li>
 <li>Change <code>FIRST_SUPERUSER_PASSWORD</code> from its default.</li>

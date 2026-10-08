@@ -3077,6 +3077,14 @@
 <span class="p">)</span>
 </code></pre></div>
 
+<p>Seed the default tenant at startup, or pass <code>get_current_tenant=</code> to the router. Without either, <code>POST /workspaces/</code> answers <code>500</code> with <code>Default tenant has not been seeded</code>. For example, at startup:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
+
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div>
+
 <p>Setting the new column when you create a workspace in code goes through the <code>update</code> argument, which overlays values on the payload:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 

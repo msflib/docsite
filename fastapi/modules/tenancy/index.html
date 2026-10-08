@@ -3134,12 +3134,12 @@
 <li>Seed the default tenant at startup.</li>
 <li>Build <code>get_current_tenant</code> and pass it to every router or scope dependency that takes one.</li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">TenantAction</span><span class="p">,</span> <span class="n">resolve_default_tenant_id</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span><span class="p">,</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
 
-<span class="n">tenancy_settings</span> <span class="o">=</span> <span class="n">TenancySettings</span><span class="p">()</span>
+<span class="n">tenancy_settings</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>  <span class="c1"># settings is your host settings object</span>
 <span class="n">tenant_action</span> <span class="o">=</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span>
 
 <span class="c1"># At startup, once the tables exist:</span>
@@ -3158,6 +3158,10 @@
 <li><code>msflib.workspaces.router.router(..., get_current_tenant=...)</code> stamps new workspaces with the tenant.</li>
 </ul>
 <p>If you omit it, those consumers either carry no tenant dimension or fall back to <code>resolve_default_tenant_id</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
+<p>Several routers (documents, ingestion, conversation, ai-api, and workspaces when built without <code>settings=</code>) resolve that fallback tenant with the default slug and ignore your <code>DEFAULT_TENANT_SLUG</code>. With a customised slug, pass <code>settings=</code> where the router or dependency factory accepts it, or keep the slug <code>default</code>.</p>
+</div>
 <p>There is no router to mount.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Settings live in the <code>TENANCY</code> namespace (<code>TenancySettings</code>).</p>
@@ -3182,7 +3186,7 @@
 </tr>
 </tbody>
 </table>
-<p>With mixin-style settings use the flat names (<code>DEFAULT_TENANT_SLUG=main</code>); with composed settings (<code>TENANCY: TenancySettings = TenancySettings()</code>) both the flat names and <code>TENANCY__DEFAULT_TENANT_SLUG</code> work. Pass the same <code>TenancySettings</code> instance to seeding and to <code>get_tenant_dependencies</code>; otherwise they may resolve different slugs.</p>
+<p>With mixin-style settings use the flat names (<code>DEFAULT_TENANT_SLUG=main</code>); with composed settings (<code>TENANCY: TenancySettings = TenancySettings()</code>) both the flat names and <code>TENANCY__DEFAULT_TENANT_SLUG</code> work. Pass the same settings (<code>settings.scope("TENANCY")</code>) to seeding and to <code>get_tenant_dependencies</code>; otherwise they may resolve different slugs. A standalone <code>TenancySettings()</code> does not read the environment, so it always has the class defaults.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
 <p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
@@ -3295,7 +3299,7 @@
 </tr>
 <tr>
 <td>Wrong tenant id in tests</td>
-<td>The id cache outlived an engine. Call <code>reset_default_tenant_id_cache()</code> between tests.</td>
+<td>The id cache can outlive an engine. Call <code>reset_default_tenant_id_cache()</code> between tests.</td>
 </tr>
 <tr>
 <td>Slug of the default tenant differs between seeding and requests</td>

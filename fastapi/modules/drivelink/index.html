@@ -3153,7 +3153,7 @@
 </tr>
 </tbody>
 </table>
-<p>Every key has a flat alias. With mixin composition (as above) use the flat environment variable, for example <code>MAX_UPLOAD_BYTES=10485760</code>. <code>DRIVELINK__MAX_UPLOAD_BYTES</code> only works if you declare the namespace as a field (<code>DRIVELINK: DrivelinkSettings = DrivelinkSettings()</code>). Both were checked. Note that the flat name <code>ENABLED</code> is shared by every module that defines it.</p>
+<p>Every key has a flat alias. With mixin composition (as above) use the flat environment variable, for example <code>MAX_UPLOAD_BYTES=10485760</code>. <code>DRIVELINK__MAX_UPLOAD_BYTES</code> only works if you declare the namespace as a field (<code>DRIVELINK: DrivelinkSettings = DrivelinkSettings()</code>). Both were checked. Note that the flat name <code>ENABLED</code> is shared by every module that defines it. With several modules composed as nested fields, <code>DRIVELINK__ENABLED</code> is unreliable because of that shared alias (in a host with documents and drivelink, <code>DOCUMENTS__ENABLED=false</code> was ignored while <code>DRIVELINK__ENABLED=false</code> switched off both); set the field in code instead, for example <code>DrivelinkSettings(ENABLED=False)</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
 <p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
@@ -3178,7 +3178,19 @@
 <li><strong>Error mapping</strong> in the router: messages containing "not found" give 404; "already exists" or "collision" give 409; "quota exceeded" or "too large" give 413; everything else raised as <code>ValueError</code> gives 400.</li>
 </ul>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
-<p><code>DrivelinkAction</code> is a <code>ModelAction</code>, so it emits the standard lifecycle events on the core event bus: <code>drivelinknode-create-pre-commit</code>, <code>drivelinknode-update-pre-commit</code> and <code>drivelinknode-delete-pre-commit</code>. Listeners receive <code>(node, {"session": session, ...})</code>. The documents module uses these to ingest files; see <a href="../documents/">documents</a>. <code>msflib.drivelink.documents_contract</code> documents the identity convention <code>(drivelink_id, node_id, version)</code> for external consumers. Note that <code>msflib.drivelink</code> exports only <code>documents_contract</code> from its package <code>__init__</code>; import everything else from its submodules.</p>
+<p><code>DrivelinkAction</code> is a <code>ModelAction</code>, so it emits the standard lifecycle events on the core event bus: <code>drivelinknode-create-pre-commit</code>, <code>drivelinknode-update-pre-commit</code> and <code>drivelinknode-delete-pre-commit</code>. Listeners receive <code>(node, {"session": session, ...})</code>. The documents module uses these to ingest files; see <a href="../documents/">documents</a>.</p>
+<p>Register your own listeners on the app emitter:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"drivelinknode-create-pre-commit"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_node_created</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"created"</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Events reach app-bound listeners only while the app emitter is active: inside a request (including FastAPI <code>BackgroundTasks</code>), or in your own scripts and threads wrapped in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>). Outside that, the default emitter is used and app listeners, including the documents drivelink hooks, are not called. Calling <code>DrivelinkAction(...).create_folder(session, ...)</code> from a script fires nothing on <code>app_emitter</code> unless it runs inside that <code>with</code> block, and a worker process, which has no app, needs its listeners on <code>AppEmitter(get_emitter())</code>. <code>msflib.drivelink.documents_contract</code> documents the identity convention <code>(drivelink_id, node_id, version)</code> for external consumers. Note that <code>msflib.drivelink</code> exports only <code>documents_contract</code> from its package <code>__init__</code>; import everything else from its submodules.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Create a folder, upload a file, and manage it through the router. This ran against an in-memory SQLite database and local file storage:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
@@ -3231,7 +3243,7 @@
 <span class="n">children</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">list_children</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">parent_id</span><span class="o">=</span><span class="n">folder</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
 
-<p>This last snippet was run against the same database as the router example.</p>
+<p>This last snippet was run against the same database as the router example. Called like this, outside a request, it does not fire app-bound event listeners; see Events.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>404 <code>Node not found.</code> for a node you just created.</strong> The node is looked up with the same <code>workspace_id</code> and <code>drivelink_id</code> as the request. A node created inside a workspace is invisible to requests without a workspace, and the reverse. Pass the same <code>drivelink_id</code> query parameter you created it under.</li>

@@ -3199,7 +3199,7 @@
 
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-<span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
@@ -3314,11 +3314,12 @@
 </tbody>
 </table>
 <p>With mixin-style settings (as above) set these with flat names such as <code>USERS_OPEN_REGISTRATION=true</code>. With composed settings (<code>ACCOUNT: AccountSettings = AccountSettings()</code>) the nested form <code>ACCOUNT__USERS_OPEN_REGISTRATION=true</code> works too. Code reads values with <code>settings.scope("ACCOUNT")</code>.</p>
+<p>The wiring above sets defaults by overriding fields on a mixin <code>Settings</code> subclass. With composed settings, set them from the environment instead (<code>ACCOUNT__USERS_OPEN_REGISTRATION=true</code>); without it open registration returns 403. Composed settings also hit the auth router issue described on the <a href="../auth/#wiring-into-a-host-app">auth page</a> (#287), which breaks login.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
 <p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
 </div>
-<p>Account creation sends a welcome email when <code>CORE.EMAILS_ENABLED</code> is true. That setting defaults to true whenever the SMTP host, port and from-address are set, and the defaults are set, so set <code>EMAILS_ENABLED=false</code> in development unless an SMTP server is available.</p>
+<p>Account creation sends a welcome email when <code>CORE.EMAILS_ENABLED</code> is true. That setting defaults to true whenever the SMTP host, port and from-address are set, and the defaults are set, so disable it in development unless an SMTP server is available: <code>EMAILS_ENABLED=false</code> with mixin settings, <code>CORE__EMAILS_ENABLED=false</code> with composed settings (the flat name is ignored there).</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <h3 id="models">Models<a class="headerlink" href="#models" title="Permanent link">&para;</a></h3>
 <ul>
@@ -3372,6 +3373,7 @@
 </tr>
 </tbody>
 </table>
+<p>Register your own listeners on the app emitter, for example <code>@app_emitter.on("account-created")</code>.</p>
 <p>Separately, every <code>ModelAction</code> emits lifecycle events named after the model, such as <code>account-create-pre-commit</code>; the workspaces module uses that one.</p>
 <h3 id="workspace-contracts">Workspace contracts<a class="headerlink" href="#workspace-contracts" title="Permanent link">&para;</a></h3>
 <p><code>msflib.account.contracts</code> exports two <code>Protocol</code> classes, <code>WorkspaceContract</code> (needs <code>id</code>) and <code>UserContract</code> (needs <code>id</code>, <code>account_id</code>, <code>workspace_id</code>). Type-hint against them when your code should work with a workspace or membership without importing <code>msflib-workspaces</code>.</p>

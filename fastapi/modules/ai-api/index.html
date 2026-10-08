@@ -3113,7 +3113,11 @@
 </tbody>
 </table>
 <p><code>router()</code> composes two factories, <code>create_llm_router</code> (search, ask, status, protocols) and <code>create_agent_router</code> (the <code>/agent</code> routes), both importable from <code>msflib.ai_api.router</code> if you want only one. The prefixes <code>llm_prefix</code> (default empty) and <code>agent_prefix</code> (default <code>/agent</code>) place them under the main prefix.</p>
-<p>Without <code>get_current_tenant</code>, the tenant is resolved from the database and the default tenant must already be seeded, otherwise requests fail with 500. Without <code>get_current_workspace</code>, requests run with <code>workspace_id=None</code>, the workspace-less scope.</p>
+<p>Without <code>get_current_tenant</code>, the tenant with slug <code>default</code> is looked up in the database and must already be seeded, otherwise requests fail with 500. Without <code>get_current_workspace</code>, requests run with <code>workspace_id=None</code>, the workspace-less scope.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
+<p>The default-tenant fallback ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, requests return 500 "Default tenant has not been seeded" even though your seeding used the same settings. Pass <code>get_current_tenant</code> built from <code>get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY")).get_current_tenant</code>.</p>
+</div>
 <p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general pattern.</p>
 <h3 id="router-parameters-worth-knowing">Router parameters worth knowing<a class="headerlink" href="#router-parameters-worth-knowing" title="Permanent link">&para;</a></h3>
 <table>
@@ -3171,7 +3175,11 @@
 </tbody>
 </table>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p>ai-api has no settings namespace. Model, embedding, vector-store, retrieval and web-search behaviour come from <code>AI_CORE</code> (for example <code>AI_CORE__LLM_PROVIDER</code>, <code>AI_CORE__LLM_MODEL</code>, <code>AI_CORE__VECTOR_STORE_BACKEND</code>, <code>AI_CORE__RETRIEVER_K</code>, <code>AI_CORE__WEB_SEARCH_BACKEND</code>); see the table in <a href="../ai-core/#configuration">ai-core</a>.</p>
+<p>ai-api has no settings namespace. Model, embedding, vector-store, retrieval and web-search behaviour come from <code>AI_CORE</code>; see the table in <a href="../ai-core/#configuration">ai-core</a>. The environment variable names depend on how you compose the settings:</p>
+<ul>
+<li>Mixin (<code>class Settings(AICoreSettings, ...)</code>): the flat names <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code>, <code>VECTOR_STORE_BACKEND</code>, <code>RETRIEVER_K</code> and <code>WEB_SEARCH_BACKEND</code>, (a few also accept <code>AICORE_</code> aliases such as <code>AICORE_LLM_PROVIDER</code>). <code>AI_CORE__LLM_PROVIDER</code> is ignored in this style.</li>
+<li>Nested field (<code>AI_CORE: AICoreSettings = AICoreSettings()</code>): <code>AI_CORE__LLM_PROVIDER</code>, <code>AI_CORE__LLM_MODEL</code>, <code>AI_CORE__VECTOR_STORE_BACKEND</code>, <code>AI_CORE__RETRIEVER_K</code>, <code>AI_CORE__WEB_SEARCH_BACKEND</code>. The flat <code>RETRIEVER_K</code> is not read.</li>
+</ul>
 <p>One environment variable is read directly:</p>
 <table>
 <thead>
@@ -3198,9 +3206,13 @@
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/270">#270</a>)</p>
 <p>Scope constraints default to <code>log-only</code>: a failed scope check is logged but not blocked unless you set <code>SCOPE_CONSTRAINTS_ENFORCE</code>. The default may change.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/292">#292</a>)</p>
+<p>With <code>SCOPE_CONSTRAINTS_ENFORCE=1</code>, every request that has a workspace is rejected with 403 "Access denied: workspace_not_member" when the workspace is resolved from the path or a header. The membership check reads the account's <code>current_workspace_id</code>, which a path- or header-resolved workspace does not update, so it is <code>None</code>. Until this is fixed, leave enforcement off (the default <code>log-only</code> mode logs <code>MembershipConstraint ... workspace_not_member</code> for each such request and lets it through). Do not copy the requested workspace id into <code>current_workspace_id</code> yourself: the check treats that field as proof of membership, so it would let an account satisfy the constraint for a workspace it does not belong to.</p>
+</div>
 <p>The answer model for <code>/ask</code> is chosen in this order: a model injected through <code>model_name_or_factory</code>; otherwise ai-core's provider registry, using the task name <code>aiapi.ask</code>, so a provider profile or <code>AI_CORE.TASK_PROFILES</code> binding for <code>aiapi.ask</code> (or a broader prefix such as <code>aiapi</code>, or <code>default</code>) routes answers to that provider; otherwise the static <code>AI_CORE.LLM_*</code> settings. If no model is available at all, <code>/ask</code> degrades to returning the top retrieved passage instead of failing.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
-<p><strong>Scope per request.</strong> For <code>/search</code>, <code>/ask</code> and the agent routes, ai-api builds a <code>ScopeEnvelope</code> from the request: tenant, workspace, the account (as the principal, with its role) and the <code>X-AI-Channel</code> header (default <code>api</code>), plus <code>conversation_id</code> and <code>sub_thread_id</code> from the body. Retrieval filters on that scope, so a caller only ever searches its own tenant and workspace. The scope is then checked against the <code>aiapi.retrieval.search</code> or <code>aiapi.ask</code> profile (tenant match, workspace membership, role and channel). The default level is <code>log-only</code>: violations are logged, not blocked, until you set <code>SCOPE_CONSTRAINTS_ENFORCE</code> (see the notice under Configuration). Workspace membership is judged from the account's <code>current_workspace_id</code>, so keep that in step with the workspace dependency you pass.</p>
+<p><strong>Scope per request.</strong> For <code>/search</code>, <code>/ask</code> and the agent routes, ai-api builds a <code>ScopeEnvelope</code> from the request: tenant, workspace, the account (as the principal, with its role) and the <code>X-AI-Channel</code> header (default <code>api</code>), plus <code>conversation_id</code> and <code>sub_thread_id</code> from the body. Retrieval filters on that scope, so a caller only ever searches its own tenant and workspace. The scope is then checked against the <code>aiapi.retrieval.search</code> or <code>aiapi.ask</code> profile (tenant match, workspace membership, role and channel). The default level is <code>log-only</code>: violations are logged, not blocked, until you set <code>SCOPE_CONSTRAINTS_ENFORCE</code> (see the notice under Configuration). Workspace membership is judged from the account's <code>current_workspace_id</code>, and a workspace resolved from the path or a header does not update it, so keep it in step with the workspace dependency you pass before turning on <code>SCOPE_CONSTRAINTS_ENFORCE</code> (see the known issue under Configuration).</p>
 <p><strong>Request bodies.</strong> <code>SearchRequest</code> has <code>query</code>, <code>k</code> (1 to 50, default 4), <code>document_type</code> and <code>source_id</code>. <code>AskRequest</code> has <code>question</code>, <code>k</code>, <code>document_type</code> and <code>source_id</code>. Both accept optional <code>conversation_id</code> and <code>sub_thread_id</code>. A conversation id ties an agent turn to a checkpoint thread, so the next turn resumes it; without one, each agent call is single-turn.</p>
 <p><strong>Response protocols.</strong> <code>/ask</code> and <code>/agent/ask</code> return ai-api's native shape by default. Select another with <code>?protocol=openai</code> or the <code>X-AI-Protocol</code> header; the header wins. The supported values are <code>native</code>, <code>openai</code>, <code>langchain</code>, <code>ag_ui</code>, <code>a2ui</code>, <code>mcp</code>, <code>acp</code> and <code>a2a</code>. An unknown value returns 400. Adapters are registered in a <code>ProtocolAdapterRegistry</code> (<code>msflib.ai_api.adapter_registry</code>); <code>GET /protocols</code> lists what is active.</p>
 <p><strong>The agent.</strong> By default the router builds a LangChain agent with <code>create_agent</code>, using the model <code>"&lt;AI_CORE.LLM_PROVIDER&gt;:&lt;AI_CORE.LLM_MODEL&gt;"</code> (or your injected model), a checkpointer, a memory store and a tool set, and caches it for the router's lifetime. The runtime context passed on every call carries the request's scope (<code>AgentRuntimeContext</code>), which scope-aware tools such as <code>rag_search</code> and the knowledge tools read; it is never taken from a checkpoint or from model output. Agents you inject with <code>get_injected_agent</code> should set <code>context_schema=AgentRuntimeContext</code> if they use those tools.</p>
@@ -3312,7 +3324,7 @@
 <tbody>
 <tr>
 <td>500 "Default tenant has not been seeded"</td>
-<td>No tenant dependency was passed and the default tenant row is missing. Pass <code>get_current_tenant</code> or seed on startup.</td>
+<td>No tenant dependency was passed and the tenant with slug <code>default</code> is missing. Pass <code>get_current_tenant</code> or seed on startup (see the known issue under Wiring if you changed the slug).</td>
 </tr>
 <tr>
 <td>401 "Authentication required"</td>
@@ -3328,7 +3340,7 @@
 </tr>
 <tr>
 <td>403 "Access denied: ..."</td>
-<td><code>SCOPE_CONSTRAINTS_ENFORCE</code> is on and the scope check failed, for example because the account's <code>current_workspace_id</code> does not match the workspace dependency.</td>
+<td><code>SCOPE_CONSTRAINTS_ENFORCE</code> is on and the scope check failed, for example because the account's <code>current_workspace_id</code> does not match the workspace dependency (see the known issue under Configuration).</td>
 </tr>
 <tr>
 <td><code>/ask</code> returns "Top matching context says: ..."</td>

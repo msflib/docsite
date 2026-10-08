@@ -2994,6 +2994,8 @@
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="c1"># get_session and get_current_account come from your host (for example</span>
+<span class="c1"># get_session_factory(engine) from msflib.api.deps, and get_account_dependencies(...))</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">payments_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
@@ -3098,7 +3100,7 @@
 </ul>
 </div>
 <h3 id="fulfilment-event">Fulfilment event<a class="headerlink" href="#fulfilment-event" title="Permanent link">&para;</a></h3>
-<p>After a successful verification the router emits <code>payment-queue-execute-{event_key}</code> through the core event bus with <code>emit_required_async(event_name, queue, {"session": session})</code>. A listener receives the <code>PaymentQueue</code> row and an options dict containing the session. Register the listener with <code>msflib.eventbus.listen(event_name)</code> (or <code>listen(event_name, app=app)</code> for one app). Do not register it with <code>emitter.on(...)</code> on the global <code>emitter</code>: when the app uses <code>bind_app_emitter(app)</code>, the router emits through the app's emitter, which does not see listeners added that way, and verification then fails with a missing-handler error. The router sets the queue status to <code>processed</code> and commits after the listener returns, so the listener should not commit itself.</p>
+<p>After a successful verification the router emits <code>payment-queue-execute-{event_key}</code> through the core event bus with <code>emit_required_async(event_name, queue, {"session": session})</code>. A listener receives the <code>PaymentQueue</code> row and an options dict containing the session. Bind the app emitter when you create the app, <code>app_emitter = bind_app_emitter(app)</code>, and register the listener with <code>@app_emitter.on(event_name)</code>. The router emits through the app emitter during the request, so it sees these listeners. A listener added with <code>emitter.on(...)</code> on the module-level <code>emitter</code> object goes to the default emitter instead, which the router does not use in an app bound with <code>bind_app_emitter(app)</code>, and the router reports a missing handler: a fresh verification still returns 200 but leaves the queue <code>queued</code>, and a retry of an already verified payment returns 500 "Payment queue handler is not registered." The router sets the queue status to <code>processed</code> and commits after the listener returns, so the listener should not commit itself.</p>
 <ul>
 <li>Verifying a payment that is already <code>verified</code> and whose queue is still <code>queued</code> re-emits the event, so a failed fulfilment can be retried by calling verify again.</li>
 <li>If no listener is registered or a listener raises, the session is rolled back. On a fresh verification the payment stays <code>verified</code> and the queue stays <code>queued</code>, and the request still returns 200. On a retry of an already verified payment the request returns 500.</li>
@@ -3108,7 +3110,7 @@
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">listen</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">PaymentData</span><span class="p">,</span> <span class="n">PaymentGateway</span><span class="p">,</span> <span class="n">PaymentInfo</span><span class="p">,</span> <span class="n">PaymentStatus</span><span class="p">,</span> <span class="n">VerificationResult</span><span class="p">,</span>
 <span class="p">)</span>
@@ -3116,7 +3118,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.service.processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_payment</span>
 
 
-<span class="nd">@listen</span><span class="p">(</span><span class="s2">"payment-queue-execute-subscription-create"</span><span class="p">)</span>
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>   <span class="c1"># the FastAPI app that mounts the payments router</span>
+
+
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"payment-queue-execute-subscription-create"</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">activate_subscription</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="n">session</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"fulfil"</span><span class="p">,</span> <span class="n">queue</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>          <span class="c1"># {'plan': 'pro'}</span>
@@ -3162,7 +3167,7 @@
 <li><strong>Verify returns 404 "Payment record not found for this user."</strong> The reference does not belong to the authenticated account, or the reference stored at initiation differs from the one the client sent.</li>
 <li><strong>Verify returns 400.</strong> Either the gateway reports the payment as not successful (<code>PaymentStatusError</code>), the amount does not match, or the stored gateway is unsupported.</li>
 <li><strong>Verify returns 502.</strong> The gateway could not be reached or returned an error status (<code>PaymentConnectionError</code> or <code>PaymentResponseError</code>). Check the secret key and, for Paystack, <code>PAYSTACK_BASE_URL</code>.</li>
-<li><strong>Verify returns 500 "Payment queue handler is not registered."</strong> The payment was already verified, its queue is still <code>queued</code>, and no listener is registered for <code>payment-queue-execute-{event_key}</code>. Register the listener at startup in the process that serves the router.</li>
+<li><strong>Verify returns 500 "Payment queue handler is not registered."</strong> The payment was already verified, its queue is still <code>queued</code>, and no listener is registered for <code>payment-queue-execute-{event_key}</code>. Register the listener with <code>@app_emitter.on(...)</code> on the app emitter of the app that serves the router, at creation or in the lifespan handler of that process.</li>
 <li><strong>Payment is <code>verified</code> but nothing was fulfilled.</strong> The first verification call hit a missing or failing listener; the failure is logged and the queue stays <code>queued</code>. Fix the listener and call verify again.</li>
 </ul>
 <h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>

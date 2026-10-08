@@ -3044,7 +3044,12 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<p><code>get_current_account</code> only needs to return an object with an <code>id</code>. Without a workspace dependency, every request is in the workspace-less bucket (<code>workspace_id=None</code>). Without a tenant dependency, the default tenant is resolved from the database and must be seeded, otherwise requests fail with 500. The router has no prefix of its own (<code>prefix=""</code> by default); its paths are:</p>
+<p><code>get_current_account</code> only needs to return an object with an <code>id</code>. Without a workspace dependency, every request is in the workspace-less bucket (<code>workspace_id=None</code>). Without a tenant dependency, the tenant with slug <code>default</code> is looked up in the database and must be seeded, otherwise requests fail with 500. </p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
+<p>The default-tenant fallback ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, requests return 500 "Default tenant has not been seeded" even though your seeding used the same settings. Pass <code>get_current_tenant</code> built from <code>get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY")).get_current_tenant</code>.</p>
+</div>
+<p>The router has no prefix of its own (<code>prefix=""</code> by default); its paths are:</p>
 <table>
 <thead>
 <tr>
@@ -3184,10 +3189,10 @@
 <p><strong>Policy.</strong> <code>can_read</code>, <code>can_post</code>, <code>can_manage</code> and <code>can_change_visibility</code> are pure functions over loaded rows. Who may join a public channel or be invited is delegated to a <code>MemberEligibility</code> object; the default, <code>SameTenantEligibility</code>, allows anyone in the conversation's tenant. Pass your own to <code>AccessService(eligibility=...)</code> to tie eligibility to, for example, workspace membership.</p>
 <p><strong>Services.</strong> Each service is a class taking its actions and settings at construction: <code>ChannelService</code>, <code>MembershipService</code>, <code>MessagingService</code>, <code>ThreadService</code>, <code>HistoryService</code>, <code>ReadStateService</code>, <code>ReactionService</code> and <code>ResourceService</code>. Channel and membership calls are closed units of work: each commits itself, writes a timeline <code>system_event</code> message for the change, and emits its domain event after commit.</p>
 <p><strong>Resources.</strong> A <code>ResourceLink</code> attaches an external thing (<code>resource_kind</code> plus <code>resource_ref</code>) to a conversation or message. Kinds are validated against <code>RESOURCE_KIND_REGISTRY</code>, which starts with <code>document</code>, <code>url</code> and <code>image</code>; add your own with <code>RESOURCE_KIND_REGISTRY.register("note")</code> at startup.</p>
-<p><strong>Events.</strong> Domain events such as <code>conversation-created</code>, <code>conversation-message-posted</code>, <code>conversation-member-joined</code> and <code>conversation-thread-started</code> carry the conversation's <code>public_id</code> and scope values, never the integer primary key (messages are addressed by integer id). Row-level lifecycle events come from <code>ModelAction</code>. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
+<p><strong>Events.</strong> Register listeners on the app emitter: <code>app_emitter = bind_app_emitter(app)</code> at app creation, then <code>@app_emitter.on("conversation-message-posted")</code>. Listeners fire for events emitted from the router. When you call the services yourself, for example <code>ChannelService().create_channel(...)</code> in a script, the app emitter is not active and nothing reaches app-bound listeners; wrap that code in <code>with use_app_emitter(app):</code> (both from <code>msflib.eventbus</code>). Domain events such as <code>conversation-created</code>, <code>conversation-message-posted</code>, <code>conversation-member-joined</code> and <code>conversation-thread-started</code> carry the conversation's <code>public_id</code> and scope values, never the integer primary key (messages are addressed by integer id). Row-level lifecycle events come from <code>ModelAction</code>. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="channels-messages-and-history-with-the-services">Channels, messages and history with the services<a class="headerlink" href="#channels-messages-and-history-with-the-services" title="Permanent link">&para;</a></h3>
-<p>This runs as written against in-memory SQLite.</p>
+<p>This runs as written against in-memory SQLite. It seeds tenant 1 first: SQLite does not enforce the <code>tenant_id</code> foreign key, but Postgres does.</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.conversation.models</span>  <span class="c1"># noqa: F401  (registers the tables)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationScope</span><span class="p">,</span> <span class="n">Participant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationCreate</span><span class="p">,</span> <span class="n">MessageCreate</span>
@@ -3199,11 +3204,15 @@
     <span class="n">MessagingService</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
 <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>     <span class="c1"># seeds tenant 1</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 <span class="n">owner</span> <span class="o">=</span> <span class="n">Participant</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">MemberKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"u1"</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">scope</span> <span class="o">=</span> <span class="n">ConversationScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
@@ -3235,7 +3244,7 @@
     <span class="nb">print</span><span class="p">([(</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">sender_kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">page</span><span class="p">])</span>                     <span class="c1"># [('hello @team', 'user')]</span>
 </code></pre></div>
 
-<p><code>create_channel</code> returns the conversation with the creator's owner membership. <code>post_message</code> raises <code>PermissionError</code> if the membership may not post and <code>ValueError</code> for empty or too-long content. Services use <code>ConversationSettings()</code> defaults unless you pass <code>conversation_settings=</code> at construction.</p>
+<p><code>create_channel</code> returns the conversation with the creator's owner membership. <code>post_message</code> raises <code>PermissionError</code> if the membership may not post and <code>ValueError</code> for empty or too-long content. Services use <code>ConversationSettings()</code> defaults unless you pass <code>conversation_settings=</code> at construction. In your own code pass <code>conversation_settings=settings.scope("CONVERSATION").unwrap()</code>, or host overrides are ignored: the router applies them, but a bare <code>MessagingService().post_message(...)</code> does not.</p>
 <h3 id="through-http">Through HTTP<a class="headerlink" href="#through-http" title="Permanent link">&para;</a></h3>
 <p>With the router mounted at <code>/conversation</code> and a seeded default tenant:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
@@ -3280,7 +3289,7 @@
 <span class="p">)</span>
 </code></pre></div>
 
-<p><code>build_conversation_access_dependency</code> reads <code>conversation_id</code> (and <code>sub_thread_id</code>) from the request body and rejects callers who cannot read that conversation before the agent touches any checkpoint or memory state; requests without a <code>conversation_id</code> pass through. <code>build_transcript_writer_factory</code> returns a factory ai-api calls per request; it opens a short session per write, adds the agent as a member of the conversation if it is not an active member, and returns <code>None</code> when the request has no <code>conversation_id</code>. <code>build_speaker_label_factory</code> prefixes each user message with the sender's name and id so an agent in a multi-user conversation can tell people apart; <code>resolve_display_name</code> is your callable <code>(account_id: str) -&gt; str | None</code>. This snippet was not run end to end because it needs a working LLM and a host account system; every name in it is checked against the source. Other helpers in the module are <code>conversation_dimensions</code> (the scope dimensions for a conversation and thread), <code>add_agent_participant</code> and <code>register_memory_cleanup_listener</code>.</p>
+<p><code>build_conversation_access_dependency</code> reads <code>conversation_id</code> (and <code>sub_thread_id</code>) from the request body and rejects callers who cannot read that conversation before the agent touches any checkpoint or memory state; requests without a <code>conversation_id</code> pass through. <code>build_transcript_writer_factory</code> returns a factory ai-api calls per request; it opens a short session per write, adds the agent as a member of the conversation if it is not an active member, and returns <code>None</code> when the request has no <code>conversation_id</code>. <code>build_speaker_label_factory</code> prefixes each user message with the sender's name and id so an agent in a multi-user conversation can tell people apart; <code>resolve_display_name</code> is your callable <code>(account_id: str) -&gt; str | None</code>. This snippet was not run end to end because it needs a working LLM and a host account system; every name in it is checked against the source. <code>engine</code> and <code>resolve_display_name</code> are supplied by your host. Other helpers in the module are <code>conversation_dimensions</code> (the scope dimensions for a conversation and thread), <code>add_agent_participant</code> and <code>register_memory_cleanup_listener</code>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3292,7 +3301,11 @@
 <tbody>
 <tr>
 <td>500 "Default tenant has not been seeded"</td>
-<td>The tenant dependency is missing and no default tenant exists. Pass <code>get_current_tenant</code> or run your startup seeding.</td>
+<td>The tenant dependency is missing and no tenant with slug <code>default</code> exists. Pass <code>get_current_tenant</code> or run your startup seeding. See the known issue under Wiring if you changed the slug.</td>
+</tr>
+<tr>
+<td><code>ValueError: A conversation with slug 'general' already exists</code> on a fresh database</td>
+<td>Can be a missing tenant row: with foreign keys enforced the tenant failure is masked by this message. Seed the tenant.</td>
 </tr>
 <tr>
 <td>404 for a conversation that exists</td>

@@ -2954,7 +2954,13 @@
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Three router factories live in <code>msflib.workspace_notifications.router</code>. They need the workspace-aware identity dependencies from <a href="../workspaces/">workspaces</a> (<code>get_current_user</code>, <code>get_current_workspace</code>, and a role check for workspace admins).</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span><span class="p">,</span> <span class="n">get_user_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.user</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Workspace</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.router</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">admin_discord_channel_router</span><span class="p">,</span>
     <span class="n">admin_user_notification_router</span><span class="p">,</span>
@@ -2962,6 +2968,8 @@
 <span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">get_session</span> <span class="o">=</span> <span class="n">get_session_factory</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>   <span class="c1"># engine and settings come from your host</span>
+<span class="n">get_keystore</span> <span class="o">=</span> <span class="n">get_keystore_factory</span><span class="p">()</span>
 
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
@@ -2993,6 +3001,7 @@
         <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
         <span class="n">admin_role_check</span><span class="o">=</span><span class="n">admin_role_check</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">user_action</span><span class="o">=</span><span class="n">UserAction</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">](),</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin/notification"</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -3002,12 +3011,13 @@
         <span class="n">get_current_user</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">,</span>
         <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
         <span class="n">admin_role_check</span><span class="o">=</span><span class="n">admin_role_check</span><span class="p">,</span>
+        <span class="n">user_action</span><span class="o">=</span><span class="n">UserAction</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">](),</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin/discord"</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>This mirrors the module's own test fixture. The <code>{workspace_slug}</code> path parameter is what <code>get_current_workspace</code> resolves; use whatever your workspace dependency expects.</p>
+<p>This mirrors the module's own test fixture, including <code>user_action</code>: without it the admin <code>POST</code> returns 500 (<code>TypeError: UserAction must be instantiated with concrete generic types</code>), because the default is a bare <code>UserAction()</code>. The <code>{workspace_slug}</code> path parameter is what <code>get_current_workspace</code> resolves; use whatever your workspace dependency expects.</p>
 <table>
 <thead>
 <tr>
@@ -3040,7 +3050,7 @@
 <tr>
 <td>admin</td>
 <td><code>POST /</code></td>
-<td>Send; query <code>user_receiver_ids</code> (omit for all users in the workspace). 201</td>
+<td>Send; body is <code>{"data": &lt;NotificationCreate&gt;}</code> (the route uses <code>validation_types={"data": ...}</code>, so the payload is wrapped and a flat body gives 422), query <code>user_receiver_ids</code> (omit for all users in the workspace). 201</td>
 </tr>
 <tr>
 <td>admin</td>
@@ -3064,7 +3074,7 @@
 </tr>
 </tbody>
 </table>
-<p>The admin <code>POST</code> returns 400 for an empty <code>channels</code> list, and 400 ("In-app channel is required.") when the dispatch returns nothing because <code>inapp</code> was not among the channels. <code>admin_user_notification_router</code> also accepts <code>user_action</code>, <code>notification_action</code> and <code>notification_create_type</code> for customization. Default prefixes if you omit <code>prefix</code>: <code>/notifications</code>, <code>/admin/notification</code>, <code>/admin/discord</code>.</p>
+<p>The admin <code>POST</code> returns 400 for an empty <code>channels</code> list, and 400 ("In-app channel is required.") when the dispatch returns nothing because <code>inapp</code> was not among the channels. The caller needs a workspace <code>User</code> row of type <code>admin</code> or <code>owner</code> (created by the workspaces account hook or <code>UserAction.create</code>); without a membership the admin routes return 403 "User not found in specified workspace". <code>admin_user_notification_router</code> also accepts <code>user_action</code>, <code>notification_action</code> and <code>notification_create_type</code> for customization. Default prefixes if you omit <code>prefix</code>: <code>/notifications</code>, <code>/admin/notification</code>, <code>/admin/discord</code>.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p><code>WsNotificationSettings</code> has the <code>WS_NOTIFICATIONS</code> namespace.</p>
 <table>
@@ -3086,7 +3096,7 @@
 <p>Flat alias: <code>BOT_TOKEN</code> maps to <code>WS_NOTIFICATIONS.DISCORD_BOT_TOKEN</code> (confirmed). The environment variable depends on how you compose settings:</p>
 <ul>
 <li>Mixin composition (<code>class AppSettings(WsNotificationSettings, ...)</code>): use the flat names, <code>DISCORD_BOT_TOKEN</code> or <code>BOT_TOKEN</code>. <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> is not read in this style.</li>
-<li>Nested field (<code>WS_NOTIFICATIONS: WsNotificationSettings = WsNotificationSettings()</code>): <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> works as well as the flat names.</li>
+<li>Nested field (<code>WS_NOTIFICATIONS: WsNotificationSettings = WsNotificationSettings()</code>): <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> or <code>BOT_TOKEN</code>. The bare <code>DISCORD_BOT_TOKEN</code> is not read.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
@@ -3140,8 +3150,10 @@
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelCreate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.user</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
 
-<span class="n">dca</span> <span class="o">=</span> <span class="n">DiscordChannelAction</span><span class="p">(</span><span class="n">UserAction</span><span class="p">())</span>
+<span class="n">dca</span> <span class="o">=</span> <span class="n">DiscordChannelAction</span><span class="p">(</span><span class="n">UserAction</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">]())</span>
 <span class="n">dca</span><span class="o">.</span><span class="n">store_channel</span><span class="p">(</span>
     <span class="n">session</span><span class="p">,</span>
     <span class="n">data</span><span class="o">=</span><span class="n">DiscordChannelCreate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"ops-alerts"</span><span class="p">,</span> <span class="n">channel_id</span><span class="o">=</span><span class="mi">123456789012345678</span><span class="p">),</span>
@@ -3157,7 +3169,7 @@
 <li><strong>"Workspace is required for Discord notifications".</strong> The Discord handler is only built when a workspace is passed. <code>dispatch_user_notifications</code> always passes it; this appears only with a custom caller of the factory.</li>
 <li><strong>"Discord bot is not initialized. Message cannot be sent."</strong> <code>discord.py</code> could not be imported, or the notifier was built without a token.</li>
 <li><strong>Discord channel not found.</strong> The bot only sends to channels it can see (<code>bot.get_channel</code>); missing ones are logged at info level and skipped.</li>
-<li><strong><code>ValueError: Admin user not found for account in workspace.</code></strong> <code>store_channel</code> was called with an <code>admin_account</code> that has no <code>admin</code> or <code>owner</code> membership in that workspace, or with neither <code>admin_account</code> nor <code>admin_user</code>.</li>
+<li><strong><code>ValueError: Admin user not found for account in workspace.</code></strong> <code>store_channel</code> was called with an <code>admin_account</code> that has no <code>admin</code> or <code>owner</code> membership in that workspace, or with neither <code>admin_account</code> nor <code>admin_user</code>. <code>DiscordChannelAction</code> needs a concrete <code>UserAction[User, UserCreate, UserUpdate]()</code>; a bare <code>UserAction()</code> raises <code>TypeError</code> when <code>admin_account</code> is used.</li>
 <li><strong>SMS and email silently not sent.</strong> See the Troubleshooting section of <a href="../notifications/#troubleshooting">notifications</a>; the same handlers run here.</li>
 <li><strong>Workspace notifications show up nowhere in the account inbox.</strong> That is intended: they have <code>scope="workspace"</code> and use <code>UserNotification</code>, not <code>AccountNotification</code>.</li>
 <li><strong>Dependency resolution conflict on <code>twilio</code>.</strong> <code>msflib-workspace-notifications</code> pins <code>twilio ^8.0.0</code> for its <code>sms</code> extra while core and <code>msflib-notifications</code> pin <code>^9.4.6</code>. Avoid installing the <code>sms</code> or <code>all</code> extra of this package; rely on core's <code>twilio</code> instead.</li>

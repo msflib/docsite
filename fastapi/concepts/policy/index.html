@@ -2925,7 +2925,7 @@
 <p>(<code>ChatSettings</code> is the class from <a href="../tiered-config/">tiered configuration</a>, with <code>MAX_TOKENS</code> in its allowlist and <code>MODEL</code> not.)</p>
 <p>Behavior to rely on:</p>
 <ul>
-<li>Resolution order is default, environment, tenant, workspace, user, request. The service reads environment variables for the namespace on each call and merges them over the instance's own values, so the trace can report <code>environment</code> as a winner.</li>
+<li>Resolution order is default, environment, tenant, workspace, user, request. The service reads the namespace's environment variables itself on each call, trying <code>NS__KEY</code> first and then the flat <code>KEY</code> as a fallback, and merges them over the instance's own values, so the trace can report <code>environment</code> as a winner.</li>
 <li>Request overrides are normalized and checked against <code>request_override_allowlist</code>. Rejected keys do not raise. They are dropped from the merge and listed in <code>trace.rejected_overrides</code>, which differs from <code>ScopedConfigService.resolve_module_settings</code>, which raises.</li>
 <li>A decision record is only appended when a decision logger is configured and <code>trace_policy_field</code> is set. That field must exist on the settings class, otherwise <code>ValueError</code>.</li>
 <li>If a store is configured, <code>session</code> is required (<code>ValueError</code> otherwise). With no store, only defaults, environment and request override apply.</li>

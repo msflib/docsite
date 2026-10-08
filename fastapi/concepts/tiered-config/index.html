@@ -2874,7 +2874,7 @@
 <p>From lowest to highest:</p>
 <ol>
 <li>Field defaults on the settings class.</li>
-<li>Environment variables (read when the settings object is created).</li>
+<li>Environment variables (read when the settings object is created). They reach the merge only if the base you pass was built by your host settings (<code>settings.scope("CHAT")</code> in the mixin layout, <code>settings.CHAT</code> in the composed layout). A bare <code>ChatSettings()</code> carries class defaults only.</li>
 <li>Tenant values.</li>
 <li>Workspace values.</li>
 <li>User values.</li>
@@ -2901,7 +2901,7 @@
 </code></pre></div>
 
 <p><code>ModuleSettingsBase</code> also defines <code>ENABLED: bool = True</code> on every module. With the composed layout above, environment variables use a double underscore: <code>CHAT__MODEL=medium</code> sets <code>Settings().CHAT.MODEL</code>. <code>settings.scope("CHAT")</code> returns a view of that namespace, which is how module code reads its own settings.</p>
-<p>You can also mix module settings classes directly into your <code>Settings</code> class (multiple inheritance) instead of nesting them. Both layouts work with <code>scope()</code>; the nested layout avoids field-name clashes between modules. Modules can declare <code>flat_aliases</code> so older flat env var names such as <code>ENABLE_X</code> still map into the nested path.</p>
+<p>You can also mix module settings classes directly into your <code>Settings</code> class (multiple inheritance) instead of nesting them. Both layouts work with <code>scope()</code>; the nested layout avoids field-name clashes between modules. In the mixin layout the environment variable is the flat field name (<code>MODEL=...</code>); <code>CHAT__MODEL</code> only applies to the composed layout. Modules can declare <code>flat_aliases</code> so older flat env var names such as <code>ENABLE_X</code> still map into the nested path.</p>
 <p><code>CoreSettings</code> is the same kind of class with namespace <code>CORE</code>. The other modules follow the same pattern, for example <code>TENANCY</code>, <code>WORKSPACE_CONFIG</code> and <code>AI_CORE</code>.</p>
 <h2 id="resolving-without-a-database">Resolving without a database<a class="headerlink" href="#resolving-without-a-database" title="Permanent link">&para;</a></h2>
 <p><code>resolve_tiered</code> merges layers you already hold and returns a new, validated instance of the same class. It does not touch the database.</p>
@@ -2939,6 +2939,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">resolved</span><span class="o">.</span><span class="n">MAX_TOKENS</span><span class="p">,</span> <span class="n">resolved</span><span class="o">.</span><span class="n">MODEL</span><span class="p">)</span>  <span class="c1"># 5000 tenant-model</span>
 </code></pre></div>
 
+<p>The ids 1, 10 and 25 are examples; on PostgreSQL these rows must exist in the tenant, workspace and account tables, because the stored rows have foreign keys to them.</p>
 <p>Which ids each scope needs:</p>
 <table>
 <thead>

@@ -3045,6 +3045,10 @@
 </code></pre></div>
 
 <p><code>mutation_role_check</code> is required and has no permissive default. Every mutating route (trigger, retry, abort, replay, discard) depends on it. If your deployment really has no per-request auth, pass an explicit no-op such as <code>lambda: None</code>. <code>get_current_tenant</code> and <code>get_current_workspace</code> are optional; without a tenant dependency the router falls back to the default tenant, so list and status routes are always tenant-filtered.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
+<p>The router's default-tenant fallback looks up the tenant with slug <code>default</code> and ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, the routes return 500 "Default tenant has not been seeded". Pass <code>get_current_tenant</code> built from <code>get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY"))</code>.</p>
+</div>
 <p>The router validates <code>pipeline_kind</code> on <code>POST /jobs/trigger</code> against the registry in the <em>producer</em> process, so register your kinds there too, not only in the worker.</p>
 <p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general router pattern.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
@@ -3065,7 +3069,7 @@
 <tr>
 <td><code>ENABLED</code></td>
 <td><code>True</code></td>
-<td>Declared, currently has no effect (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). Not read by the ingestion code itself; consuming modules gate their own hooks on their own flags.</td>
+<td>Declared, currently has no effect (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). Not read by the ingestion code itself; consuming modules gate their own hooks on their own flags. The flat alias <code>ENABLED</code> is shared with other modules, so <code>INGESTION__ENABLED</code> is unreliable when several are composed as nested fields; set the field in code instead.</td>
 </tr>
 <tr>
 <td><code>BROKER_URL</code></td>
@@ -3130,10 +3134,10 @@
 <p><strong><code>IngestionSubjectQueue</code>.</strong> The producer side of a kind: <code>queue.enqueue(...)</code> takes explicit values, and <code>queue.enqueue_snapshot(...)</code> takes an <code>IngestionSubjectSnapshot</code> and works out <code>create</code>, <code>replace</code> or <code>delete</code>, including a first <code>delete</code> under the old scope when a subject moved. Both take the same per-subject lock as the stage, so an edit made while a job runs waits for it and then queues its own job instead of deduplicating into the running one. Dispatch to Celery is deferred until the caller's transaction commits, so a rollback queues nothing. Pass <code>enabled=</code> from the module's settings flag; a disabled queue raises <code>QueueDisabledError</code>. Subclass only to override <code>check_subject</code>.</p>
 <p><strong><code>sync_model_to_queue</code>.</strong> <code>msflib.ingestion.services.sync.sync_model_to_queue(Model, queue, subject_type=..., snapshot=..., emitter=...)</code> enqueues a job on every <code>ModelAction</code> create, update and delete of a model, in the same transaction as the write. Writes that bypass <code>ModelAction</code> (raw <code>session.add</code>, bulk SQL) fire nothing; call <code>queue.enqueue_snapshot</code> yourself after those. <code>reset_model_sync(emitter=..., pipeline_kind=..., subject_type=...)</code> removes the hook.</p>
 <p><strong>Errors.</strong> Raise <code>RetryableStageError</code> for transient failures and <code>TerminalStageError</code> for bad input. Raise <code>SupersededStageError</code> when a stage finds its work is moot. A plain exception is classified for you by <code>classify_stage_error</code>. Inside <code>ingestion_subject_stage</code>, an error whose text is identical to the previous attempt's is also treated as terminal. <code>QueueDisabledError</code> and <code>UnregisteredSubjectTypeError</code> are raised at enqueue time.</p>
-<p><strong>Events.</strong> <code>StageContext.emit_after_success(name, instance, payload)</code> queues an event that fires after the whole job commits. Use it instead of <code>msflib.actions.emit_after_commit</code> inside a stage, because SQLAlchemy forbids further SQL on the session from an <code>after_commit</code> handler. Event listeners must run in the worker process, since that is where the event fires. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
+<p><strong>Events.</strong> <code>StageContext.emit_after_success(name, instance, payload)</code> queues an event that fires after the whole job commits. Use it instead of <code>msflib.actions.emit_after_commit</code> inside a stage, because SQLAlchemy forbids further SQL on the session from an <code>after_commit</code> handler. Event listeners must be registered in the worker process, since that is where the event fires, and on the emitter active there. In the worker entrypoint, register them on the process default emitter: hooks that take an <code>emitter=</code> argument can be given <code>AppEmitter(get_emitter())</code> (from <code>msflib.eventbus</code>). Listeners bound to the web app's <code>AppEmitter</code> are never called from a real worker; in eager mode they fire only when the task runs inside a request. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="a-pipeline-kind-for-your-own-table">A pipeline kind for your own table<a class="headerlink" href="#a-pipeline-kind-for-your-own-table" title="Permanent link">&para;</a></h3>
-<p>This registers a <code>note_index</code> kind, queues jobs from a snapshot, and runs the stage directly with the test helpers. It runs as written against in-memory SQLite.</p>
+<p>This registers a <code>note_index</code> kind, queues jobs from a snapshot, and runs the stage directly with the test helpers. It runs as written against in-memory SQLite. SQLite does not enforce the <code>tenant_id</code> foreign key, so the example seeds tenant 1 explicitly to behave the same on Postgres.</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
@@ -3145,6 +3149,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeDispatchTask</span><span class="p">,</span> <span class="n">start_stage_context</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401  (registers the tenant table)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
@@ -3201,6 +3206,10 @@
 <span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>      <span class="c1"># seeds tenant 1, which Note.tenant_id points at</span>
+    <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
 <span class="n">task</span> <span class="o">=</span> <span class="n">FakeDispatchTask</span><span class="p">()</span>             <span class="c1"># records job ids instead of calling Celery</span>
 <span class="n">queue</span> <span class="o">=</span> <span class="n">IngestionSubjectQueue</span><span class="p">(</span>
     <span class="n">dispatch</span><span class="o">=</span><span class="n">IngestionDispatchService</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">),</span> <span class="n">pipeline_kind</span><span class="o">=</span><span class="s2">"note_index"</span>
@@ -3232,13 +3241,17 @@
 
 <p><code>FakeDispatchTask</code> and <code>start_stage_context</code> come from <code>msflib.ingestion.testing</code>. <code>start_stage_context</code> starts an attempt the way the Celery task does and returns the <code>StageContext</code> a stage receives, so a stage can be unit-tested without a broker.</p>
 <p>In the real app, register the same kind in the worker entrypoint (and in the producer process if you mount the management router), and replace <code>FakeDispatchTask</code> with <code>build_dispatch_task(settings)</code>. To enqueue on every write to <code>Note</code> instead of calling <code>enqueue_snapshot</code> by hand:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.sync</span><span class="w"> </span><span class="kn">import</span> <span class="n">sync_model_to_queue</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.sync</span><span class="w"> </span><span class="kn">import</span> <span class="n">sync_model_to_queue</span>
+
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>   <span class="c1"># at app creation</span>
 
 <span class="n">sync_model_to_queue</span><span class="p">(</span>
-    <span class="n">Note</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">subject_type</span><span class="o">=</span><span class="s2">"note"</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">get_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">Note</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">subject_type</span><span class="o">=</span><span class="s2">"note"</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">app_emitter</span>
 <span class="p">)</span>
 </code></pre></div>
 
+<p>The hook fires only while the app emitter is active: in requests (including FastAPI <code>BackgroundTasks</code>), or in your own code wrapped in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>). A write made from a worker, a CLI script or a thread outside that block queues nothing; call <code>queue.enqueue_snapshot</code> there instead.</p>
 <h3 id="management-routes">Management routes<a class="headerlink" href="#management-routes" title="Permanent link">&para;</a></h3>
 <p>With the router mounted at <code>/ingestion</code>:</p>
 <table>
