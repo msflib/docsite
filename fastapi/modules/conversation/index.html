@@ -1,0 +1,2514 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/modules/conversation/">
+      
+      
+        <link rel="prev" href="../knowledge/">
+      
+      
+        <link rel="next" href="../../quick-start/basics/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>conversation - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflib-conversation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              conversation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#channels-messages-and-history-with-the-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Channels, messages and history with the services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#through-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Through HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persisting-ai-agent-turns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persisting AI agent turns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#channels-messages-and-history-with-the-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Channels, messages and history with the services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#through-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Through HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persisting-ai-agent-turns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persisting AI agent turns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflib-conversation">msflib-conversation<a class="headerlink" href="#msflib-conversation" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p><code>msflib-conversation</code> is a chat-style conversation layer for host apps: channels, direct messages, threads, messages, membership, reactions, pins, read state and attached resources, with access control built in. It is also the identity substrate for the AI modules: a conversation's <code>public_id</code> is the <code>conversation_id</code> scope dimension that <a href="../ai-core/">ai-core</a> checkpoints and memory, and <a href="../knowledge/">knowledge</a> scoping, key off, and a thread's <code>public_id</code> is the <code>sub_thread_id</code>.</p>
+<p>It has no UI or realtime transport. It gives you the tables, services, an optional HTTP router, and an optional bridge that lets an <a href="../ai-api/">ai-api</a> agent write its turns into a conversation.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-conversation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/conversation"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"conversation-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Dependencies are <code>msflib</code>, <code>msflib-tenancy</code> and <code>python-ulid</code>. There are no extras. The module does not import <code>account</code>, <code>workspaces</code>, <code>ai_core</code> or <code>ai_api</code> at module scope: it takes your account and workspace objects through small protocols that only need an <code>id</code>.</p>
+<p><code>msflib.conversation</code> lazily exports the settings, actions, contracts, services, errors and policy functions (<code>ConversationScope</code>, <code>Participant</code>, <code>ChannelService</code>, <code>AccessService</code>, <code>can_read</code>, ...). Models and schemas are in <code>msflib.conversation.models</code>, and the router and deps are imported from their submodules.</p>
+<h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Add <code>ConversationSettings</code> to your settings class.</li>
+<li>Import <code>msflib.conversation.models</code> so the tables are created (and migrated).</li>
+<li>Mount the router, passing your own session, account, workspace and tenant dependencies.</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_conversation_router</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">create_conversation_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># optional</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>         <span class="c1"># optional</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/conversation"</span><span class="p">,</span>
+        <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"conversation"</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><code>get_current_account</code> only needs to return an object with an <code>id</code>. Without a workspace dependency, every request is in the workspace-less bucket (<code>workspace_id=None</code>). Without a tenant dependency, the default tenant is resolved from the database and must be seeded, otherwise requests fail with 500. The router has no prefix of its own (<code>prefix=""</code> by default); its paths are:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/conversations</code></td>
+<td><code>POST</code> create (channel, dm, group dm or personal; for dms, <code>participants</code> lists the other people), <code>GET</code> list</td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}</code></td>
+<td><code>GET</code>, <code>PATCH</code></td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/archive</code>, <code>/unarchive</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/members</code></td>
+<td><code>POST</code> join yourself (public channels) or invite someone else</td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/members/{member_id}</code></td>
+<td><code>DELETE</code> remove or leave, <code>PATCH</code> change role</td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/messages</code></td>
+<td><code>GET</code> history (keyset paged), <code>POST</code> post</td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/read</code></td>
+<td><code>PUT</code> mark read</td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/pinned</code></td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td><code>/conversations/{public_id}/resources</code></td>
+<td><code>GET</code>, <code>POST</code> link a resource</td>
+</tr>
+<tr>
+<td><code>/messages/{message_id}</code></td>
+<td><code>PATCH</code> edit, <code>DELETE</code></td>
+</tr>
+<tr>
+<td><code>/messages/{message_id}/thread</code></td>
+<td><code>POST</code> reply in a thread</td>
+</tr>
+<tr>
+<td><code>/messages/{message_id}/reactions/{emoji}</code></td>
+<td><code>PUT</code>, <code>DELETE</code></td>
+</tr>
+<tr>
+<td><code>/messages/{message_id}/pin</code></td>
+<td><code>POST</code>, <code>DELETE</code></td>
+</tr>
+<tr>
+<td><code>/threads/{thread_public_id}/messages</code></td>
+<td><code>GET</code></td>
+</tr>
+</tbody>
+</table>
+<p>Access checks (does the conversation exist, is the caller allowed to see it) run once in the dependency layer, not in each endpoint. To override them, build a namespace with <code>get_conversation_dependencies(...)</code> from <code>msflib.conversation.deps</code>, replace the attributes you need, and pass it as <code>dependencies=</code> to the router. Its members are <code>require_account</code>, <code>get_participant</code>, <code>get_conversation_scope</code>, <code>get_conversation_context</code>, <code>get_message_context</code>, <code>get_thread_context</code> and <code>access_service</code>. A conversation that does not exist in the caller's scope returns 404, and one the caller may not read returns 403.</p>
+<p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general router pattern.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Settings live in the <code>CONVERSATION</code> namespace, and the field names are lowercase.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default_visibility</code></td>
+<td><code>private</code></td>
+<td>Visibility for channels created without one: <code>public</code>, <code>private</code> or <code>personal</code>.</td>
+</tr>
+<tr>
+<td><code>max_message_chars</code></td>
+<td><code>8000</code></td>
+<td>Longer messages and edits are rejected.</td>
+</tr>
+<tr>
+<td><code>history_page_size</code></td>
+<td><code>50</code></td>
+<td>Default page size for history reads.</td>
+</tr>
+<tr>
+<td><code>history_page_size_max</code></td>
+<td><code>200</code></td>
+<td>Upper bound on a requested page size.</td>
+</tr>
+<tr>
+<td><code>edit_window_minutes</code></td>
+<td><code>0</code></td>
+<td>Minutes after posting during which a message can be edited; <code>0</code> means unlimited.</td>
+</tr>
+<tr>
+<td><code>allow_guest_posting</code></td>
+<td><code>False</code></td>
+<td>Whether members with the <code>guest</code> role may post.</td>
+</tr>
+<tr>
+<td><code>allow_private_to_public</code></td>
+<td><code>False</code></td>
+<td>Whether a private conversation's visibility may be changed to public.</td>
+</tr>
+<tr>
+<td><code>retention_days</code></td>
+<td><code>None</code></td>
+<td>Declared, currently has no effect (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). Not read by any code in the module.</td>
+</tr>
+<tr>
+<td><code>purge_soft_deleted_after_days</code></td>
+<td><code>30</code></td>
+<td>Declared, currently has no effect (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). Not read by any code in the module, and no code emits the purge event <code>conversation-messages-purged</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/277">#277</a>)</p>
+<p>Because the fields are lowercase and environment matching is case-sensitive, <code>CONVERSATION__MAX_MESSAGE_CHARS</code> does not set anything. Use the flat aliases instead, which work whether your settings nest the namespace or mix it in: <code>CONVERSATION_DEFAULT_VISIBILITY</code>, <code>CONVERSATION_MAX_MESSAGE_CHARS</code>, <code>CONVERSATION_HISTORY_PAGE_SIZE</code>, <code>CONVERSATION_HISTORY_PAGE_SIZE_MAX</code>, <code>CONVERSATION_EDIT_WINDOW_MINUTES</code>, <code>CONVERSATION_ALLOW_GUEST_POSTING</code>, <code>CONVERSATION_ALLOW_PRIVATE_TO_PUBLIC</code>, <code>CONVERSATION_RETENTION_DAYS</code> and <code>CONVERSATION_PURGE_SOFT_DELETED_AFTER_DAYS</code>. With a nested <code>CONVERSATION</code> object, <code>CONVERSATION__max_message_chars</code> (lowercase field name) also works.</p>
+</div>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
+<p><strong>Conversation.</strong> The container. <code>kind</code> is <code>channel</code>, <code>dm</code>, <code>group_dm</code> or <code>personal</code>, and <code>visibility</code> is <code>public</code>, <code>private</code> or <code>personal</code>; the two axes are independent. <code>public_id</code> (a <code>conv_</code>-prefixed ULID) is the only identifier exposed outside the module and is what URLs and AI scopes use. Direct conversations are get-or-create keyed on their member set, so starting a dm with the same people returns the same conversation.</p>
+<p><strong>Thread.</strong> A first-class sub-conversation anchored to a root message, with its own <code>thrd_</code>-prefixed <code>public_id</code>. Replying in a thread through <code>POST /messages/{id}/thread</code> creates the thread on the first reply.</p>
+<p><strong>Message.</strong> Posted into a conversation or thread by a user, an agent or the system. Deletion is a soft delete (a tombstone). History is keyset-paginated on the message id: <code>before_id</code> and <code>after_id</code> rather than offsets. Content may carry <code>blocks</code> and a client-supplied <code>client_msg_id</code>. <code>@mentions</code> in the content are extracted when the message is posted.</p>
+<p><strong>Member and participant.</strong> Membership rows are polymorphic: <code>(member_kind, member_id)</code> with <code>kind</code> <code>user</code> or <code>agent</code>, a role (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>) and a status (<code>invited</code>, <code>active</code>, <code>left</code>, <code>removed</code>). Read state (last read message, notification level, mute and star) lives on the same row. A <code>Participant(kind, id, tenant_id)</code> is the caller projected into that shape; <code>id</code> is a string, so account ids are stringified.</p>
+<p><strong>Scope.</strong> <code>ConversationScope(tenant_id, workspace_id, conversation_id, sub_thread_id)</code> is the typed scope the services and actions take. <code>workspace_id=None</code> is the explicit workspace-less bucket. <code>AccessService.resolve_conversation(session, scope=..., participant=...)</code> is the single entry point that turns a caller-supplied <code>conversation_id</code> string into a verified row (exists, same tenant and workspace, caller allowed to read it) and returns it with the caller's membership. Anything downstream, such as a checkpointer config or a knowledge scope, should be built from a conversation resolved this way.</p>
+<p><strong>Policy.</strong> <code>can_read</code>, <code>can_post</code>, <code>can_manage</code> and <code>can_change_visibility</code> are pure functions over loaded rows. Who may join a public channel or be invited is delegated to a <code>MemberEligibility</code> object; the default, <code>SameTenantEligibility</code>, allows anyone in the conversation's tenant. Pass your own to <code>AccessService(eligibility=...)</code> to tie eligibility to, for example, workspace membership.</p>
+<p><strong>Services.</strong> Each service is a class taking its actions and settings at construction: <code>ChannelService</code>, <code>MembershipService</code>, <code>MessagingService</code>, <code>ThreadService</code>, <code>HistoryService</code>, <code>ReadStateService</code>, <code>ReactionService</code> and <code>ResourceService</code>. Channel and membership calls are closed units of work: each commits itself, writes a timeline <code>system_event</code> message for the change, and emits its domain event after commit.</p>
+<p><strong>Resources.</strong> A <code>ResourceLink</code> attaches an external thing (<code>resource_kind</code> plus <code>resource_ref</code>) to a conversation or message. Kinds are validated against <code>RESOURCE_KIND_REGISTRY</code>, which starts with <code>document</code>, <code>url</code> and <code>image</code>; add your own with <code>RESOURCE_KIND_REGISTRY.register("note")</code> at startup.</p>
+<p><strong>Events.</strong> Domain events such as <code>conversation-created</code>, <code>conversation-message-posted</code>, <code>conversation-member-joined</code> and <code>conversation-thread-started</code> carry the conversation's <code>public_id</code> and scope values, never the integer primary key (messages are addressed by integer id). Row-level lifecycle events come from <code>ModelAction</code>. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="channels-messages-and-history-with-the-services">Channels, messages and history with the services<a class="headerlink" href="#channels-messages-and-history-with-the-services" title="Permanent link">&para;</a></h3>
+<p>This runs as written against in-memory SQLite.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.conversation.models</span>  <span class="c1"># noqa: F401  (registers the tables)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationScope</span><span class="p">,</span> <span class="n">Participant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationCreate</span><span class="p">,</span> <span class="n">MessageCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.models.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemberKind</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.services</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AccessService</span><span class="p">,</span>
+    <span class="n">ChannelService</span><span class="p">,</span>
+    <span class="n">HistoryService</span><span class="p">,</span>
+    <span class="n">MessagingService</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+<span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">owner</span> <span class="o">=</span> <span class="n">Participant</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">MemberKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"u1"</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="n">ConversationScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">conversation</span><span class="p">,</span> <span class="n">membership</span> <span class="o">=</span> <span class="n">ChannelService</span><span class="p">()</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">ConversationCreate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"general"</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="s2">"general"</span><span class="p">),</span>
+        <span class="n">created_by</span><span class="o">=</span><span class="n">owner</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">conversation</span><span class="o">.</span><span class="n">kind</span><span class="p">,</span> <span class="n">conversation</span><span class="o">.</span><span class="n">visibility</span><span class="p">,</span> <span class="n">membership</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>   <span class="c1"># channel private owner</span>
+
+    <span class="n">resolved</span><span class="p">,</span> <span class="n">member</span> <span class="o">=</span> <span class="n">AccessService</span><span class="p">()</span><span class="o">.</span><span class="n">resolve_conversation</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="n">scope</span><span class="o">=</span><span class="n">ConversationScope</span><span class="p">(</span>
+            <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">conversation_id</span><span class="o">=</span><span class="n">conversation</span><span class="o">.</span><span class="n">public_id</span>
+        <span class="p">),</span>
+        <span class="n">participant</span><span class="o">=</span><span class="n">owner</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">MessagingService</span><span class="p">()</span><span class="o">.</span><span class="n">post_message</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="n">conversation</span><span class="o">=</span><span class="n">resolved</span><span class="p">,</span>
+        <span class="n">sender</span><span class="o">=</span><span class="n">owner</span><span class="p">,</span>
+        <span class="n">actor_membership</span><span class="o">=</span><span class="n">member</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">MessageCreate</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">"hello @team"</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">HistoryService</span><span class="p">()</span><span class="o">.</span><span class="n">list_conversation_history</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">conversation</span><span class="o">=</span><span class="n">resolved</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">([(</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">sender_kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">page</span><span class="p">])</span>                     <span class="c1"># [('hello @team', 'user')]</span>
+</code></pre></div>
+
+<p><code>create_channel</code> returns the conversation with the creator's owner membership. <code>post_message</code> raises <code>PermissionError</code> if the membership may not post and <code>ValueError</code> for empty or too-long content. Services use <code>ConversationSettings()</code> defaults unless you pass <code>conversation_settings=</code> at construction.</p>
+<h3 id="through-http">Through HTTP<a class="headerlink" href="#through-http" title="Permanent link">&para;</a></h3>
+<p>With the router mounted at <code>/conversation</code> and a seeded default tenant:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">created</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/conversation/conversations"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"general"</span><span class="p">,</span> <span class="s2">"slug"</span><span class="p">:</span> <span class="s2">"general"</span><span class="p">})</span>
+<span class="n">public_id</span> <span class="o">=</span> <span class="n">created</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"public_id"</span><span class="p">]</span>                       <span class="c1"># 201, "conv_..."</span>
+<span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/conversation/conversations/</span><span class="si">{</span><span class="n">public_id</span><span class="si">}</span><span class="s2">/messages"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"hello"</span><span class="p">})</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/conversation/conversations/</span><span class="si">{</span><span class="n">public_id</span><span class="si">}</span><span class="s2">/messages"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># newest first</span>
+</code></pre></div>
+
+<p>Request bodies are the module's own <code>ConversationCreate</code>, <code>MessageCreate</code>, <code>MemberAddRequest</code>, <code>ResourceLinkCreate</code> and so on. Tenant, workspace and the acting user always come from your dependencies, never from the body.</p>
+<h3 id="persisting-ai-agent-turns">Persisting AI agent turns<a class="headerlink" href="#persisting-ai-agent-turns" title="Permanent link">&para;</a></h3>
+<p><code>msflib.conversation.integrations.ai_bridge</code> wires an ai-api agent to a conversation without either module importing the other. The user's question and the agent's reply are written as ordinary messages (<code>sender_kind</code> <code>user</code> and <code>agent</code>), so the conversation is the readable transcript, separate from the LangGraph checkpoint state. This is how the repository's reference site mounts it:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_api.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ai_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ai_bridge</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">create_ai_router</span><span class="p">(</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+        <span class="n">transcript_writer_factory</span><span class="o">=</span><span class="n">ai_bridge</span><span class="o">.</span><span class="n">build_transcript_writer_factory</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">),</span> <span class="n">agent_id</span><span class="o">=</span><span class="s2">"assistant"</span>
+        <span class="p">),</span>
+        <span class="n">speaker_label_factory</span><span class="o">=</span><span class="n">ai_bridge</span><span class="o">.</span><span class="n">build_speaker_label_factory</span><span class="p">(</span><span class="n">resolve_display_name</span><span class="p">),</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">Depends</span><span class="p">(</span>
+            <span class="n">ai_bridge</span><span class="o">.</span><span class="n">build_conversation_access_dependency</span><span class="p">(</span>
+                <span class="n">get_session</span><span class="p">,</span>
+                <span class="n">get_current_account</span><span class="p">,</span>
+                <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
+                <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><code>build_conversation_access_dependency</code> reads <code>conversation_id</code> (and <code>sub_thread_id</code>) from the request body and rejects callers who cannot read that conversation before the agent touches any checkpoint or memory state; requests without a <code>conversation_id</code> pass through. <code>build_transcript_writer_factory</code> returns a factory ai-api calls per request; it opens a short session per write, adds the agent as a member of the conversation if it is not an active member, and returns <code>None</code> when the request has no <code>conversation_id</code>. <code>build_speaker_label_factory</code> prefixes each user message with the sender's name and id so an agent in a multi-user conversation can tell people apart; <code>resolve_display_name</code> is your callable <code>(account_id: str) -&gt; str | None</code>. This snippet was not run end to end because it needs a working LLM and a host account system; every name in it is checked against the source. Other helpers in the module are <code>conversation_dimensions</code> (the scope dimensions for a conversation and thread), <code>add_agent_participant</code> and <code>register_memory_cleanup_listener</code>.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause and fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500 "Default tenant has not been seeded"</td>
+<td>The tenant dependency is missing and no default tenant exists. Pass <code>get_current_tenant</code> or run your startup seeding.</td>
+</tr>
+<tr>
+<td>404 for a conversation that exists</td>
+<td><code>AccessService</code> matches tenant and workspace exactly, and <code>workspace_id=None</code> is its own bucket. Pass <code>get_current_workspace</code> consistently with how the conversation was created.</td>
+</tr>
+<tr>
+<td>403 on a channel you can find by id</td>
+<td>The caller is not a member of a private conversation, or is not eligible under your <code>MemberEligibility</code>.</td>
+</tr>
+<tr>
+<td><code>CONVERSATION__MAX_MESSAGE_CHARS</code> has no effect</td>
+<td>Field names are lowercase. Use <code>CONVERSATION_MAX_MESSAGE_CHARS</code>; see the Known issue notice under Configuration.</td>
+</tr>
+<tr>
+<td><code>PermissionError</code> on <code>post_message</code></td>
+<td>The membership is missing, not active, or a guest while <code>allow_guest_posting</code> is false.</td>
+</tr>
+<tr>
+<td><code>ValueError: Unregistered resource_kind</code></td>
+<td>Register it: <code>RESOURCE_KIND_REGISTRY.register("your_kind")</code>.</td>
+</tr>
+<tr>
+<td><code>ValueError: created_by.tenant_id must match scope.tenant_id</code></td>
+<td>The <code>Participant</code> and <code>ConversationScope</code> disagree on tenant. Build both from the same resolved tenant id.</td>
+</tr>
+<tr>
+<td>Retention settings do nothing</td>
+<td><code>retention_days</code> and <code>purge_soft_deleted_after_days</code> are not implemented yet (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>), and no code emits <code>conversation-messages-purged</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<p>Generated reference pages will be linked here once the API reference is added (Phase 3 of <a href="https://github.com/msflib/fastapi/issues/262">#262</a>). <code>modules/conversation/README.md</code> has a layout overview, but its status section predates the router and AI bridge and is out of date; treat this page and the source as authoritative.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../ai-api/">AI API</a>, whose agent router accepts a transcript writer</li>
+<li><a href="../ai-core/">AI core</a>, whose checkpoint and memory policies key off <code>conversation_id</code></li>
+<li><a href="../knowledge/">Knowledge</a>, where conversation-scoped facts use the same dimensions</li>
+<li><a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a></li>
+<li><a href="../../concepts/event-bus/">Event bus</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

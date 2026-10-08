@@ -1,0 +1,2353 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/modules/payments/">
+      
+      
+        <link rel="prev" href="../workspace-config/">
+      
+      
+        <link rel="next" href="../ai-core/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>payments - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflib-payments" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              payments
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fulfilment-event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fulfilment event
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fulfilment-event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fulfilment event
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflib-payments">msflib-payments<a class="headerlink" href="#msflib-payments" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p><code>msflib-payments</code> starts and verifies one-off payments through Stripe or Paystack, stores each payment, and runs your own fulfilment code once a payment is verified. You call <code>process_payment</code> from your business flow to create a checkout, expose the module's router so the client can confirm the payment, and subscribe to an event to grant whatever the customer paid for.</p>
+<p>It does not handle webhooks, subscriptions, refunds or invoices. Verification is pull-based: the client calls the verify endpoint with the payment reference.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-payments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/payments"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"payments-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>The <code>stripe</code> SDK is a hard dependency and there are no extras. The <code>payment</code> table has a foreign key to <code>account.id</code>, but <code>msflib-payments</code> does not declare <code>msflib-account</code> itself, so add it to your own dependencies as above (tracked in <a href="https://github.com/msflib/fastapi/issues/273">#273</a>, see Key concepts).</p>
+<h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
+<p>Add <code>PaymentsSettings</code> to your settings class, then mount the router. <code>router</code> is exported from <code>msflib.payments.router</code> and takes the settings object directly.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaymentsSettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">payments_router</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">PaymentsSettings</span><span class="p">,</span> <span class="n">AccountSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="n">PAYSTACK_SECRET_KEY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sk_test_..."</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">payments_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/payments"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Method and path</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /payments/verify/{reference}</code></td>
+<td>Verify the caller's payment with the gateway, mark it <code>verified</code>, then fire the fulfilment event</td>
+</tr>
+<tr>
+<td><code>GET /payments/{payment_id}</code></td>
+<td>The caller's payment record</td>
+</tr>
+</tbody>
+</table>
+<p>Both routes only find payments whose <code>account_id</code> matches the caller; anything else is a 404. <code>get_current_account</code> must return an object with <code>id</code> (and <code>email</code> for <code>process_payment</code>'s fallback). The <code>payment</code>, <code>paymentqueue</code> and <code>account</code> tables must exist.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p><code>PaymentsSettings</code> has the <code>PAYMENTS</code> namespace.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PAYMENT_GATEWAY</code></td>
+<td><code>paystack</code></td>
+<td>Default gateway used by <code>process_payment</code> when the request does not name one</td>
+</tr>
+<tr>
+<td><code>PAYMENT_CALLBACK_URL</code></td>
+<td>empty</td>
+<td>Where the gateway sends the customer after paying; per-payment <code>callback_url</code> overrides it</td>
+</tr>
+<tr>
+<td><code>PAYMENT_CANCEL_URL</code></td>
+<td>empty</td>
+<td>Same for cancellation</td>
+</tr>
+<tr>
+<td><code>PAYSTACK_BASE_URL</code></td>
+<td><code>https://api.paystack.co</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>PAYSTACK_SECRET_KEY</code></td>
+<td>empty</td>
+<td></td>
+</tr>
+<tr>
+<td><code>STRIPE_SECRET_KEY</code></td>
+<td>empty</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Every key has a flat alias, so the environment variables are the plain names: <code>PAYSTACK_SECRET_KEY</code>, <code>STRIPE_SECRET_KEY</code>, <code>PAYMENT_GATEWAY</code> and so on. <code>PAYMENTS__PAYSTACK_SECRET_KEY</code> form works only if you declare the namespace as a field (<code>PAYMENTS: PaymentsSettings = PaymentsSettings()</code>); with the mixin style above it is not read. Both styles were checked.</p>
+<div class="admonition note">
+<p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+</div>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>PaymentData</code></strong> is the input: <code>email</code>, <code>amount</code> (a decimal in major units, such as 5000 for 5000.00), <code>gateway</code> (<code>stripe</code> or <code>paystack</code>), optional <code>description</code>, <code>callback_url</code>, <code>cancel_url</code>. The gateways convert to the smallest currency unit by multiplying by 100; amounts of zero or less raise <code>PaymentAmountError</code>.</li>
+<li><strong><code>Payment</code></strong> is the stored record: <code>reference</code>, <code>authorization_url</code>, <code>access_code</code>, <code>status</code>, <code>gateway</code>, <code>amount</code>, and a JSON <code>data</code> field.</li>
+<li><strong><code>PaymentQueue</code></strong> is one row per payment holding an <code>event_key</code> and a JSON <code>data</code> payload from your business flow. It is the hand-off to your fulfilment code. Statuses: <code>queued</code>, then <code>processed</code>.</li>
+<li><strong><code>PaymentStatus</code></strong>: <code>unverified</code> when created, <code>verified</code> once the gateway confirms. <code>failed</code> and <code>fulfilled</code> also exist in the enum; <code>fulfilled</code> is the status the gateways report internally on success.</li>
+<li><strong><code>PaymentProcessor(settings)</code></strong> holds both gateways. Select one with <code>.gateway("paystack")</code> (returns the processor), then <code>await .initiate(account, data)</code> or <code>await .verify(reference)</code>. Calling either without selecting a gateway raises <code>AttributeError</code>. Constructing a processor builds both gateways; <code>StripeGateway</code> sets <code>stripe.api_key</code> globally at construction.</li>
+<li><strong><code>process_payment</code></strong> (in <code>msflib.payments.service.processor</code>) wraps initiation, saves the <code>Payment</code> and the <code>PaymentQueue</code> row, and returns the payment.</li>
+<li><strong>Gateway behaviour</strong>:<ul>
+<li>Paystack: initializes a transaction over HTTP and returns an <code>authorization_url</code> for the customer to visit. Status maps <code>success</code> to fulfilled; <code>failed</code> and <code>abandoned</code> raise <code>PaymentStatusError</code>.</li>
+<li>Stripe: creates an embedded Checkout Session (card by default, <code>ui_mode="embedded"</code>, currency fixed to <code>usd</code>). The session <code>client_secret</code> is returned as <code>access_code</code>, <code>authorization_url</code> is empty, and <code>reference</code> is the session id. Pass the <code>client_secret</code> to Stripe's embedded checkout in the browser and do not log it.</li>
+</ul>
+</li>
+<li><strong><code>BasePaymentGateway</code></strong> is the abstract base (<code>initiate</code>, <code>verify</code>, <code>convert_amount</code>). Implement it for another provider; note that <code>PaymentProcessor</code> registers only the two built-in gateways and <code>PaymentGateway</code> is a fixed enum, so a third gateway needs changes in the module.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/273">#273</a>)</p>
+<p>Several gateway and packaging details differ from what you would expect:</p>
+<ul>
+<li><code>VerificationResult</code> has no <code>raw</code> field, so the <code>raw=</code> value both gateways pass is dropped.</li>
+<li>The router stores <code>verified</code> while the gateways report <code>fulfilled</code>.</li>
+<li>Stripe checkout sessions always use <code>usd</code>.</li>
+<li><code>PaymentProcessor</code> always builds a <code>StripeGateway</code>, which sets <code>stripe.api_key</code> globally.</li>
+<li><code>msflib-payments</code> does not declare <code>msflib-account</code> although the <code>payment</code> table has a foreign key to <code>account.id</code>; add it yourself.</li>
+</ul>
+</div>
+<h3 id="fulfilment-event">Fulfilment event<a class="headerlink" href="#fulfilment-event" title="Permanent link">&para;</a></h3>
+<p>After a successful verification the router emits <code>payment-queue-execute-{event_key}</code> through the core event bus with <code>emit_required_async(event_name, queue, {"session": session})</code>. A listener receives the <code>PaymentQueue</code> row and an options dict containing the session. Register the listener with <code>msflib.eventbus.listen(event_name)</code> (or <code>listen(event_name, app=app)</code> for one app). Do not register it with <code>emitter.on(...)</code> on the global <code>emitter</code>: when the app uses <code>bind_app_emitter(app)</code>, the router emits through the app's emitter, which does not see listeners added that way, and verification then fails with a missing-handler error. The router sets the queue status to <code>processed</code> and commits after the listener returns, so the listener should not commit itself.</p>
+<ul>
+<li>Verifying a payment that is already <code>verified</code> and whose queue is still <code>queued</code> re-emits the event, so a failed fulfilment can be retried by calling verify again.</li>
+<li>If no listener is registered or a listener raises, the session is rolled back. On a fresh verification the payment stays <code>verified</code> and the queue stays <code>queued</code>, and the request still returns 200. On a retry of an already verified payment the request returns 500.</li>
+</ul>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>Create a payment from your own endpoint, register a fulfilment listener, and verify. The gateway calls are replaced with stubs so this runs without network access; with real keys, drop the two patches. This was run against in-memory SQLite.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">listen</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PaymentData</span><span class="p">,</span> <span class="n">PaymentGateway</span><span class="p">,</span> <span class="n">PaymentInfo</span><span class="p">,</span> <span class="n">PaymentStatus</span><span class="p">,</span> <span class="n">VerificationResult</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.service.paystack_gateway</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaystackGateway</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.service.processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_payment</span>
+
+
+<span class="nd">@listen</span><span class="p">(</span><span class="s2">"payment-queue-execute-subscription-create"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">activate_subscription</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"fulfil"</span><span class="p">,</span> <span class="n">queue</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>          <span class="c1"># {'plan': 'pro'}</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fake_initiate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PaymentInfo</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span> <span class="n">account_id</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">authorization_url</span><span class="o">=</span><span class="s2">"https://pay.example/x"</span><span class="p">,</span> <span class="n">access_code</span><span class="o">=</span><span class="s2">"ac"</span><span class="p">,</span>
+        <span class="n">reference</span><span class="o">=</span><span class="s2">"ref-1"</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">PaymentStatus</span><span class="o">.</span><span class="n">unverified</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{},</span>
+    <span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fake_verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">VerificationResult</span><span class="p">(</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">PaymentStatus</span><span class="o">.</span><span class="n">fulfilled</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span>
+        <span class="n">currency</span><span class="o">=</span><span class="s2">"NGN"</span><span class="p">,</span> <span class="n">gateway</span><span class="o">=</span><span class="n">PaymentGateway</span><span class="o">.</span><span class="n">paystack</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">PaystackGateway</span><span class="p">,</span> <span class="s2">"initiate"</span><span class="p">,</span> <span class="n">fake_initiate</span><span class="p">),</span> \
+     <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">PaystackGateway</span><span class="p">,</span> <span class="s2">"verify"</span><span class="p">,</span> <span class="n">fake_verify</span><span class="p">):</span>
+    <span class="n">payment</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">process_payment</span><span class="p">(</span>
+        <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+        <span class="n">payment_data</span><span class="o">=</span><span class="n">PaymentData</span><span class="p">(</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">"buyer@example.com"</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Pro plan"</span><span class="p">,</span> <span class="n">gateway</span><span class="o">=</span><span class="s2">"paystack"</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">account</span><span class="o">=</span><span class="n">account</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">queue_event_key</span><span class="o">=</span><span class="s2">"subscription-create"</span><span class="p">,</span>
+        <span class="n">queue_data</span><span class="o">=</span><span class="p">{</span><span class="s2">"plan"</span><span class="p">:</span> <span class="s2">"pro"</span><span class="p">},</span>
+    <span class="p">))</span>
+    <span class="c1"># payment.status == unverified, payment.queue.status == queued</span>
+    <span class="c1"># GET /payments/verify/ref-1 now returns 200 with status "verified",</span>
+    <span class="c1"># runs activate_subscription, and leaves payment.queue.status == processed</span>
+</code></pre></div>
+
+<p>In a real app <code>process_payment</code> is awaited inside an async endpoint and the response sends <code>payment.authorization_url</code> (Paystack) or <code>payment.access_code</code> (Stripe) to the client. <code>process_payment</code> converts gateway connection and response errors into <code>PaymentError</code> from <code>msflib.payments.service.error</code> (<code>PaymentConnectionError</code> and <code>PaymentResponseError</code> are subclasses that carry the original <code>cause</code>).</p>
+<p>The verify route also compares the gateway's reported amount with <code>convert_amount(payment.amount)</code> and returns 400 "Payment amount mismatch." if they differ.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Verify returns 404 "Payment record not found for this user."</strong> The reference does not belong to the authenticated account, or the reference stored at initiation differs from the one the client sent.</li>
+<li><strong>Verify returns 400.</strong> Either the gateway reports the payment as not successful (<code>PaymentStatusError</code>), the amount does not match, or the stored gateway is unsupported.</li>
+<li><strong>Verify returns 502.</strong> The gateway could not be reached or returned an error status (<code>PaymentConnectionError</code> or <code>PaymentResponseError</code>). Check the secret key and, for Paystack, <code>PAYSTACK_BASE_URL</code>.</li>
+<li><strong>Verify returns 500 "Payment queue handler is not registered."</strong> The payment was already verified, its queue is still <code>queued</code>, and no listener is registered for <code>payment-queue-execute-{event_key}</code>. Register the listener at startup in the process that serves the router.</li>
+<li><strong>Payment is <code>verified</code> but nothing was fulfilled.</strong> The first verification call hit a missing or failing listener; the failure is logged and the queue stays <code>queued</code>. Fix the listener and call verify again.</li>
+</ul>
+<h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<p>Generated reference will be linked here later (Phase 3 of <a href="https://github.com/msflib/fastapi/issues/262">#262</a>). The module's <code>README.md</code> in <code>modules/payments</code> has a short summary.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../account/">account</a>: the account model the payment record belongs to</li>
+<li><a href="../../concepts/event-bus/">Event bus</a>: registering listeners</li>
+<li><a href="../../integration/mounting-routes/">Mounting routes</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

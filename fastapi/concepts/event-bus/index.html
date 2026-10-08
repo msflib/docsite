@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/">
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/concepts/event-bus/">
       
       
+        <link rel="prev" href="../scopes-tenancy-workspaces/">
       
-        <link rel="next" href="modules/">
+      
+        <link rel="next" href="../dependency-injection/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>MSFLIB FastAPI Documentation</title>
+        <title>Event bus - MSFLIB FastAPI Documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#msflib" class="md-skip">
+        <a href="#event-bus" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Event bus
             
           </span>
         </div>
@@ -218,7 +220,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -233,37 +235,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -279,81 +254,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-a-module-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What a module is
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Package map
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#picking-what-to-install" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Picking what to install
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -419,7 +319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/" class="md-nav__link">
+      <a href="../../modules/" class="md-nav__link">
         
   
   
@@ -447,7 +347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/core/" class="md-nav__link">
+      <a href="../../modules/core/" class="md-nav__link">
         
   
   
@@ -475,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/auth/" class="md-nav__link">
+      <a href="../../modules/auth/" class="md-nav__link">
         
   
   
@@ -503,7 +403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/account/" class="md-nav__link">
+      <a href="../../modules/account/" class="md-nav__link">
         
   
   
@@ -531,7 +431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/tenancy/" class="md-nav__link">
+      <a href="../../modules/tenancy/" class="md-nav__link">
         
   
   
@@ -559,7 +459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspaces/" class="md-nav__link">
+      <a href="../../modules/workspaces/" class="md-nav__link">
         
   
   
@@ -587,7 +487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/notifications/" class="md-nav__link">
+      <a href="../../modules/notifications/" class="md-nav__link">
         
   
   
@@ -615,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspace-notifications/" class="md-nav__link">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
         
   
   
@@ -643,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspace-config/" class="md-nav__link">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
         
   
   
@@ -671,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/payments/" class="md-nav__link">
+      <a href="../../modules/payments/" class="md-nav__link">
         
   
   
@@ -699,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ai-core/" class="md-nav__link">
+      <a href="../../modules/ai-core/" class="md-nav__link">
         
   
   
@@ -727,7 +627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ai-api/" class="md-nav__link">
+      <a href="../../modules/ai-api/" class="md-nav__link">
         
   
   
@@ -755,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/drivelink/" class="md-nav__link">
+      <a href="../../modules/drivelink/" class="md-nav__link">
         
   
   
@@ -783,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/documents/" class="md-nav__link">
+      <a href="../../modules/documents/" class="md-nav__link">
         
   
   
@@ -811,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ingestion/" class="md-nav__link">
+      <a href="../../modules/ingestion/" class="md-nav__link">
         
   
   
@@ -839,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/knowledge/" class="md-nav__link">
+      <a href="../../modules/knowledge/" class="md-nav__link">
         
   
   
@@ -867,7 +767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/conversation/" class="md-nav__link">
+      <a href="../../modules/conversation/" class="md-nav__link">
         
   
   
@@ -956,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/basics/" class="md-nav__link">
+      <a href="../../quick-start/basics/" class="md-nav__link">
         
   
   
@@ -984,7 +884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/models-data-tables/" class="md-nav__link">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
         
   
   
@@ -1012,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/actions-crud/" class="md-nav__link">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
         
   
   
@@ -1040,7 +940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/endpoints-and-routers/" class="md-nav__link">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
         
   
   
@@ -1129,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/" class="md-nav__link">
+      <a href="../../integration/" class="md-nav__link">
         
   
   
@@ -1157,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/extending-msflib/" class="md-nav__link">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
         
   
   
@@ -1185,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/writing-custom-code/" class="md-nav__link">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
         
   
   
@@ -1213,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/mounting-routes/" class="md-nav__link">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
         
   
   
@@ -1241,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/overriding-models/" class="md-nav__link">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
         
   
   
@@ -1269,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/subclassing-actions/" class="md-nav__link">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
         
   
   
@@ -1297,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/authentication/" class="md-nav__link">
+      <a href="../../integration/authentication/" class="md-nav__link">
         
   
   
@@ -1325,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/long-running-jobs-ingestion/" class="md-nav__link">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
         
   
   
@@ -1353,7 +1253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/sse-websockets/" class="md-nav__link">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
         
   
   
@@ -1381,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/ai-capabilities/" class="md-nav__link">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
         
   
   
@@ -1413,8 +1313,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1425,13 +1327,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -1452,7 +1352,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1470,7 +1370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1498,7 +1398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/tiered-config/" class="md-nav__link">
+      <a href="../tiered-config/" class="md-nav__link">
         
   
   
@@ -1526,7 +1426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/policy/" class="md-nav__link">
+      <a href="../policy/" class="md-nav__link">
         
   
   
@@ -1554,7 +1454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+      <a href="../scopes-tenancy-workspaces/" class="md-nav__link">
         
   
   
@@ -1579,10 +1479,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="concepts/event-bus/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1598,6 +1525,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-it-into-your-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring it into your app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#emitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emitting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-lifecycle-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model lifecycle events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfalls
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1610,7 +1612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/dependency-injection/" class="md-nav__link">
+      <a href="../dependency-injection/" class="md-nav__link">
         
   
   
@@ -1638,7 +1640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/seeding/" class="md-nav__link">
+      <a href="../seeding/" class="md-nav__link">
         
   
   
@@ -1673,7 +1675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="../../reference/" class="md-nav__link">
         
   
   
@@ -1754,7 +1756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -1782,7 +1784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/releases/" class="md-nav__link">
+      <a href="../../contributing/releases/" class="md-nav__link">
         
   
   
@@ -1810,7 +1812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/module-page-template/" class="md-nav__link">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
         
   
   
@@ -1838,7 +1840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/known-issues/" class="md-nav__link">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
         
   
   
@@ -1893,10 +1895,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-a-module-is" class="md-nav__link">
+  <a href="#concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What a module is
+        Concepts
       
     </span>
   </a>
@@ -1904,10 +1906,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
+  <a href="#wiring-it-into-your-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Package map
+        Wiring it into your app
       
     </span>
   </a>
@@ -1915,10 +1917,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#picking-what-to-install" class="md-nav__link">
+  <a href="#emitting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Picking what to install
+        Emitting
       
     </span>
   </a>
@@ -1926,10 +1928,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing" class="md-nav__link">
+  <a href="#model-lifecycle-events" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installing
+        Model lifecycle events
       
     </span>
   </a>
@@ -1937,10 +1939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
+  <a href="#pitfalls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next
+        Pitfalls
       
     </span>
   </a>
@@ -1964,215 +1966,95 @@
 
 
 
-<h1 id="msflib">MSFLib<a class="headerlink" href="#msflib" title="Permanent link">&para;</a></h1>
-<p>MSFLib (pronounced "musflib") is a set of Python packages for building FastAPI backends. A small core package, <code>msflib</code>, supplies the shared plumbing: settings, base models, a CRUD action layer, an event bus, scope and policy primitives, database setup and seeding. On top of it sit optional feature modules such as accounts, authentication, workspaces, payments and AI infrastructure.</p>
-<p>You write a normal FastAPI application, the <em>host app</em>. You install the packages you need, define your own models and routes next to the ones the modules provide, and mount the module routers where you want them. MSFLib does not run your app and does not own your <code>FastAPI()</code> instance.</p>
-<h2 id="what-a-module-is">What a module is<a class="headerlink" href="#what-a-module-is" title="Permanent link">&para;</a></h2>
-<p>A module is a separately installable <code>msflib-*</code> package. Each one is a slice of the shared <code>msflib</code> namespace (for example <code>msflib.auth</code> or <code>msflib.workspaces</code>) and typically provides some mix of:</p>
+<h1 id="event-bus">Event bus<a class="headerlink" href="#event-bus" title="Permanent link">&para;</a></h1>
+<p>The event bus is a small in-process publish/subscribe layer (<code>msflib.eventbus</code>). Modules use it to react to each other without importing each other: the workspaces module, for example, listens for account creation and sets up a default workspace, and the account module never knows. It is also how a host app hooks its own behavior into module lifecycles.</p>
+<p>It is synchronous and in-process. It is not a message queue: nothing is persisted, retried or delivered to other processes. For background work see <a href="../../integration/long-running-jobs-ingestion/">long-running jobs</a>.</p>
+<h2 id="concepts">Concepts<a class="headerlink" href="#concepts" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Models</strong>: SQLModel tables and the Pydantic schemas that go with them.</li>
-<li><strong>Actions</strong>: service-layer classes, usually <code>ModelAction</code> subclasses, that hold the database logic.</li>
-<li><strong>Routers</strong>: factory functions that build a FastAPI <code>APIRouter</code> from the dependencies you hand them (session, identity, settings).</li>
-<li><strong>Dependencies</strong>: factories that return namespaces of FastAPI dependencies, such as "the current account".</li>
-<li><strong>Settings</strong>: a settings class with its own namespace, composed into your app's settings object.</li>
+<li>An event is a string name (or a <code>BaseEnum</code>/<code>Enum</code> member, normalized to its value) such as <code>"order-placed"</code> or <code>"account-create-pre-commit"</code>.</li>
+<li>A listener is a function called with whatever positional and keyword arguments the emitter passed. By convention module events pass <code>(instance, options)</code>, where <code>options</code> is a dict that may carry the DB <code>session</code>.</li>
+<li>An <code>Emitter</code> holds the listeners. Each FastAPI app gets its own, wrapped in an <code>AppEmitter</code>, so apps and tests do not share listeners.</li>
+<li>The module-level <code>emitter</code> is a proxy to the emitter active in the current context. Module code emits through it; the middleware installed by <code>bind_app_emitter</code> makes it point at your app's emitter during each request.</li>
 </ul>
-<p>Modules are written to be wired, not configured by import side effects. A module's router factory asks you for the session and identity dependencies it needs, so the same module works with whatever auth and database layout your app already has. Modules depend on <code>msflib</code> and, in some cases, on each other (see the table below).</p>
-<h2 id="package-map">Package map<a class="headerlink" href="#package-map" title="Permanent link">&para;</a></h2>
-<p>All packages live in one repository, <a href="https://github.com/msflib/fastapi">msflib/fastapi</a>. "Depends on" lists the direct <code>msflib-*</code> dependencies declared in each package's <code>pyproject.toml</code>; every package also depends on <code>msflib</code> itself.</p>
+<h2 id="wiring-it-into-your-app">Wiring it into your app<a class="headerlink" href="#wiring-it-into-your-app" title="Permanent link">&para;</a></h2>
+<p>Bind one emitter per app at creation, then pass the <code>AppEmitter</code> to module hook registrations and register your own listeners.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@app_emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="s2">"order-placed"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_order_placed</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"order </span><span class="si">%s</span><span class="s2"> placed"</span><span class="p">,</span> <span class="n">order</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
+</code></pre></div>
+
+<p><code>bind_app_emitter(app)</code> stores the emitter on <code>app.state</code>, adds a middleware that activates it for each HTTP and WebSocket request, and is safe to call again (<code>get_app_emitter(app)</code> returns the existing one). The <code>@app_emitter.listen(...)</code> decorator injects a <code>logger</code> keyword argument into listeners that declare <code>logger</code> (or <code>**kwargs</code>); listeners that do not declare it are called without one. The injected logger prefixes messages with the event name.</p>
+<p>Module hooks are registered by calling the module's <code>register_event_hooks</code>, usually at startup (a lifespan handler):</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
+
+<span class="n">register_event_hooks</span><span class="p">(</span>
+    <span class="n">workspace_action</span><span class="o">=</span><span class="n">workspace_action</span><span class="p">,</span>
+    <span class="n">user_action</span><span class="o">=</span><span class="n">user_action</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="o">=</span><span class="n">account_action</span><span class="p">,</span>
+    <span class="n">emitter</span><span class="o">=</span><span class="n">app_emitter</span><span class="p">,</span>
+    <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Modules that ship hooks, with their <code>eventbus</code> packages, include account, auth, conversation, documents (<code>msflib.documents.drivelink</code>), knowledge and workspaces. Each exports its event names and, where defined, an <code>EVENT_CONTRACTS</code> map from event name to the options type. The core <code>msflib.eventbus</code> also exports <code>EventName</code> (the generic model lifecycle names), <code>EventOptions</code> and <code>merge_event_contracts</code>.</p>
+<p>The testsite in the repository (<code>testsite/app/main.py</code>) shows the full wiring.</p>
+<h2 id="emitting">Emitting<a class="headerlink" href="#emitting" title="Permanent link">&para;</a></h2>
+<p>Choose the method by what should happen when nobody listens or a listener fails.</p>
 <table>
 <thead>
 <tr>
-<th>Package</th>
-<th>Import</th>
-<th>Purpose</th>
-<th>Depends on</th>
+<th>Method</th>
+<th>No listener</th>
+<th>A listener raises</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="modules/core/"><code>msflib</code></a></td>
-<td><code>msflib</code></td>
-<td>Core: settings, base models, actions, event bus, scope and policy, DB setup, seeding, utilities</td>
-<td>none</td>
+<td><code>emit_optional</code></td>
+<td>returns <code>False</code></td>
+<td>logged as a warning, remaining listeners still run, returns <code>False</code></td>
 </tr>
 <tr>
-<td><a href="modules/auth/"><code>msflib-auth</code></a></td>
-<td><code>msflib.auth</code></td>
-<td>Login, token issue and revocation, password reset, optional Google OAuth, identity dependency factories</td>
-<td>none</td>
+<td><code>emit_required</code></td>
+<td>raises <code>EventBusRequiredListenerError</code></td>
+<td>raises <code>EventBusListenerExecutionError</code> (original error as <code>__cause__</code>)</td>
 </tr>
 <tr>
-<td><a href="modules/account/"><code>msflib-account</code></a></td>
-<td><code>msflib.account</code></td>
-<td>Accounts and profiles: registration, self-service and admin endpoints</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/tenancy/"><code>msflib-tenancy</code></a></td>
-<td><code>msflib.tenancy</code></td>
-<td>A minimal <code>Tenant</code> model and tenant resolution, the target for <code>tenant_id</code> foreign keys</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/workspaces/"><code>msflib-workspaces</code></a></td>
-<td><code>msflib.workspaces</code></td>
-<td>Workspace lifecycle, ownership and membership</td>
-<td>account, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/notifications/"><code>msflib-notifications</code></a></td>
-<td><code>msflib.notifications</code></td>
-<td>Account inbox and admin broadcast over in-app, email and SMS channels</td>
-<td>account, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/workspace-notifications/"><code>msflib-workspace-notifications</code></a></td>
-<td><code>msflib.workspace_notifications</code></td>
-<td>Workspace-level notifications, including Discord channels</td>
-<td>workspaces, notifications</td>
-</tr>
-<tr>
-<td><a href="modules/workspace-config/"><code>msflib-workspace-config</code></a></td>
-<td><code>msflib.workspace_config</code></td>
-<td>Tenant, workspace and user scoped configuration values and categories</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/payments/"><code>msflib-payments</code></a></td>
-<td><code>msflib.payments</code></td>
-<td>Payment initiation and verification over Stripe and Paystack, payment queue</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/ai-core/"><code>msflib-ai-core</code></a></td>
-<td><code>msflib.ai_core</code></td>
-<td>Provider-agnostic LLM, embedding and vector-store factories, prompts, ingestion pipeline</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/ai-api/"><code>msflib-ai-api</code></a></td>
-<td><code>msflib.ai_api</code></td>
-<td>HTTP endpoints for scoped retrieval and grounded Q&amp;A on top of ai-core</td>
-<td>account, ai-core, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/drivelink/"><code>msflib-drivelink</code></a></td>
-<td><code>msflib.drivelink</code></td>
-<td>A Drive-style virtual filesystem</td>
-<td>account</td>
-</tr>
-<tr>
-<td><a href="modules/ingestion/"><code>msflib-ingestion</code></a></td>
-<td><code>msflib.ingestion</code></td>
-<td>Shared ingestion job model and Celery-backed queue with an operator API</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/documents/"><code>msflib-documents</code></a></td>
-<td><code>msflib.documents</code></td>
-<td>Document upload, extraction, chunking, embedding and indexing</td>
-<td>account, drivelink, ai-core, ingestion, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/knowledge/"><code>msflib-knowledge</code></a></td>
-<td><code>msflib.knowledge</code></td>
-<td>Scoped knowledge model projected to graph and vector stores, with semantic queries</td>
-<td>ai-core, documents, ingestion, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/conversation/"><code>msflib-conversation</code></a></td>
-<td><code>msflib.conversation</code></td>
-<td>Channels, threads, messages, membership and reactions</td>
-<td>tenancy</td>
+<td><code>emit_strict</code></td>
+<td>returns <code>False</code></td>
+<td>re-raises the original exception (or returns it with <code>raise_error=False</code>)</td>
 </tr>
 </tbody>
 </table>
-<p>The import column is a namespace package: <code>msflib</code> is declared with <code>pkgutil.extend_path</code>, so all of these packages install into the same <code>msflib</code> directory tree. Check what a package's <code>__init__</code> exports before relying on <code>from msflib.x import y</code>; several modules export nothing at the top level and expect you to import from submodules.</p>
-<h2 id="picking-what-to-install">Picking what to install<a class="headerlink" href="#picking-what-to-install" title="Permanent link">&para;</a></h2>
-<p>Start from what your app has to do, then add the packages that provide it. Installing a package pulls in the <code>msflib-*</code> packages it depends on.</p>
-<table>
-<thead>
-<tr>
-<th>If you need</th>
-<th>Install</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CRUD endpoints over your own models, settings, events, seeding</td>
-<td><code>msflib</code> only</td>
-</tr>
-<tr>
-<td>User accounts and login</td>
-<td><code>msflib-account</code> and <code>msflib-auth</code></td>
-</tr>
-<tr>
-<td>Per-tenant isolation keys on your tables</td>
-<td><code>msflib-tenancy</code></td>
-</tr>
-<tr>
-<td>Teams or organisations that users join</td>
-<td><code>msflib-workspaces</code> (brings account and tenancy)</td>
-</tr>
-<tr>
-<td>Settings that differ by tenant, workspace or user</td>
-<td><code>msflib-workspace-config</code></td>
-</tr>
-<tr>
-<td>In-app, email or SMS notifications</td>
-<td><code>msflib-notifications</code>, plus <code>msflib-workspace-notifications</code> for workspace-level ones</td>
-</tr>
-<tr>
-<td>Taking payments</td>
-<td><code>msflib-payments</code></td>
-</tr>
-<tr>
-<td>LLM calls, embeddings, vector search</td>
-<td><code>msflib-ai-core</code>, plus <code>msflib-ai-api</code> for ready-made endpoints</td>
-</tr>
-<tr>
-<td>Chat threads and channels</td>
-<td><code>msflib-conversation</code></td>
-</tr>
-<tr>
-<td>File storage with a folder tree</td>
-<td><code>msflib-drivelink</code></td>
-</tr>
-<tr>
-<td>Document ingestion and retrieval</td>
-<td><code>msflib-documents</code> and <code>msflib-ingestion</code>; add <code>msflib-knowledge</code> for the knowledge graph</td>
-</tr>
-</tbody>
-</table>
-<p>Some packages have optional extras (for example <code>msflib-ai-core[openai,pgvector]</code> or <code>msflib-notifications[email]</code>); each module page lists them. The core has one, <code>migrations</code>, which adds Alembic.</p>
-<div class="admonition note">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
-<p>The <code>sms</code>, <code>email</code> and <code>discord</code> extras of the notification packages currently add nothing: their dependencies (<code>twilio</code>, <code>emails</code>, <code>discord-py</code>) are already hard requirements of the core, so you do not need them. For <code>msflib-workspace-notifications</code>, avoid the <code>sms</code> and <code>all</code> extras: they require <code>twilio ^8.0.0</code> while the core requires <code>^9.4.6</code>, so the resolver cannot satisfy both.</p>
-</div>
-<h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permanent link">&para;</a></h2>
-<p>Packages are installed from the git repository, one <code>subdirectory</code> per package. With Poetry:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
-<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/auth"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"auth-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<p><code>emit_optional</code> returns <code>True</code> only when there was at least one listener and all of them succeeded. Use it for notifications that must not break the caller. Use <code>emit_required</code> when a listener's work is part of the operation, for instance work that has to happen inside the same transaction.</p>
+<p>Each has an <code>_async</code> variant (<code>emit_optional_async</code>, <code>emit_required_async</code>, <code>emit_strict_async</code>) that awaits async listeners. The synchronous <code>emit_required</code> and <code>emit_strict</code> reject async listeners with an error, and <code>emit_optional</code> schedules coroutine listeners on the running loop instead of waiting for them. Keep listeners for transactional events synchronous. <code>emit_if_listeners</code> still exists but is deprecated in favor of <code>emit_optional</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">emitter</span>
+
+<span class="n">delivered</span> <span class="o">=</span> <span class="n">emitter</span><span class="o">.</span><span class="n">emit_optional</span><span class="p">(</span><span class="s2">"order-placed"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{})</span>
 </code></pre></div>
 
-<p>Pin a release tag in <code>rev</code>. Tags are named <code>&lt;package directory&gt;-v&lt;version&gt;</code>, for example <code>core-v0.2.1</code>, <code>account-v0.2.2</code> or <code>workspace_config-v0.2.1</code>, and each package is versioned independently. The versions above were current when this page was written; list the latest with:</p>
-<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>ls-remote<span class="w"> </span>--tags<span class="w"> </span>https://github.com/msflib/fastapi.git<span class="w"> </span><span class="s1">'core-v*'</span>
-</code></pre></div>
-
-<p>Do not use <code>rev = "dev"</code> (or <code>@dev</code> with pip) in anything you deploy. <code>dev</code> is the moving development head: it can change or break between installs. The <a href="quick-start/basics/">Quick Start</a> walks through the same installation for the core package.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>MSFLib 0.2.0 and later require Pydantic v2. If your app is still on Pydantic v1, use the 0.1.x tags.</p>
-</div>
-<h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
+<h2 id="model-lifecycle-events">Model lifecycle events<a class="headerlink" href="#model-lifecycle-events" title="Permanent link">&para;</a></h2>
+<p>Every <code>ModelAction</code> create, update and delete emits events automatically, so you can hook any model without subclassing its action. For a model named <code>Customer</code>:</p>
 <ul>
-<li><a href="quick-start/basics/">Quick Start</a>: a four-page walk from an empty directory to a tested CRUD API on the core package.</li>
-<li><a href="modules/">Modules</a>: one page per package.</li>
-<li><a href="integration/">Diving Deeper</a>: mounting routes, overriding models, subclassing actions, authentication, long-running jobs.</li>
-<li><a href="concepts/">Concepts</a>: tiered configuration, policy, scopes, the event bus, dependency injection and seeding.</li>
-<li><a href="contributing/">Contributing</a>: working on MSFLib itself.</li>
+<li><code>customer-create-pre-commit</code>, <code>customer-update-pre-commit</code>, <code>customer-delete-pre-commit</code>, and the generic <code>model-create-pre-commit</code> and so on. Pre-commit events are emitted with <code>emit_required</code> after the row is flushed and before commit, so a listener runs in the same transaction and a listener error aborts the operation. They are only emitted when something is listening. The listener receives <code>(model, payload)</code> where <code>payload</code> includes the <code>session</code>.</li>
+<li>The matching <code>-post-commit</code> events fire after the outermost commit with <code>emit_optional</code>, so listener errors are logged and do not fail the request. Post-commit listeners get a plain snapshot of the row rather than the live ORM object, which may be expired by then.</li>
+</ul>
+<p>Model names are the lowercase class name, so a listener for the pre-commit event of <code>Customer</code> is registered on <code>"customer-create-pre-commit"</code>.</p>
+<h2 id="pitfalls">Pitfalls<a class="headerlink" href="#pitfalls" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Register listeners on the app emitter (<code>@app_emitter.listen</code> or <code>@listen(..., app=app)</code>), not at import time with a bare <code>@listen(...)</code>. The bare form registers globally and is kept only for backward compatibility.</li>
+<li>Do not register listeners with <code>emitter.on(...)</code> on the global <code>emitter</code> object. It adds them to the default emitter only, so a route that emits inside an app bound with <code>bind_app_emitter(app)</code> does not see them, and a required event fails with <code>EventBusRequiredListenerError</code>. Use <code>@app_emitter.listen</code>, <code>listen(..., app=app)</code> or the legacy bare <code>@listen(...)</code>.</li>
+<li>Background tasks run after the request middleware has exited, so the module-level <code>emitter</code> no longer points at your app's emitter. Wrap such work in <code>with use_app_emitter(app):</code>.</li>
+<li>Calling a module's <code>register_event_hooks</code> twice on the same emitter would double-register. The modules guard this with <code>HookRegistry</code>, which rebinds instead of duplicating; do the same in your own hook functions (<code>HookRegistry.bind(emitter=..., listeners=[...])</code>, <code>reset</code> for tests).</li>
+<li>Pre-commit listeners that raise abort the operation. Do slow or external work (email, HTTP calls) in post-commit listeners or a job queue.</li>
+<li>EventBus logging is silent by default (a <code>NullHandler</code>). Call <code>configure_eventbus_logger(handler=..., level=...)</code> to see warnings from failed optional listeners.</li>
 </ul>
 
 
@@ -2223,10 +2105,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -1,0 +1,2688 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/modules/workspaces/">
+      
+      
+        <link rel="prev" href="../tenancy/">
+      
+      
+        <link rel="next" href="../notifications/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>workspaces - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflib-workspaces" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              workspaces
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wiring into a host app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#membership-and-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership and access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workspace-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workspace model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-workspace-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default workspace hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-form-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding form handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seed-a-tenant-accounts-workspace-and-membership-from-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seed a tenant, accounts, workspace and membership from code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-join-and-switch-over-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create, join and switch over HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap-a-default-workspace-when-accounts-are-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap a default workspace when accounts are created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customise-the-membership-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customise the membership type
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wiring into a host app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#membership-and-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership and access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workspace-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workspace model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-workspace-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default workspace hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-form-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding form handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seed-a-tenant-accounts-workspace-and-membership-from-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seed a tenant, accounts, workspace and membership from code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-join-and-switch-over-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create, join and switch over HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap-a-default-workspace-when-accounts-are-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap a default workspace when accounts are created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customise-the-membership-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customise the membership type
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflib-workspaces">msflib-workspaces<a class="headerlink" href="#msflib-workspaces" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p><code>msflib-workspaces</code> adds workspaces and workspace membership. A workspace is a team or project space inside a tenant. A membership (the <code>User</code> model, table <code>workspace_user</code>) links one account to one workspace and carries the account's role and status there.</p>
+<p>The module supplies the models, actions, routers for managing workspaces and joining or switching between them, and optional event hooks that create a default workspace and membership when an account is created. It builds on <a href="../account/">msflib-account</a> and <a href="../tenancy/">msflib-tenancy</a>. Request-time workspace resolution is in <a href="../auth/">msflib-auth</a>.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-tenancy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/tenancy"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"tenancy-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-workspaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspaces"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspaces-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Import paths:</p>
+<ul>
+<li><code>msflib.workspaces</code> loads attributes lazily and exposes only <code>DependencyNamespace</code> and <code>get_workspace_form_dependencies</code>.</li>
+<li>Schemas and enums come from <code>msflib.workspaces.models</code>. The table classes do not: use <code>msflib.workspaces.models.workspace.Workspace</code> and <code>msflib.workspaces.models.user.User</code>.</li>
+<li>Actions are in <code>msflib.workspaces.actions</code>, routers in <code>msflib.workspaces.router</code>, hooks in <code>msflib.workspaces.eventbus</code>, settings in <code>msflib.workspaces.config</code>.</li>
+</ul>
+<h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
+<p>The tables reference <code>account.id</code> and <code>tenant.id</code>, so import the <code>Account</code> and <code>Tenant</code> models before creating tables. Seed the default tenant at startup, then mount the routers.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span><span class="p">,</span> <span class="n">get_app_emitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.user</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Workspace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">workspaces_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">user_me_router</span><span class="p">,</span> <span class="n">user_workspace_router</span>
+
+<span class="n">workspace_action</span> <span class="o">=</span> <span class="n">WorkspaceAction</span><span class="p">[</span><span class="n">Workspace</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">user_action</span> <span class="o">=</span> <span class="n">UserAction</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">]()</span>
+<span class="n">account_action</span> <span class="o">=</span> <span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">workspace_action</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">AUTO_REGISTER_EVENT_HOOKS</span><span class="p">:</span>
+    <span class="n">register_event_hooks</span><span class="p">(</span>
+        <span class="n">workspace_action</span><span class="o">=</span><span class="n">workspace_action</span><span class="p">,</span>
+        <span class="n">user_action</span><span class="o">=</span><span class="n">user_action</span><span class="p">,</span>
+        <span class="n">account_action</span><span class="o">=</span><span class="n">account_action</span><span class="p">,</span>
+        <span class="n">emitter</span><span class="o">=</span><span class="n">get_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span>
+        <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">workspaces_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">get_current_account_or_none</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account_or_none</span><span class="p">,</span>
+        <span class="n">role_check</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">RoleCheck</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
+        <span class="n">workspace_type</span><span class="o">=</span><span class="n">Workspace</span><span class="p">,</span>
+        <span class="n">user_type</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/workspaces"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">user_workspace_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">get_current_active_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_active_account</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">workspace_type</span><span class="o">=</span><span class="n">Workspace</span><span class="p">,</span>
+        <span class="n">user_type</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">user_me_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">get_current_active_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_active_account</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">user_type</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><code>account_deps</code> and <code>user_deps</code> are the namespaces from <a href="../auth/#wiring-into-a-host-app">auth</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>router(...)</code> defaults <code>workspace_type</code> and <code>user_type</code> to the abstract <code>WorkspaceBase</code> and <code>UserBase</code>, which are not tables. Always pass your concrete table classes.</p>
+</div>
+<p>The default <code>settings</code> in your host must include <code>WorkspaceSettings</code> and <code>TenancySettings</code> (and the account and auth settings the other modules use), for example <code>class Settings(WorkspaceSettings, TenancySettings, AccountSettings, AuthSettings, CoreSettings, SettingsBase)</code>.</p>
+<h3 id="routes">Routes<a class="headerlink" href="#routes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Router (default prefix)</th>
+<th>Routes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>router</code> (<code>/workspaces</code>)</td>
+<td><code>GET /</code> (workspaces the caller owns), <code>POST /</code> (create; multipart form), <code>GET /available</code>, <code>GET /{workspace_id}</code>, <code>PUT /{workspace_id}</code>, <code>DELETE /{workspace_id}</code></td>
+</tr>
+<tr>
+<td><code>user_workspace_router</code> (<code>/users</code>)</td>
+<td><code>POST /join</code>, <code>POST /switch</code></td>
+</tr>
+<tr>
+<td><code>user_me_router</code> (<code>/{workspace_slug}/users</code>)</td>
+<td><code>GET /me</code>, <code>GET /{user_id}</code></td>
+</tr>
+<tr>
+<td><code>user_profile_router</code> (<code>/{workspace_slug}/profiles</code>)</td>
+<td>The profile routes of the account module, restricted to workspace members</td>
+</tr>
+</tbody>
+</table>
+<p><code>POST</code>, <code>PUT</code> and <code>DELETE</code> on <code>/workspaces</code> pass through <code>role_check([AccountRole.admin])</code>, an account-level check, and then act only on workspaces the caller owns. <code>GET /available</code> works without authentication and lists open workspaces; for a signed-in caller it also includes workspaces they belong to or own, minus locked workspaces and workspaces where they are banned.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Settings live in the <code>WORKSPACES</code> namespace (<code>WorkspaceSettings</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTO_CREATE_DEFAULT_WORKSPACE</code></td>
+<td><code>True</code></td>
+<td>The account hook creates the default workspace and membership.</td>
+</tr>
+<tr>
+<td><code>DEFAULT_WORKSPACE_NAME</code></td>
+<td><code>Default Workspace</code></td>
+<td>Name of the default workspace.</td>
+</tr>
+<tr>
+<td><code>AUTO_REGISTER_EVENT_HOOKS</code></td>
+<td><code>True</code></td>
+<td>Declared, currently has no effect (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). It is a flag for your startup code, as in the wiring above. The library does not read it itself.</td>
+</tr>
+<tr>
+<td><code>ENABLE_USERINFO_COLLECTION</code></td>
+<td><code>False</code></td>
+<td>Declared, but not read from your settings object (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). It creates the <code>UserInfo</code> table and is read from the process environment at import time.</td>
+</tr>
+<tr>
+<td><code>USERINFO_TABLE_NAME</code></td>
+<td><code>workspace_user_info</code></td>
+<td>Declared, but not read from your settings object (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>). Table name when the above is on, read from the process environment.</td>
+</tr>
+<tr>
+<td><code>ENABLE_MULTI_WORKSPACE</code>, <code>ALLOW_WORKSPACE_REGISTRATION</code>, <code>MAX_WORKSPACES_PER_ACCOUNT</code></td>
+<td><code>True</code>, <code>False</code>, <code>10</code></td>
+<td>Declared, currently has no effect (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>): nothing in the module reads them, so they do not restrict anything.</td>
+</tr>
+</tbody>
+</table>
+<p>Mixin-style settings take flat names (<code>DEFAULT_WORKSPACE_NAME=Home</code>); composed settings (<code>WORKSPACES: WorkspaceSettings = WorkspaceSettings()</code>) accept <code>WORKSPACES__DEFAULT_WORKSPACE_NAME</code> as well. <code>ENABLE_USERINFO_COLLECTION</code> and <code>USERINFO_TABLE_NAME</code> are the exception: they are resolved when <code>msflib.workspaces.models</code> is first imported, from the environment (<code>WORKSPACES__ENABLE_USERINFO_COLLECTION</code> or the flat name) and not from your settings object, so set them in the process environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
+</div>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="membership-and-access">Membership and access<a class="headerlink" href="#membership-and-access" title="Permanent link">&para;</a></h3>
+<p>A membership is the only thing that connects an account to a workspace. <code>User</code> has a unique constraint on <code>(account_id, workspace_id)</code>, a <code>type</code> (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>), a <code>status</code> (<code>active</code>, <code>kicked</code>, <code>banned</code>), and profile fields (<code>display_name</code>, <code>avatar_url</code>, <code>bio</code>, <code>data</code>).</p>
+<p>The request dependencies in <a href="../auth/#workspace-resolution">auth</a> check this row. Having an account, owning the tenant, or holding an account-level <code>admin</code> role does not give access to a workspace: the account needs a membership in that workspace. A tenant administrator who needs to administer a workspace joins it like anyone else, or is added by an owner. Likewise, a workspace's rows are scoped by <code>workspace_id</code>, and <code>None</code> is the anonymous workspace, never "all workspaces" (see <a href="../tenancy/#key-concepts">tenancy</a>).</p>
+<p>Ways memberships are created:</p>
+<ul>
+<li><code>POST /workspaces/</code> makes the creator the owner.</li>
+<li>The account hook (below) adds each new account to the default workspace.</li>
+<li><code>POST /users/join</code> lets an account join a workspace whose status is <code>open</code>. Only the roles in <code>allowed_join_roles</code> (default <code>[UserType.member]</code>) can be requested; asking for another role is a 403. Joining is idempotent and also sets the account's <code>current_workspace_id</code>.</li>
+<li><code>UserAction.create_membership(...)</code> creates one from code. It is idempotent per account and workspace.</li>
+</ul>
+<p><code>POST /users/switch</code> changes <code>current_workspace_id</code> to another workspace the account already belongs to, and refuses locked workspaces (423) or non-members (401).</p>
+<h3 id="workspace-model">Workspace model<a class="headerlink" href="#workspace-model" title="Permanent link">&para;</a></h3>
+<p><code>WorkspaceBase</code> fields: <code>name</code>, <code>slug</code> (unique, derived from the name), <code>description</code>, <code>logo_url</code>, <code>owner_id</code> (foreign key to <code>account.id</code>), <code>tenant_id</code> (foreign key to <code>tenant.id</code>), <code>is_default</code>, <code>status</code>, <code>settings</code> and <code>data</code> (JSON). <code>WorkspaceStatus</code> is <code>open</code>, <code>restricted</code>, <code>readonly</code> or <code>locked</code>.</p>
+<p>Creating a workspace through the router rejects duplicate names, and names that match a reserved list: <code>admin</code>, <code>accounts</code>, <code>workspaces</code>, plus top-level route prefixes found by scanning <code>./testsite/app/api/api.py</code> and <code>./testsite/app/api/api_v1/endpoints/admin/__init__.py</code> relative to the working directory. Those files exist only in this repository's test site, so in a host app only the three built-in names apply unless you extend the check.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/271">#271</a>)</p>
+<p>The reserved-name scan hard-codes the test site's paths, so it finds nothing outside this repository. Related workspaces limitations tracked in the same issue: the default-workspace hook fires only when the account model class is named <code>Account</code> (see <a href="#default-workspace-hook">Default workspace hook</a>), and <code>decorate_access_token_payload</code> adds fields that the default <code>Token</code> response model drops, so declare them on your own <code>access_token_response_type</code> (see <a href="../auth/#add-claims-and-extra-response-fields-at-login">auth</a>).</p>
+</div>
+<h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h3>
+<p><code>WorkspaceAction(settings=...)</code> adds, on top of <code>ModelAction</code>:</p>
+<ul>
+<li><code>create_with_owner(session, data=, owner=, tenant=)</code> sets <code>owner_id</code> and <code>tenant_id</code> for you.</li>
+<li><code>ensure_default_workspace(session, owner_id=, tenant=)</code> returns the tenant's default workspace, creating it if missing.</li>
+<li><code>resolve_workspace_context(session, account=, user_action=)</code>, <code>build_access_token_claims(...)</code> and <code>decorate_access_token_payload(...)</code> compute the account's workspaces and active membership for login. Pass the last two to the auth router's <code>access_token_claims_decorator</code> and <code>access_token_decorator</code> hooks.</li>
+</ul>
+<p><code>UserAction</code> adds <code>create_membership</code> and <code>get_by_email</code>. Membership type is resolved in this order: the <code>membership_type=</code> argument to <code>create_membership</code>; a <code>membership_type_resolver</code> callable passed to <code>UserAction(...)</code> with signature <code>(account_id, workspace_id, owner_id) -&gt; type</code>; an override of <code>resolve_membership_type</code> in a subclass; and finally the default, <code>owner</code> when the account is the workspace owner and <code>member</code> otherwise.</p>
+<h3 id="default-workspace-hook">Default workspace hook<a class="headerlink" href="#default-workspace-hook" title="Permanent link">&para;</a></h3>
+<p><code>register_event_hooks(...)</code> registers two listeners:</p>
+<ul>
+<li>On <code>account-create-pre-commit</code>, if <code>AUTO_CREATE_DEFAULT_WORKSPACE</code> is true: look up the <code>FIRST_SUPERUSER</code> account (falling back to the new account) as owner, ensure the default workspace for the default tenant, add the new account as a member, and set its <code>current_workspace_id</code> if empty.</li>
+<li>On <code>workspace-create-pre-commit</code>: add the workspace owner as a member.</li>
+</ul>
+<p>That first event name comes from <code>ModelAction</code>, which emits <code>&lt;model-name&gt;-create-pre-commit</code> inside the creating transaction. The model name is the lower-cased class name, so the hook fires only if your account model class is named <code>Account</code>. A differently named class needs its own listener (see the known issue under <a href="#workspace-model">Workspace model</a>). Events fire on the emitter that is active for the current request or block; outside a request, wrap the code in <code>use_app_emitter(app)</code> from <code>msflib.eventbus</code>.</p>
+<p>Membership events for your own listeners: <code>workspace-membership-pre-create</code> (strict: a failing or async listener aborts the join) and <code>workspace-membership-created</code>.</p>
+<h3 id="overriding-form-handling">Overriding form handling<a class="headerlink" href="#overriding-form-handling" title="Permanent link">&para;</a></h3>
+<p>Workspace create and update take <code>multipart/form-data</code> so a logo can be uploaded. <code>get_workspace_form_dependencies(workspace_create_type=, workspace_update_type=)</code> returns a mutable namespace with <code>get_workspace_create</code> and <code>get_workspace_update</code>. Wrap or replace one and pass the namespace as <code>workspace_form_dependencies=</code> to <code>router(...)</code>.</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="seed-a-tenant-accounts-workspace-and-membership-from-code">Seed a tenant, accounts, workspace and membership from code<a class="headerlink" href="#seed-a-tenant-accounts-workspace-and-membership-from-code" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">TenantAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserType</span>
+
+<span class="n">tenant_action</span> <span class="o">=</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span>
+
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">tenant</span> <span class="o">=</span> <span class="n">tenant_action</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+    <span class="n">ada</span> <span class="o">=</span> <span class="n">account_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">AccountCreate</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">"ada@example.com"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">"s3cret-pass"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">acme</span> <span class="o">=</span> <span class="n">workspace_action</span><span class="o">.</span><span class="n">create_with_owner</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">workspace_action</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Acme"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Acme team"</span><span class="p">,</span> <span class="n">owner_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="n">owner</span><span class="o">=</span><span class="n">ada</span><span class="p">,</span>
+        <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">user_action</span><span class="o">.</span><span class="n">create_membership</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">owner_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">)</span>
+
+    <span class="n">membership</span> <span class="o">=</span> <span class="n">user_action</span><span class="o">.</span><span class="n">get_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">membership</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UserType</span><span class="o">.</span><span class="n">owner</span>
+    <span class="k">assert</span> <span class="n">acme</span><span class="o">.</span><span class="n">tenant_id</span> <span class="o">==</span> <span class="n">tenant</span><span class="o">.</span><span class="n">id</span>
+</code></pre></div>
+
+<h3 id="create-join-and-switch-over-http">Create, join and switch over HTTP<a class="headerlink" href="#create-join-and-switch-over-http" title="Permanent link">&para;</a></h3>
+<p>With an admin-role account <code>root@example.com</code> and a plain account <code>bob@example.com</code>, using the routers above:</p>
+<div class="codehilite"><pre><span></span><code>POST /workspaces/        (admin, form: name=Beta, description=Beta team)  -&gt; 201, slug "beta"
+POST /users/join         (bob, {"workspace_id": 3, "user_type": "member"}) -&gt; 200, workspace_slug "beta"
+POST /users/join         (bob, {"workspace_id": 3, "user_type": "admin"})  -&gt; 403 "The requested join role is not allowed."
+GET  /beta/users/me      (bob)                                             -&gt; 200, type "member"
+POST /users/switch       (bob, {"workspace_id": 2})                        -&gt; 401, not a member of workspace 2
+</code></pre></div>
+
+<h3 id="bootstrap-a-default-workspace-when-accounts-are-created">Bootstrap a default workspace when accounts are created<a class="headerlink" href="#bootstrap-a-default-workspace-when-accounts-are-created" title="Permanent link">&para;</a></h3>
+<p>Register the hooks (see the wiring above) and create accounts inside the app's emitter context:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">use_app_emitter</span>
+
+<span class="k">with</span> <span class="n">use_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">tenant_action</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">account_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">AccountCreate</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">"new@example.com"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">"s3cret-pass"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">account</span><span class="o">.</span><span class="n">current_workspace_id</span>  <span class="c1"># 1, the default workspace</span>
+</code></pre></div>
+
+<p>With no <code>FIRST_SUPERUSER</code> account present, the new account becomes owner of the default workspace.</p>
+<h3 id="customise-the-membership-type">Customise the membership type<a class="headerlink" href="#customise-the-membership-type" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_resolver</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">owner_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserType</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">UserType</span><span class="o">.</span><span class="n">owner</span> <span class="k">if</span> <span class="n">account_id</span> <span class="o">==</span> <span class="n">owner_id</span> <span class="k">else</span> <span class="n">UserType</span><span class="o">.</span><span class="n">guest</span>
+
+
+<span class="n">user_action</span> <span class="o">=</span> <span class="n">UserAction</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">](</span><span class="n">membership_type_resolver</span><span class="o">=</span><span class="n">my_resolver</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause and fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NoReferencedTableError</code> from <code>create_all</code></td>
+<td><code>Account</code> or <code>Tenant</code> is not imported. Import <code>msflib.account.models.account</code> and <code>msflib.tenancy.models.tenant</code> first.</td>
+</tr>
+<tr>
+<td>500 "Default tenant has not been seeded" on <code>POST /workspaces/</code></td>
+<td>Seed the tenant at startup, or pass <code>get_current_tenant</code>.</td>
+</tr>
+<tr>
+<td>422 "Workspace name not allowed"</td>
+<td>The slug matches <code>admin</code>, <code>accounts</code>, <code>workspaces</code>, or a reserved route prefix.</td>
+</tr>
+<tr>
+<td>403 on <code>POST /workspaces/</code> for a <code>root</code> account</td>
+<td>The route requires <code>AccountRole.admin</code> exactly. Use an account with that role, or a role-check factory that includes <code>root</code>.</td>
+</tr>
+<tr>
+<td>403 "The requested join role is not allowed."</td>
+<td>The role is not in <code>allowed_join_roles</code>. Raise it only if you accept self-service joins at that level.</td>
+</tr>
+<tr>
+<td>423 on join or switch</td>
+<td>Workspace status prevents it: join needs <code>open</code>, switch refuses <code>locked</code>.</td>
+</tr>
+<tr>
+<td>New accounts get no default workspace</td>
+<td>The hooks were not registered, the account class is not named <code>Account</code>, <code>AUTO_CREATE_DEFAULT_WORKSPACE</code> is false, or no emitter is active for the code path.</td>
+</tr>
+<tr>
+<td><code>UserInfo</code> has no table</td>
+<td><code>ENABLE_USERINFO_COLLECTION</code> was not set in the environment before the first import of the module.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<p>Generated reference pages will be linked here once the API reference is added (Phase 3 of <a href="https://github.com/msflib/fastapi/issues/262">#262</a>). Until then, <code>modules/workspaces/README.md</code> documents the membership-type resolution options.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../auth/">Auth</a>, <a href="../account/">Account</a>, <a href="../tenancy/">Tenancy</a>, <a href="../workspace-config/">Workspace config</a></li>
+<li><a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a></li>
+<li><a href="../../concepts/event-bus/">Event bus</a>, <a href="../../concepts/seeding/">Seeding</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

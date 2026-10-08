@@ -1,0 +1,2350 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/modules/workspace-notifications/">
+      
+      
+        <link rel="prev" href="../notifications/">
+      
+      
+        <link rel="next" href="../workspace-config/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>workspace_notifications - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflib-workspace-notifications" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              workspace_notifications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflib-workspace-notifications">msflib-workspace-notifications<a class="headerlink" href="#msflib-workspace-notifications" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p><code>msflib-workspace-notifications</code> adds workspace-scoped notifications on top of <a href="../notifications/">notifications</a>. Workspace admins send a notification to some or all users of a workspace; recipients get an in-app inbox, and the same message can go out by email, SMS and Discord. It also stores the Discord channels a workspace has registered.</p>
+<p>The base <code>Notification</code> table stays free of any workspace dependency. This package links a notification to a workspace through its own <code>WorkspaceNotification</code> table and marks it with <code>scope = "workspace"</code>, which keeps it invisible to the account-level notification routes.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-workspaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspaces"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspaces-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"notifications-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-workspace-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspace_notifications-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>The package declares <code>discord</code>, <code>sms</code>, <code>email</code> and <code>all</code> extras (<code>discord-py</code>, <code>twilio</code>, <code>emails</code>). <code>msflib</code> core already depends on <code>discord-py</code>, <code>twilio</code> and <code>emails</code> unconditionally, so on this branch the extras add nothing when core is installed. The Discord import in <code>service/discord.py</code> is still guarded: if <code>discord</code> cannot be imported, the notifier logs an error and Discord messages are not sent.</p>
+<div class="admonition note">
+<p class="admonition-title">Packaging (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
+<p>The <code>sms</code> and <code>all</code> extras pin <code>twilio ^8.0.0</code>, which conflicts with the <code>^9.4.6</code> pin in core and <code>msflib-notifications</code>. Avoid installing those extras and rely on core's <code>twilio</code> (see Troubleshooting).</p>
+</div>
+<h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
+<p>Three router factories live in <code>msflib.workspace_notifications.router</code>. They need the workspace-aware identity dependencies from <a href="../workspaces/">workspaces</a> (<code>get_current_user</code>, <code>get_current_workspace</code>, and a role check for workspace admins).</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span><span class="p">,</span> <span class="n">get_user_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.router</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">admin_discord_channel_router</span><span class="p">,</span>
+    <span class="n">admin_user_notification_router</span><span class="p">,</span>
+    <span class="n">user_notification_router</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
+    <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
+    <span class="n">oauth_token_url</span><span class="o">=</span><span class="s2">"/token"</span><span class="p">,</span>
+    <span class="n">secret_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">,</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+    <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ws_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span>
+    <span class="n">UserModel</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
+    <span class="n">WorkspaceModel</span><span class="o">=</span><span class="n">Workspace</span><span class="p">,</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+    <span class="n">account_dependencies</span><span class="o">=</span><span class="n">account_deps</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">admin_role_check</span> <span class="o">=</span> <span class="n">ws_deps</span><span class="o">.</span><span class="n">WorkspaceRoleCheck</span><span class="p">(</span><span class="n">roles</span><span class="o">=</span><span class="p">[</span><span class="s2">"admin"</span><span class="p">,</span> <span class="s2">"owner"</span><span class="p">])</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">user_notification_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_user</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/user"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">admin_user_notification_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_user</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">admin_role_check</span><span class="o">=</span><span class="n">admin_role_check</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin/notification"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">admin_discord_channel_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_user</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">ws_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">admin_role_check</span><span class="o">=</span><span class="n">admin_role_check</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin/discord"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>This mirrors the module's own test fixture. The <code>{workspace_slug}</code> path parameter is what <code>get_current_workspace</code> resolves; use whatever your workspace dependency expects.</p>
+<table>
+<thead>
+<tr>
+<th>Router</th>
+<th>Method and path</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user</td>
+<td><code>GET /</code></td>
+<td>The workspace user's notifications (<code>offset</code>, <code>limit</code>)</td>
+</tr>
+<tr>
+<td>user</td>
+<td><code>GET /{notification_id}</code></td>
+<td>One, looked up by <code>notification_id</code>, not by the link row id</td>
+</tr>
+<tr>
+<td>user</td>
+<td><code>PATCH /{notification_id}/mark</code>, <code>PATCH /mark-all</code></td>
+<td>Set or toggle read state (<code>?status=</code>)</td>
+</tr>
+<tr>
+<td>user</td>
+<td><code>DELETE /{notification_id}</code></td>
+<td>Delete the user's copy</td>
+</tr>
+<tr>
+<td>admin</td>
+<td><code>POST /</code></td>
+<td>Send; query <code>user_receiver_ids</code> (omit for all users in the workspace). 201</td>
+</tr>
+<tr>
+<td>admin</td>
+<td><code>GET /</code>, <code>GET /{notification_id}</code></td>
+<td>Admin notifications this admin sent in this workspace</td>
+</tr>
+<tr>
+<td>admin</td>
+<td><code>DELETE /{notification_id}</code></td>
+<td>Delete a sent notification and its link rows</td>
+</tr>
+<tr>
+<td>discord</td>
+<td><code>POST /channel</code>, <code>GET /channel</code></td>
+<td>Register and list the workspace's Discord channels</td>
+</tr>
+<tr>
+<td>discord</td>
+<td><code>PUT /channel/{id}</code>, <code>DELETE /channel/{id}</code></td>
+<td>Update and delete one</td>
+</tr>
+</tbody>
+</table>
+<p>The admin <code>POST</code> returns 400 for an empty <code>channels</code> list, and 400 ("In-app channel is required.") when the dispatch returns nothing because <code>inapp</code> was not among the channels. <code>admin_user_notification_router</code> also accepts <code>user_action</code>, <code>notification_action</code> and <code>notification_create_type</code> for customization. Default prefixes if you omit <code>prefix</code>: <code>/notifications</code>, <code>/admin/notification</code>, <code>/admin/discord</code>.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p><code>WsNotificationSettings</code> has the <code>WS_NOTIFICATIONS</code> namespace.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DISCORD_BOT_TOKEN</code></td>
+<td><code>None</code></td>
+<td>Bot token. Without it the Discord handler is skipped with a warning</td>
+</tr>
+</tbody>
+</table>
+<p>Flat alias: <code>BOT_TOKEN</code> maps to <code>WS_NOTIFICATIONS.DISCORD_BOT_TOKEN</code> (confirmed). The environment variable depends on how you compose settings:</p>
+<ul>
+<li>Mixin composition (<code>class AppSettings(WsNotificationSettings, ...)</code>): use the flat names, <code>DISCORD_BOT_TOKEN</code> or <code>BOT_TOKEN</code>. <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> is not read in this style.</li>
+<li>Nested field (<code>WS_NOTIFICATIONS: WsNotificationSettings = WsNotificationSettings()</code>): <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> works as well as the flat names.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+</div>
+<p>Email and SMS use the same settings as <a href="../notifications/#configuration">notifications</a>, including the <code>TWILIO_*</code> attributes you must declare yourself.</p>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>WorkspaceNotification</code></strong> links one <code>Notification</code> (unique) to a <code>workspace_id</code>. <code>WorkspaceNotificationAction.link</code> sets <code>notification.scope = "workspace"</code> (<code>WORKSPACE_SCOPE</code>) and creates the link. <code>get_notifications</code> and <code>get_notification</code> query notifications through that link.</li>
+<li><strong><code>UserNotification</code></strong> is the per-recipient inbox row. Its <code>receiver_id</code> points at a workspace <code>user.id</code> (a membership), not an account id. <code>UserNotificationAction</code> has <code>save_for_recipients</code>, <code>mark_one</code> and <code>mark_all</code>.</li>
+<li><strong><code>DiscordChannel</code></strong>: a named Discord channel id belonging to a workspace. <code>DiscordChannelAction.store_channel</code> records the admin's account as <code>admin_id</code>. If you pass <code>admin_account</code>, it looks up that account's workspace membership with an allowed type (default <code>admin</code> or <code>owner</code>) and raises <code>ValueError</code> if none is found. If you pass <code>admin_user</code>, that user is used as given with no type check, so the role check is up to the caller (the router relies on <code>admin_role_check</code>).</li>
+<li><strong><code>dispatch_user_notifications</code></strong> (<code>msflib.workspace_notifications.service.notification</code>) mirrors the account dispatcher. It creates the notification with <code>scope="workspace"</code>, links it to the workspace and recipients, then runs the other channels. Email and SMS handlers receive account objects, so it resolves each workspace user's <code>account_id</code> to an account before calling them. <code>inapp</code> handling and the <code>sender</code> rules are the same as in the account version.</li>
+<li><strong><code>NotificationHandlerFactory</code></strong> in this package extends the base factory with a <code>discord</code> handler and takes a <code>workspace</code> argument. Pass <code>handler_factory=</code> to override.</li>
+<li><strong><code>DiscordNotifier</code></strong> wraps a <code>discord.py</code> bot. <code>create_discord_notifier(settings)</code> returns <code>None</code> when no token is configured; otherwise it builds the bot and starts it on a daemon thread. Messages go to every channel id registered for the workspace.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/274">#274</a>)</p>
+<p>The Discord notifier starts a new bot thread on every dispatch that includes the <code>discord</code> channel.</p>
+</div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>Send an in-app notification to a workspace user. This ran against in-memory SQLite with the default tenant seeded:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">NotificationChannel</span><span class="p">,</span>
+    <span class="n">NotificationCreate</span><span class="p">,</span>
+    <span class="n">NotificationType</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">UserNotificationAction</span><span class="p">,</span>
+    <span class="n">WorkspaceNotificationAction</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.service.notification</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispatch_user_notifications</span>
+
+<span class="n">notification</span> <span class="o">=</span> <span class="n">dispatch_user_notifications</span><span class="p">(</span>
+    <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+    <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">NotificationCreate</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">"Standup"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"10am"</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="n">NotificationChannel</span><span class="o">.</span><span class="n">inapp</span><span class="p">]</span>
+    <span class="p">),</span>
+    <span class="n">n_type</span><span class="o">=</span><span class="n">NotificationType</span><span class="o">.</span><span class="n">admin</span><span class="p">,</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span>
+    <span class="n">receivers</span><span class="o">=</span><span class="p">[</span><span class="n">member_user</span><span class="p">],</span>   <span class="c1"># workspace User rows</span>
+    <span class="n">sender</span><span class="o">=</span><span class="n">admin_user</span><span class="p">,</span>         <span class="c1"># workspace User row</span>
+<span class="p">)</span>
+<span class="n">notification</span><span class="o">.</span><span class="n">scope</span>             <span class="c1"># "workspace"</span>
+
+<span class="n">WorkspaceNotificationAction</span><span class="p">()</span><span class="o">.</span><span class="n">get_notifications</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">workspace</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">UserNotificationAction</span><span class="p">()</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">receiver_id</span><span class="o">=</span><span class="n">member_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Register a Discord channel for a workspace from code:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
+
+<span class="n">dca</span> <span class="o">=</span> <span class="n">DiscordChannelAction</span><span class="p">(</span><span class="n">UserAction</span><span class="p">())</span>
+<span class="n">dca</span><span class="o">.</span><span class="n">store_channel</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">DiscordChannelCreate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"ops-alerts"</span><span class="p">,</span> <span class="n">channel_id</span><span class="o">=</span><span class="mi">123456789012345678</span><span class="p">),</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span>
+    <span class="n">admin_user</span><span class="o">=</span><span class="n">admin_user</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Then send with <code>channels=[NotificationChannel.inapp, NotificationChannel.discord]</code> and set <code>DISCORD_BOT_TOKEN</code>. The Discord example was not run, because it needs a live bot connection.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Discord messages are not delivered and the log says "Discord BOT_TOKEN not configured".</strong> Set the token using the environment variable name that matches your settings composition (see Configuration). Dispatch continues without Discord.</li>
+<li><strong>"Workspace is required for Discord notifications".</strong> The Discord handler is only built when a workspace is passed. <code>dispatch_user_notifications</code> always passes it; this appears only with a custom caller of the factory.</li>
+<li><strong>"Discord bot is not initialized. Message cannot be sent."</strong> <code>discord.py</code> could not be imported, or the notifier was built without a token.</li>
+<li><strong>Discord channel not found.</strong> The bot only sends to channels it can see (<code>bot.get_channel</code>); missing ones are logged at info level and skipped.</li>
+<li><strong><code>ValueError: Admin user not found for account in workspace.</code></strong> <code>store_channel</code> was called with an <code>admin_account</code> that has no <code>admin</code> or <code>owner</code> membership in that workspace, or with neither <code>admin_account</code> nor <code>admin_user</code>.</li>
+<li><strong>SMS and email silently not sent.</strong> See the Troubleshooting section of <a href="../notifications/#troubleshooting">notifications</a>; the same handlers run here.</li>
+<li><strong>Workspace notifications show up nowhere in the account inbox.</strong> That is intended: they have <code>scope="workspace"</code> and use <code>UserNotification</code>, not <code>AccountNotification</code>.</li>
+<li><strong>Dependency resolution conflict on <code>twilio</code>.</strong> <code>msflib-workspace-notifications</code> pins <code>twilio ^8.0.0</code> for its <code>sms</code> extra while core and <code>msflib-notifications</code> pin <code>^9.4.6</code>. Avoid installing the <code>sms</code> or <code>all</code> extra of this package; rely on core's <code>twilio</code> instead.</li>
+</ul>
+<h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<p>Generated reference will be linked here later (Phase 3 of <a href="https://github.com/msflib/fastapi/issues/262">#262</a>). The module README is a short stub.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../notifications/">notifications</a>: the base module this package extends</li>
+<li><a href="../workspaces/">workspaces</a>: <code>User</code>, <code>Workspace</code> and the workspace identity dependencies</li>
+<li><a href="../../integration/mounting-routes/">Mounting routes</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

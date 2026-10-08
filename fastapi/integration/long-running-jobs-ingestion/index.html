@@ -1,0 +1,2408 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/integration/long-running-jobs-ingestion/">
+      
+      
+        <link rel="prev" href="../authentication/">
+      
+      
+        <link rel="next" href="../sse-websockets/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Long-running jobs and ingestion - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#long-running-jobs-and-ingestion" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Long-running jobs and ingestion
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What you need
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-worker-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The worker process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-fastapi-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The FastAPI process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-running-without-a-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Running without a broker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-adding-a-new-pipeline-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Adding a new pipeline kind
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-retries-supersession-and-dead-letters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Retries, supersession and dead letters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-monitoring-and-operating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Monitoring and operating
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-testing-your-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Testing your kind
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What you need
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-worker-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The worker process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-fastapi-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The FastAPI process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-running-without-a-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Running without a broker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-adding-a-new-pipeline-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Adding a new pipeline kind
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-retries-supersession-and-dead-letters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Retries, supersession and dead letters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-monitoring-and-operating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Monitoring and operating
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-testing-your-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Testing your kind
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="long-running-jobs-and-ingestion">Long-running jobs and ingestion<a class="headerlink" href="#long-running-jobs-and-ingestion" title="Permanent link">&para;</a></h1>
+<p>This guide shows how to run background work with <code>msflib-ingestion</code>: a Celery worker that executes jobs, a FastAPI process that enqueues them, a way to develop without a broker, how to add your own pipeline kind, and how failures, retries and dead letters behave. For the concepts and settings, see the <a href="../../modules/ingestion/">ingestion module page</a>.</p>
+<p>The model in one paragraph: your FastAPI process writes a row to the <code>IngestionJob</code> table and, once that transaction commits, sends the job id to Celery. A worker process loads the row, looks up the pipeline kind registered for <code>job.pipeline_kind</code>, and runs its stages. The row, not the broker message, is the source of truth for status, so you can inspect and recover jobs from the database.</p>
+<h2 id="1-what-you-need">1. What you need<a class="headerlink" href="#1-what-you-need" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A Redis instance (or another Celery broker) reachable from both processes, set through <code>INGESTION.BROKER_URL</code> (default <code>redis://localhost:6379/0</code>).</li>
+<li>The same database and the same ingestion tables in both processes. Import <code>msflib.ingestion.models</code> so the tables are on your metadata; the job table has a foreign key to the tenant table, so tenancy's tables must exist too.</li>
+<li><code>IngestionSettings</code> in your settings class:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">IngestionSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<h2 id="2-the-worker-process">2. The worker process<a class="headerlink" href="#2-the-worker-process" title="Permanent link">&para;</a></h2>
+<p>The worker is a separate entrypoint. It registers every pipeline kind a job might reference, then builds the Celery app. Celery finds the module-level <code>app</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># app/ingestion_worker.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">engine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.pipelines</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_my_pipeline_kinds</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">session_factory</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Session</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+
+<span class="n">register_my_pipeline_kinds</span><span class="p">()</span>          <span class="c1"># fills default_pipeline_registry in this process</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="n">session_factory</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Start it with:</p>
+<div class="codehilite"><pre><span></span><code>celery<span class="w"> </span>-A<span class="w"> </span>app.ingestion_worker<span class="w"> </span>worker<span class="w"> </span>--loglevel<span class="o">=</span>info
+</code></pre></div>
+
+<p>Notes:</p>
+<ul>
+<li><code>session_factory</code> is any zero-argument callable returning a context-manager <code>Session</code>. A plain <code>Session(engine)</code> works, because <code>Session</code> is a context manager.</li>
+<li>Registration is per process and is not persisted. A kind registered only in the web process makes the worker raise <code>KeyError: no pipeline registered for kind</code> when it picks up the job.</li>
+<li>Build exactly one Celery app per process. Building several with the same task name (<code>msflib.ingestion.execute_job</code>) in one process corrupts task state.</li>
+<li>The app is configured with late acknowledgement and a prefetch multiplier of 1, so a job that was running when a worker died is redelivered.</li>
+<li>Modules that ship pipeline kinds export their own registration functions. The reference worker in the repository (<code>testsite/app/ingestion_worker.py</code>) registers <code>text_document</code> from <code>msflib.documents</code>, and <code>knowledge_extraction</code> and <code>knowledge_record</code> from <code>msflib.knowledge</code>. See <a href="../../modules/knowledge/">Knowledge</a>.</li>
+</ul>
+<h2 id="3-the-fastapi-process">3. The FastAPI process<a class="headerlink" href="#3-the-fastapi-process" title="Permanent link">&para;</a></h2>
+<p>The web process only enqueues. Build one producer handle and share it:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ingestion_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDispatchService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSubjectQueue</span>
+
+<span class="n">dispatch</span> <span class="o">=</span> <span class="n">IngestionDispatchService</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">build_dispatch_task</span><span class="p">(</span><span class="n">settings</span><span class="p">))</span>
+<span class="n">note_queue</span> <span class="o">=</span> <span class="n">IngestionSubjectQueue</span><span class="p">(</span>
+    <span class="n">dispatch</span><span class="o">=</span><span class="n">dispatch</span><span class="p">,</span>
+    <span class="n">pipeline_kind</span><span class="o">=</span><span class="s2">"note_index"</span><span class="p">,</span>
+    <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                      <span class="c1"># pass your own settings flag here</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><code>build_dispatch_task</code> needs no session factory and never imports your pipeline code. It sends by task name to <code>DEFAULT_QUEUE</code>.</p>
+<p>Enqueue from request code with the queue. Dispatch is deferred until your transaction commits, so a rollback queues nothing:</p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/notes"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_note</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">NoteCreate</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)):</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="n">Note</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>                    <span class="c1"># assigns note.id</span>
+    <span class="n">note_queue</span><span class="o">.</span><span class="n">enqueue_snapshot</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">subject_type</span><span class="o">=</span><span class="s2">"note"</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>                   <span class="c1"># the job row is committed, then dispatched</span>
+    <span class="k">return</span> <span class="n">note</span>
+</code></pre></div>
+
+<p>Or let the model do it for you: <code>sync_model_to_queue(Note, note_queue, subject_type="note", snapshot=note_snapshot, emitter=get_app_emitter(app))</code> queues a job on every <code>ModelAction</code> write to <code>Note</code>. Gate this registration on the same settings flag as the queue. <code>note_snapshot</code> is defined in section 5.</p>
+<p>Mount the management router in the same process (section 7). It validates <code>pipeline_kind</code> against a registry in the web process, so call your registration function there as well.</p>
+<h2 id="4-running-without-a-broker">4. Running without a broker<a class="headerlink" href="#4-running-without-a-broker" title="Permanent link">&para;</a></h2>
+<p>There is no built-in inline dispatcher: <code>build_dispatch_task</code> always sends through Celery. For development and tests you have two options that need no Redis.</p>
+<p><strong>Record dispatches only.</strong> <code>msflib.ingestion.testing.FakeDispatchTask</code> implements <code>.delay(job_id)</code> and records the ids. Use it to assert that your code enqueued the right jobs. <code>start_stage_context(session, job, settings)</code> from the same module starts an attempt and returns the <code>StageContext</code>, so you can call a stage function directly.</p>
+<p><strong>Run jobs in the same process.</strong> Build the worker app as in section 2, switch Celery to eager mode, and use the registered task as the dispatch handle. Jobs then run synchronously inside <code>delay()</code>, after your commit, with the full retry and dead-letter behaviour. This runs as written:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">TASK_NAME</span><span class="p">,</span> <span class="n">build_celery_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.contracts.subject</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSubjectSnapshot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">TerminalStageError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDeadLetter</span><span class="p">,</span> <span class="n">IngestionJob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDispatchService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.lifecycle</span><span class="w"> </span><span class="kn">import</span> <span class="n">ingestion_subject_stage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSubjectQueue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">PipelineKindRegistry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401  (registers the tenant table)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">select</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Note</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Note</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">subject_id</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">(</span>
+        <span class="n">subject_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="n">tenant_id</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span>
+        <span class="n">workspace_id</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">workspace_id</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">body</span> <span class="o">==</span> <span class="s2">"bad"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TerminalStageError</span><span class="p">(</span><span class="s2">"cannot index this note"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"indexed"</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">IngestionSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<span class="n">registry</span> <span class="o">=</span> <span class="n">PipelineKindRegistry</span><span class="p">()</span>
+<span class="n">registry</span><span class="o">.</span><span class="n">register_kind</span><span class="p">(</span>
+    <span class="s2">"note_index"</span><span class="p">,</span>
+    <span class="n">ingestion_subject_stage</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"note_index"</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="n">load</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># A file database: the eager task opens its own session while the producer's is still open.</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="sa">f</span><span class="s2">"sqlite:///</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(),</span><span class="w"> </span><span class="s1">'app.db'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">celery_app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">),</span> <span class="n">registry</span><span class="o">=</span><span class="n">registry</span><span class="p">)</span>
+<span class="n">celery_app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_always_eager</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">celery_app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">task_eager_propagates</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">queue</span> <span class="o">=</span> <span class="n">IngestionSubjectQueue</span><span class="p">(</span>
+    <span class="n">dispatch</span><span class="o">=</span><span class="n">IngestionDispatchService</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">celery_app</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="n">TASK_NAME</span><span class="p">]),</span>
+    <span class="n">pipeline_kind</span><span class="o">=</span><span class="s2">"note_index"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">body</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"good"</span><span class="p">,</span> <span class="s2">"bad"</span><span class="p">):</span>
+        <span class="n">note</span> <span class="o">=</span> <span class="n">Note</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">queue</span><span class="o">.</span><span class="n">enqueue_snapshot</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">subject_type</span><span class="o">=</span><span class="s2">"note"</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">),</span> <span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">IngestionJob</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">subject_id</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">attempts</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">([(</span><span class="n">d</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">IngestionDeadLetter</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span>
+</code></pre></div>
+
+<p>Output:</p>
+<div class="codehilite"><pre><span></span><code>indexed good
+1 done 1 None
+2 failed 1 cannot index this note
+[(2, 'TerminalStageError: cannot index this note')]
+</code></pre></div>
+
+<p>Use this only for development. Eager mode has no concurrency, no redelivery and no real backoff delays. The registry is passed explicitly here so the example does not touch <code>default_pipeline_registry</code>.</p>
+<h2 id="5-adding-a-new-pipeline-kind">5. Adding a new pipeline kind<a class="headerlink" href="#5-adding-a-new-pipeline-kind" title="Permanent link">&para;</a></h2>
+<p>A kind needs a subject that can be loaded by id, a snapshot of it, and the work to do. Using the <code>Note</code> model from the example above:</p>
+<p><strong>1. Load and snapshot.</strong> <code>load(context)</code> returns the subject for <code>context.job.subject_id</code>, or <code>None</code> when it is gone. <code>snapshot(subject)</code> returns an <code>IngestionSubjectSnapshot</code> with the subject's id (as a string), tenant, workspace, a <code>version</code> (strongly recommended, see below) and <code>live</code>.</p>
+<p><strong>2. Process and clean up.</strong> <code>process(context)</code> handles a live subject. <code>cleanup(context)</code> handles a gone subject or a <code>delete</code> job. Both receive an <code>IngestionSubjectContext</code> with <code>.session</code>, <code>.subject</code>, <code>.snapshot</code>, <code>.job</code>, <code>.reason</code> and <code>.settings</code>. Do not commit inside them. They run in a savepoint, and the worker commits when the whole job succeeds, so an exception rolls back everything the step wrote.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">note_snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">(</span>
+        <span class="n">subject_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="n">tenant_id</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span>
+        <span class="n">workspace_id</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">workspace_id</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="n">live</span><span class="o">=</span><span class="ow">not</span> <span class="n">note</span><span class="o">.</span><span class="n">deleted</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<p><strong>3. Build and register the stage.</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.lifecycle</span><span class="w"> </span><span class="kn">import</span> <span class="n">ingestion_subject_stage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_pipeline_registry</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">register_note_pipeline</span><span class="p">():</span>
+    <span class="n">default_pipeline_registry</span><span class="o">.</span><span class="n">register_kind</span><span class="p">(</span>
+        <span class="s2">"note_index"</span><span class="p">,</span>
+        <span class="n">ingestion_subject_stage</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"note_index"</span><span class="p">,</span>
+            <span class="n">load</span><span class="o">=</span><span class="n">load</span><span class="p">,</span>
+            <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">,</span>
+            <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span>
+            <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">,</span>
+            <span class="n">completed_event</span><span class="o">=</span><span class="s2">"notes.indexed"</span><span class="p">,</span>   <span class="c1"># optional; fires after the job commits</span>
+        <span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"Index notes"</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<p>Call <code>register_note_pipeline()</code> in the worker entrypoint and in the web process. Registering a kind twice raises unless you pass <code>replace=True</code>.</p>
+<p><strong>4. Slow work goes in <code>prepare</code>.</strong> <code>prepare=</code> runs before the per-subject lock is taken, so an LLM call or remote fetch does not hold it. <code>process</code> receives the result as <code>context.prepared</code>. If the subject changes while <code>prepare</code> runs, the attempt is retried.</p>
+<p><strong>5. Queue it.</strong> Create an <code>IngestionSubjectQueue(dispatch=..., pipeline_kind="note_index")</code> in the web process and call <code>enqueue_snapshot</code> or <code>sync_model_to_queue</code>, as in section 3.</p>
+<p><strong>Versions matter.</strong> A job carries the <code>target_version</code> it was queued for. When the stage finds a newer subject version, it supersedes the job instead of overwriting newer work with older. Without a <code>version</code>, an edit made while a job is running can deduplicate into the running job and be missed.</p>
+<p>If your kind does not fit the load-and-process shape, register plain <code>Stage</code> callables instead: <code>def my_stage(context: StageContext) -&gt; StageContext</code>, and pass them to <code>registry.register_kind("my_kind", my_stage)</code>. Then you own the error handling. See <a href="../../modules/ingestion/#key-concepts">Ingestion</a> for the error types and <code>emit_after_success</code>.</p>
+<h2 id="6-retries-supersession-and-dead-letters">6. Retries, supersession and dead letters<a class="headerlink" href="#6-retries-supersession-and-dead-letters" title="Permanent link">&para;</a></h2>
+<p>What happens to a job depends on what the stage raises.</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Raised</th>
+<th>Job status</th>
+<th>Retries</th>
+<th>Dead letter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Success</td>
+<td>nothing</td>
+<td><code>done</code></td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Superseded</td>
+<td><code>SupersededStageError</code></td>
+<td><code>superseded</code></td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Transient failure</td>
+<td><code>RetryableStageError</code>, or a plain exception classified as retryable</td>
+<td><code>queued</code> with <code>next_retry_at</code>, then <code>failed</code> after the last attempt</td>
+<td>yes, up to <code>MAX_ATTEMPTS</code> total</td>
+<td>only after the last attempt</td>
+</tr>
+<tr>
+<td>Permanent failure</td>
+<td><code>TerminalStageError</code>, or a plain exception classified as terminal</td>
+<td><code>failed</code></td>
+<td>no</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Each attempt adds an <code>IngestionJobRun</code> row with its status and error text, so the history of a flaky job is queryable.</p>
+<p>Retry delay starts at <code>RETRY_BACKOFF_SECONDS</code> and doubles each attempt up to <code>RETRY_BACKOFF_MAX_SECONDS</code>; Celery adds jitter. Tune the limits with <code>INGESTION.MAX_ATTEMPTS</code>, <code>INGESTION.RETRY_BACKOFF_SECONDS</code> and <code>INGESTION.RETRY_BACKOFF_MAX_SECONDS</code>. They apply to every pipeline kind and are read when each task runs, so a settings change needs no worker restart. Inside <code>ingestion_subject_stage</code>, an error identical to the previous attempt's is treated as terminal rather than retried again.</p>
+<p>When a job is terminally failed, a row is written to <code>IngestionDeadLetter</code> with the subject, scope, attempts and error. From there an operator can:</p>
+<ul>
+<li><strong>replay</strong> it (<code>POST /ingestion/dead-letters/{id}/replay</code>), which enqueues a new job with the original reason and target version. If an identical job is already active, the replay reuses it and does not dispatch twice.</li>
+<li><strong>discard</strong> it (<code>POST /ingestion/dead-letters/{id}/discard</code>) to close it without action.</li>
+</ul>
+<p>Alternatively <code>POST /ingestion/jobs/{id}/retry</code> requeues a <code>failed</code> job directly. The usual cause of a dead letter you can fix in code (an unregistered mapper, a missing record source) is a worker without the right registrations; fix the worker, then replay.</p>
+<p>If the broker is down when a committed job is dispatched, the job is marked <code>failed</code> with a "Celery dispatch failed" error so it is visible rather than stuck in <code>queued</code>. Retry it once the broker is back.</p>
+<h2 id="7-monitoring-and-operating">7. Monitoring and operating<a class="headerlink" href="#7-monitoring-and-operating" title="Permanent link">&para;</a></h2>
+<p>Mount the router once, in the web process:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">create_ingestion_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">mutation_role_check</span><span class="o">=</span><span class="n">require_admin</span><span class="p">,</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
+        <span class="n">celery_control</span><span class="o">=</span><span class="n">celery_app</span><span class="p">,</span>         <span class="c1"># optional, enables revoking in-flight jobs</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ingestion"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>Read routes (<code>GET /jobs</code>, <code>GET /jobs/{id}</code>, <code>GET /status</code>, <code>GET /dead-letters</code>) are available to anyone your tenant and workspace dependencies let through, so add your own authentication in front of the router. The mutating routes also depend on <code>mutation_role_check</code>, which has no default. <code>celery_control</code> is any object with <code>.control.revoke(task_id, terminate=True)</code>, typically the worker's Celery app. Without it, <code>abort</code> still cancels <code>queued</code> jobs but only records the request for <code>processing</code> ones.</p>
+<p>Watch <code>GET /ingestion/status</code>: <code>by_status</code> shows backlog (<code>queued</code>) and in-flight (<code>processing</code>) counts, and <code>failure_rate</code> is <code>failed / (done + failed)</code>. A growing <code>queued</code> count with no <code>processing</code> jobs means no worker is consuming the queue. The route table is on the <a href="../../modules/ingestion/#management-routes">module page</a>.</p>
+<h2 id="8-testing-your-kind">8. Testing your kind<a class="headerlink" href="#8-testing-your-kind" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Call the stage directly with <code>start_stage_context(session, job, settings)</code>; no broker or Celery app is needed. Use an SQLite engine passed through <code>msflib.db.sqlite.enable_savepoints</code> so rollbacks inside the stage behave as on Postgres.</li>
+<li>Assert enqueueing with <code>FakeDispatchTask</code>. Its <code>dispatched</code> list is empty until the surrounding transaction commits.</li>
+<li>For an end-to-end test, use the eager setup from section 4. Build one Celery app for the whole test module and swap the registry or session per test, instead of rebuilding the app.</li>
+<li>The per-subject advisory lock is a Postgres feature and is a no-op on SQLite. Tests that cover it run against a real database.</li>
+</ul>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../modules/ingestion/">Ingestion module</a></li>
+<li><a href="../../modules/knowledge/">Knowledge</a>: structured-record ingestion built on this guide</li>
+<li><a href="../../modules/documents/">Documents</a></li>
+<li><a href="../../concepts/event-bus/">Event bus</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

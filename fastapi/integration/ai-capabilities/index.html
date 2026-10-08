@@ -1,0 +1,2240 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/integration/ai-capabilities/">
+      
+      
+        <link rel="prev" href="../sse-websockets/">
+      
+      
+        <link rel="next" href="../../concepts/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>AI capabilities - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-capabilities" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI capabilities
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-a-chat-model-and-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. A chat model and embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-chunking-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Chunking documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-storing-and-searching-with-tenant-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Storing and searching with tenant isolation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-versioned-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Versioned prompts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-usage-tracking-and-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Usage tracking and rate limiting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-behind-these-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts behind these pieces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-a-chat-model-and-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. A chat model and embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-chunking-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Chunking documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-storing-and-searching-with-tenant-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Storing and searching with tenant isolation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-versioned-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Versioned prompts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-usage-tracking-and-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Usage tracking and rate limiting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-behind-these-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts behind these pieces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ai-capabilities">AI capabilities<a class="headerlink" href="#ai-capabilities" title="Permanent link">&para;</a></h1>
+<p>This guide walks through the AI building blocks in <a href="../../modules/ai-core/"><code>msflib-ai-core</code></a>: getting a chat model and embeddings, chunking documents, storing and searching them with tenant isolation, versioning prompts, and tracking usage. Each section is short and builds on the previous one.</p>
+<p>All imports come from subpackages. <code>msflib.ai_core</code> itself exports nothing.</p>
+<h2 id="1-settings">1. Settings<a class="headerlink" href="#1-settings" title="Permanent link">&para;</a></h2>
+<p><code>AICoreSettings</code> holds the provider, model and key fields. In a host app it is read from the <code>AI_CORE</code> namespace of your settings (see the environment variable rules on the <a href="../../modules/ai-core/#configuration">module page</a>). For scripts and tests you can construct it directly:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AICoreSettings</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">AICoreSettings</span><span class="p">(</span>
+    <span class="n">LLM_PROVIDER</span><span class="o">=</span><span class="s2">"openai"</span><span class="p">,</span>
+    <span class="n">LLM_MODEL</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span>
+    <span class="n">LLM_API_KEY</span><span class="o">=</span><span class="s2">"sk-..."</span><span class="p">,</span>
+    <span class="n">EMBEDDING_API_KEY</span><span class="o">=</span><span class="s2">"sk-..."</span><span class="p">,</span>
+    <span class="n">VECTOR_STORE_URL</span><span class="o">=</span><span class="s2">"postgresql+psycopg://user:password@localhost:5432/app"</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><code>VECTOR_STORE_URL</code> is only needed for <a href="#4-storing-and-searching-with-tenant-isolation">section 4</a>. The default pgvector backend raises <code>ValueError: VECTOR_STORE_URL is required for pgvector backend</code> without it, and so do qdrant, weaviate and milvus. Pinecone needs <code>VECTOR_STORE_API_KEY</code> instead, and chroma and faiss need neither.</p>
+<p>Provider names are plain strings, validated against the provider type registry. The registry mirrors the providers your installed langchain supports (for example <code>openai</code>, <code>azure_openai</code>, <code>anthropic</code>, <code>groq</code>, <code>ollama</code>), and each needs its package installed (see the extras table on the <a href="../../modules/ai-core/">module page</a>). List them with <code>get_provider_type_registry().names()</code> from <code>msflib.ai_core.providers</code>.</p>
+<h2 id="2-a-chat-model-and-embeddings">2. A chat model and embeddings<a class="headerlink" href="#2-a-chat-model-and-embeddings" title="Permanent link">&para;</a></h2>
+<p>The next snippet needs the <code>openai</code> extra.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_embeddings</span><span class="p">,</span> <span class="n">get_llm</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">get_llm</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">reply</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"Summarise MSFLib in one sentence."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reply</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">get_embeddings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">vector</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>get_llm</code> and <code>get_embeddings</code> return the underlying langchain objects, so streaming (<code>llm.stream(...)</code>), batching and the rest of the langchain API work unchanged. To use another provider, change <code>LLM_PROVIDER</code> and <code>LLM_MODEL</code>, for example <code>"anthropic"</code> with an Anthropic model id (install the <code>anthropic</code> extra). Embeddings are configured separately with <code>EMBEDDING_PROVIDER</code> and <code>EMBEDDING_MODEL</code>, and Anthropic offers no embeddings.</p>
+<p>In a host app, prefer the registry-aware variants on the dependency namespace (<code>get_llm_from_registry(session, scope=scope)</code>), which pick a database-backed provider profile for the caller's tenant, workspace or user before falling back to settings. See <code>get_ai_dependencies</code> on the module page.</p>
+<h2 id="3-chunking-documents">3. Chunking documents<a class="headerlink" href="#3-chunking-documents" title="Permanent link">&para;</a></h2>
+<p><code>IngestionPipeline</code> loads, cleans and chunks a document and returns the chunks with metadata.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.ingestion_pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionPipeline</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">IngestionPipeline</span><span class="p">()</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"format"</span><span class="p">:</span> <span class="s2">"markdown"</span><span class="p">,</span>
+        <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"# Refunds</span><span class="se">\n\n</span><span class="s2">Refunds take 5 days.</span><span class="se">\n\n</span><span class="s2">## Exceptions</span><span class="se">\n\n</span><span class="s2">Gift cards are final sale."</span><span class="p">,</span>
+        <span class="s2">"source_id"</span><span class="p">:</span> <span class="s2">"faq-1"</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"chunk_index"</span><span class="p">],</span> <span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>result</code> also reports which chunking strategy ran (<code>result.chunk_strategy</code>) and whether it came from the built-in fallback provider (<code>result.fallback_used</code>; the default markdown strategy is a fallback-provider strategy, so this is <code>True</code> in the example above and does not signal an error).</p>
+<p>You can pick the strategy and size per call:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">long_text</span> <span class="o">=</span> <span class="s2">"refund policy "</span> <span class="o">*</span> <span class="mi">400</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span>
+    <span class="n">long_text</span><span class="p">,</span>
+    <span class="n">source_type</span><span class="o">=</span><span class="s2">"text"</span><span class="p">,</span>
+    <span class="n">strategy_name</span><span class="o">=</span><span class="s2">"token_window"</span><span class="p">,</span>
+    <span class="n">chunk_options</span><span class="o">=</span><span class="p">{</span><span class="s2">"chunk_size"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">"chunk_overlap"</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Default embedder and indexer are placeholders</p>
+<p>Without arguments, <code>IngestionPipeline</code> uses a deterministic stand-in embedder and an indexer that only returns ids like <code>chunk-0</code>. They exist for wiring and tests. For real retrieval, either pass your own <code>embedder=</code> and <code>indexer=</code> callables, or take <code>result.chunks[i].text</code> and store them yourself as shown in the next section. An embedder is <code>embedder(texts: list[str]) -&gt; list[list[float]]</code>; an indexer is <code>indexer(records: list[dict]) -&gt; list[str]</code>, where each record has <code>text</code>, <code>embedding</code> and <code>metadata</code>.</p>
+</div>
+<p>Other constructor arguments (<code>loaders=</code>, <code>cleaner=</code>, <code>chunking_registry=</code>) and per-call <code>workspace_settings=</code> / <code>chunking_policy=</code> let you add loaders and tune strategy selection. Custom chunking strategies and document loaders are covered in the chunking and extraction READMEs under <code>modules/ai_core/msflib/ai_core/services/</code>.</p>
+<h2 id="4-storing-and-searching-with-tenant-isolation">4. Storing and searching with tenant isolation<a class="headerlink" href="#4-storing-and-searching-with-tenant-isolation" title="Permanent link">&para;</a></h2>
+<p>This section continues from sections 1 to 3 (<code>settings</code>, <code>embeddings</code> and <code>result</code>). It needs the <code>pgvector</code> extra and a Postgres database with the vector extension.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.vector_store</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_vector_store</span><span class="p">,</span> <span class="n">similarity_search_scoped</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_context_scope</span>
+
+<span class="n">store</span> <span class="o">=</span> <span class="n">get_vector_store</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">"faq"</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
+
+<span class="n">store</span><span class="o">.</span><span class="n">add_texts</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">chunk</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">chunks</span><span class="p">],</span>
+    <span class="n">metadatas</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">"tenant_id"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"workspace_id"</span><span class="p">:</span> <span class="s2">"7"</span><span class="p">,</span> <span class="s2">"source_id"</span><span class="p">:</span> <span class="s2">"faq-1"</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">chunks</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">scope</span> <span class="o">=</span> <span class="n">build_context_scope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">hits</span> <span class="o">=</span> <span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">"How long do refunds take?"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Points to know:</p>
+<ul>
+<li><code>get_vector_store</code> returns a <code>ScopedVectorStore</code>. It supports <code>similarity_search</code>, <code>add_texts</code>, <code>add_documents</code>, <code>delete</code> and <code>close</code>. The native langchain store is available as <code>store.raw</code>.</li>
+<li><strong>Always search with <code>similarity_search_scoped</code></strong> in multi-tenant code. It builds mandatory tenant and workspace metadata filters from the <code>ScopeEnvelope</code>. Calling <code>store.similarity_search(...)</code> directly applies no filter.</li>
+<li>Write dimension values as strings (<code>"1"</code>, not <code>1</code>), because <code>build_context_scope</code> stringifies them.</li>
+<li>The metadata you write must carry the dimensions the filter reads. <code>tenant_id</code> and <code>workspace_id</code> are required, exact-match string values; a scope with no workspace matches only content written with no workspace. Conversation, sub-thread and private-account dimensions are optional: content written without <code>conversation_id</code>, <code>sub_thread_id</code> or <code>private_to_account_id</code> is treated as shared across the workspace, so tag anything that belongs to a single conversation, sub-thread or account. Write through the <code>ScopedVectorStore</code>, not <code>store.raw</code>: on backends without native missing-key filters (Pinecone, Chroma, Milvus) it adds the <code>__null__</code> markers that make untagged content visible as shared. <code>build_retrieval_filters(scope=scope)</code> shows exactly what a search requires.</li>
+<li>Collection names are <code>"&lt;VECTOR_STORE_COLLECTION_PREFIX&gt;_&lt;name&gt;"</code>, sanitised for the backend. The prefix organises collections; it does not isolate tenants. Isolation comes from the metadata filters.</li>
+<li>The default backend is pgvector (<code>extras = ["pgvector"]</code>, and <code>CREATE EXTENSION vector;</code> once on the database). Qdrant, Pinecone, Chroma, Weaviate, Milvus and FAISS are also supported (each has an extra of the same name); set <code>VECTOR_STORE_BACKEND</code>.</li>
+</ul>
+<h2 id="5-versioned-prompts">5. Versioned prompts<a class="headerlink" href="#5-versioned-prompts" title="Permanent link">&para;</a></h2>
+<p><code>PromptRegistryService</code> stores prompt versions in the database and resolves the active one by scope, in the order user, then workspace, then global.</p>
+<p>The examples below assume <code>session</code> is an open SQLModel <code>Session</code> from your host app (for instance the one injected by your <code>get_session</code> dependency), and that the <code>ai_prompt_version</code> table exists (your Alembic migrations include it).</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.prompt_registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRegistryService</span>
+
+<span class="n">prompts</span> <span class="o">=</span> <span class="n">PromptRegistryService</span><span class="p">()</span>
+
+<span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"You are a helpful assistant."</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v2"</span><span class="p">,</span> <span class="s2">"You are concise."</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">prompts</span><span class="o">.</span><span class="n">get_active_version</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="c1"># 'You are a helpful assistant.'</span>
+<span class="n">prompts</span><span class="o">.</span><span class="n">get_active_version</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="c1"># 'You are concise.'</span>
+</code></pre></div>
+
+<p>Registering the same key, version and scope twice raises <code>PromptVersionConflictError</code>. To roll a prompt out without a deploy, register a new version and activate it with <code>set_active</code>. A user-level override uses both <code>workspace_id</code> and <code>account_id</code>.</p>
+<h2 id="6-usage-tracking-and-rate-limiting">6. Usage tracking and rate limiting<a class="headerlink" href="#6-usage-tracking-and-rate-limiting" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.tracking.usage</span><span class="w"> </span><span class="kn">import</span> <span class="n">TokenUsageCallback</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">get_llm</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">usage</span> <span class="o">=</span> <span class="n">TokenUsageCallback</span><span class="p">(</span><span class="n">workspace_id</span><span class="o">=</span><span class="s2">"7"</span><span class="p">)</span>
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">"callbacks"</span><span class="p">:</span> <span class="p">[</span><span class="n">usage</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">prompt_tokens</span><span class="p">,</span> <span class="n">usage</span><span class="o">.</span><span class="n">completion_tokens</span><span class="p">,</span> <span class="n">usage</span><span class="o">.</span><span class="n">total_tokens</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The callback accumulates token counts across every call it is attached to, so create one per request. Streaming responses only report usage if the provider includes it. On every model call it also emits <code>ai_core.token_usage</code> on the event bus, but only if a listener is registered, and the payload (<code>workspace_id</code>, <code>prompt_tokens</code>, <code>completion_tokens</code>, <code>total_tokens</code>, <code>total_cost</code>) carries the callback's running totals rather than per-call amounts. Use a fresh callback per request, or subtract the previous totals, before billing from it.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.tracking.limiter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateLimiter</span><span class="p">,</span> <span class="n">RateLimitExceeded</span>
+
+<span class="n">limiter</span> <span class="o">=</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">rpm</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">redis_url</span><span class="o">=</span><span class="s2">"redis://localhost:6379/0"</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">limiter</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">"workspace:7"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">RateLimitExceeded</span><span class="p">:</span>
+    <span class="o">...</span>  <span class="c1"># return HTTP 429</span>
+</code></pre></div>
+
+<p><code>check</code> raises <code>RateLimitExceeded</code> once a namespace makes more than <code>rpm</code> calls within the same clock minute (a fixed window, not a sliding one). Without a <code>redis_url</code> (or <code>redis_client</code>), counts are kept in memory and are per process, which is fine for development but not for several workers. If Redis is unreachable, <code>check</code> raises a Redis connection error, not <code>RateLimitExceeded</code>, so handle that separately. Nothing calls the limiter for you; add it where you invoke the model.</p>
+<h2 id="concepts-behind-these-pieces">Concepts behind these pieces<a class="headerlink" href="#concepts-behind-these-pieces" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Scopes.</strong> Provider and vector-store profiles resolve through the tiers global, tenant, workspace and user. Prompts have no tenant tier: they resolve user, then workspace, then global. Retrieval filters are built from the caller's tenant and workspace, plus the conversation, sub-thread and private-account dimensions when present. The caller's scope is a <code>ScopeEnvelope</code> (see <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>).</li>
+<li><strong>Policies.</strong> Chunking and runtime behaviour are controlled by policy objects (<code>ChunkingPolicySchema</code>, <code>MiddlewarePolicySchema</code>) resolved from tiered settings (see <a href="../../concepts/policy/">Policy</a> and <a href="../../concepts/tiered-config/">Tiered configuration</a>). A policy can select a chunking provider with a fallback chain.</li>
+<li><strong>Ingestion flow.</strong> Load, clean, chunk, embed, index. Each stage is a replaceable callable or registry entry.</li>
+<li><strong>Secrets.</strong> Provider API keys stored in profiles are encrypted with <code>PROVIDER_SECRET_ENCRYPTION_KEY</code>, which falls back to the core <code>SECRET_KEY</code> when unset. Set it explicitly in production and keep keys out of logs.</li>
+</ul>
+<h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Agents and LangGraph: checkpointer and memory store scoping, the tools library and runtime policy are described in <code>modules/ai_core/README.md</code> until they are migrated into this site.</li>
+<li>Long-running ingestion of uploaded files: <a href="../long-running-jobs-ingestion/">Long-running jobs and ingestion</a>.</li>
+<li>Provider and vector-store profile management over HTTP: the routers described on the <a href="../../modules/ai-core/">module page</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2391 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/integration/subclassing-actions/">
+      
+      
+        <link rel="prev" href="../overriding-models/">
+      
+      
+        <link rel="next" href="../authentication/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Subclassing actions - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#subclassing-action-classes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Subclassing actions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-base-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The base class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-queries-and-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add queries and rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-a-module-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending a module action
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending a module action">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workspace-membership-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workspace membership rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-events-and-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle events and hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle events and hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on_model_write-one-callback-for-all-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        on_model_write: one callback for all writes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events-your-own-code-should-emit-after-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events your own code should emit after commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-events-are-separate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router events are separate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-an-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing an action
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-base-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The base class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-queries-and-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add queries and rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-a-module-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending a module action
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending a module action">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workspace-membership-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workspace membership rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-events-and-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle events and hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle events and hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on_model_write-one-callback-for-all-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        on_model_write: one callback for all writes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events-your-own-code-should-emit-after-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events your own code should emit after commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-events-are-separate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router events are separate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-an-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing an action
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="subclassing-action-classes">Subclassing action classes<a class="headerlink" href="#subclassing-action-classes" title="Permanent link">&para;</a></h1>
+<p>An action is the service layer for one table: queries, writes and the rules around them. Routers call actions, and your own code can too. This guide shows how to add queries and rules by subclassing, how the write hooks work, and how to replace the action a module router uses. The basic CRUD calls are on <a href="../../quick-start/actions-crud/">Actions and CRUD</a>.</p>
+<h2 id="the-base-class">The base class<a class="headerlink" href="#the-base-class" title="Permanent link">&para;</a></h2>
+<p><code>msflib.actions.ModelAction</code> is generic over the table model, the create schema and the update schema. It resolves the three types from the generic arguments, so either form works:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAction</span>
+
+<span class="n">notes</span> <span class="o">=</span> <span class="n">ModelAction</span><span class="p">[</span><span class="n">Note</span><span class="p">,</span> <span class="n">NoteCreate</span><span class="p">,</span> <span class="n">NoteUpdate</span><span class="p">]()</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NoteAction</span><span class="p">(</span><span class="n">ModelAction</span><span class="p">[</span><span class="n">Note</span><span class="p">,</span> <span class="n">NoteCreate</span><span class="p">,</span> <span class="n">NoteUpdate</span><span class="p">]):</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p>Instantiating a bare <code>ModelAction()</code> raises <code>TypeError: ModelAction must be instantiated with concrete generic types.</code> when a method first needs the model. There is also <code>msflib.actions.action(Note, NoteCreate, NoteUpdate)</code>, which returns a cached <code>ModelAction</code> per type triple. Prefer a named subclass for anything with rules.</p>
+<p>Each method takes the <code>Session</code> as its first argument. The main ones:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get(session, id)</code></td>
+<td>One row by primary key</td>
+</tr>
+<tr>
+<td><code>get_by_all(session, **filters)</code>, <code>get_by_any(...)</code>, <code>get_by_expressions(session, *exprs)</code></td>
+<td>First row matching all, any, or SQLAlchemy expressions</td>
+</tr>
+<tr>
+<td><code>get_multi(...)</code>, <code>get_multi_by_all(...)</code>, <code>get_multi_by_any(...)</code>, <code>get_multi_by_expressions(...)</code></td>
+<td>Lists with <code>offset</code> and <code>limit</code> (default 100; <code>limit=None</code> for no limit); the expressions form also takes <code>order_by</code></td>
+</tr>
+<tr>
+<td><code>create(session, *, data, update=None, decorator=None, commit=True)</code></td>
+<td>Insert from a create schema</td>
+</tr>
+<tr>
+<td><code>create_multi(session, *, data, update=None, decorator=None, commit=True)</code></td>
+<td>Insert several; <code>update</code> may be one dict or one per item</td>
+</tr>
+<tr>
+<td><code>update(session, *, model, data=None, update=None, decorator=None, commit=True)</code></td>
+<td>Apply an update schema (only fields the client set), then <code>update</code> overrides</td>
+</tr>
+<tr>
+<td><code>delete(session, id, commit=True)</code>, <code>delete_by_all</code>, <code>delete_by_any</code>, <code>delete_by_expressions</code></td>
+<td>Delete one row; returns it, or <code>None</code></td>
+</tr>
+<tr>
+<td><code>delete_multi_by_all</code>, <code>delete_multi_by_any</code>, <code>delete_multi_by_expressions</code></td>
+<td>Delete matching rows; returns them</td>
+</tr>
+</tbody>
+</table>
+<p>Three arguments are worth knowing before you override anything:</p>
+<ul>
+<li><code>update</code> is a dict applied after the schema. It is the supported way to set values the client does not control, such as an owner id (see <a href="../writing-custom-code/">Writing custom code</a>).</li>
+<li><code>decorator</code> is a callable <code>(model) -&gt; None</code> run on the row before it is added to the session. Use it to compute or normalise fields.</li>
+<li><code>commit=False</code> leaves the transaction to the caller. Rows are flushed (ids are assigned) but not committed, so several actions can take part in one transaction.</li>
+</ul>
+<p><code>create</code> drops payload keys that are not columns on the model, so a create schema may carry input that you handle yourself.</p>
+<h2 id="add-queries-and-rules">Add queries and rules<a class="headerlink" href="#add-queries-and-rules" title="Permanent link">&para;</a></h2>
+<p>Subclass, add methods, and override the write method when a rule must apply to every write. Keep the full signature, including <code>commit</code>, and pass everything through to <code>super()</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">select</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NoteAction</span><span class="p">(</span><span class="n">ModelAction</span><span class="p">[</span><span class="n">Note</span><span class="p">,</span> <span class="n">NoteCreate</span><span class="p">,</span> <span class="n">NoteUpdate</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_per_account</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_per_account</span> <span class="o">=</span> <span class="n">max_per_account</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_for_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Note</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">account_id</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">NoteCreate</span><span class="p">,</span>
+        <span class="n">update</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decorator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Note</span><span class="p">:</span>
+        <span class="n">account_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">update</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"account_id"</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">())</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Note</span><span class="o">.</span><span class="n">account_id</span> <span class="o">==</span> <span class="n">account_id</span><span class="p">))</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_per_account</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">409</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"Note limit reached"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">,</span> <span class="n">decorator</span><span class="o">=</span><span class="n">decorator</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span>
+        <span class="p">)</span>
+</code></pre></div>
+
+<p>Raising <code>HTTPException</code> in an action works because FastAPI converts it when the action runs inside a request. For code that also runs from scripts or workers, raise your own exception type and translate it in the router.</p>
+<div class="admonition note">
+<p class="admonition-title">Keep <code>commit</code> in overrides</p>
+<p><code>ModelAction.create_random</code> (used by tests and seeders) checks whether your <code>create</code> and <code>create_multi</code> accept <code>commit</code>. An override without it still works but emits a <code>DeprecationWarning</code>, and support for such overrides is slated for removal.</p>
+</div>
+<p>To use a <code>decorator</code> of your own while the subclass also needs one, wrap it. For example, fill a slug and then call the caller's decorator:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">decorator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fill_slug</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">article</span><span class="o">.</span><span class="n">slug</span><span class="p">:</span>
+            <span class="n">article</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">decorator</span><span class="p">:</span>
+            <span class="n">decorator</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">,</span> <span class="n">decorator</span><span class="o">=</span><span class="n">fill_slug</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<h2 id="extending-a-module-action">Extending a module action<a class="headerlink" href="#extending-a-module-action" title="Permanent link">&para;</a></h2>
+<p>Module actions are subclasses of <code>ModelAction</code> and are generic in the same way. Subclass them with your concrete types and add behaviour. This account action normalises the username before the module's own create logic (password hashing, email lower-casing, profile creation) runs:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyAccountAction</span><span class="p">(</span><span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">AccountCreate</span><span class="p">,</span>
+        <span class="n">update</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()})</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span><span class="p">)</span>
+
+
+<span class="n">aa</span> <span class="o">=</span> <span class="n">MyAccountAction</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">profile_action</span><span class="o">=</span><span class="n">pa</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Pass the instance to the router factory to make the module's endpoints use it:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">account_router</span><span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
+    <span class="n">profile_type</span><span class="o">=</span><span class="n">Profile</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="o">=</span><span class="n">aa</span><span class="p">,</span>
+    <span class="n">profile_action</span><span class="o">=</span><span class="n">pa</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><code>POST /account/open</code> then creates <code>"  QBert "</code> as <code>qbert</code>. Note that <code>AccountAction.create</code> has no <code>decorator</code> argument; match the signature of the method you override.</p>
+<p>Routers accept actions under these names: <code>account_action</code> and <code>profile_action</code> for the account and profile routers, and <code>workspace_action</code> and <code>user_action</code> for the workspace router. When you pass none, the router builds a default one from the model types you gave it.</p>
+<h3 id="workspace-membership-rules">Workspace membership rules<a class="headerlink" href="#workspace-membership-rules" title="Permanent link">&para;</a></h3>
+<p><code>UserAction.create_membership</code> decides which role a new member gets. There are three supported ways to change it, in increasing order of precedence: override <code>resolve_membership_type</code> in a subclass, pass <code>membership_type_resolver=</code> to the constructor, or pass <code>membership_type=</code> on the call.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserType</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyUserAction</span><span class="p">(</span><span class="n">UserAction</span><span class="p">[</span><span class="n">WorkspaceMember</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolve_membership_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">owner_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">UserType</span><span class="o">.</span><span class="n">owner</span> <span class="k">if</span> <span class="n">account_id</span> <span class="o">==</span> <span class="n">owner_id</span> <span class="k">else</span> <span class="n">UserType</span><span class="o">.</span><span class="n">guest</span>
+
+
+<span class="c1"># or, without subclassing</span>
+<span class="n">ua</span> <span class="o">=</span> <span class="n">UserAction</span><span class="p">[</span><span class="n">WorkspaceMember</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">](</span>
+    <span class="n">membership_type_resolver</span><span class="o">=</span><span class="k">lambda</span> <span class="n">account_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">,</span> <span class="n">owner_id</span><span class="p">:</span> <span class="n">UserType</span><span class="o">.</span><span class="n">admin</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<h2 id="lifecycle-events-and-hooks">Lifecycle events and hooks<a class="headerlink" href="#lifecycle-events-and-hooks" title="Permanent link">&para;</a></h2>
+<p>Every write that goes through a <code>ModelAction</code> emits events on the event bus. For a model class named <code>Article</code>, an update emits:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>When</th>
+<th>Listener failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>article-update-pre-commit</code> and <code>model-update-pre-commit</code></td>
+<td>After flush, before commit, in the same transaction</td>
+<td>Raises <code>EventBusListenerExecutionError</code> out of the action call</td>
+</tr>
+<tr>
+<td><code>article-update-post-commit</code> and <code>model-update-post-commit</code></td>
+<td>After the outermost commit</td>
+<td>Logged, not raised</td>
+</tr>
+</tbody>
+</table>
+<p>The same pairs exist for <code>create</code> and <code>delete</code>. The model-specific event name is the class name lower-cased. The <code>model-</code> events are generic and fire for every model.</p>
+<p>A listener takes the row and an options dict. In pre-commit events <code>options["session"]</code> is the active session, so writes the listener makes commit or roll back with the row itself. Pre-commit listeners must be synchronous. Post-commit listeners receive a plain snapshot of the row's attributes rather than the live ORM object, because the object is expired after commit.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="s2">"article-create-pre-commit"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_pre</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span>
+    <span class="o">...</span>  <span class="c1"># extra writes in the same transaction</span>
+
+
+<span class="nd">@emitter</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="s2">"article-create-post-commit"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_post</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="o">...</span>  <span class="c1"># side effects once the row is durable</span>
+</code></pre></div>
+
+<p>Events reach the app's emitter while a request is being served. Outside a request, such as in a script or test, wrap the work in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>), or the global emitter is used and your listeners are not called.</p>
+<p>A pre-commit listener that raises aborts the write. The row has been flushed but not committed, so roll the session back (a request that fails normally does this when the session closes).</p>
+<h3 id="on_model_write-one-callback-for-all-writes"><code>on_model_write</code>: one callback for all writes<a class="headerlink" href="#on_model_write-one-callback-for-all-writes" title="Permanent link">&para;</a></h3>
+<p>When you want the same code on create, update and delete of a model, <code>msflib.actions.on_model_write</code> is shorter than three listeners. The callback runs in a savepoint, so a failure only undoes its own writes.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">on_model_write</span>
+
+
+<span class="c1"># AuditEntry is your own table</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">audit</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">operation</span><span class="p">):</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">AuditEntry</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">"article"</span><span class="p">,</span> <span class="n">row_id</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">))</span>
+
+
+<span class="n">on_model_write</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">emitter</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">"myapp.audit"</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>key</code> makes the registration idempotent per emitter. With the default <code>on_error="log"</code>, a failing callback is logged and the write goes ahead; <code>on_error="raise"</code> aborts the write with <code>EventBusListenerExecutionError</code>. <code>operations=["update"]</code> limits it to some operations, and <code>reset_model_write_hooks(emitter=emitter, key="myapp.audit")</code> removes it.</p>
+<p>Only writes through <code>ModelAction</code> emit these events. Direct <code>session.add(...)</code>, raw SQL and <code>session.exec(update(...))</code> do not.</p>
+<h3 id="events-your-own-code-should-emit-after-commit">Events your own code should emit after commit<a class="headerlink" href="#events-your-own-code-should-emit-after-commit" title="Permanent link">&para;</a></h3>
+<p>If your action also emits events of its own, emit them with <code>msflib.actions.emit_after_commit(session, "event-name", instance, payload)</code>. It queues the event until the outermost transaction commits, which matters when a caller passed <code>commit=False</code>. A rollback discards it. The lower-level <code>run_after_commit(session, callback)</code> does the same for any callback.</p>
+<h3 id="router-events-are-separate">Router events are separate<a class="headerlink" href="#router-events-are-separate" title="Permanent link">&para;</a></h3>
+<p>Module routers also emit their own domain events around the action calls, for example <code>account-created</code> and <code>account-updated</code> from the account router (<code>msflib.account.eventbus.EventName</code>) and <code>account-logged-in</code> from the auth router. These fire only for requests through those routers, not for every <code>AccountAction</code> call. Use them for behaviour tied to an HTTP flow and the lifecycle events for behaviour tied to data.</p>
+<h2 id="testing-an-action">Testing an action<a class="headerlink" href="#testing-an-action" title="Permanent link">&para;</a></h2>
+<p>Actions need nothing but a session and, for module actions, settings. Use an in-memory SQLite engine:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+<span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="n">NoteAction</span><span class="p">(</span><span class="n">max_per_account</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">NoteCreate</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"a"</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"account_id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<p>(The account table must exist for the foreign key to be valid on databases that enforce it; SQLite does not by default.)</p>
+<p><code>action.create_random(session, **overrides)</code> builds a create schema from its required fields (values in <code>overrides</code> replace the generated ones) and saves it, which is convenient for fixtures.</p>
+<div class="admonition warning">
+<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
+<p><code>create_random</code> only fills what the create schema holds, so it cannot satisfy a required column that is set through <code>update</code>, such as <code>account_id</code> on the notes table.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

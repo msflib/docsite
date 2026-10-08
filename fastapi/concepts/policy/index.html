@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/">
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/concepts/policy/">
       
       
+        <link rel="prev" href="../tiered-config/">
       
-        <link rel="next" href="modules/">
+      
+        <link rel="next" href="../scopes-tenancy-workspaces/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>MSFLIB FastAPI Documentation</title>
+        <title>Policy - MSFLIB FastAPI Documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#msflib" class="md-skip">
+        <a href="#policy" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Policy
             
           </span>
         </div>
@@ -218,7 +220,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -233,37 +235,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -279,81 +254,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-a-module-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What a module is
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Package map
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#picking-what-to-install" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Picking what to install
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -419,7 +319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/" class="md-nav__link">
+      <a href="../../modules/" class="md-nav__link">
         
   
   
@@ -447,7 +347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/core/" class="md-nav__link">
+      <a href="../../modules/core/" class="md-nav__link">
         
   
   
@@ -475,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/auth/" class="md-nav__link">
+      <a href="../../modules/auth/" class="md-nav__link">
         
   
   
@@ -503,7 +403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/account/" class="md-nav__link">
+      <a href="../../modules/account/" class="md-nav__link">
         
   
   
@@ -531,7 +431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/tenancy/" class="md-nav__link">
+      <a href="../../modules/tenancy/" class="md-nav__link">
         
   
   
@@ -559,7 +459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspaces/" class="md-nav__link">
+      <a href="../../modules/workspaces/" class="md-nav__link">
         
   
   
@@ -587,7 +487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/notifications/" class="md-nav__link">
+      <a href="../../modules/notifications/" class="md-nav__link">
         
   
   
@@ -615,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspace-notifications/" class="md-nav__link">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
         
   
   
@@ -643,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspace-config/" class="md-nav__link">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
         
   
   
@@ -671,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/payments/" class="md-nav__link">
+      <a href="../../modules/payments/" class="md-nav__link">
         
   
   
@@ -699,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ai-core/" class="md-nav__link">
+      <a href="../../modules/ai-core/" class="md-nav__link">
         
   
   
@@ -727,7 +627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ai-api/" class="md-nav__link">
+      <a href="../../modules/ai-api/" class="md-nav__link">
         
   
   
@@ -755,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/drivelink/" class="md-nav__link">
+      <a href="../../modules/drivelink/" class="md-nav__link">
         
   
   
@@ -783,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/documents/" class="md-nav__link">
+      <a href="../../modules/documents/" class="md-nav__link">
         
   
   
@@ -811,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ingestion/" class="md-nav__link">
+      <a href="../../modules/ingestion/" class="md-nav__link">
         
   
   
@@ -839,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/knowledge/" class="md-nav__link">
+      <a href="../../modules/knowledge/" class="md-nav__link">
         
   
   
@@ -867,7 +767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/conversation/" class="md-nav__link">
+      <a href="../../modules/conversation/" class="md-nav__link">
         
   
   
@@ -956,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/basics/" class="md-nav__link">
+      <a href="../../quick-start/basics/" class="md-nav__link">
         
   
   
@@ -984,7 +884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/models-data-tables/" class="md-nav__link">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
         
   
   
@@ -1012,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/actions-crud/" class="md-nav__link">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
         
   
   
@@ -1040,7 +940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/endpoints-and-routers/" class="md-nav__link">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
         
   
   
@@ -1129,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/" class="md-nav__link">
+      <a href="../../integration/" class="md-nav__link">
         
   
   
@@ -1157,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/extending-msflib/" class="md-nav__link">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
         
   
   
@@ -1185,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/writing-custom-code/" class="md-nav__link">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
         
   
   
@@ -1213,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/mounting-routes/" class="md-nav__link">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
         
   
   
@@ -1241,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/overriding-models/" class="md-nav__link">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
         
   
   
@@ -1269,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/subclassing-actions/" class="md-nav__link">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
         
   
   
@@ -1297,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/authentication/" class="md-nav__link">
+      <a href="../../integration/authentication/" class="md-nav__link">
         
   
   
@@ -1325,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/long-running-jobs-ingestion/" class="md-nav__link">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
         
   
   
@@ -1353,7 +1253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/sse-websockets/" class="md-nav__link">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
         
   
   
@@ -1381,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/ai-capabilities/" class="md-nav__link">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
         
   
   
@@ -1413,8 +1313,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1425,13 +1327,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -1452,7 +1352,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1470,7 +1370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1498,7 +1398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/tiered-config/" class="md-nav__link">
+      <a href="../tiered-config/" class="md-nav__link">
         
   
   
@@ -1523,10 +1423,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="concepts/policy/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1542,6 +1469,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it provides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resolving
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-fields-with-a-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Policy fields with a schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In a host app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfalls
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1554,7 +1556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+      <a href="../scopes-tenancy-workspaces/" class="md-nav__link">
         
   
   
@@ -1582,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/event-bus/" class="md-nav__link">
+      <a href="../event-bus/" class="md-nav__link">
         
   
   
@@ -1610,7 +1612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/dependency-injection/" class="md-nav__link">
+      <a href="../dependency-injection/" class="md-nav__link">
         
   
   
@@ -1638,7 +1640,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/seeding/" class="md-nav__link">
+      <a href="../seeding/" class="md-nav__link">
         
   
   
@@ -1673,7 +1675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="../../reference/" class="md-nav__link">
         
   
   
@@ -1754,7 +1756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -1782,7 +1784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/releases/" class="md-nav__link">
+      <a href="../../contributing/releases/" class="md-nav__link">
         
   
   
@@ -1810,7 +1812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/module-page-template/" class="md-nav__link">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
         
   
   
@@ -1838,7 +1840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/known-issues/" class="md-nav__link">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
         
   
   
@@ -1893,10 +1895,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-a-module-is" class="md-nav__link">
+  <a href="#what-it-provides" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What a module is
+        What it provides
       
     </span>
   </a>
@@ -1904,10 +1906,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
+  <a href="#resolving" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Package map
+        Resolving
       
     </span>
   </a>
@@ -1915,10 +1917,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#picking-what-to-install" class="md-nav__link">
+  <a href="#policy-fields-with-a-schema" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Picking what to install
+        Policy fields with a schema
       
     </span>
   </a>
@@ -1926,10 +1928,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing" class="md-nav__link">
+  <a href="#in-a-host-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installing
+        In a host app
       
     </span>
   </a>
@@ -1937,10 +1939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
+  <a href="#pitfalls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next
+        Pitfalls
       
     </span>
   </a>
@@ -1964,215 +1966,131 @@
 
 
 
-<h1 id="msflib">MSFLib<a class="headerlink" href="#msflib" title="Permanent link">&para;</a></h1>
-<p>MSFLib (pronounced "musflib") is a set of Python packages for building FastAPI backends. A small core package, <code>msflib</code>, supplies the shared plumbing: settings, base models, a CRUD action layer, an event bus, scope and policy primitives, database setup and seeding. On top of it sit optional feature modules such as accounts, authentication, workspaces, payments and AI infrastructure.</p>
-<p>You write a normal FastAPI application, the <em>host app</em>. You install the packages you need, define your own models and routes next to the ones the modules provide, and mount the module routers where you want them. MSFLib does not run your app and does not own your <code>FastAPI()</code> instance.</p>
-<h2 id="what-a-module-is">What a module is<a class="headerlink" href="#what-a-module-is" title="Permanent link">&para;</a></h2>
-<p>A module is a separately installable <code>msflib-*</code> package. Each one is a slice of the shared <code>msflib</code> namespace (for example <code>msflib.auth</code> or <code>msflib.workspaces</code>) and typically provides some mix of:</p>
-<ul>
-<li><strong>Models</strong>: SQLModel tables and the Pydantic schemas that go with them.</li>
-<li><strong>Actions</strong>: service-layer classes, usually <code>ModelAction</code> subclasses, that hold the database logic.</li>
-<li><strong>Routers</strong>: factory functions that build a FastAPI <code>APIRouter</code> from the dependencies you hand them (session, identity, settings).</li>
-<li><strong>Dependencies</strong>: factories that return namespaces of FastAPI dependencies, such as "the current account".</li>
-<li><strong>Settings</strong>: a settings class with its own namespace, composed into your app's settings object.</li>
-</ul>
-<p>Modules are written to be wired, not configured by import side effects. A module's router factory asks you for the session and identity dependencies it needs, so the same module works with whatever auth and database layout your app already has. Modules depend on <code>msflib</code> and, in some cases, on each other (see the table below).</p>
-<h2 id="package-map">Package map<a class="headerlink" href="#package-map" title="Permanent link">&para;</a></h2>
-<p>All packages live in one repository, <a href="https://github.com/msflib/fastapi">msflib/fastapi</a>. "Depends on" lists the direct <code>msflib-*</code> dependencies declared in each package's <code>pyproject.toml</code>; every package also depends on <code>msflib</code> itself.</p>
+<h1 id="policy">Policy<a class="headerlink" href="#policy" title="Permanent link">&para;</a></h1>
+<p><code>msflib.policy</code> builds on <a href="../tiered-config/">tiered configuration</a>. Where tiered config answers "what is the effective value", policy adds "which tier decided it, which request overrides were refused, and can I log that". It is meant for structured settings such as model routing, chunking or retrieval rules, where an operator needs to audit why a request behaved as it did.</p>
+<p>Everything below is exported from <code>msflib.policy</code>.</p>
+<h2 id="what-it-provides">What it provides<a class="headerlink" href="#what-it-provides" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Package</th>
-<th>Import</th>
+<th>Name</th>
 <th>Purpose</th>
-<th>Depends on</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="modules/core/"><code>msflib</code></a></td>
-<td><code>msflib</code></td>
-<td>Core: settings, base models, actions, event bus, scope and policy, DB setup, seeding, utilities</td>
-<td>none</td>
+<td><code>PolicyResolutionService</code></td>
+<td>Resolves a <code>ModuleSettingsBase</code> across all tiers and returns the settings plus a trace.</td>
 </tr>
 <tr>
-<td><a href="modules/auth/"><code>msflib-auth</code></a></td>
-<td><code>msflib.auth</code></td>
-<td>Login, token issue and revocation, password reset, optional Google OAuth, identity dependency factories</td>
-<td>none</td>
+<td><code>PolicyResolutionTrace</code></td>
+<td>Per key, which <code>PolicyLayer</code> won, plus the request overrides that were rejected.</td>
 </tr>
 <tr>
-<td><a href="modules/account/"><code>msflib-account</code></a></td>
-<td><code>msflib.account</code></td>
-<td>Accounts and profiles: registration, self-service and admin endpoints</td>
-<td>none</td>
+<td><code>PolicyLayer</code></td>
+<td>Enum: <code>default</code>, <code>environment</code>, <code>tenant</code>, <code>workspace</code>, <code>user</code>, <code>request</code>.</td>
 </tr>
 <tr>
-<td><a href="modules/tenancy/"><code>msflib-tenancy</code></a></td>
-<td><code>msflib.tenancy</code></td>
-<td>A minimal <code>Tenant</code> model and tenant resolution, the target for <code>tenant_id</code> foreign keys</td>
-<td>none</td>
+<td><code>PolicyScopedConfigStore</code></td>
+<td>Protocol the service uses to read tenant, workspace and user values.</td>
 </tr>
 <tr>
-<td><a href="modules/workspaces/"><code>msflib-workspaces</code></a></td>
-<td><code>msflib.workspaces</code></td>
-<td>Workspace lifecycle, ownership and membership</td>
-<td>account, tenancy</td>
+<td><code>PolicyEnvelope</code></td>
+<td>Optional pydantic base model with a common policy shape (<code>enabled</code>, <code>version</code>, <code>defaults</code>, <code>constraints</code>, <code>overrides</code>, <code>selection</code>, <code>fallbacks</code>, <code>observability</code>). Extra fields are allowed.</td>
 </tr>
 <tr>
-<td><a href="modules/notifications/"><code>msflib-notifications</code></a></td>
-<td><code>msflib.notifications</code></td>
-<td>Account inbox and admin broadcast over in-app, email and SMS channels</td>
-<td>account, tenancy</td>
+<td><code>PolicyDecisionRecord</code>, <code>PolicyChangeRecord</code></td>
+<td>Dataclasses for decision and change audit entries.</td>
 </tr>
 <tr>
-<td><a href="modules/workspace-notifications/"><code>msflib-workspace-notifications</code></a></td>
-<td><code>msflib.workspace_notifications</code></td>
-<td>Workspace-level notifications, including Discord channels</td>
-<td>workspaces, notifications</td>
+<td><code>PolicyDecisionLogger</code>, <code>PolicyChangeLogger</code></td>
+<td>Protocols with one method, <code>append(record)</code>.</td>
 </tr>
 <tr>
-<td><a href="modules/workspace-config/"><code>msflib-workspace-config</code></a></td>
-<td><code>msflib.workspace_config</code></td>
-<td>Tenant, workspace and user scoped configuration values and categories</td>
-<td>tenancy</td>
+<td><code>InMemoryPolicyDecisionLogger</code>, <code>InMemoryPolicyChangeLogger</code></td>
+<td>List-backed loggers for tests and local use (<code>.records</code>).</td>
 </tr>
 <tr>
-<td><a href="modules/payments/"><code>msflib-payments</code></a></td>
-<td><code>msflib.payments</code></td>
-<td>Payment initiation and verification over Stripe and Paystack, payment queue</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/ai-core/"><code>msflib-ai-core</code></a></td>
-<td><code>msflib.ai_core</code></td>
-<td>Provider-agnostic LLM, embedding and vector-store factories, prompts, ingestion pipeline</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/ai-api/"><code>msflib-ai-api</code></a></td>
-<td><code>msflib.ai_api</code></td>
-<td>HTTP endpoints for scoped retrieval and grounded Q&amp;A on top of ai-core</td>
-<td>account, ai-core, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/drivelink/"><code>msflib-drivelink</code></a></td>
-<td><code>msflib.drivelink</code></td>
-<td>A Drive-style virtual filesystem</td>
-<td>account</td>
-</tr>
-<tr>
-<td><a href="modules/ingestion/"><code>msflib-ingestion</code></a></td>
-<td><code>msflib.ingestion</code></td>
-<td>Shared ingestion job model and Celery-backed queue with an operator API</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/documents/"><code>msflib-documents</code></a></td>
-<td><code>msflib.documents</code></td>
-<td>Document upload, extraction, chunking, embedding and indexing</td>
-<td>account, drivelink, ai-core, ingestion, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/knowledge/"><code>msflib-knowledge</code></a></td>
-<td><code>msflib.knowledge</code></td>
-<td>Scoped knowledge model projected to graph and vector stores, with semantic queries</td>
-<td>ai-core, documents, ingestion, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/conversation/"><code>msflib-conversation</code></a></td>
-<td><code>msflib.conversation</code></td>
-<td>Channels, threads, messages, membership and reactions</td>
-<td>tenancy</td>
+<td><code>validate_policy_mapping</code></td>
+<td>Parse and validate a policy mapping against a schema.</td>
 </tr>
 </tbody>
 </table>
-<p>The import column is a namespace package: <code>msflib</code> is declared with <code>pkgutil.extend_path</code>, so all of these packages install into the same <code>msflib</code> directory tree. Check what a package's <code>__init__</code> exports before relying on <code>from msflib.x import y</code>; several modules export nothing at the top level and expect you to import from submodules.</p>
-<h2 id="picking-what-to-install">Picking what to install<a class="headerlink" href="#picking-what-to-install" title="Permanent link">&para;</a></h2>
-<p>Start from what your app has to do, then add the packages that provide it. Installing a package pulls in the <code>msflib-*</code> packages it depends on.</p>
-<table>
-<thead>
-<tr>
-<th>If you need</th>
-<th>Install</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CRUD endpoints over your own models, settings, events, seeding</td>
-<td><code>msflib</code> only</td>
-</tr>
-<tr>
-<td>User accounts and login</td>
-<td><code>msflib-account</code> and <code>msflib-auth</code></td>
-</tr>
-<tr>
-<td>Per-tenant isolation keys on your tables</td>
-<td><code>msflib-tenancy</code></td>
-</tr>
-<tr>
-<td>Teams or organisations that users join</td>
-<td><code>msflib-workspaces</code> (brings account and tenancy)</td>
-</tr>
-<tr>
-<td>Settings that differ by tenant, workspace or user</td>
-<td><code>msflib-workspace-config</code></td>
-</tr>
-<tr>
-<td>In-app, email or SMS notifications</td>
-<td><code>msflib-notifications</code>, plus <code>msflib-workspace-notifications</code> for workspace-level ones</td>
-</tr>
-<tr>
-<td>Taking payments</td>
-<td><code>msflib-payments</code></td>
-</tr>
-<tr>
-<td>LLM calls, embeddings, vector search</td>
-<td><code>msflib-ai-core</code>, plus <code>msflib-ai-api</code> for ready-made endpoints</td>
-</tr>
-<tr>
-<td>Chat threads and channels</td>
-<td><code>msflib-conversation</code></td>
-</tr>
-<tr>
-<td>File storage with a folder tree</td>
-<td><code>msflib-drivelink</code></td>
-</tr>
-<tr>
-<td>Document ingestion and retrieval</td>
-<td><code>msflib-documents</code> and <code>msflib-ingestion</code>; add <code>msflib-knowledge</code> for the knowledge graph</td>
-</tr>
-</tbody>
-</table>
-<p>Some packages have optional extras (for example <code>msflib-ai-core[openai,pgvector]</code> or <code>msflib-notifications[email]</code>); each module page lists them. The core has one, <code>migrations</code>, which adds Alembic.</p>
-<div class="admonition note">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
-<p>The <code>sms</code>, <code>email</code> and <code>discord</code> extras of the notification packages currently add nothing: their dependencies (<code>twilio</code>, <code>emails</code>, <code>discord-py</code>) are already hard requirements of the core, so you do not need them. For <code>msflib-workspace-notifications</code>, avoid the <code>sms</code> and <code>all</code> extras: they require <code>twilio ^8.0.0</code> while the core requires <code>^9.4.6</code>, so the resolver cannot satisfy both.</p>
-</div>
-<h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permanent link">&para;</a></h2>
-<p>Packages are installed from the git repository, one <code>subdirectory</code> per package. With Poetry:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
-<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/auth"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"auth-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<h2 id="resolving">Resolving<a class="headerlink" href="#resolving" title="Permanent link">&para;</a></h2>
+<p>The service takes a store for the persisted tiers and an optional decision logger. <code>ScopedConfigPolicyStoreAdapter</code> from <code>msflib.workspace_config.service</code> is the store backed by <a href="../../modules/workspace-config/">workspace-config</a>. Any object with the three <code>get_*_namespace_values</code> methods satisfies the protocol, so you can also back it with something else.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">,</span> <span class="n">PolicyResolutionService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigPolicyStoreAdapter</span><span class="p">,</span> <span class="n">ScopedConfigService</span>
+
+<span class="n">decisions</span> <span class="o">=</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">()</span>
+<span class="n">policy_service</span> <span class="o">=</span> <span class="n">PolicyResolutionService</span><span class="p">(</span>
+    <span class="n">scoped_config_store</span><span class="o">=</span><span class="n">ScopedConfigPolicyStoreAdapter</span><span class="p">(</span><span class="n">ScopedConfigService</span><span class="p">()),</span>
+    <span class="n">decision_logger</span><span class="o">=</span><span class="n">decisions</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">resolved</span><span class="p">,</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">policy_service</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
+    <span class="n">ChatSettings</span><span class="p">(),</span>            <span class="c1"># a ModuleSettingsBase subclass instance</span>
+    <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+    <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">request_override</span><span class="o">=</span><span class="p">{</span><span class="s2">"MAX_TOKENS"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"MODEL"</span><span class="p">:</span> <span class="s2">"other"</span><span class="p">},</span>
+    <span class="n">trace_policy_field</span><span class="o">=</span><span class="s2">"MODEL"</span><span class="p">,</span>
+    <span class="n">request_id</span><span class="o">=</span><span class="s2">"req-1"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">trace</span><span class="o">.</span><span class="n">winning_layers</span><span class="p">[</span><span class="s2">"MAX_TOKENS"</span><span class="p">]</span>   <span class="c1"># PolicyLayer.request</span>
+<span class="n">trace</span><span class="o">.</span><span class="n">rejected_overrides</span>             <span class="c1"># [RejectedOverride(... key='MODEL', reason='Not in allowlist')]</span>
+<span class="n">decisions</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">winning_layers</span>  <span class="c1"># {'MODEL': 'tenant'}</span>
 </code></pre></div>
 
-<p>Pin a release tag in <code>rev</code>. Tags are named <code>&lt;package directory&gt;-v&lt;version&gt;</code>, for example <code>core-v0.2.1</code>, <code>account-v0.2.2</code> or <code>workspace_config-v0.2.1</code>, and each package is versioned independently. The versions above were current when this page was written; list the latest with:</p>
-<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>ls-remote<span class="w"> </span>--tags<span class="w"> </span>https://github.com/msflib/fastapi.git<span class="w"> </span><span class="s1">'core-v*'</span>
-</code></pre></div>
-
-<p>Do not use <code>rev = "dev"</code> (or <code>@dev</code> with pip) in anything you deploy. <code>dev</code> is the moving development head: it can change or break between installs. The <a href="quick-start/basics/">Quick Start</a> walks through the same installation for the core package.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>MSFLib 0.2.0 and later require Pydantic v2. If your app is still on Pydantic v1, use the 0.1.x tags.</p>
-</div>
-<h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
+<p>(<code>ChatSettings</code> is the class from <a href="../tiered-config/">tiered configuration</a>, with <code>MAX_TOKENS</code> in its allowlist and <code>MODEL</code> not.)</p>
+<p>Behavior to rely on:</p>
 <ul>
-<li><a href="quick-start/basics/">Quick Start</a>: a four-page walk from an empty directory to a tested CRUD API on the core package.</li>
-<li><a href="modules/">Modules</a>: one page per package.</li>
-<li><a href="integration/">Diving Deeper</a>: mounting routes, overriding models, subclassing actions, authentication, long-running jobs.</li>
-<li><a href="concepts/">Concepts</a>: tiered configuration, policy, scopes, the event bus, dependency injection and seeding.</li>
-<li><a href="contributing/">Contributing</a>: working on MSFLib itself.</li>
+<li>Resolution order is default, environment, tenant, workspace, user, request. The service reads environment variables for the namespace on each call and merges them over the instance's own values, so the trace can report <code>environment</code> as a winner.</li>
+<li>Request overrides are normalized and checked against <code>request_override_allowlist</code>. Rejected keys do not raise. They are dropped from the merge and listed in <code>trace.rejected_overrides</code>, which differs from <code>ScopedConfigService.resolve_module_settings</code>, which raises.</li>
+<li>A decision record is only appended when a decision logger is configured and <code>trace_policy_field</code> is set. That field must exist on the settings class, otherwise <code>ValueError</code>.</li>
+<li>If a store is configured, <code>session</code> is required (<code>ValueError</code> otherwise). With no store, only defaults, environment and request override apply.</li>
+<li>Stored values are deep-merged into the current settings, so a tenant can override one key of a nested policy and keep the rest.</li>
+</ul>
+<h2 id="policy-fields-with-a-schema">Policy fields with a schema<a class="headerlink" href="#policy-fields-with-a-schema" title="Permanent link">&para;</a></h2>
+<p>A policy field is an ordinary settings field whose value is a structured mapping. Annotate it with a pydantic model, typically a <code>PolicyEnvelope</code> subclass:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSettingsBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolicyEnvelope</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RoutingPolicy</span><span class="p">(</span><span class="n">PolicyEnvelope</span><span class="p">):</span>
+    <span class="n">default_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"small"</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LlmSettings</span><span class="p">(</span><span class="n">ModuleSettingsBase</span><span class="p">):</span>
+    <span class="n">namespace</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"LLM"</span>
+    <span class="n">ROUTING_POLICY</span><span class="p">:</span> <span class="n">RoutingPolicy</span> <span class="o">=</span> <span class="n">RoutingPolicy</span><span class="p">()</span>
+</code></pre></div>
+
+<p><code>LlmSettings.get_policy_field_schema("ROUTING_POLICY")</code> returns <code>RoutingPolicy</code>. If the field is annotated as a plain mapping instead, the lookup falls back to a sibling <code>policy.py</code> module next to the settings module, looking for a class named <code>RoutingPolicySchema</code>, then <code>RoutingSchema</code>, <code>RoutingPolicy</code> or <code>RoutingModel</code> (the base name comes from the field name minus <code>_POLICY</code>), or an entry in a <code>POLICY_FIELDS</code> dict there. It raises <code>ValueError</code> if nothing is found.</p>
+<p><code>resolve_policy_field</code> resolves the whole module and returns just one field as a validated dict, with its trace:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">policy</span><span class="p">,</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">policy_service</span><span class="o">.</span><span class="n">resolve_policy_field</span><span class="p">(</span>
+    <span class="n">LlmSettings</span><span class="p">(),</span>
+    <span class="n">field_name</span><span class="o">=</span><span class="s2">"ROUTING_POLICY"</span><span class="p">,</span>
+    <span class="n">schema</span><span class="o">=</span><span class="n">RoutingPolicy</span><span class="p">,</span>
+    <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+    <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">request_id</span><span class="o">=</span><span class="s2">"req-1"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">policy</span><span class="p">[</span><span class="s2">"default_model"</span><span class="p">]</span>
+</code></pre></div>
+
+<p><code>validate_policy_mapping(value, field_name=..., schema=...)</code> is the same parsing step on its own. It accepts a dict, a pydantic model, or a string containing JSON or a Python literal, and raises <code>ValueError("&lt;field&gt; failed schema validation: ...")</code> on failure.</p>
+<h2 id="in-a-host-app">In a host app<a class="headerlink" href="#in-a-host-app" title="Permanent link">&para;</a></h2>
+<p>Resolve per request, then hand the resolved settings to your own code (a "bridge" that maps the policy to behavior). Modules that support policy, such as ai_core, accept a <code>get_policy_resolver</code> callable in their <code>deps.py</code> factory and fall back to base settings when none is supplied. See <a href="../dependency-injection/">dependency injection</a>.</p>
+<h2 id="pitfalls">Pitfalls<a class="headerlink" href="#pitfalls" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Use the resolved settings, not the base instance, for runtime decisions. The base instance never reflects tenant or user values.</li>
+<li><code>PolicyChangeRecord</code> and <code>PolicyChangeLogger</code> only define the shape. Nothing in <code>msflib.policy</code> writes change records for you; emit them from your admin endpoints.</li>
+<li>The in-memory loggers grow without bound. Use them in tests, and implement the <code>append</code> protocol over your own storage in production.</li>
+<li>The service is storage-agnostic and does not check who may write tenant, workspace or user values.</li>
 </ul>
 
 
@@ -2223,10 +2141,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/">
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/concepts/scopes-tenancy-workspaces/">
       
       
+        <link rel="prev" href="../policy/">
       
-        <link rel="next" href="modules/">
+      
+        <link rel="next" href="../event-bus/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>MSFLIB FastAPI Documentation</title>
+        <title>Scopes, tenancy and workspaces - MSFLIB FastAPI Documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#msflib" class="md-skip">
+        <a href="#scopes-tenancy-and-workspaces" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Scopes, tenancy and workspaces
             
           </span>
         </div>
@@ -218,7 +220,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -233,37 +235,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -279,81 +254,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-a-module-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What a module is
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Package map
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#picking-what-to-install" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Picking what to install
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Installing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -419,7 +319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/" class="md-nav__link">
+      <a href="../../modules/" class="md-nav__link">
         
   
   
@@ -447,7 +347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/core/" class="md-nav__link">
+      <a href="../../modules/core/" class="md-nav__link">
         
   
   
@@ -475,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/auth/" class="md-nav__link">
+      <a href="../../modules/auth/" class="md-nav__link">
         
   
   
@@ -503,7 +403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/account/" class="md-nav__link">
+      <a href="../../modules/account/" class="md-nav__link">
         
   
   
@@ -531,7 +431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/tenancy/" class="md-nav__link">
+      <a href="../../modules/tenancy/" class="md-nav__link">
         
   
   
@@ -559,7 +459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspaces/" class="md-nav__link">
+      <a href="../../modules/workspaces/" class="md-nav__link">
         
   
   
@@ -587,7 +487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/notifications/" class="md-nav__link">
+      <a href="../../modules/notifications/" class="md-nav__link">
         
   
   
@@ -615,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspace-notifications/" class="md-nav__link">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
         
   
   
@@ -643,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/workspace-config/" class="md-nav__link">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
         
   
   
@@ -671,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/payments/" class="md-nav__link">
+      <a href="../../modules/payments/" class="md-nav__link">
         
   
   
@@ -699,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ai-core/" class="md-nav__link">
+      <a href="../../modules/ai-core/" class="md-nav__link">
         
   
   
@@ -727,7 +627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ai-api/" class="md-nav__link">
+      <a href="../../modules/ai-api/" class="md-nav__link">
         
   
   
@@ -755,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/drivelink/" class="md-nav__link">
+      <a href="../../modules/drivelink/" class="md-nav__link">
         
   
   
@@ -783,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/documents/" class="md-nav__link">
+      <a href="../../modules/documents/" class="md-nav__link">
         
   
   
@@ -811,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/ingestion/" class="md-nav__link">
+      <a href="../../modules/ingestion/" class="md-nav__link">
         
   
   
@@ -839,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/knowledge/" class="md-nav__link">
+      <a href="../../modules/knowledge/" class="md-nav__link">
         
   
   
@@ -867,7 +767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="modules/conversation/" class="md-nav__link">
+      <a href="../../modules/conversation/" class="md-nav__link">
         
   
   
@@ -956,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/basics/" class="md-nav__link">
+      <a href="../../quick-start/basics/" class="md-nav__link">
         
   
   
@@ -984,7 +884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/models-data-tables/" class="md-nav__link">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
         
   
   
@@ -1012,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/actions-crud/" class="md-nav__link">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
         
   
   
@@ -1040,7 +940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick-start/endpoints-and-routers/" class="md-nav__link">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
         
   
   
@@ -1129,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/" class="md-nav__link">
+      <a href="../../integration/" class="md-nav__link">
         
   
   
@@ -1157,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/extending-msflib/" class="md-nav__link">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
         
   
   
@@ -1185,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/writing-custom-code/" class="md-nav__link">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
         
   
   
@@ -1213,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/mounting-routes/" class="md-nav__link">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
         
   
   
@@ -1241,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/overriding-models/" class="md-nav__link">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
         
   
   
@@ -1269,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/subclassing-actions/" class="md-nav__link">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
         
   
   
@@ -1297,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/authentication/" class="md-nav__link">
+      <a href="../../integration/authentication/" class="md-nav__link">
         
   
   
@@ -1325,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/long-running-jobs-ingestion/" class="md-nav__link">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
         
   
   
@@ -1353,7 +1253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/sse-websockets/" class="md-nav__link">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
         
   
   
@@ -1381,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integration/ai-capabilities/" class="md-nav__link">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
         
   
   
@@ -1413,8 +1313,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1425,13 +1327,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -1452,7 +1352,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1470,7 +1370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1498,7 +1398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/tiered-config/" class="md-nav__link">
+      <a href="../tiered-config/" class="md-nav__link">
         
   
   
@@ -1526,7 +1426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/policy/" class="md-nav__link">
+      <a href="../policy/" class="md-nav__link">
         
   
   
@@ -1551,10 +1451,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1570,6 +1497,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scopeenvelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ScopeEnvelope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-the-scope-in-an-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting the scope in an endpoint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compiling-a-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compiling a scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tenants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tenants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-workspace-less-bucket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The workspace-less bucket
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-is-through-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access is through membership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfalls
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1582,7 +1606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/event-bus/" class="md-nav__link">
+      <a href="../event-bus/" class="md-nav__link">
         
   
   
@@ -1610,7 +1634,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/dependency-injection/" class="md-nav__link">
+      <a href="../dependency-injection/" class="md-nav__link">
         
   
   
@@ -1638,7 +1662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/seeding/" class="md-nav__link">
+      <a href="../seeding/" class="md-nav__link">
         
   
   
@@ -1673,7 +1697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="../../reference/" class="md-nav__link">
         
   
   
@@ -1754,7 +1778,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -1782,7 +1806,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/releases/" class="md-nav__link">
+      <a href="../../contributing/releases/" class="md-nav__link">
         
   
   
@@ -1810,7 +1834,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/module-page-template/" class="md-nav__link">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
         
   
   
@@ -1838,7 +1862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/known-issues/" class="md-nav__link">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
         
   
   
@@ -1893,10 +1917,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-a-module-is" class="md-nav__link">
+  <a href="#scopeenvelope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What a module is
+        ScopeEnvelope
       
     </span>
   </a>
@@ -1904,10 +1928,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
+  <a href="#getting-the-scope-in-an-endpoint" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Package map
+        Getting the scope in an endpoint
       
     </span>
   </a>
@@ -1915,10 +1939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#picking-what-to-install" class="md-nav__link">
+  <a href="#compiling-a-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Picking what to install
+        Compiling a scope
       
     </span>
   </a>
@@ -1926,10 +1950,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing" class="md-nav__link">
+  <a href="#tenants" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installing
+        Tenants
       
     </span>
   </a>
@@ -1937,10 +1961,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
+  <a href="#the-workspace-less-bucket" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next
+        The workspace-less bucket
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-is-through-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access is through membership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfalls
       
     </span>
   </a>
@@ -1964,215 +2010,134 @@
 
 
 
-<h1 id="msflib">MSFLib<a class="headerlink" href="#msflib" title="Permanent link">&para;</a></h1>
-<p>MSFLib (pronounced "musflib") is a set of Python packages for building FastAPI backends. A small core package, <code>msflib</code>, supplies the shared plumbing: settings, base models, a CRUD action layer, an event bus, scope and policy primitives, database setup and seeding. On top of it sit optional feature modules such as accounts, authentication, workspaces, payments and AI infrastructure.</p>
-<p>You write a normal FastAPI application, the <em>host app</em>. You install the packages you need, define your own models and routes next to the ones the modules provide, and mount the module routers where you want them. MSFLib does not run your app and does not own your <code>FastAPI()</code> instance.</p>
-<h2 id="what-a-module-is">What a module is<a class="headerlink" href="#what-a-module-is" title="Permanent link">&para;</a></h2>
-<p>A module is a separately installable <code>msflib-*</code> package. Each one is a slice of the shared <code>msflib</code> namespace (for example <code>msflib.auth</code> or <code>msflib.workspaces</code>) and typically provides some mix of:</p>
+<h1 id="scopes-tenancy-and-workspaces">Scopes, tenancy and workspaces<a class="headerlink" href="#scopes-tenancy-and-workspaces" title="Permanent link">&para;</a></h1>
+<p>Most MSFLib data belongs to someone: a tenant, a workspace inside it, sometimes an individual account. A scope is the small immutable object that says who a call is acting for. It is built once at the endpoint boundary and passed down, so services, config lookups and storage keys all agree on the same identity.</p>
+<p>Three tiers recur throughout:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Identifier</th>
+<th>Provided by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant</td>
+<td><code>tenant_id</code></td>
+<td><a href="../../modules/tenancy/"><code>msflib-tenancy</code></a></td>
+</tr>
+<tr>
+<td>Workspace</td>
+<td><code>workspace_id</code></td>
+<td><a href="../../modules/workspaces/"><code>msflib-workspaces</code></a></td>
+</tr>
+<tr>
+<td>Account (user)</td>
+<td><code>account_id</code></td>
+<td><a href="../../modules/account/"><code>msflib-account</code></a> and <a href="../../modules/auth/"><code>msflib-auth</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="scopeenvelope">ScopeEnvelope<a class="headerlink" href="#scopeenvelope" title="Permanent link">&para;</a></h2>
+<p><code>ScopeEnvelope</code> lives in <code>msflib.scope</code>. It is a frozen dataclass whose <code>dimensions</code> map a dimension name to a string or <code>None</code>. Dimension values are always strings (<code>"42"</code>, not <code>42</code>), because the same envelope is compiled into storage keys and filters.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">build_context_scope</span>
+
+<span class="n">scope</span> <span class="o">=</span> <span class="n">build_context_scope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">scope</span><span class="o">.</span><span class="n">dimensions</span>
+<span class="c1"># {'tenant_id': '1', 'workspace_id': None, 'account_id': '5'}</span>
+</code></pre></div>
+
+<p>An absent key and a key with value <code>None</code> mean different things. Absent means "not specified". Present with <code>None</code> means "explicitly null", which for <code>workspace_id</code> is the workspace-less bucket (see below). <code>scope.get_dim(key)</code> returns the value or <code>None</code>; <code>scope.has_dim(key)</code> tells the two cases apart.</p>
+<p>You add other dimensions (<code>conversation_id</code>, <code>project_id</code>, ...) by building a new envelope, since envelopes are immutable:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">scope</span> <span class="o">=</span> <span class="n">ScopeEnvelope</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">scope</span><span class="o">.</span><span class="n">dimensions</span><span class="p">,</span> <span class="s2">"conversation_id"</span><span class="p">:</span> <span class="s2">"c1"</span><span class="p">})</span>
+</code></pre></div>
+
+<h2 id="getting-the-scope-in-an-endpoint">Getting the scope in an endpoint<a class="headerlink" href="#getting-the-scope-in-an-endpoint" title="Permanent link">&para;</a></h2>
+<p><code>get_scope_dependencies</code> returns a <code>DependencyNamespace</code> of FastAPI dependencies that build the envelope from the caller's resolved identity. You pass in your site's own <code>get_current_*</code> dependencies (from <code>auth.get_account_dependencies</code>, <code>auth.get_user_dependencies</code> and <code>tenancy.deps.get_tenant_dependencies</code>).</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">get_scope_dependencies</span>
+
+<span class="n">scopes</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
+    <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/items"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_items</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scopes</span><span class="o">.</span><span class="n">get_account_scope</span><span class="p">)):</span>
+    <span class="k">return</span> <span class="n">item_service</span><span class="o">.</span><span class="n">list_for_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The namespace exposes:</p>
 <ul>
-<li><strong>Models</strong>: SQLModel tables and the Pydantic schemas that go with them.</li>
-<li><strong>Actions</strong>: service-layer classes, usually <code>ModelAction</code> subclasses, that hold the database logic.</li>
-<li><strong>Routers</strong>: factory functions that build a FastAPI <code>APIRouter</code> from the dependencies you hand them (session, identity, settings).</li>
-<li><strong>Dependencies</strong>: factories that return namespaces of FastAPI dependencies, such as "the current account".</li>
-<li><strong>Settings</strong>: a settings class with its own namespace, composed into your app's settings object.</li>
+<li><code>get_account_scope</code>: every tier the caller has. Use for member-facing reads and writes.</li>
+<li><code>get_workspace_scope</code>: tenant and workspace, no account. Use for admin surfaces over workspace-scoped rows. Present only when a workspace dependency was passed.</li>
+<li><code>get_tenant_scope</code>: tenant only, for platform-level surfaces.</li>
 </ul>
-<p>Modules are written to be wired, not configured by import side effects. A module's router factory asks you for the session and identity dependencies it needs, so the same module works with whatever auth and database layout your app already has. Modules depend on <code>msflib</code> and, in some cases, on each other (see the table below).</p>
-<h2 id="package-map">Package map<a class="headerlink" href="#package-map" title="Permanent link">&para;</a></h2>
-<p>All packages live in one repository, <a href="https://github.com/msflib/fastapi">msflib/fastapi</a>. "Depends on" lists the direct <code>msflib-*</code> dependencies declared in each package's <code>pyproject.toml</code>; every package also depends on <code>msflib</code> itself.</p>
-<table>
-<thead>
-<tr>
-<th>Package</th>
-<th>Import</th>
-<th>Purpose</th>
-<th>Depends on</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="modules/core/"><code>msflib</code></a></td>
-<td><code>msflib</code></td>
-<td>Core: settings, base models, actions, event bus, scope and policy, DB setup, seeding, utilities</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/auth/"><code>msflib-auth</code></a></td>
-<td><code>msflib.auth</code></td>
-<td>Login, token issue and revocation, password reset, optional Google OAuth, identity dependency factories</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/account/"><code>msflib-account</code></a></td>
-<td><code>msflib.account</code></td>
-<td>Accounts and profiles: registration, self-service and admin endpoints</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/tenancy/"><code>msflib-tenancy</code></a></td>
-<td><code>msflib.tenancy</code></td>
-<td>A minimal <code>Tenant</code> model and tenant resolution, the target for <code>tenant_id</code> foreign keys</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/workspaces/"><code>msflib-workspaces</code></a></td>
-<td><code>msflib.workspaces</code></td>
-<td>Workspace lifecycle, ownership and membership</td>
-<td>account, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/notifications/"><code>msflib-notifications</code></a></td>
-<td><code>msflib.notifications</code></td>
-<td>Account inbox and admin broadcast over in-app, email and SMS channels</td>
-<td>account, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/workspace-notifications/"><code>msflib-workspace-notifications</code></a></td>
-<td><code>msflib.workspace_notifications</code></td>
-<td>Workspace-level notifications, including Discord channels</td>
-<td>workspaces, notifications</td>
-</tr>
-<tr>
-<td><a href="modules/workspace-config/"><code>msflib-workspace-config</code></a></td>
-<td><code>msflib.workspace_config</code></td>
-<td>Tenant, workspace and user scoped configuration values and categories</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/payments/"><code>msflib-payments</code></a></td>
-<td><code>msflib.payments</code></td>
-<td>Payment initiation and verification over Stripe and Paystack, payment queue</td>
-<td>none</td>
-</tr>
-<tr>
-<td><a href="modules/ai-core/"><code>msflib-ai-core</code></a></td>
-<td><code>msflib.ai_core</code></td>
-<td>Provider-agnostic LLM, embedding and vector-store factories, prompts, ingestion pipeline</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/ai-api/"><code>msflib-ai-api</code></a></td>
-<td><code>msflib.ai_api</code></td>
-<td>HTTP endpoints for scoped retrieval and grounded Q&amp;A on top of ai-core</td>
-<td>account, ai-core, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/drivelink/"><code>msflib-drivelink</code></a></td>
-<td><code>msflib.drivelink</code></td>
-<td>A Drive-style virtual filesystem</td>
-<td>account</td>
-</tr>
-<tr>
-<td><a href="modules/ingestion/"><code>msflib-ingestion</code></a></td>
-<td><code>msflib.ingestion</code></td>
-<td>Shared ingestion job model and Celery-backed queue with an operator API</td>
-<td>tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/documents/"><code>msflib-documents</code></a></td>
-<td><code>msflib.documents</code></td>
-<td>Document upload, extraction, chunking, embedding and indexing</td>
-<td>account, drivelink, ai-core, ingestion, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/knowledge/"><code>msflib-knowledge</code></a></td>
-<td><code>msflib.knowledge</code></td>
-<td>Scoped knowledge model projected to graph and vector stores, with semantic queries</td>
-<td>ai-core, documents, ingestion, tenancy</td>
-</tr>
-<tr>
-<td><a href="modules/conversation/"><code>msflib-conversation</code></a></td>
-<td><code>msflib.conversation</code></td>
-<td>Channels, threads, messages, membership and reactions</td>
-<td>tenancy</td>
-</tr>
-</tbody>
-</table>
-<p>The import column is a namespace package: <code>msflib</code> is declared with <code>pkgutil.extend_path</code>, so all of these packages install into the same <code>msflib</code> directory tree. Check what a package's <code>__init__</code> exports before relying on <code>from msflib.x import y</code>; several modules export nothing at the top level and expect you to import from submodules.</p>
-<h2 id="picking-what-to-install">Picking what to install<a class="headerlink" href="#picking-what-to-install" title="Permanent link">&para;</a></h2>
-<p>Start from what your app has to do, then add the packages that provide it. Installing a package pulls in the <code>msflib-*</code> packages it depends on.</p>
-<table>
-<thead>
-<tr>
-<th>If you need</th>
-<th>Install</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CRUD endpoints over your own models, settings, events, seeding</td>
-<td><code>msflib</code> only</td>
-</tr>
-<tr>
-<td>User accounts and login</td>
-<td><code>msflib-account</code> and <code>msflib-auth</code></td>
-</tr>
-<tr>
-<td>Per-tenant isolation keys on your tables</td>
-<td><code>msflib-tenancy</code></td>
-</tr>
-<tr>
-<td>Teams or organisations that users join</td>
-<td><code>msflib-workspaces</code> (brings account and tenancy)</td>
-</tr>
-<tr>
-<td>Settings that differ by tenant, workspace or user</td>
-<td><code>msflib-workspace-config</code></td>
-</tr>
-<tr>
-<td>In-app, email or SMS notifications</td>
-<td><code>msflib-notifications</code>, plus <code>msflib-workspace-notifications</code> for workspace-level ones</td>
-</tr>
-<tr>
-<td>Taking payments</td>
-<td><code>msflib-payments</code></td>
-</tr>
-<tr>
-<td>LLM calls, embeddings, vector search</td>
-<td><code>msflib-ai-core</code>, plus <code>msflib-ai-api</code> for ready-made endpoints</td>
-</tr>
-<tr>
-<td>Chat threads and channels</td>
-<td><code>msflib-conversation</code></td>
-</tr>
-<tr>
-<td>File storage with a folder tree</td>
-<td><code>msflib-drivelink</code></td>
-</tr>
-<tr>
-<td>Document ingestion and retrieval</td>
-<td><code>msflib-documents</code> and <code>msflib-ingestion</code>; add <code>msflib-knowledge</code> for the knowledge graph</td>
-</tr>
-</tbody>
-</table>
-<p>Some packages have optional extras (for example <code>msflib-ai-core[openai,pgvector]</code> or <code>msflib-notifications[email]</code>); each module page lists them. The core has one, <code>migrations</code>, which adds Alembic.</p>
-<div class="admonition note">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
-<p>The <code>sms</code>, <code>email</code> and <code>discord</code> extras of the notification packages currently add nothing: their dependencies (<code>twilio</code>, <code>emails</code>, <code>discord-py</code>) are already hard requirements of the core, so you do not need them. For <code>msflib-workspace-notifications</code>, avoid the <code>sms</code> and <code>all</code> extras: they require <code>twilio ^8.0.0</code> while the core requires <code>^9.4.6</code>, so the resolver cannot satisfy both.</p>
-</div>
-<h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permanent link">&para;</a></h2>
-<p>Packages are installed from the git repository, one <code>subdirectory</code> per package. With Poetry:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
-<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
-<span class="n">msflib-auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/auth"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"auth-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-
-<p>Pin a release tag in <code>rev</code>. Tags are named <code>&lt;package directory&gt;-v&lt;version&gt;</code>, for example <code>core-v0.2.1</code>, <code>account-v0.2.2</code> or <code>workspace_config-v0.2.1</code>, and each package is versioned independently. The versions above were current when this page was written; list the latest with:</p>
-<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>ls-remote<span class="w"> </span>--tags<span class="w"> </span>https://github.com/msflib/fastapi.git<span class="w"> </span><span class="s1">'core-v*'</span>
-</code></pre></div>
-
-<p>Do not use <code>rev = "dev"</code> (or <code>@dev</code> with pip) in anything you deploy. <code>dev</code> is the moving development head: it can change or break between installs. The <a href="quick-start/basics/">Quick Start</a> walks through the same installation for the core package.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>MSFLib 0.2.0 and later require Pydantic v2. If your app is still on Pydantic v1, use the 0.1.x tags.</p>
-</div>
-<h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
+<p>Which identity callables to pass depends on how your site models membership:</p>
 <ul>
-<li><a href="quick-start/basics/">Quick Start</a>: a four-page walk from an empty directory to a tested CRUD API on the core package.</li>
-<li><a href="modules/">Modules</a>: one page per package.</li>
-<li><a href="integration/">Diving Deeper</a>: mounting routes, overriding models, subclassing actions, authentication, long-running jobs.</li>
-<li><a href="concepts/">Concepts</a>: tiered configuration, policy, scopes, the event bus, dependency injection and seeding.</li>
-<li><a href="contributing/">Contributing</a>: working on MSFLib itself.</li>
+<li>A membership entity distinct from the account (a per-workspace row with status and role): pass <code>get_current_workspace</code> and <code>get_current_active_user</code>. The user dependency is what verifies membership; resolving the workspace alone does not.</li>
+<li>No such entity: pass <code>get_current_account</code>, plus <code>get_current_workspace</code> only if your accounts have a workspace attribute. Nothing then checks membership, because there is no membership row.</li>
+<li>No tenant concept yet: omit <code>get_current_tenant</code>. The scopes then carry <code>tenant_id=None</code>.</li>
+</ul>
+<p>Passing both <code>get_current_account</code> and <code>get_current_active_user</code> raises <code>ValueError</code>, as does passing neither account nor the workspace-and-user pair.</p>
+<h2 id="compiling-a-scope">Compiling a scope<a class="headerlink" href="#compiling-a-scope" title="Permanent link">&para;</a></h2>
+<p><code>ScopeCompiler</code> turns an envelope into a key string, segments or a mapping, validating it against a named operation profile first.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span>
+
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">ScopeCompiler</span><span class="p">()</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_scope_string</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">)</span>
+<span class="c1"># 't/1/a/5/w/-/c/c1'</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_scope_map</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">)</span>
+<span class="c1"># {'tenant_id': '1', 'account_id': '5', 'workspace_id': '-', 'conversation_id': 'c1'}</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_scope_map</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">,</span> <span class="n">use_sentinel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># {..., 'workspace_id': None, ...}</span>
+</code></pre></div>
+
+<p>Built-in profiles include <code>retrieval.search</code>, <code>memory.put</code>, <code>memory.get</code>, <code>checkpoint.invoke</code>, <code>config.read</code> and <code>audit.query</code>. A profile lists required dimensions, required-but-nullable dimensions and optional ones. In every built-in profile <code>tenant_id</code> is required, so compiling an envelope without a tenant raises <code>ScopeValidationError</code>; <code>workspace_id</code> and <code>account_id</code> are nullable and compile to the sentinel <code>-</code> when null. Register your own profiles on the compiler (<code>register_profile</code>) for your own operations. Modules do this for theirs: <code>msflib.workspace_config.scope_profiles</code> defines <code>workspace_config.storage_key</code>, where tenant, workspace and account are all required-but-nullable, so a tenant-tier row can have a null workspace and a workspace-tier row a null tenant.</p>
+<div class="admonition note">
+<p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/267">#267</a>)</p>
+<p>Scope profiles currently require <code>tenant_id</code> but allow a null <code>workspace_id</code>, so the two dimensions are not treated symmetrically, and the drivelink node has a <code>workspace_id</code> but no <code>tenant_id</code>. Whether the profiles should treat the two the same is undecided.</p>
+</div>
+<p>You can also evaluate access rules over a scope with the constraint classes exported from <code>msflib.scope</code> (<code>DimensionMatchConstraint</code>, <code>MembershipConstraint</code>, <code>RoleConstraint</code>, <code>ConstraintEvaluator</code>). Built-in profiles run in <code>log-only</code> enforcement, except <code>audit.query</code>, which enforces.</p>
+<div class="admonition note">
+<p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/270">#270</a>)</p>
+<p>Scope constraints on the AI API currently default to log-only (<code>SCOPE_CONSTRAINTS_ENFORCE</code>), so a failing constraint is logged rather than rejected. Whether enforcement should be the default is undecided.</p>
+</div>
+<h2 id="tenants">Tenants<a class="headerlink" href="#tenants" title="Permanent link">&para;</a></h2>
+<p><code>msflib-tenancy</code> provides the <code>Tenant</code> table (<code>name</code>, unique <code>slug</code>, <code>status</code>, a soft <code>owner_account_id</code>), <code>TenantAction</code>, and <code>TenancySettings</code> (namespace <code>TENANCY</code>, with <code>DEFAULT_TENANT_SLUG</code> and <code>DEFAULT_TENANT_NAME</code>, defaulting to <code>"default"</code> and <code>"Default Tenant"</code>).</p>
+<p>Today the library runs single-tenant: one default tenant, resolved by slug. Rows that belong to a tenant carry a <code>tenant_id</code> foreign key to it (workspaces, for example). Three entry points matter to a host app:</p>
+<ul>
+<li><code>TenantAction.ensure_default_tenant(session, settings=...)</code> creates the default tenant if it is missing. Call it at startup. It is idempotent.</li>
+<li><code>resolve_default_tenant_id(session, settings=..., create_if_missing=True)</code> returns its id, cached per process and database.</li>
+<li><code>get_tenant_dependencies(session_dep=...)</code> from <code>msflib.tenancy.deps</code> returns a namespace with <code>get_current_tenant</code>, which loads the default tenant row for a request and answers 500 if it was never seeded. Pass that to <code>get_scope_dependencies</code>.</li>
+</ul>
+<p>Importing the <code>Tenant</code> table class is done explicitly (<code>from msflib.tenancy.models.tenant import Tenant</code>), because the package root does not re-export it.</p>
+<p>If the scope carries a <code>tenant_id</code>, that value wins over any default lookup. A malformed tenant id raises <code>ValueError</code> rather than silently falling back to the default tenant (see <code>msflib.tenancy.resolver.resolve_scoped_tenant_id</code>).</p>
+<p>Resolving the caller's tenant from a request header or token, to choose among several tenants, is not implemented. <code>get_current_tenant</code> is the seam where you would add it.</p>
+<h2 id="the-workspace-less-bucket">The workspace-less bucket<a class="headerlink" href="#the-workspace-less-bucket" title="Permanent link">&para;</a></h2>
+<p><code>workspace_id=None</code> is a concrete, narrow bucket: rows that belong to no workspace. It is not "any workspace" and it is never a wildcard. Code that filters on scope matches it exactly:</p>
+<ul>
+<li>The built-in profiles treat it as required-but-nullable and compile it to the <code>-</code> sentinel.</li>
+<li>The knowledge module's <code>KnowledgeScope</code> renders <code>workspace_id=None</code> as <code>IS NULL</code>.</li>
+<li>ai_core's vector store profile lookup compares <code>workspace_id == None</code> explicitly, and its comments call this the catch-all workspace.</li>
+</ul>
+<p>When you write your own filters, do the same: pass <code>None</code> through to an <code>IS NULL</code> match. Dropping the clause when the id is <code>None</code> would widen the query to every workspace and leak data across them.</p>
+<p>The profile schema comments warn that null semantics for dimensions marked optional vary by consumer. Some, like ai_core's retrieval filter for conversation and sub-thread ids, deliberately let <code>None</code> widen the match. Check the consuming module before assuming either way.</p>
+<h2 id="access-is-through-membership">Access is through membership<a class="headerlink" href="#access-is-through-membership" title="Permanent link">&para;</a></h2>
+<p>The tenant tables carry no roles or membership, and the scope dependencies never grant access on their own. Workspace access is decided by workspace membership and role checks from the auth and workspaces modules, for example the <code>workspace_role_check(["admin"])</code> guard used by the workspace-config router. I found no code that gives a tenant-level principal blanket access to workspaces; if you need a tenant administrator who can act inside workspaces, model it explicitly (for instance by making that account a member of the workspace) rather than assuming the tenant tier implies it.</p>
+<div class="admonition note">
+<p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/268">#268</a>)</p>
+<p>There is currently no tenant-admin role and no tenant-level workspace access, and no test pins this behaviour. Whether tenant administrators should get such access is undecided.</p>
+</div>
+<h2 id="pitfalls">Pitfalls<a class="headerlink" href="#pitfalls" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Build the scope from the authenticated caller at the endpoint, not from request parameters. A client-supplied <code>workspace_id</code> that nothing verifies is how data crosses workspaces.</li>
+<li><code>get_workspace_scope</code> does not by itself prove the account belongs to the workspace on sites without a membership row.</li>
+<li>Dimension values are strings. Convert back with <code>int(...)</code> where a column is an integer, and handle <code>None</code> first.</li>
+<li><code>ScopeEnvelope</code> is immutable and its mapping fields are read-only proxies. Make a new one instead of mutating.</li>
 </ul>
 
 
@@ -2223,10 +2188,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
