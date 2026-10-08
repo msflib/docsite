@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documentation for the MSF React application template and scaffold generator">
+        <meta name="description" content="CLI quick start for scaffolding a new Next.js app with the MSFLib stack.">
       
       
       
@@ -231,17 +231,44 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="SUMMARY" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSF React Template
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Summary
+    MSF React Template
   
 
     
@@ -250,33 +277,120 @@
   
 
       </a>
-    </li>
-  
-
-    
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="react-template" class="md-nav__link">
         
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  <span class="md-ellipsis">
+  
     
   
-    React Template
   
-
-    
-  </span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
   
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scaffold-a-new-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scaffold a new app
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependencies-install-automatically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dependencies install automatically
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Run it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-get-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you get by default
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-prompts-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The prompts, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-scaffolding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After scaffolding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -308,10 +422,60 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-purpose" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project purpose
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scaffold-a-new-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Scaffold a new app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependencies-install-automatically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dependencies install automatically
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Run it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-get-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you get by default
       
     </span>
   </a>
@@ -319,10 +483,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#repository-shape" class="md-nav__link">
+  <a href="#the-prompts-explained" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Repository shape
+        The prompts, explained
       
     </span>
   </a>
@@ -330,10 +494,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#after-scaffolding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Usage
+        After scaffolding
       
     </span>
   </a>
@@ -341,21 +505,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#package-map" class="md-nav__link">
+  <a href="#project-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Package map
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operational-guidance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Operational guidance
+        Project structure
       
     </span>
   </a>
@@ -380,43 +533,85 @@
 
 
 <h1 id="msf-react-template">MSF React Template<a class="headerlink" href="#msf-react-template" title="Permanent link">&para;</a></h1>
-<p>This repository provides a scaffold for spinning up a new React-based application using the MSF conventions. It is intended to reduce setup friction while keeping the generated app aligned with the broader MSF standard tooling and structure.</p>
-<h2 id="project-purpose">Project purpose<a class="headerlink" href="#project-purpose" title="Permanent link">&para;</a></h2>
-<p>The package is designed to provide:</p>
-<ul>
-<li>a CLI-based app generator</li>
-<li>a templated starter app structure</li>
-<li>consistent file organization for new frontend projects</li>
-<li>reduced setup work for teams creating new MSF applications</li>
-</ul>
-<h2 id="repository-shape">Repository shape<a class="headerlink" href="#repository-shape" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>react-template/
-├── bin/
-├── template/
-├── README.md
-├── package.json
-├── mkdocs.yml
-├── .github/
-└── openwiki/
+<p><code>@kodehauz/react-template</code> scaffolds a new Next.js app pre-wired with the MSFLib stack and a standard folder architecture, so you start building your feature instead of wiring up providers and config.</p>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<h3 id="1-scaffold-a-new-app">1. Scaffold a new app<a class="headerlink" href="#1-scaffold-a-new-app" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>npx<span class="w"> </span>create-msf-app<span class="w"> </span>my-app
 </code></pre></div>
 
-<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>create<span class="w"> </span>@msflib/react-template<span class="w"> </span>my-app
+<p>(<code>npx @kodehauz/react-template my-app</code> works the same way — <code>create-msf-app</code> is just a shorter alias.)</p>
+<p>You'll be asked a few questions as it runs — see <a href="#the-prompts-explained">The prompts, explained</a> below if you're not sure what to answer.</p>
+<h3 id="2-dependencies-install-automatically">2. Dependencies install automatically<a class="headerlink" href="#2-dependencies-install-automatically" title="Permanent link">&para;</a></h3>
+<p>The CLI runs <code>pnpm install</code> for you (and a second <code>pnpm add</code> pass for multi-tenancy/optional packages if you selected any) — no extra step needed.</p>
+<h3 id="3-run-it">3. Run it<a class="headerlink" href="#3-run-it" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>my-app
+pnpm<span class="w"> </span>dev
 </code></pre></div>
 
-<p>or, depending on the package distribution, the CLI entry may be invoked through the package bin configuration.</p>
-<h2 id="package-map">Package map<a class="headerlink" href="#package-map" title="Permanent link">&para;</a></h2>
+<p>Open <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+<h2 id="what-you-get-by-default">What you get by default<a class="headerlink" href="#what-you-get-by-default" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="react-template">Project overview</a></li>
-<li><a href="SUMMARY">Summary</a></li>
+<li>Next.js (App Router)</li>
+<li>Tailwind CSS (<code>@tailwindcss/postcss</code>)</li>
+<li>Material UI (<code>@mui/material</code>, <code>@emotion/react</code>, <code>@emotion/styled</code>)</li>
+<li>TanStack Query</li>
+<li><code>@msflib/react-components</code></li>
+<li>Route groups already set up: <code>(public)</code>, <code>(auth)</code>, <code>(protected)</code> under <code>app/</code></li>
 </ul>
-<h2 id="operational-guidance">Operational guidance<a class="headerlink" href="#operational-guidance" title="Permanent link">&para;</a></h2>
-<ul>
-<li>keep the generated structure predictable and minimal</li>
-<li>document any required framework assumptions clearly</li>
-<li>preserve the package's role as a scaffold rather than a full app</li>
-<li>keep the template aligned with the rest of the MSF frontend repos</li>
-</ul>
+<h2 id="the-prompts-explained">The prompts, explained<a class="headerlink" href="#the-prompts-explained" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scaffold with GitHub workflows?</strong></td>
+<td>Copies <code>.github/workflows</code> into your new project (CI, publish, etc.). Say no for a quick hackathon throwaway project.</td>
+</tr>
+<tr>
+<td><strong>Reusable workflows repository (org/repo)</strong></td>
+<td>Only asked if you said yes above — the <code>org/repo</code> whose reusable workflow files your copied workflows should point at.</td>
+</tr>
+<tr>
+<td><strong>Is this a multi-tenant project?</strong></td>
+<td>If yes, installs <code>@msflib/core</code> + <code>@msflib/react-shared</code> + <code>@msflib/react-workspace</code> and sets <code>NEXT_PUBLIC_WORKSPACE_MODE=multi</code> in your env files. Say no for a single-tenant hackathon app unless multi-tenancy is actually part of what you're building.</td>
+</tr>
+<tr>
+<td><strong>How should tenancy be resolved?</strong></td>
+<td>Only asked if multi-tenant. <strong>Path-based</strong> scopes requests like <code>/tenant/dashboard</code>; <strong>header-based</strong> sends an <code>X-Tenant-ID</code>-style header instead. This sets <code>NEXT_PUBLIC_WORKSPACE_STRATEGY</code>, which <code>lib/application.config.ts</code> uses to pick <code>workspaceHookDecorator('path' \| 'header')</code>.</td>
+</tr>
+<tr>
+<td><strong>Select optional msflib modules</strong></td>
+<td>Multiselect from <code>@msflib/react-profile</code>, <code>@msflib/react-notification</code>, <code>@msflib/react-support</code>, <code>@msflib/react-certificate</code> (plus <code>@msflib/react-workspace</code>, unless you enabled multi-tenancy above — it's then installed automatically). Pick only what your feature actually needs — each one adds a provider you'll wire up next.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="after-scaffolding">After scaffolding<a class="headerlink" href="#after-scaffolding" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Read <code>docs/IMPLEMENTATION_GUIDE.md</code> in your new project before writing code.</strong> It's copied in automatically and defines the architecture conventions this scaffold expects — folder placement, file naming, routing, forms (<code>FormBuilder</code>), tables (<code>TableWidget</code>), and theming. If you're using Claude Code, <code>AGENTS.md</code>/<code>CLAUDE.md</code> are also copied in and point at it automatically.</li>
+<li><strong>If you selected optional modules</strong>, the CLI prints the exact imports and JSX to paste into <code>app/Provider.tsx</code> — copy that in to wire up each provider.</li>
+<li><strong>For each module's full API reference</strong> (props, hooks, exports), see that module's page in the <code>@msflib/react-modules</code> docs site — this scaffold just installs them, it doesn't change their API.</li>
+</ol>
+<h2 id="project-structure">Project structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>app/          # Next.js App Router — (public), (auth), (protected) route groups
+components/   # Global, reusable components (AppButton, AppContainer, ...)
+dynamics/     # Client-only components, dynamically imported (FormBuilder, TableWidget, ...)
+styles/       # Style objects, co-located with the feature that uses them
+data/         # Static data, form/field definitions
+columns/      # Table column definitions
+api/          # API layer per feature
+hooks/        # TanStack Query hooks per feature
+types/        # TypeScript types per feature
+constant/     # Route constants and other shared constants
+context/      # React context providers
+theme/        # MUI theme + design tokens
+utils/        # Shared utility functions
+</code></pre></div>
+
+<p>See <code>docs/IMPLEMENTATION_GUIDE.md</code> in a scaffolded project for the full rationale behind this structure and where new files should go.</p>
 
 
 
@@ -469,7 +664,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
