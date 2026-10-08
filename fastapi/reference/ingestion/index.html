@@ -1,0 +1,7824 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/reference/ingestion/">
+      
+      
+        <link rel="prev" href="../drivelink/">
+      
+      
+        <link rel="next" href="../knowledge/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>msflib.ingestion - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflibingestion" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              msflib.ingestion
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/db/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.db
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/eventbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.eventbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.schemas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/seed/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.seed
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ai_api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ai_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ingestion
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJobAction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionJobAction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.dedupe_key_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dedupe_key_for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_unique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique_created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_unique_created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.latest_for_subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latest_for_subject
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.count_scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        count_scoped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.status_and_subject_type_counts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status_and_subject_type_counts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionDeadLetterAction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDeadLetterAction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionDeadLetterAction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionDeadLetterAction.count_scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        count_scoped
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        celery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="celery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.celery.build_celery_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_celery_app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.celery.build_dispatch_task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_dispatch_task
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        contracts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="contracts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.CeleryControlContract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CeleryControlContract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.Stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.StageContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StageContext
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="StageContext">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.StageContext.emit_after_success" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emit_after_success
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        celery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="celery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.celery.CeleryControlContract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CeleryControlContract
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="stage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.StageContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StageContext
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="StageContext">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.StageContext.emit_after_success" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emit_after_success
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.Stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        subject
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="subject">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.subject.IngestionSubjectSnapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionSubjectSnapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.IngestionStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.RetryableStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RetryableStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.TerminalStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TerminalStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.SupersededStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SupersededStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.QueueDisabledError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QueueDisabledError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.UnregisteredSubjectTypeError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnregisteredSubjectTypeError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.classify_stage_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify_stage_error
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.IngestionDeadLetter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDeadLetter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.IngestionJob" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJob
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.IngestionJobRun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJobRun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        job
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="job">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job.IngestionJob" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJob
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job.IngestionJobRun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJobRun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job.IngestionDeadLetter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDeadLetter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.reasons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reasons
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        router
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="router">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.router.router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        router
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDispatchService
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionDispatchService">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch_created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch_created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService.dispatch_or_mark_failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch_or_mark_failed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.classify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="classify">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.classify.is_repeat_of_previous_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_repeat_of_previous_error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.classify.reraise_classified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reraise_classified
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="dispatch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.DelayableTask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DelayableTask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.DispatchFailedError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DispatchFailedError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDispatchService
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionDispatchService">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch_created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch_created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.dispatch_or_mark_failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch_or_mark_failed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.execution.compute_failure_outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_failure_outcome
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.IngestionSubjectContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionSubjectContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.lock_ingestion_subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_ingestion_subject
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.run_guarded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_guarded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.ingestion_subject_stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ingestion_subject_stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        queue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="queue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionSubjectQueue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionSubjectQueue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.latest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue_snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_snapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.commit_and_refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commit_and_refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sync
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sync">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.sync.reset_model_sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reset_model_sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.sync.sync_model_to_queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sync_model_to_queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.testing.FakeDispatchTask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FakeDispatchTask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.testing.start_stage_context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start_stage_context
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changesets and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJobAction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionJobAction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.dedupe_key_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dedupe_key_for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_unique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique_created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_unique_created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.latest_for_subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latest_for_subject
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.count_scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        count_scoped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionJobAction.status_and_subject_type_counts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status_and_subject_type_counts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionDeadLetterAction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDeadLetterAction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionDeadLetterAction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.actions.IngestionDeadLetterAction.count_scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        count_scoped
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        celery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="celery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.celery.build_celery_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_celery_app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.celery.build_dispatch_task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_dispatch_task
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        contracts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="contracts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.CeleryControlContract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CeleryControlContract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.Stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.StageContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StageContext
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="StageContext">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.StageContext.emit_after_success" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emit_after_success
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        celery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="celery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.celery.CeleryControlContract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CeleryControlContract
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="stage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.StageContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StageContext
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="StageContext">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.StageContext.emit_after_success" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emit_after_success
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.Stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        subject
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="subject">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.subject.IngestionSubjectSnapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionSubjectSnapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.IngestionStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.RetryableStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RetryableStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.TerminalStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TerminalStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.SupersededStageError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SupersededStageError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.QueueDisabledError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QueueDisabledError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.UnregisteredSubjectTypeError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnregisteredSubjectTypeError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.errors.classify_stage_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify_stage_error
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.IngestionDeadLetter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDeadLetter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.IngestionJob" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJob
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.IngestionJobRun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJobRun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        job
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="job">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job.IngestionJob" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJob
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job.IngestionJobRun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionJobRun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.models.job.IngestionDeadLetter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDeadLetter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.reasons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reasons
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        router
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="router">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.router.router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        router
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDispatchService
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionDispatchService">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch_created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch_created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.IngestionDispatchService.dispatch_or_mark_failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch_or_mark_failed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.classify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="classify">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.classify.is_repeat_of_previous_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_repeat_of_previous_error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.classify.reraise_classified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reraise_classified
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="dispatch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.DelayableTask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DelayableTask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.DispatchFailedError" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DispatchFailedError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionDispatchService
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionDispatchService">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch_created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_and_dispatch_created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.dispatch_or_mark_failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch_or_mark_failed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.execution.compute_failure_outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_failure_outcome
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.IngestionSubjectContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionSubjectContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.lock_ingestion_subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_ingestion_subject
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.run_guarded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_guarded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.lifecycle.ingestion_subject_stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ingestion_subject_stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        queue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="queue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IngestionSubjectQueue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngestionSubjectQueue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.latest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        latest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue_snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enqueue_snapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.queue.commit_and_refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commit_and_refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sync
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sync">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.sync.reset_model_sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reset_model_sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.sync.sync_model_to_queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sync_model_to_queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.testing.FakeDispatchTask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FakeDispatchTask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.testing.start_stage_context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start_stage_context
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflibingestion">msflib.ingestion<a class="headerlink" href="#msflibingestion" title="Permanent link">&para;</a></h1>
+<p>Public modules of the <code>msflib-ingestion</code> package.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.actions" class="doc doc-heading">
+            <code>msflib.ingestion.actions</code>
+
+
+<a href="#msflib.ingestion.actions" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.actions.IngestionJobAction" class="doc doc-heading">
+            <code>IngestionJobAction</code>
+
+
+<a href="#msflib.ingestion.actions.IngestionJobAction" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="ModelAction (msflib.actions.ModelAction)" href="../core/actions/#msflib.actions.ModelAction">ModelAction</a>[<a class="autorefs autorefs-internal" title="IngestionJob (msflib.ingestion.models.IngestionJob)" href="#msflib.ingestion.models.IngestionJob">IngestionJob</a>, <span title="msflib.ingestion.models.IngestionJobCreate">IngestionJobCreate</span>, <span title="msflib.ingestion.models.IngestionJobUpdate">IngestionJobUpdate</span>]</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionJobAction.dedupe_key_for" class="doc doc-heading">
+            <code class=" language-python"><span class="n">dedupe_key_for</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#msflib.ingestion.actions.IngestionJobAction.dedupe_key_for" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute the dedupe key for a (subject, pipeline_kind, target_version, reason, scope).</p>
+<p>Also used to restore <code>dedupe_key</code> when requeuing a terminally-failed
+job: <code>failure_update</code> clears it on terminal failure, so without
+recomputing it here a manual retry would leave the one-job-per-
+subject invariant unenforced until the job resolves again.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionJobAction.enqueue_unique" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_unique</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+
+<a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create-or-return-existing by dedupe key, race-safe under concurrent inserts.</p>
+<p>Kept here rather than in a service: the nested-transaction +
+IntegrityError-fallback dance is a database write-concurrency
+concern, not domain policy.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionJobAction.enqueue_unique_created" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_unique_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
+
+<a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique_created" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>enqueue_unique</code> that also reports whether this call created the job.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionJobAction.latest_for_subject" class="doc doc-heading">
+            <code class=" language-python"><span class="n">latest_for_subject</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.actions.IngestionJobAction.latest_for_subject" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Most recent job for a subject, whatever its status.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionJobAction.count_scoped" class="doc doc-heading">
+            <code class=" language-python"><span class="n">count_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">IngestionJobStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#msflib.ingestion.actions.IngestionJobAction.count_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Count rows matching the same filters as <code>get_multi_scoped</code>, for pagination totals.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionJobAction.status_and_subject_type_counts" class="doc doc-heading">
+            <code class=" language-python"><span class="n">status_and_subject_type_counts</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">IngestionJobStatus</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span></code>
+
+<a href="#msflib.ingestion.actions.IngestionJobAction.status_and_subject_type_counts" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Row counts grouped by status and by subject_type, for the same tenant/workspace scope.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.actions.IngestionDeadLetterAction" class="doc doc-heading">
+            <code>IngestionDeadLetterAction</code>
+
+
+<a href="#msflib.ingestion.actions.IngestionDeadLetterAction" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="ModelAction (msflib.actions.ModelAction)" href="../core/actions/#msflib.actions.ModelAction">ModelAction</a>[<a class="autorefs autorefs-internal" title="IngestionDeadLetter (msflib.ingestion.models.IngestionDeadLetter)" href="#msflib.ingestion.models.IngestionDeadLetter">IngestionDeadLetter</a>, <span title="msflib.ingestion.models.IngestionDeadLetterCreate">IngestionDeadLetterCreate</span>, <span title="msflib.ingestion.models.IngestionDeadLetterUpdate">IngestionDeadLetterUpdate</span>]</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.actions.IngestionDeadLetterAction.count_scoped" class="doc doc-heading">
+            <code class=" language-python"><span class="n">count_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_resolved</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#msflib.ingestion.actions.IngestionDeadLetterAction.count_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Count rows matching the same filters as <code>get_multi_scoped</code>, for pagination totals.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.celery" class="doc doc-heading">
+            <code>msflib.ingestion.celery</code>
+
+
+<a href="#msflib.ingestion.celery" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Celery + Redis worker plumbing (Layer 0).</p>
+<p>Real distributed workers, native retry/backoff, and a dead-letter path,
+replacing the DB-polling + daemon-thread mechanism documents/knowledge hand-
+rolled, and which other downstream apps declared as a dependency but never
+actually activated (celery+redis were declared, unused, deps).</p>
+<p><code>task_acks_late</code> + <code>worker_prefetch_multiplier=1</code> is the Celery-native
+replacement for the correctness guarantee <code>SELECT ... FOR UPDATE SKIP
+LOCKED</code> + lease-TTL reclaim used to provide: an in-flight job surviving a
+worker crash is redelivered rather than lost.</p>
+<p>Deployed as its own worker process (<code>celery -A &lt;entrypoint&gt; worker</code>); the
+consuming application supplies a module-level entrypoint that calls
+<code>build_celery_app</code> with its own settings/session factory, mirroring how
+<code>documents.router()</code>/<code>ai_core</code> take factories rather than assuming a
+single process-wide app instance.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.celery.build_celery_app" class="doc doc-heading">
+            <code class=" language-python"><span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session_factory</span><span class="p">:</span> <span class="n">SessionFactory</span><span class="p">,</span> <span class="n">registry</span><span class="p">:</span> <span class="n">PipelineKindRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">job_action</span><span class="p">:</span> <span class="n">IngestionJobAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">run_action</span><span class="p">:</span> <span class="n">IngestionJobRunAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dead_letter_action</span><span class="p">:</span> <span class="n">IngestionDeadLetterAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">app_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'msflib.ingestion'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Celery</span></code>
+
+<a href="#msflib.ingestion.celery.build_celery_app" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Build the Celery application for the ingestion worker process.</p>
+<p>session_factory: zero-argument context-manager factory returning a
+Session (e.g. <code>lambda: Session(engine)</code>). The worker is a separate
+process from the FastAPI app, so no request-scoped session dependency
+exists here -- this mirrors documents.router()'s make_background_session
+override for the same reason.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.celery.build_dispatch_task" class="doc doc-heading">
+            <code class=" language-python"><span class="n">build_dispatch_task</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">app_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'msflib.ingestion'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ProducerTask</span></code>
+
+<a href="#msflib.ingestion.celery.build_dispatch_task" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Build a lightweight, <code>.delay(job_id)</code>-compatible dispatch handle.</p>
+<p>For producer-only processes -- pass the result as <code>IngestionDispatchService(task=...)</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.config" class="doc doc-heading">
+            <code>msflib.ingestion.config</code>
+
+
+<a href="#msflib.ingestion.config" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.contracts" class="doc doc-heading">
+            <code>msflib.ingestion.contracts</code>
+
+
+<a href="#msflib.ingestion.contracts" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.contracts.CeleryControlContract" class="doc doc-heading">
+            <code>CeleryControlContract</code>
+
+
+<a href="#msflib.ingestion.contracts.CeleryControlContract" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>An object exposing <code>.control.revoke(task_id, terminate=True)</code>.</p>
+<p>Typically the worker-side <code>Celery</code> app itself, or any app sharing the
+same broker.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.contracts.Stage" class="doc doc-heading">
+            <code>Stage</code>
+
+
+<a href="#msflib.ingestion.contracts.Stage" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>A single Fetch/Normalize/Transform/Persist/Index/Emit step.</p>
+<p>Implementations are plain callables (functions or callable objects) --
+no base class required, only this shape.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.contracts.StageContext" class="doc doc-heading">
+              <code class=" language-python"><span class="n">StageContext</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">IngestionJob</span><span class="p">,</span> <span class="n">job_run</span><span class="p">:</span> <span class="n">IngestionJobRun</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="n">pending_events</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">())</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.contracts.StageContext" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.contracts.StageContext.emit_after_success" class="doc doc-heading">
+            <code class=" language-python"><span class="n">emit_after_success</span><span class="p">(</span><span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.contracts.StageContext.emit_after_success" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Queue an eventbus event to fire only once the whole job commits successfully.</p>
+<p>Deliberately <em>not</em> <code>msflib.actions.emit_after_commit</code> (a SQLAlchemy
+<code>after_commit</code> event hook): SQLAlchemy forbids emitting further SQL
+on the same session from inside an <code>after_commit</code> handler, which
+breaks any listener that queries the session (reproducible, not
+hypothetical). The job completion handler drains this list as plain
+sequential code immediately after its own <code>session.commit()</code>
+returns, where session use is unrestricted.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.contracts.celery" class="doc doc-heading">
+            <code>celery</code>
+
+
+<a href="#msflib.ingestion.contracts.celery" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Structural contract for the optional Celery control handle passed to <code>router()</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.contracts.celery.CeleryControlContract" class="doc doc-heading">
+            <code>CeleryControlContract</code>
+
+
+<a href="#msflib.ingestion.contracts.celery.CeleryControlContract" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>An object exposing <code>.control.revoke(task_id, terminate=True)</code>.</p>
+<p>Typically the worker-side <code>Celery</code> app itself, or any app sharing the
+same broker.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.contracts.stage" class="doc doc-heading">
+            <code>stage</code>
+
+
+<a href="#msflib.ingestion.contracts.stage" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Pluggable pipeline stage protocol.</p>
+<p>An ordered chain of stages registered per <code>pipeline_kind</code> (see
+services.registry). A stage reads/writes <code>StageContext.state</code> to pass data
+to the next stage; the session/job/job_run/settings are fixed for the whole
+run.</p>
+<p>Stages raise <code>msflib.ingestion.errors.RetryableStageError</code> /
+<code>TerminalStageError</code> (or let the Celery task wrapper classify a plain
+exception via <code>classify_stage_error</code>) to control retry behavior.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.contracts.stage.StageContext" class="doc doc-heading">
+              <code class=" language-python"><span class="n">StageContext</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">IngestionJob</span><span class="p">,</span> <span class="n">job_run</span><span class="p">:</span> <span class="n">IngestionJobRun</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="n">pending_events</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">())</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.contracts.stage.StageContext" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.contracts.stage.StageContext.emit_after_success" class="doc doc-heading">
+            <code class=" language-python"><span class="n">emit_after_success</span><span class="p">(</span><span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.contracts.stage.StageContext.emit_after_success" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Queue an eventbus event to fire only once the whole job commits successfully.</p>
+<p>Deliberately <em>not</em> <code>msflib.actions.emit_after_commit</code> (a SQLAlchemy
+<code>after_commit</code> event hook): SQLAlchemy forbids emitting further SQL
+on the same session from inside an <code>after_commit</code> handler, which
+breaks any listener that queries the session (reproducible, not
+hypothetical). The job completion handler drains this list as plain
+sequential code immediately after its own <code>session.commit()</code>
+returns, where session use is unrestricted.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.contracts.stage.Stage" class="doc doc-heading">
+            <code>Stage</code>
+
+
+<a href="#msflib.ingestion.contracts.stage.Stage" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>A single Fetch/Normalize/Transform/Persist/Index/Emit step.</p>
+<p>Implementations are plain callables (functions or callable objects) --
+no base class required, only this shape.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.contracts.subject" class="doc doc-heading">
+            <code>subject</code>
+
+
+<a href="#msflib.ingestion.contracts.subject" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>What the lifecycle stage and <code>IngestionSubjectQueue</code> need to know about a job's subject.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.contracts.subject.IngestionSubjectSnapshot" class="doc doc-heading">
+              <code class=" language-python"><span class="n">IngestionSubjectSnapshot</span><span class="p">(</span><span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">live</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.contracts.subject.IngestionSubjectSnapshot" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>One ingestion subject at one moment, as the job queue sees it.</p>
+<p>The ingestion subject is what <code>IngestionJob.subject_type</code>/<code>subject_id</code>
+point at (a document record, a form submission, an app row).</p>
+<p>Holds what jobs are keyed and checked on: the id, the tenant/workspace the
+subject lives in, its version, and whether it still exists (<code>live</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.errors" class="doc doc-heading">
+            <code>msflib.ingestion.errors</code>
+
+
+<a href="#msflib.ingestion.errors" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed stage error classification, driving Celery's autoretry_for directly.</p>
+<p>Promotes <code>msflib.core.errors.is_terminal_ingestion_error</code> from string/type
+sniffing into typed exceptions that pipeline stages (Layer 2) raise on
+purpose, plus a classifier for stages/adapters that still just raise plain
+exceptions.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.errors.IngestionStageError" class="doc doc-heading">
+            <code>IngestionStageError</code>
+
+
+<a href="#msflib.ingestion.errors.IngestionStageError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="Exception">Exception</span></code></p>
+
+
+
+        <p>Base for errors raised by a pipeline stage.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.errors.RetryableStageError" class="doc doc-heading">
+            <code>RetryableStageError</code>
+
+
+<a href="#msflib.ingestion.errors.RetryableStageError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="IngestionStageError (msflib.ingestion.errors.IngestionStageError)" href="#msflib.ingestion.errors.IngestionStageError">IngestionStageError</a></code></p>
+
+
+
+        <p>Transient failure (timeout, rate limit, temporary unavailability) -- worth retrying.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.errors.TerminalStageError" class="doc doc-heading">
+            <code>TerminalStageError</code>
+
+
+<a href="#msflib.ingestion.errors.TerminalStageError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="IngestionStageError (msflib.ingestion.errors.IngestionStageError)" href="#msflib.ingestion.errors.IngestionStageError">IngestionStageError</a></code></p>
+
+
+
+        <p>Non-retryable failure (bad input, permanent 4xx, validation error) -- retrying won't help.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.errors.SupersededStageError" class="doc doc-heading">
+            <code>SupersededStageError</code>
+
+
+<a href="#msflib.ingestion.errors.SupersededStageError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="IngestionStageError (msflib.ingestion.errors.IngestionStageError)" href="#msflib.ingestion.errors.IngestionStageError">IngestionStageError</a></code></p>
+
+
+
+        <p>The job's target has been overtaken by a newer version of its subject.</p>
+<p>Not a failure: the subject already reflects (or is queued to reflect) a
+later version, so this attempt's work is moot. Stages raise this
+explicitly (a plain/typed exception can't be distinguished from a real
+failure) when they detect their own supersession, mirroring the
+version-supersession semantics documents'/knowledge's polling queues
+already got right. The Celery task wrapper (celery.py) marks the job
+<code>superseded</code> rather than retrying or dead-lettering it.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.errors.QueueDisabledError" class="doc doc-heading">
+            <code>QueueDisabledError</code>
+
+
+<a href="#msflib.ingestion.errors.QueueDisabledError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="RuntimeError">RuntimeError</span></code></p>
+
+
+
+        <p>Raised when enqueueing onto a pipeline kind whose queue is disabled by settings.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.errors.UnregisteredSubjectTypeError" class="doc doc-heading">
+            <code>UnregisteredSubjectTypeError</code>
+
+
+<a href="#msflib.ingestion.errors.UnregisteredSubjectTypeError" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="LookupError">LookupError</span></code></p>
+
+
+
+        <p>Raised when enqueueing a subject type no worker in this process can load.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.errors.classify_stage_error" class="doc doc-heading">
+            <code class=" language-python"><span class="n">classify_stage_error</span><span class="p">(</span><span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">IngestionStageError</span><span class="p">]</span></code>
+
+<a href="#msflib.ingestion.errors.classify_stage_error" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Map an arbitrary exception raised by a stage to RetryableStageError or TerminalStageError.</p>
+<p>Used by the Celery task wrapper (Layer 0) to normalize exceptions from
+stages that don't raise the typed errors directly, so autoretry_for can
+still key off one exception hierarchy. Delegates the actual
+terminal-vs-retryable call to <code>msflib.core.errors</code>, shared with
+documents/knowledge, so the rules can't drift between modules.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.models" class="doc doc-heading">
+            <code>msflib.ingestion.models</code>
+
+
+<a href="#msflib.ingestion.models" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.models.IngestionDeadLetter" class="doc doc-heading">
+            <code>IngestionDeadLetter</code>
+
+
+<a href="#msflib.ingestion.models.IngestionDeadLetter" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="msflib.models.ModelBase">ModelBase</span></code></p>
+
+
+
+        <p>Archive of terminally-failed jobs, for inspection/replay/discard.</p>
+<p>Nothing analogous exists in documents/knowledge today (exhausted jobs
+just sit in status=failed with no archive/replay tooling).
+Subject/scope fields are denormalized from the parent job at the time of
+dead-lettering so DLQ listing/filtering doesn't require a join, and stays
+inspectable even if the job row's own fields keep changing (e.g. a later
+manual retry) after the dead letter was written.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.models.IngestionJob" class="doc doc-heading">
+            <code>IngestionJob</code>
+
+
+<a href="#msflib.ingestion.models.IngestionJob" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="msflib.models.ModelBase">ModelBase</span></code></p>
+
+
+
+        <p>One row per (subject, target_version, reason) unit of ingestion work.</p>
+<p><code>subject_type</code>/<code>subject_id</code> form a polymorphic key so any module can
+queue work here without this module importing from -- or depending on --
+the modules whose subjects it queues.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.models.IngestionJobRun" class="doc doc-heading">
+            <code>IngestionJobRun</code>
+
+
+<a href="#msflib.ingestion.models.IngestionJobRun" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="msflib.models.ModelBase">ModelBase</span></code></p>
+
+
+
+        <p>One row per attempt of an IngestionJob -- the audit trail.</p>
+<p>Carries started_at/completed_at/status/error_message plus progress
+counters for per-attempt observability, richer than a bare attempts
+counter on the job itself.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.models.job" class="doc doc-heading">
+            <code>job</code>
+
+
+<a href="#msflib.ingestion.models.job" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.models.job.IngestionJob" class="doc doc-heading">
+            <code>IngestionJob</code>
+
+
+<a href="#msflib.ingestion.models.job.IngestionJob" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="msflib.models.ModelBase">ModelBase</span></code></p>
+
+
+
+        <p>One row per (subject, target_version, reason) unit of ingestion work.</p>
+<p><code>subject_type</code>/<code>subject_id</code> form a polymorphic key so any module can
+queue work here without this module importing from -- or depending on --
+the modules whose subjects it queues.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.models.job.IngestionJobRun" class="doc doc-heading">
+            <code>IngestionJobRun</code>
+
+
+<a href="#msflib.ingestion.models.job.IngestionJobRun" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="msflib.models.ModelBase">ModelBase</span></code></p>
+
+
+
+        <p>One row per attempt of an IngestionJob -- the audit trail.</p>
+<p>Carries started_at/completed_at/status/error_message plus progress
+counters for per-attempt observability, richer than a bare attempts
+counter on the job itself.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.models.job.IngestionDeadLetter" class="doc doc-heading">
+            <code>IngestionDeadLetter</code>
+
+
+<a href="#msflib.ingestion.models.job.IngestionDeadLetter" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="msflib.models.ModelBase">ModelBase</span></code></p>
+
+
+
+        <p>Archive of terminally-failed jobs, for inspection/replay/discard.</p>
+<p>Nothing analogous exists in documents/knowledge today (exhausted jobs
+just sit in status=failed with no archive/replay tooling).
+Subject/scope fields are denormalized from the parent job at the time of
+dead-lettering so DLQ listing/filtering doesn't require a join, and stays
+inspectable even if the job row's own fields keep changing (e.g. a later
+manual retry) after the dead letter was written.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.reasons" class="doc doc-heading">
+            <code>msflib.ingestion.reasons</code>
+
+
+<a href="#msflib.ingestion.reasons" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Why a job was queued; <code>IngestionJob.reason</code> holds one of these values.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.router" class="doc doc-heading">
+            <code>msflib.ingestion.router</code>
+
+
+<a href="#msflib.ingestion.router" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.router.router" class="doc doc-heading">
+            <code class=" language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">mutation_role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dispatch_task</span><span class="p">:</span> <span class="n">DelayableTask</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">celery_control</span><span class="p">:</span> <span class="n">CeleryControlContract</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">registry</span><span class="p">:</span> <span class="n">PipelineKindRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ingestion'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
+
+<a href="#msflib.ingestion.router.router" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Management API for IngestionJob: status/monitoring/audit-trail plus mutating operations.</p>
+<p>One router covers every subject type (documents, knowledge, etc.), since
+they all funnel through the same IngestionJob model instead of each
+growing its own ops endpoints.</p>
+<p>get_current_tenant/get_current_workspace: injectable scope resolvers,
+mirroring <code>documents.router()</code>'s get_current_account/
+get_current_workspace (get_current_tenant yields a <code>Tenant</code> row,
+get_current_workspace yields a <code>WorkspaceContract</code>). When omitted, the
+tenant filter falls back to <code>resolve_default_tenant_id</code> (today's
+single-tenant resolution) rather than no filter at all -- matching every
+other read path in this router that resolves a tenant id.</p>
+<p>mutation_role_check: required FastAPI dependency applied to every
+mutating endpoint (trigger/retry/abort/replay/discard) -- no permissive
+default, so a deployment with no per-request auth must pass an explicit
+no-op (<code>lambda: None</code>) rather than getting one silently.</p>
+<p>dispatch_task: a <code>.delay(job_id)</code>-compatible handle used to dispatch to
+Celery. Defaults to <code>celery.build_dispatch_task(settings)</code>.</p>
+<p>celery_control: an object exposing <code>.control.revoke(task_id,
+terminate=True)</code>, used by <code>abort</code> for cooperative cancellation of an
+in-flight job. Optional: without it, abort still cancels queued jobs, but
+a processing job is only marked for cancellation, not revoked.</p>
+<p>registry: the <code>PipelineKindRegistry</code> used to validate <code>pipeline_kind</code>
+on <code>/jobs/trigger</code> before enqueueing. Defaults to
+<code>default_pipeline_registry</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.schema" class="doc doc-heading">
+            <code>msflib.ingestion.schema</code>
+
+
+<a href="#msflib.ingestion.schema" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.services" class="doc doc-heading">
+            <code>msflib.ingestion.services</code>
+
+
+<a href="#msflib.ingestion.services" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.services.IngestionDispatchService" class="doc doc-heading">
+              <code class=" language-python"><span class="n">IngestionDispatchService</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">DelayableTask</span><span class="p">,</span> <span class="n">job_action</span><span class="p">:</span> <span class="n">IngestionJobAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#msflib.ingestion.services.IngestionDispatchService" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_and_dispatch</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+
+<a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>enqueue_and_dispatch_created</code> without the created flag.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch_created" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_and_dispatch_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
+
+<a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch_created" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enqueue the job row and dispatch it to Celery once it's durable.</p>
+<p>Dispatch never fires before the row is committed -- a worker (a
+separate process/connection) picking up a job id its own session
+can't see yet, or that a rollback later undoes, is the hazard this
+guards against (same one <code>msflib.actions.emit_after_commit</code> guards
+for eventbus events).</p>
+<ul>
+<li><code>commit=True</code>: this call commits and dispatches immediately.</li>
+<li><code>commit=False, dispatch_after_commit=True</code>: the caller owns an
+  outer transaction (e.g. a pre-commit hook); dispatch is deferred to
+  <em>that</em> transaction's own <code>session.commit()</code>, whenever it happens.</li>
+<li><code>commit=False, dispatch_after_commit=False</code> (default): caller is
+  responsible for dispatching itself after its own commit.</li>
+</ul>
+<p>A dedupe hit returns the existing job without dispatching it again;
+the flag reports whether the job was created.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.IngestionDispatchService.dispatch_or_mark_failed" class="doc doc-heading">
+            <code class=" language-python"><span class="n">dispatch_or_mark_failed</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">IngestionJob</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.IngestionDispatchService.dispatch_or_mark_failed" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>self.task.delay(job.id)</code>, or mark the job <code>failed</code> and raise if that fails.</p>
+<p>For use once a job's row is already durable and there's still a
+caller around to report the failure to (unlike the
+<code>dispatch_after_commit</code> path, which has none) -- shared by
+<code>enqueue_and_dispatch</code>'s <code>commit=True</code> branch and
+<code>router.retry_job</code>, which dispatches an already-updated job
+directly rather than through <code>enqueue_and_dispatch</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.classify" class="doc doc-heading">
+            <code>classify</code>
+
+
+<a href="#msflib.ingestion.services.classify" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Turn a stage failure into a typed stage error, failing fast on a repeated error.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.classify.is_repeat_of_previous_error" class="doc doc-heading">
+            <code class=" language-python"><span class="n">is_repeat_of_previous_error</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">StageContext</span><span class="p">,</span> <span class="n">error_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.ingestion.services.classify.is_repeat_of_previous_error" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>True when the previous attempt's run failed with this exact error text.</p>
+<p>Reads <code>IngestionJobRun</code> history: <code>start_attempt_update</code> clears
+<code>job.error</code> before the stage runs.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.classify.reraise_classified" class="doc doc-heading">
+            <code class=" language-python"><span class="n">reraise_classified</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">StageContext</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span></code>
+
+<a href="#msflib.ingestion.services.classify.reraise_classified" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Re-raise <code>exc</code> as a typed stage error; a repeat of the previous attempt's is terminal.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.dispatch" class="doc doc-heading">
+            <code>dispatch</code>
+
+
+<a href="#msflib.ingestion.services.dispatch" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Producer-side enqueue + dispatch, decoupled from the Celery app itself.</p>
+<p>Takes any object exposing <code>.delay(job_id)</code> (a real Celery Task, or a test
+double) rather than importing <code>celery.build_celery_app</code> directly --
+the FastAPI process enqueueing a job doesn't need to construct the same
+Celery app instance the worker process runs, only something that can hand a
+job id to the same broker/task name.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.services.dispatch.DelayableTask" class="doc doc-heading">
+            <code>DelayableTask</code>
+
+
+<a href="#msflib.ingestion.services.dispatch.DelayableTask" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>A <code>.delay(job_id)</code>-compatible handle -- a real Celery <code>Task</code> or a test double.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.services.dispatch.DispatchFailedError" class="doc doc-heading">
+            <code>DispatchFailedError</code>
+
+
+<a href="#msflib.ingestion.services.dispatch.DispatchFailedError" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="RuntimeError">RuntimeError</span></code></p>
+
+
+
+        <p>Raised when handing a job to Celery fails after its row is already durable.</p>
+<p>The job is marked <code>failed</code> (with <code>dedupe_key</code> cleared) before this is
+raised, so it's visible/retryable via the normal job list + <code>retry_job</code>
+instead of sitting in <code>queued</code> forever with no live task and nothing
+polling the DB to notice.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.services.dispatch.IngestionDispatchService" class="doc doc-heading">
+              <code class=" language-python"><span class="n">IngestionDispatchService</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">DelayableTask</span><span class="p">,</span> <span class="n">job_action</span><span class="p">:</span> <span class="n">IngestionJobAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#msflib.ingestion.services.dispatch.IngestionDispatchService" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_and_dispatch</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+
+<a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>enqueue_and_dispatch_created</code> without the created flag.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch_created" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_and_dispatch_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
+
+<a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch_created" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Enqueue the job row and dispatch it to Celery once it's durable.</p>
+<p>Dispatch never fires before the row is committed -- a worker (a
+separate process/connection) picking up a job id its own session
+can't see yet, or that a rollback later undoes, is the hazard this
+guards against (same one <code>msflib.actions.emit_after_commit</code> guards
+for eventbus events).</p>
+<ul>
+<li><code>commit=True</code>: this call commits and dispatches immediately.</li>
+<li><code>commit=False, dispatch_after_commit=True</code>: the caller owns an
+  outer transaction (e.g. a pre-commit hook); dispatch is deferred to
+  <em>that</em> transaction's own <code>session.commit()</code>, whenever it happens.</li>
+<li><code>commit=False, dispatch_after_commit=False</code> (default): caller is
+  responsible for dispatching itself after its own commit.</li>
+</ul>
+<p>A dedupe hit returns the existing job without dispatching it again;
+the flag reports whether the job was created.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.services.dispatch.IngestionDispatchService.dispatch_or_mark_failed" class="doc doc-heading">
+            <code class=" language-python"><span class="n">dispatch_or_mark_failed</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">IngestionJob</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.dispatch_or_mark_failed" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>self.task.delay(job.id)</code>, or mark the job <code>failed</code> and raise if that fails.</p>
+<p>For use once a job's row is already durable and there's still a
+caller around to report the failure to (unlike the
+<code>dispatch_after_commit</code> path, which has none) -- shared by
+<code>enqueue_and_dispatch</code>'s <code>commit=True</code> branch and
+<code>router.retry_job</code>, which dispatches an already-updated job
+directly rather than through <code>enqueue_and_dispatch</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.execution" class="doc doc-heading">
+            <code>execution</code>
+
+
+<a href="#msflib.ingestion.services.execution" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Job/run lifecycle domain logic for the Celery task wrapper (celery.py).</p>
+<p>Pure functions computing <em>what</em> to write -- exhaustion/retry-backoff policy
+and job/run state transitions -- kept out of <code>actions.py</code>. Action classes
+do database reads/writes only (<code>ModelAction.create</code>/<code>update</code> already
+covers a plain field-set); the caller decides <em>which</em> fields, using these
+functions, then calls the action with the result.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.execution.compute_failure_outcome" class="doc doc-heading">
+            <code class=" language-python"><span class="n">compute_failure_outcome</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">IngestionJob</span><span class="p">,</span> <span class="n">terminal</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">retry_backoff_seconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">retry_backoff_max_seconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">retry_after_seconds</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FailureOutcome</span></code>
+
+<a href="#msflib.ingestion.services.execution.compute_failure_outcome" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Decide whether a failed attempt is retryable, and if so, when.</p>
+<p>Exponential backoff (<code>retry_backoff_seconds * 2 ** (attempts - 1)</code>,
+exponent clamped to <code>[0, 7]</code> and the result capped at
+<code>retry_backoff_max_seconds</code>) mirrors Celery's own <code>retry_backoff</code>/
+<code>retry_backoff_max</code> semantics used for <code>autoretry_for</code> -- see
+<code>IngestionSettings</code>. The first retry (<code>attempts == 1</code>) waits the base
+<code>retry_backoff_seconds</code>, not double it.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.lifecycle" class="doc doc-heading">
+            <code>lifecycle</code>
+
+
+<a href="#msflib.ingestion.services.lifecycle" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p><code>ingestion_subject_stage</code>: the load / check / lock / process-or-clean-up steps of every kind.</p>
+<p>A pipeline kind supplies how to load and snapshot its ingestion subject (what the
+job points at), what to do
+with a live one (<code>process</code>, optionally after an unlocked <code>prepare</code>) and
+what to do when it is gone (<code>cleanup</code>). The stage owns everything else:</p>
+<ul>
+<li>the job's reason is parsed and checked against <code>reasons</code>;</li>
+<li>a subject that is gone, not live, or targeted by a <code>delete</code> job is
+  cleaned up; a <code>delete</code> job whose subject is live again in the same scope
+  is superseded;</li>
+<li>a newer subject version, or a subject that moved tenant/workspace,
+  supersedes the job;</li>
+<li>before any write, a per-subject Postgres advisory lock is taken and the
+  subject reloaded; if its fingerprint changed the attempt is retried;</li>
+<li>each step runs in a savepoint, and a non-stage error is classified only
+  after the savepoint rolls back (on Postgres, classifying inside a failed
+  transaction would itself fail);</li>
+<li><code>completed_event</code> fires once the job commits.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.services.lifecycle.IngestionSubjectContext" class="doc doc-heading">
+              <code class=" language-python"><span class="n">IngestionSubjectContext</span><span class="p">(</span><span class="n">stage</span><span class="p">:</span> <span class="n">StageContext</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="n">IngestionReason</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="n">S</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">IngestionSubjectSnapshot</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prepared</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.services.lifecycle.IngestionSubjectContext" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Generic">Generic</span>[<span title="msflib.ingestion.services.lifecycle.S">S</span>]</code></p>
+
+
+
+        <p>What <code>prepare</code>/<code>process</code>/<code>cleanup</code> see; <code>subject</code> is <code>None</code> in <code>cleanup</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.lifecycle.lock_ingestion_subject" class="doc doc-heading">
+            <code class=" language-python"><span class="n">lock_ingestion_subject</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.lifecycle.lock_ingestion_subject" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Hold a per-subject Postgres advisory lock until the transaction ends; no-op elsewhere.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.lifecycle.run_guarded" class="doc doc-heading">
+            <code class=" language-python"><span class="n">run_guarded</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">StageContext</span><span class="p">,</span> <span class="n">work</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_T</span></code>
+
+<a href="#msflib.ingestion.services.lifecycle.run_guarded" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Run <code>work</code> in a savepoint; classify a non-stage error after the savepoint rolls back.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.lifecycle.ingestion_subject_stage" class="doc doc-heading">
+            <code class=" language-python"><span class="n">ingestion_subject_stage</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">StageContext</span><span class="p">],</span> <span class="n">S</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">],</span> <span class="n">process</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">],</span> <span class="n">prepare</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fingerprint</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reasons</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">IngestionReason</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">completed_event</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">event_payload</span><span class="p">:</span> <span class="n">EventPayload</span> <span class="o">=</span> <span class="n">default_event_payload</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Stage</span></code>
+
+<a href="#msflib.ingestion.services.lifecycle.ingestion_subject_stage" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Build a stage that runs one subject through the shared lifecycle.</p>
+<p><code>load</code> returns the subject or <code>None</code> when it is gone. <code>prepare</code>
+runs unlocked (put slow, read-only work there); <code>process</code> runs after
+the lock and re-check, and receives <code>prepare</code>'s result as
+<code>context.prepared</code>. <code>fingerprint</code> (default: <code>snapshot</code>) decides
+whether the subject changed while the job ran.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.queue" class="doc doc-heading">
+            <code>queue</code>
+
+
+<a href="#msflib.ingestion.services.queue" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p><code>IngestionSubjectQueue</code>: enqueue a pipeline kind's jobs; dispatch waits for the commit.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.services.queue.IngestionSubjectQueue" class="doc doc-heading">
+              <code class=" language-python"><span class="n">IngestionSubjectQueue</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">:</span> <span class="n">IngestionDispatchService</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">job_action</span><span class="p">:</span> <span class="n">IngestionJobAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#msflib.ingestion.services.queue.IngestionSubjectQueue" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>A pipeline kind's job queue; pass its settings flag as <code>enabled=</code>.</p>
+<p>Subclass only to override <code>check_subject</code> (see <code>KnowledgeRecordQueue</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.services.queue.IngestionSubjectQueue.latest" class="doc doc-heading">
+            <code class=" language-python"><span class="n">latest</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.latest" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Most recent job of this kind for a subject, whatever its status.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="n">IngestionReason</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">IngestionReason</span><span class="o">.</span><span class="n">create</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+
+<a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Queue one job; <code>tenant_id</code>/<code>workspace_id</code> must be the subject's own scope.</p>
+<p>Takes the subject's lock first, so a job that is running for it finishes
+(or stands down) before this dedupes against it.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue_snapshot" class="doc doc-heading">
+            <code class=" language-python"><span class="n">enqueue_snapshot</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="n">IngestionReason</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">]</span></code>
+
+<a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue_snapshot" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Queue the jobs that bring this kind in line with <code>snapshot</code>.</p>
+<p>With no <code>reason</code>: a live subject is <code>create</code> (no earlier job) or
+<code>replace</code>; a gone one is <code>delete</code>, or nothing if it was never
+queued. A subject that moved tenant/workspace first gets a <code>delete</code>
+under the previous job's scope.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.queue.commit_and_refresh" class="doc doc-heading">
+            <code class=" language-python"><span class="n">commit_and_refresh</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">*</span><span class="n">rows</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
+
+<a href="#msflib.ingestion.services.queue.commit_and_refresh" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Commit and refresh <code>rows</code> when <code>commit</code> is set; return them either way.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.registry" class="doc doc-heading">
+            <code>registry</code>
+
+
+<a href="#msflib.ingestion.services.registry" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Registry of pipeline stage chains, one per <code>pipeline_kind</code>.</p>
+<p>Follows the register/resolve/list pattern from
+<code>ai_core.services.chunking.registry.ChunkingRegistry</code>. Empty by default --
+this module owns the queue/registry mechanism only; concrete kinds
+(<code>text_document</code>, <code>graph_extraction</code>, <code>structured_record</code>) are
+registered by the consuming modules (documents, knowledge, others) as
+they migrate onto it.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.sync" class="doc doc-heading">
+            <code>sync</code>
+
+
+<a href="#msflib.ingestion.services.sync" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p><code>sync_model_to_queue</code>: enqueue a job on every <code>ModelAction</code> write to a model.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.sync.reset_model_sync" class="doc doc-heading">
+            <code class=" language-python"><span class="n">reset_model_sync</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.sync.reset_model_sync" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Remove <code>sync_model_to_queue</code> hooks: one subject type, one kind, or all.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.sync.sync_model_to_queue" class="doc doc-heading">
+            <code class=" language-python"><span class="n">sync_model_to_queue</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">],</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ModelWriteOperation</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'create'</span><span class="p">,</span> <span class="s1">'update'</span><span class="p">,</span> <span class="s1">'delete'</span><span class="p">),</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">'log'</span><span class="p">,</span> <span class="s1">'raise'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'log'</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.sync.sync_model_to_queue" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Keep <code>queue</code>'s kind in step with <code>model</code>; a disabled queue is skipped silently.</p>
+<p>See <code>msflib.actions.on_model_write</code> for <code>on_error</code> and idempotency;
+<code>reset_model_sync</code> removes the hook.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.testing" class="doc doc-heading">
+            <code>msflib.ingestion.testing</code>
+
+
+<a href="#msflib.ingestion.testing" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Test doubles for code that enqueues ingestion jobs.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ingestion.testing.FakeDispatchTask" class="doc doc-heading">
+              <code class=" language-python"><span class="n">FakeDispatchTask</span><span class="p">(</span><span class="n">dispatched</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">())</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.testing.FakeDispatchTask" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p><code>DelayableTask</code> double that records dispatched job ids instead of calling Celery.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.testing.start_stage_context" class="doc doc-heading">
+            <code class=" language-python"><span class="n">start_stage_context</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="n">IngestionJob</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StageContext</span></code>
+
+<a href="#msflib.ingestion.testing.start_stage_context" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Start an attempt the way the Celery task does and return the context a stage receives.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
