@@ -2938,14 +2938,13 @@
 <p><code>msflib-workspace-notifications</code> adds workspace-scoped notifications on top of <a href="../notifications/">notifications</a>. Workspace admins send a notification to some or all users of a workspace; recipients get an in-app inbox, and the same message can go out by email, SMS and Discord. It also stores the Discord channels a workspace has registered.</p>
 <p>The base <code>Notification</code> table stays free of any workspace dependency. This package links a notification to a workspace through its own <code>WorkspaceNotification</code> table and marks it with <code>scope = "workspace"</code>, which keeps it invisible to the account-level notification routes.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-workspaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspaces"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspaces-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"notifications-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-workspace-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspace_notifications-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>The package declares <code>discord</code>, <code>sms</code>, <code>email</code> and <code>all</code> extras (<code>discord-py</code>, <code>twilio</code>, <code>emails</code>). <code>msflib</code> core already depends on <code>discord-py</code>, <code>twilio</code> and <code>emails</code> unconditionally, so on this branch the extras add nothing when core is installed. The Discord import in <code>service/discord.py</code> is still guarded: if <code>discord</code> cannot be imported, the notifier logs an error and Discord messages are not sent.</p>
 <div class="admonition note">
 <p class="admonition-title">Packaging (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
@@ -2953,7 +2952,7 @@
 </div>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Three router factories live in <code>msflib.workspace_notifications.router</code>. They need the workspace-aware identity dependencies from <a href="../workspaces/">workspaces</a> (<code>get_current_user</code>, <code>get_current_workspace</code>, and a role check for workspace admins).</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span><span class="p">,</span> <span class="n">get_user_dependencies</span>
@@ -3016,7 +3015,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>This mirrors the module's own test fixture, including <code>user_action</code>: without it the admin <code>POST</code> returns 500 (<code>TypeError: UserAction must be instantiated with concrete generic types</code>), because the default is a bare <code>UserAction()</code>. The <code>{workspace_slug}</code> path parameter is what <code>get_current_workspace</code> resolves; use whatever your workspace dependency expects.</p>
 <table>
 <thead>
@@ -3095,12 +3093,12 @@
 </table>
 <p>Flat alias: <code>BOT_TOKEN</code> maps to <code>WS_NOTIFICATIONS.DISCORD_BOT_TOKEN</code> (confirmed). The environment variable depends on how you compose settings:</p>
 <ul>
-<li>Mixin composition (<code>class AppSettings(WsNotificationSettings, ...)</code>): use the flat names, <code>DISCORD_BOT_TOKEN</code> or <code>BOT_TOKEN</code>. <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> is not read in this style.</li>
+<li>Subclassed (<code>class AppSettings(WsNotificationSettings, ...)</code>): use the flat names, <code>DISCORD_BOT_TOKEN</code> or <code>BOT_TOKEN</code>. <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> is not read in this style.</li>
 <li>Nested field (<code>WS_NOTIFICATIONS: WsNotificationSettings = WsNotificationSettings()</code>): <code>WS_NOTIFICATIONS__DISCORD_BOT_TOKEN</code> or <code>BOT_TOKEN</code>. The bare <code>DISCORD_BOT_TOKEN</code> is not read.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for subclassed hosts. This may change.</p>
 </div>
 <p>Email and SMS use the same settings as <a href="../notifications/#configuration">notifications</a>, including the <code>TWILIO_*</code> attributes you must declare yourself.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
@@ -3118,7 +3116,7 @@
 </div>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Send an in-app notification to a workspace user. This ran against in-memory SQLite with the default tenant seeded:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">NotificationChannel</span><span class="p">,</span>
     <span class="n">NotificationCreate</span><span class="p">,</span>
     <span class="n">NotificationType</span><span class="p">,</span>
@@ -3145,9 +3143,8 @@
 <span class="n">WorkspaceNotificationAction</span><span class="p">()</span><span class="o">.</span><span class="n">get_notifications</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">workspace</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="n">UserNotificationAction</span><span class="p">()</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">receiver_id</span><span class="o">=</span><span class="n">member_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Register a Discord channel for a workspace from code:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscordChannelCreate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span>
@@ -3161,8 +3158,7 @@
     <span class="n">admin_user</span><span class="o">=</span><span class="n">admin_user</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
-<p>Then send with <code>channels=[NotificationChannel.inapp, NotificationChannel.discord]</code> and set <code>DISCORD_BOT_TOKEN</code>. The Discord example was not run, because it needs a live bot connection.</p>
+<p>Then send with <code>channels=[NotificationChannel.inapp, NotificationChannel.discord]</code> and set <code>DISCORD_BOT_TOKEN</code> (or <code>BOT_TOKEN</code>, which is read in both layouts). The Discord example was not run, because it needs a live bot connection.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Discord messages are not delivered and the log says "Discord BOT_TOKEN not configured".</strong> Set the token using the environment variable name that matches your settings composition (see Configuration). Dispatch continues without Discord.</li>

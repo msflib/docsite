@@ -4956,7 +4956,7 @@ before applying them.</p>
 
 
 <h5 id="msflib.core.config.ModuleSettingsBase.unwrap" class="doc doc-heading">
-            <code class=" language-python"><span class="n">unwrap</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleSettingsBase</span></code>
+            <code class="highlight language-python"><span class="n">unwrap</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModuleSettingsBase</span></code>
 
 <a href="#msflib.core.config.ModuleSettingsBase.unwrap" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -4974,7 +4974,7 @@ before applying them.</p>
 
 
 <h5 id="msflib.core.config.ModuleSettingsBase.get_policy_field_schema" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_policy_field_schema</span><span class="p">(</span><span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">get_policy_field_schema</span><span class="p">(</span><span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -5005,7 +5005,7 @@ before applying them.</p>
 
 
 <h5 id="msflib.core.config.ModuleSettingsBase.resolve_tiered" class="doc doc-heading">
-            <code class=" language-python"><span class="n">resolve_tiered</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">tenant_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">request_override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleSettingsBase</span></code>
+            <code class="highlight language-python"><span class="n">resolve_tiered</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">tenant_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">request_override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleSettingsBase</span></code>
 
 <a href="#msflib.core.config.ModuleSettingsBase.resolve_tiered" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5037,7 +5037,7 @@ parameter.</p>
 
 
 <h4 id="msflib.core.config.SettingsBase" class="doc doc-heading">
-              <code class=" language-python"><span class="n">SettingsBase</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">SettingsBase</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span></code>
 
 <a href="#msflib.core.config.SettingsBase" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5054,17 +5054,16 @@ parameter.</p>
 relies on multiple inheritance and field overrides, which is simpler but
 may be susceptible to name clashes and uses normal Pydantic validation
 and <code>.env</code> support.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">ModuleASettings</span><span class="p">,</span> <span class="n">ModuleBSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">ModuleASettings</span><span class="p">,</span> <span class="n">ModuleBSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="o">...</span>
     <span class="n">OVERRIDDEN_SETTING_1</span> <span class="o">=</span> <span class="s2">"overridden_value"</span>   <span class="c1"># from module A</span>
     <span class="n">OVERRIDDEN_SETTING_2</span> <span class="o">=</span> <span class="s2">"overridden_value"</span>   <span class="c1"># from module B</span>
     <span class="o">...</span>
 </code></pre></div>
-
 <p>Option B: Composed Settings with Nested Modules
 relies on nested settings objects (e.g. <code>AUTH</code>)
 and also uses normal Pydantic validation and <code>.env</code> support.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">SettingsBase</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">SettingsBase</span><span class="p">):</span>
     <span class="n">MODULE_A</span><span class="p">:</span> <span class="n">ModuleASettings</span> <span class="o">=</span> <span class="n">ModuleASettings</span><span class="p">(</span>
         <span class="n">OVERRIDDEN_SETTING_1</span><span class="o">=</span><span class="s2">"overridden_value"</span><span class="p">,</span>
         <span class="o">...</span>
@@ -5074,7 +5073,6 @@ and also uses normal Pydantic validation and <code>.env</code> support.</p>
         <span class="o">...</span>
     <span class="p">)</span>
 </code></pre></div>
-
 <p>Consumer projects can override specific values by passing settings to the
 composed settings class (or by subclassing and overriding defaults).</p>
 
@@ -5112,7 +5110,7 @@ composed settings class (or by subclassing and overriding defaults).</p>
 
 
 <h4 id="msflib.core.config.normalize_request_override" class="doc doc-heading">
-            <code class=" language-python"><span class="n">normalize_request_override</span><span class="p">(</span><span class="n">request_override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">normalize_request_override</span><span class="p">(</span><span class="n">request_override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.config.normalize_request_override" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5134,7 +5132,7 @@ composed settings class (or by subclassing and overriding defaults).</p>
 
 
 <h4 id="msflib.core.config.validate_request_override_allowlist" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_request_override_allowlist</span><span class="p">(</span><span class="n">module_settings</span><span class="p">:</span> <span class="n">ModuleSettingsBase</span><span class="p">,</span> <span class="n">request_override</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">collect_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">validate_request_override_allowlist</span><span class="p">(</span><span class="n">module_settings</span><span class="p">:</span> <span class="n">ModuleSettingsBase</span><span class="p">,</span> <span class="n">request_override</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">collect_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.core.config.validate_request_override_allowlist" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5157,7 +5155,7 @@ non-string keys with ValueError.</p>
 
 
 <h4 id="msflib.core.config.get_scoped_or_flat_env" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_scoped_or_flat_env</span><span class="p">(</span><span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">get_scoped_or_flat_env</span><span class="p">(</span><span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.core.config.get_scoped_or_flat_env" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5177,7 +5175,7 @@ non-string keys with ValueError.</p>
 
 
 <h4 id="msflib.core.config.get_module_setting" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_module_setting</span><span class="p">(</span><span class="n">setting_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_setting</span><span class="p">:</span> <span class="n">ModuleSettingsBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">get_module_setting</span><span class="p">(</span><span class="n">setting_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_setting</span><span class="p">:</span> <span class="n">ModuleSettingsBase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.config.get_module_setting" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5199,7 +5197,7 @@ non-string keys with ValueError.</p>
 
 
 <h4 id="msflib.core.config.merge_config_layers" class="doc doc-heading">
-            <code class=" language-python"><span class="n">merge_config_layers</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">base_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">request_override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">merge_config_layers</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">base_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">request_override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.config.merge_config_layers" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5224,7 +5222,7 @@ If provided separately, <code>workspace_config</code> takes precedence over
 
 
 <h4 id="msflib.core.config.compose_settings_model" class="doc doc-heading">
-            <code class=" language-python"><span class="n">compose_settings_model</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_settings_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SettingsBase</span><span class="p">],</span> <span class="n">module_settings</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">ModuleSettingsBase</span><span class="p">]]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">SettingsBase</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">compose_settings_model</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_settings_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SettingsBase</span><span class="p">],</span> <span class="n">module_settings</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">ModuleSettingsBase</span><span class="p">]]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">SettingsBase</span><span class="p">]</span></code>
 
 <a href="#msflib.core.config.compose_settings_model" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5334,7 +5332,7 @@ so it can be shared without creating a dependency between them (e.g.
 
 
 <h4 id="msflib.core.import_tools.is_importable" class="doc doc-heading">
-            <code class=" language-python"><span class="n">is_importable</span><span class="p">(</span><span class="o">*</span><span class="n">module_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">is_importable</span><span class="p">(</span><span class="o">*</span><span class="n">module_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
@@ -5365,7 +5363,7 @@ present.</p>
 
 
 <h4 id="msflib.core.import_tools.optional_install_hint" class="doc doc-heading">
-            <code class=" language-python"><span class="n">optional_install_hint</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">pip_package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">distribution</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">optional_install_hint</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">pip_package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">distribution</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.import_tools.optional_install_hint" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5383,7 +5381,7 @@ present.</p>
 
 
 <h4 id="msflib.core.import_tools.import_optional" class="doc doc-heading">
-            <code class=" language-python"><span class="n">import_optional</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pip_package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">distribution</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span></code>
+            <code class="highlight language-python"><span class="n">import_optional</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pip_package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">distribution</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span></code>
 
 <a href="#msflib.core.import_tools.import_optional" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5450,7 +5448,7 @@ not necessarily this one.</p>
 
 
 <h4 id="msflib.core.pii.normalize_key" class="doc doc-heading">
-            <code class=" language-python"><span class="n">normalize_key</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">normalize_key</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.pii.normalize_key" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5468,7 +5466,7 @@ not necessarily this one.</p>
 
 
 <h4 id="msflib.core.pii.find_sensitive_keys" class="doc doc-heading">
-            <code class=" language-python"><span class="n">find_sensitive_keys</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">find_sensitive_keys</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
 <a href="#msflib.core.pii.find_sensitive_keys" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5486,7 +5484,7 @@ not necessarily this one.</p>
 
 
 <h4 id="msflib.core.pii.mask_sensitive" class="doc doc-heading">
-            <code class=" language-python"><span class="n">mask_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MASK</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">mask_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MASK</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.pii.mask_sensitive" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5504,7 +5502,7 @@ not necessarily this one.</p>
 
 
 <h4 id="msflib.core.pii.strip_sensitive" class="doc doc-heading">
-            <code class=" language-python"><span class="n">strip_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">strip_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.pii.strip_sensitive" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5557,7 +5555,7 @@ not necessarily this one.</p>
 
 
 <h5 id="msflib.core.pii.keys.normalize_key" class="doc doc-heading">
-            <code class=" language-python"><span class="n">normalize_key</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">normalize_key</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.pii.keys.normalize_key" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5617,7 +5615,7 @@ not necessarily this one.</p>
 
 
 <h5 id="msflib.core.pii.redact.strip_sensitive" class="doc doc-heading">
-            <code class=" language-python"><span class="n">strip_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">strip_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.pii.redact.strip_sensitive" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5635,7 +5633,7 @@ not necessarily this one.</p>
 
 
 <h5 id="msflib.core.pii.redact.mask_sensitive" class="doc doc-heading">
-            <code class=" language-python"><span class="n">mask_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MASK</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">mask_sensitive</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MASK</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.pii.redact.mask_sensitive" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5653,7 +5651,7 @@ not necessarily this one.</p>
 
 
 <h5 id="msflib.core.pii.redact.find_sensitive_keys" class="doc doc-heading">
-            <code class=" language-python"><span class="n">find_sensitive_keys</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">find_sensitive_keys</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">patterns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
 <a href="#msflib.core.pii.redact.find_sensitive_keys" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5761,7 +5759,7 @@ wildcard: <code>"company"</code>, <code>"contact.name"</code>, <code>"line_items
 
 
 <h5 id="msflib.core.records.fields.parse_path" class="doc doc-heading">
-            <code class=" language-python"><span class="n">parse_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span></code>
+            <code class="highlight language-python"><span class="n">parse_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span></code>
 
 <a href="#msflib.core.records.fields.parse_path" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5779,7 +5777,7 @@ wildcard: <code>"company"</code>, <code>"contact.name"</code>, <code>"line_items
 
 
 <h5 id="msflib.core.records.fields.select_fields" class="doc doc-heading">
-            <code class=" language-python"><span class="n">select_fields</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">include</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sensitive_fields</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">select_fields</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">include</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sensitive_fields</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DEFAULT_SENSITIVE_FIELDS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.records.fields.select_fields" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5799,7 +5797,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.fields.get_path" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_path</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">get_path</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.records.fields.get_path" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5859,7 +5857,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.identity.primary_key" class="doc doc-heading">
-            <code class=" language-python"><span class="n">primary_key</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">primary_key</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.core.records.identity.primary_key" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5877,7 +5875,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.identity.primary_key_value" class="doc doc-heading">
-            <code class=" language-python"><span class="n">primary_key_value</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">primary_key_value</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.records.identity.primary_key_value" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5895,7 +5893,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.identity.parse_primary_key" class="doc doc-heading">
-            <code class=" language-python"><span class="n">parse_primary_key</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">parse_primary_key</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.records.identity.parse_primary_key" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5986,7 +5984,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.payload.payload_from" class="doc doc-heading">
-            <code class=" language-python"><span class="n">payload_from</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">payload_from</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.records.payload.payload_from" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6004,7 +6002,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.payload.canonical_json" class="doc doc-heading">
-            <code class=" language-python"><span class="n">canonical_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">canonical_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.records.payload.canonical_json" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6022,7 +6020,7 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 <h5 id="msflib.core.records.payload.content_hash" class="doc doc-heading">
-            <code class=" language-python"><span class="n">content_hash</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">content_hash</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.records.payload.content_hash" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6085,7 +6083,7 @@ there silently.</p>
 
 
 <h5 id="msflib.core.records.scope.RowScope" class="doc doc-heading">
-              <code class=" language-python"><span class="n">RowScope</span><span class="p">(</span><span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">RowScope</span><span class="p">(</span><span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -6127,7 +6125,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h6 id="msflib.core.records.scope.RowScope.bind" class="doc doc-heading">
-            <code class=" language-python"><span class="n">bind</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RowScope</span></code>
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RowScope</span></code>
 
 <a href="#msflib.core.records.scope.RowScope.bind" class="headerlink" title="Permanent link">&para;</a></h6>
 
@@ -6154,7 +6152,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h5 id="msflib.core.records.scope.scope_from_row" class="doc doc-heading">
-            <code class=" language-python"><span class="n">scope_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
+            <code class="highlight language-python"><span class="n">scope_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
 
 <a href="#msflib.core.records.scope.scope_from_row" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6214,7 +6212,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h5 id="msflib.core.records.versioning.version_from_column" class="doc doc-heading">
-            <code class=" language-python"><span class="n">version_from_column</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span></code>
+            <code class="highlight language-python"><span class="n">version_from_column</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span></code>
 
 <a href="#msflib.core.records.versioning.version_from_column" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6232,7 +6230,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h5 id="msflib.core.records.versioning.timestamp_version" class="doc doc-heading">
-            <code class=" language-python"><span class="n">timestamp_version</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">assume_utc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">timestamp_version</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">assume_utc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.core.records.versioning.timestamp_version" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6250,7 +6248,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h5 id="msflib.core.records.versioning.version_from_timestamp" class="doc doc-heading">
-            <code class=" language-python"><span class="n">version_from_timestamp</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">assume_utc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span></code>
+            <code class="highlight language-python"><span class="n">version_from_timestamp</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">assume_utc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span></code>
 
 <a href="#msflib.core.records.versioning.version_from_timestamp" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6268,7 +6266,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h5 id="msflib.core.records.versioning.version_from_callable" class="doc doc-heading">
-            <code class=" language-python"><span class="n">version_from_callable</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span></code>
+            <code class="highlight language-python"><span class="n">version_from_callable</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span></code>
 
 <a href="#msflib.core.records.versioning.version_from_callable" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6286,7 +6284,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h5 id="msflib.core.records.versioning.resolve_version_getter" class="doc doc-heading">
-            <code class=" language-python"><span class="n">resolve_version_getter</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">VersionGetter</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">resolve_version_getter</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">VersionGetter</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionGetter</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.core.records.versioning.resolve_version_getter" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -6351,7 +6349,7 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 
 
 <h4 id="msflib.core.security.create_access_token" class="doc doc-heading">
-            <code class=" language-python"><span class="n">create_access_token</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Any</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expiry_minutes</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">11520</span><span class="p">,</span> <span class="n">claims</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">create_access_token</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Any</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expiry_minutes</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">11520</span><span class="p">,</span> <span class="n">claims</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.security.create_access_token" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6456,7 +6454,7 @@ Defaults to 11520 minutes (8 days).</p>
 
 
 <h4 id="msflib.core.security.verify_password" class="doc doc-heading">
-            <code class=" language-python"><span class="n">verify_password</span><span class="p">(</span><span class="n">plain_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hashed_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">verify_password</span><span class="p">(</span><span class="n">plain_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hashed_password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.core.security.verify_password" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6544,7 +6542,7 @@ Defaults to 11520 minutes (8 days).</p>
 
 
 <h4 id="msflib.core.security.get_password_hash" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">get_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.security.get_password_hash" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6616,7 +6614,7 @@ Defaults to 11520 minutes (8 days).</p>
 
 
 <h4 id="msflib.core.security.revoke_access_token" class="doc doc-heading">
-            <code class=" language-python"><span class="n">revoke_access_token</span><span class="p">(</span><span class="n">token_store</span><span class="p">:</span> <span class="n">StoreInterface</span><span class="p">,</span> <span class="n">decoded_token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">permanent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">revoke_access_token</span><span class="p">(</span><span class="n">token_store</span><span class="p">:</span> <span class="n">StoreInterface</span><span class="p">,</span> <span class="n">decoded_token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">permanent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.core.security.revoke_access_token" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6815,7 +6813,7 @@ Defaults to 11520 minutes (8 days).</p>
 
 
 <h5 id="msflib.core.store.StoreInterface.put" class="doc doc-heading">
-            <code class=" language-python"><span class="n">put</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'true'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">put</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'true'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -6901,7 +6899,7 @@ If None, the key never expires.</p>
 
 
 <h5 id="msflib.core.store.StoreInterface.remove" class="doc doc-heading">
-            <code class=" language-python"><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -6923,7 +6921,7 @@ If None, the key never expires.</p>
 
 
 <h5 id="msflib.core.store.StoreInterface.check" class="doc doc-heading">
-            <code class=" language-python"><span class="n">check</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">check</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -6945,7 +6943,7 @@ If None, the key never expires.</p>
 
 
 <h5 id="msflib.core.store.StoreInterface.get" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -6976,7 +6974,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.store.MapStore" class="doc doc-heading">
-              <code class=" language-python"><span class="n">MapStore</span><span class="p">()</span></code>
+              <code class="highlight language-python"><span class="n">MapStore</span><span class="p">()</span></code>
 
 <a href="#msflib.core.store.MapStore" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7023,7 +7021,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.store.RedisStore" class="doc doc-heading">
-              <code class=" language-python"><span class="n">RedisStore</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">RedisStore</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span></code>
 
 <a href="#msflib.core.store.RedisStore" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7110,7 +7108,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.load_typed_config" class="doc doc-heading">
-            <code class=" language-python"><span class="n">load_typed_config</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">TypeAdapter</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span></code>
+            <code class="highlight language-python"><span class="n">load_typed_config</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">TypeAdapter</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span></code>
 
 <a href="#msflib.core.typing.load_typed_config" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7128,7 +7126,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.coerce" class="doc doc-heading">
-            <code class=" language-python"><span class="n">coerce</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">target_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">T</span> <span class="o">|</span> <span class="n">_UnsetType</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">coerce</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">target_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">T</span> <span class="o">|</span> <span class="n">_UnsetType</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.core.typing.coerce" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7146,7 +7144,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.coerce_bool" class="doc doc-heading">
-            <code class=" language-python"><span class="n">coerce_bool</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">_UnsetType</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">coerce_bool</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">_UnsetType</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.core.typing.coerce_bool" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7164,7 +7162,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.coerce_datetime" class="doc doc-heading">
-            <code class=" language-python"><span class="n">coerce_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span></code>
+            <code class="highlight language-python"><span class="n">coerce_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span></code>
 
 <a href="#msflib.core.typing.coerce_datetime" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7182,7 +7180,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.normalize_mapping" class="doc doc-heading">
-            <code class=" language-python"><span class="n">normalize_mapping</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">allow_python_literal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">normalize_mapping</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">allow_python_literal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.typing.normalize_mapping" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7200,7 +7198,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.dig_mapping" class="doc doc-heading">
-            <code class=" language-python"><span class="n">dig_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">dig_mapping</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.typing.dig_mapping" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7218,7 +7216,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.get_required" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_required</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">get_required</span><span class="p">(</span><span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.core.typing.get_required" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7236,7 +7234,7 @@ If None, the key never expires.</p>
 
 
 <h4 id="msflib.core.typing.deep_merge_mappings" class="doc doc-heading">
-            <code class=" language-python"><span class="n">deep_merge_mappings</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">overrides</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">deep_merge_mappings</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">overrides</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.typing.deep_merge_mappings" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7258,7 +7256,7 @@ safety, and consistent normalization of generic <code>Mapping</code> values such
 
 
 <h4 id="msflib.core.typing.deep_merge_mapping" class="doc doc-heading">
-            <code class=" language-python"><span class="n">deep_merge_mapping</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">deep_merge_mapping</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">override</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.typing.deep_merge_mapping" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7316,7 +7314,7 @@ safety, and consistent normalization of generic <code>Mapping</code> values such
 
 
 <h4 id="msflib.core.validators.reject_if_not_public_ip" class="doc doc-heading">
-            <code class=" language-python"><span class="n">reject_if_not_public_ip</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hostname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">reject_if_not_public_ip</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hostname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.core.validators.reject_if_not_public_ip" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7340,7 +7338,7 @@ entry points -- this is the primitive they share.</p>
 
 
 <h4 id="msflib.core.validators.resolve_public_ips" class="doc doc-heading">
-            <code class=" language-python"><span class="n">resolve_public_ips</span><span class="p">(</span><span class="n">hostname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">resolve_public_ips</span><span class="p">(</span><span class="n">hostname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
 <a href="#msflib.core.validators.resolve_public_ips" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7368,7 +7366,7 @@ pattern; <code>validate_public_http_url</code> below does only the early check.<
 
 
 <h4 id="msflib.core.validators.validate_public_http_url" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_public_http_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">validate_public_http_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.validators.validate_public_http_url" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7392,7 +7390,7 @@ time instead of relying on this alone.</p>
 
 
 <h4 id="msflib.core.validators.validate_cors_url" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_cors_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">validate_cors_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.validators.validate_cors_url" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7410,7 +7408,7 @@ time instead of relying on this alone.</p>
 
 
 <h4 id="msflib.core.validators.validate_cors_origins" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_cors_origins</span><span class="p">(</span><span class="n">cors</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">validate_cors_origins</span><span class="p">(</span><span class="n">cors</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.validators.validate_cors_origins" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7500,7 +7498,7 @@ or a Python list of origin strings.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MySettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
+  <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MySettings</span><span class="p">(</span><span class="n">Settings</span><span class="p">):</span>
     <span class="n">BACKEND_CORS_ORIGINS</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyHttpUrl</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">"BACKEND_CORS_ORIGINS"</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -7517,7 +7515,7 @@ or a Python list of origin strings.</p>
 
 
 <h4 id="msflib.core.validators.validate_storage_path" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_storage_path</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">default_storage</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'uploads'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">validate_storage_path</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">default_storage</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'uploads'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.validators.validate_storage_path" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7620,7 +7618,7 @@ or a Python list of origin strings.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MySettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+  <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MySettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
     <span class="c1"># File storage</span>
     <span class="n">STORAGE_METHOD</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"file"</span>
     <span class="n">STORAGE_PATH</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"uploads"</span>
@@ -7640,7 +7638,7 @@ or a Python list of origin strings.</p>
 
 
 <h4 id="msflib.core.validators.validate_db_connection" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_db_connection</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">validate_db_connection</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.core.validators.validate_db_connection" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7777,7 +7775,7 @@ def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -&gt; 
 
 
 <h4 id="msflib.core.validators.validate_middleware_policy_mapping" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_middleware_policy_mapping</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'MIDDLEWARE_POLICY'</span><span class="p">,</span> <span class="n">allow_python_literal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">validate_middleware_policy_mapping</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'MIDDLEWARE_POLICY'</span><span class="p">,</span> <span class="n">allow_python_literal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.core.validators.validate_middleware_policy_mapping" class="headerlink" title="Permanent link">&para;</a></h4>
 

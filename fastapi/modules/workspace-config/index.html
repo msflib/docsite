@@ -3139,11 +3139,10 @@
 <p>It also ships a small workspace-scoped <code>categories</code> API (categories and tags) that doubles as a reference for building a workspace-scoped feature.</p>
 <p>For the model of tiers and precedence, see <a href="../../concepts/tiered-config/">Tiered configuration</a> and <a href="../../concepts/policy/">Policy</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-workspace-config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspace_config"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspace_config-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>The package depends on <a href="../tenancy/">msflib-tenancy</a>. Its tables also have foreign keys to <code>account.id</code> and <code>workspace.id</code>, so add <a href="../account/">msflib-account</a> and <a href="../workspaces/">msflib-workspaces</a> when you create the schema. Their metadata must be loaded before <code>create_all</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Packaging issue (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
@@ -3152,14 +3151,13 @@
 <p><code>msflib/workspace_config/__init__.py</code> exports nothing. Import from <code>msflib.workspace_config.service</code>, <code>.models</code>, <code>.actions</code>, <code>.router</code>, <code>.config</code>.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>The service needs no mounting: construct it and call it with a session.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">config_service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
 </code></pre></div>
-
 <p>To expose the categories API, mount its router. It takes the workspace and membership dependencies from <a href="../auth/#workspace-resolution">auth</a>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">workspace_config_router</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">workspace_config_router</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">workspace_config_router</span><span class="p">(</span>
@@ -3173,7 +3171,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The prefix must contain the path parameter your workspace resolver reads (<code>{workspace_slug}</code> for the default <code>PathParameterResolver</code>). Routes:</p>
 <table>
 <thead>
@@ -3199,10 +3196,10 @@
 </table>
 <p>The category writes call <code>workspace_role_check(["admin"])</code>, which compares the membership <code>type</code> to <code>admin</code> only. A workspace <code>owner</code> is refused with 403. Make the owner an <code>admin</code> as well, or pass a role-check factory that lists <code>owner</code> too.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p><code>WorkspaceConfigSettings</code> (namespace <code>WORKSPACE_CONFIG</code>) declares no keys of its own. It inherits <code>ENABLED</code> (default <code>True</code>) from <code>ModuleSettingsBase</code>, which <code>GET /health</code> reports. With composed settings the environment variable is <code>WORKSPACE_CONFIG__ENABLED</code>; with mixin settings it is <code>ENABLED</code>, which is shared with every other module mixed into the same class. Code reads it with <code>settings.scope("WORKSPACE_CONFIG")</code>.</p>
+<p><code>WorkspaceConfigSettings</code> (namespace <code>WORKSPACE_CONFIG</code>) declares no keys of its own. It inherits <code>ENABLED</code> (default <code>True</code>) from <code>ModuleSettingsBase</code>, which <code>GET /health</code> reports. With composed settings the environment variable is <code>WORKSPACE_CONFIG__ENABLED</code>; with subclassed settings it is <code>ENABLED</code>, which is shared with every other module mixed into the same class. Code reads it with <code>settings.scope("WORKSPACE_CONFIG")</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat name.</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for subclassed hosts. With subclassed settings, use the flat name.</p>
 </div>
 <p>The service itself is configured by the module settings objects you pass to it (for example <code>AICoreSettings</code>). See <a href="#key-concepts">Key concepts</a>.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
@@ -3281,8 +3278,8 @@
 <p><code>WorkspaceCategory</code> and <code>Tag</code> are two tables with the same shape (<code>name</code>, <code>title</code>, <code>description</code>, <code>tags</code>, <code>order</code>, <code>workspace_id</code>) and a unique <code>(name, workspace_id)</code> constraint. <code>WorkspaceCategoryAction</code> and <code>TagAction</code> are the matching actions; the router uses <code>WorkspaceCategoryAction</code> unless you pass <code>category_action=</code>, and accepts <code>category_create_type=</code> and <code>category_update_type=</code> to swap the request schemas.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="store-tiered-values-and-resolve-them">Store tiered values and resolve them<a class="headerlink" href="#store-tiered-values-and-resolve-them" title="Permanent link">&para;</a></h3>
-<p>This runs against an in-memory SQLite database, after the models from account, tenancy and workspaces are imported and the tables created. <code>tenant</code>, <code>acme</code> and <code>ada</code> are an existing tenant, workspace and account. These examples pass a bare <code>DemoSettings()</code>, which carries class defaults only and does not read the environment; to merge environment values, pass <code>settings.scope("DEMO")</code> (mixin) or <code>settings.DEMO</code> (composed) from your host settings instead. On PostgreSQL the tenant, workspace and account ids must exist as rows.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
+<p>This runs against an in-memory SQLite database, after the models from account, tenancy and workspaces are imported and the tables created. <code>tenant</code>, <code>acme</code> and <code>ada</code> are an existing tenant, workspace and account. These examples pass a bare <code>DemoSettings()</code>, which carries class defaults only and does not read the environment; to merge environment values, pass <code>settings.scope("DEMO")</code> (subclassed) or <code>settings.DEMO</code> (composed) from your host settings instead. On PostgreSQL the tenant, workspace and account ids must exist as rows.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
@@ -3329,10 +3326,9 @@
     <span class="n">svc</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">DemoSettings</span><span class="p">(),</span> <span class="n">request_override</span><span class="o">=</span><span class="p">{</span><span class="s2">"MODE"</span><span class="p">:</span> <span class="s2">"x"</span><span class="p">})</span>
     <span class="c1"># ValueError: Unsupported request override keys: MODE</span>
 </code></pre></div>
-
 <h3 id="resolve-settings-inside-a-request">Resolve settings inside a request<a class="headerlink" href="#resolve-settings-inside-a-request" title="Permanent link">&para;</a></h3>
 <p>Combine the service with the scope dependencies so the ids come from the authenticated caller:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/limit"</span><span class="p">)</span>
@@ -3350,13 +3346,11 @@
     <span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"limit"</span><span class="p">:</span> <span class="n">resolved</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">}</span>
 </code></pre></div>
-
 <h3 id="delete-a-value">Delete a value<a class="headerlink" href="#delete-a-value" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="n">svc</span><span class="o">.</span><span class="n">delete_value</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
     <span class="n">svc</span><span class="o">.</span><span class="n">get_namespace_values</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># {}</span>
 </code></pre></div>
-
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

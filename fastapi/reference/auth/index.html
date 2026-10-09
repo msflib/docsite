@@ -3305,7 +3305,7 @@
 
 
 <h3 id="msflib.auth.deps.get_account_dependencies" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_account_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">AccountModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">oauth_token_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">active_statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseEnum</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'role'</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">keystore_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_account_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">AccountModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">oauth_token_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">active_statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseEnum</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'role'</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">keystore_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.auth.deps.get_account_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3467,7 +3467,7 @@ used for token revocation checks.</p>
 
 
 <h3 id="msflib.auth.deps.get_user_dependencies" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">UserModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">WorkspaceModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">account_dependencies</span><span class="p">:</span> <span class="n">DependencyNamespace</span><span class="p">,</span> <span class="n">user_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">current_workspace_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'current_workspace_id'</span><span class="p">,</span> <span class="n">workspace_resolver</span><span class="p">:</span> <span class="n">WorkspaceResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">UserModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">WorkspaceModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">account_dependencies</span><span class="p">:</span> <span class="n">DependencyNamespace</span><span class="p">,</span> <span class="n">user_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">current_workspace_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'current_workspace_id'</span><span class="p">,</span> <span class="n">workspace_resolver</span><span class="p">:</span> <span class="n">WorkspaceResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.auth.deps.get_user_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3753,7 +3753,7 @@ other strategy (request header, JWT claim, query param, etc.).  See
 
 
 <h3 id="msflib.auth.resolvers.ResolverContext" class="doc doc-heading">
-              <code class=" language-python"><span class="n">ResolverContext</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path_params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">())</span></code>
+              <code class="highlight language-python"><span class="n">ResolverContext</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path_params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">())</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -3904,7 +3904,7 @@ workspace could be identified from the current request.</p>
 
 
 <h4 id="msflib.auth.resolvers.WorkspaceResolver.resolve" class="doc doc-heading">
-            <code class=" language-python"><span class="n">resolve</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">ResolverContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">resolve</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">ResolverContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -3993,7 +3993,7 @@ workspace could be identified from the current request.</p>
 
 
 <h3 id="msflib.auth.resolvers.PathParameterResolver" class="doc doc-heading">
-              <code class=" language-python"><span class="n">PathParameterResolver</span><span class="p">(</span><span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'workspace_slug'</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">PathParameterResolver</span><span class="p">(</span><span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'workspace_slug'</span><span class="p">)</span></code>
 
 <a href="#msflib.auth.resolvers.PathParameterResolver" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4083,7 +4083,7 @@ resolver = PathParameterResolver(param_name="slug")
 
 
 <h3 id="msflib.auth.resolvers.HttpHeaderResolver" class="doc doc-heading">
-              <code class=" language-python"><span class="n">HttpHeaderResolver</span><span class="p">(</span><span class="n">header_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'X-Workspace'</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">HttpHeaderResolver</span><span class="p">(</span><span class="n">header_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'X-Workspace'</span><span class="p">)</span></code>
 
 <a href="#msflib.auth.resolvers.HttpHeaderResolver" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4215,7 +4215,7 @@ resolver = HttpHeaderResolver(header_name="X-Active-Workspace")
 
 
 <h3 id="msflib.auth.router.check_active_status" class="doc doc-heading">
-            <code class=" language-python"><span class="n">check_active_status</span><span class="p">(</span><span class="n">account</span><span class="p">:</span> <span class="n">AccountType</span><span class="p">,</span> <span class="n">active_statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseEnum</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">check_active_status</span><span class="p">(</span><span class="n">account</span><span class="p">:</span> <span class="n">AccountType</span><span class="p">,</span> <span class="n">active_statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseEnum</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.auth.router.check_active_status" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4376,7 +4376,7 @@ resolver = HttpHeaderResolver(header_name="X-Active-Workspace")
 
 
 <h4 id="msflib.auth.services.email.send_reset_password_email" class="doc doc-heading">
-            <code class=" language-python"><span class="n">send_reset_password_email</span><span class="p">(</span><span class="n">email_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">template_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'reset_password.html'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">send_reset_password_email</span><span class="p">(</span><span class="n">email_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">template_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'reset_password.html'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.auth.services.email.send_reset_password_email" class="headerlink" title="Permanent link">&para;</a></h4>
 

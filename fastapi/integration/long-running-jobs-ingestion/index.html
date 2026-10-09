@@ -2942,17 +2942,16 @@
 <li>The same database and the same ingestion tables in both processes. Import <code>msflib.ingestion.models</code> so the tables are on your metadata; the job table has a foreign key to the tenant table, so tenancy's tables must exist too.</li>
 <li><code>IngestionSettings</code> in your settings class:</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">IngestionSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="o">...</span>
 </code></pre></div>
-
 <h2 id="2-the-worker-process">2. The worker process<a class="headerlink" href="#2-the-worker-process" title="Permanent link">&para;</a></h2>
 <p>The worker is a separate entrypoint. It registers every pipeline kind a job might reference, then builds the Celery app. Celery finds the module-level <code>app</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/ingestion_worker.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/ingestion_worker.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
@@ -2969,11 +2968,9 @@
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="n">session_factory</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Start it with:</p>
-<div class="codehilite"><pre><span></span><code>celery<span class="w"> </span>-A<span class="w"> </span>app.ingestion_worker<span class="w"> </span>worker<span class="w"> </span>--loglevel<span class="o">=</span>info
+<div class="highlight"><pre><span></span><code>celery<span class="w"> </span>-A<span class="w"> </span>app.ingestion_worker<span class="w"> </span>worker<span class="w"> </span>--loglevel<span class="o">=</span>info
 </code></pre></div>
-
 <p>Notes:</p>
 <ul>
 <li><code>session_factory</code> is any zero-argument callable returning a context-manager <code>Session</code>. A plain <code>Session(engine)</code> works, because <code>Session</code> is a context manager.</li>
@@ -2984,7 +2981,7 @@
 </ul>
 <h2 id="3-the-fastapi-process">3. The FastAPI process<a class="headerlink" href="#3-the-fastapi-process" title="Permanent link">&para;</a></h2>
 <p>The web process only enqueues. Build one producer handle and share it:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ingestion_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDispatchService</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSubjectQueue</span>
@@ -2996,10 +2993,9 @@
     <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                      <span class="c1"># pass your own settings flag here</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>build_dispatch_task</code> needs no session factory and never imports your pipeline code. It sends by task name to <code>DEFAULT_QUEUE</code>.</p>
 <p>Enqueue from request code with the queue. Dispatch is deferred until your transaction commits, so a rollback queues nothing:</p>
-<div class="codehilite"><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/notes"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/notes"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_note</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">NoteCreate</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)):</span>
     <span class="n">note</span> <span class="o">=</span> <span class="n">Note</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
     <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
@@ -3010,7 +3006,6 @@
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>                   <span class="c1"># the job row is committed, then dispatched</span>
     <span class="k">return</span> <span class="n">note</span>
 </code></pre></div>
-
 <p><code>router</code> here is your own <code>APIRouter</code>, and <code>NoteCreate</code> and <code>get_session</code> come from your host.</p>
 <p>Or let the model do it for you: <code>sync_model_to_queue(Note, note_queue, subject_type="note", snapshot=note_snapshot, emitter=app_emitter)</code> queues a job on every <code>ModelAction</code> write to <code>Note</code>. Create <code>app_emitter</code> once when you create the app (<code>from msflib.eventbus import bind_app_emitter</code>, then <code>app_emitter = bind_app_emitter(app)</code>). The hook fires only while the app emitter is active: in requests (including FastAPI <code>BackgroundTasks</code>), or in your own code wrapped in <code>with use_app_emitter(app):</code>. Writes from workers, CLI scripts and threads outside that block queue nothing, so call <code>note_queue.enqueue_snapshot</code> there. Gate this registration on the same settings flag as the queue. <code>note_snapshot</code> is defined in section 5.</p>
 <p>Mount the management router in the same process (section 7). It validates <code>pipeline_kind</code> against a registry in the web process, so call your registration function there as well.</p>
@@ -3018,7 +3013,7 @@
 <p>There is no built-in inline dispatcher: <code>build_dispatch_task</code> always sends through Celery. For development and tests you have two options that need no Redis.</p>
 <p><strong>Record dispatches only.</strong> <code>msflib.ingestion.testing.FakeDispatchTask</code> implements <code>.delay(job_id)</code> and records the ids. Use it to assert that your code enqueued the right jobs. <code>start_stage_context(session, job, settings)</code> from the same module starts an attempt and returns the <code>StageContext</code>, so you can call a stage function directly.</p>
 <p><strong>Run jobs in the same process.</strong> Build the worker app as in section 2, switch Celery to eager mode, and use the registered task as the dispatch handle. Jobs then run synchronously inside <code>delay()</code>, after your commit, with the full retry and dead-letter behaviour. This runs as written. It seeds tenant 1 after <code>create_all</code> because <code>Note.tenant_id</code> points at it: SQLite does not enforce the foreign key, but Postgres does.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
@@ -3102,20 +3097,18 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">subject_id</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">attempts</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">([(</span><span class="n">d</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">IngestionDeadLetter</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span>
 </code></pre></div>
-
 <p>Output:</p>
-<div class="codehilite"><pre><span></span><code>indexed good
+<div class="highlight"><pre><span></span><code>indexed good
 1 done 1 None
 2 failed 1 cannot index this note
 [(2, 'TerminalStageError: cannot index this note')]
 </code></pre></div>
-
 <p>Eager mode in a request uses the app emitter, while a real worker uses the default emitter, so test event listeners in the process they will run in. In eager mode outside a request, only listeners on the default emitter fire. Use this only for development. Eager mode has no concurrency, no redelivery and no real backoff delays. The registry is passed explicitly here so the example does not touch <code>default_pipeline_registry</code>.</p>
 <h2 id="5-adding-a-new-pipeline-kind">5. Adding a new pipeline kind<a class="headerlink" href="#5-adding-a-new-pipeline-kind" title="Permanent link">&para;</a></h2>
 <p>A kind needs a subject that can be loaded by id, a snapshot of it, and the work to do. Using the <code>Note</code> model from the example above:</p>
 <p><strong>1. Load and snapshot.</strong> <code>load(context)</code> returns the subject for <code>context.job.subject_id</code>, or <code>None</code> when it is gone. <code>snapshot(subject)</code> returns an <code>IngestionSubjectSnapshot</code> with the subject's id (as a string), tenant, workspace, a <code>version</code> (strongly recommended, see below) and <code>live</code>.</p>
 <p><strong>2. Process and clean up.</strong> <code>process(context)</code> handles a live subject. <code>cleanup(context)</code> handles a gone subject or a <code>delete</code> job. Both receive an <code>IngestionSubjectContext</code> with <code>.session</code>, <code>.subject</code>, <code>.snapshot</code>, <code>.job</code>, <code>.reason</code> and <code>.settings</code>. Do not commit inside them. They run in a savepoint, and the worker commits when the whole job succeeds, so an exception rolls back everything the step wrote.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">note_snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">note_snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">(</span>
         <span class="n">subject_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
         <span class="n">tenant_id</span><span class="o">=</span><span class="n">note</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span>
@@ -3124,9 +3117,8 @@
         <span class="n">live</span><span class="o">=</span><span class="ow">not</span> <span class="n">note</span><span class="o">.</span><span class="n">deleted</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div>
-
 <p><strong>3. Build and register the stage.</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.lifecycle</span><span class="w"> </span><span class="kn">import</span> <span class="n">ingestion_subject_stage</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.lifecycle</span><span class="w"> </span><span class="kn">import</span> <span class="n">ingestion_subject_stage</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_pipeline_registry</span>
 
 
@@ -3144,7 +3136,6 @@
         <span class="n">description</span><span class="o">=</span><span class="s2">"Index notes"</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div>
-
 <p>Call <code>register_note_pipeline()</code> in the worker entrypoint and in the web process. Event listeners for <code>completed_event</code> belong in the worker process, registered on the worker's emitter, <code>AppEmitter(get_emitter())</code> (from <code>msflib.eventbus</code>); see <a href="../../modules/ingestion/#key-concepts">Ingestion</a>. Registering a kind twice raises unless you pass <code>replace=True</code>.</p>
 <p><strong>4. Slow work goes in <code>prepare</code>.</strong> <code>prepare=</code> runs before the per-subject lock is taken, so an LLM call or remote fetch does not hold it. <code>process</code> receives the result as <code>context.prepared</code>. If the subject changes while <code>prepare</code> runs, the attempt is retried.</p>
 <p><strong>5. Queue it.</strong> Create an <code>IngestionSubjectQueue(dispatch=..., pipeline_kind="note_index")</code> in the web process and call <code>enqueue_snapshot</code> or <code>sync_model_to_queue</code>, as in section 3.</p>
@@ -3204,7 +3195,7 @@
 <p>If the broker is down when a committed job is dispatched, the job is marked <code>failed</code> with a "Celery dispatch failed" error so it is visible rather than stuck in <code>queued</code>. Retry it once the broker is back.</p>
 <h2 id="7-monitoring-and-operating">7. Monitoring and operating<a class="headerlink" href="#7-monitoring-and-operating" title="Permanent link">&para;</a></h2>
 <p>Mount the router once, in the web process:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
 
 <span class="n">web_celery_app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="n">session_factory</span><span class="p">)</span>  <span class="c1"># or the worker module's `app`</span>
 
@@ -3220,7 +3211,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Read routes (<code>GET /jobs</code>, <code>GET /jobs/{id}</code>, <code>GET /status</code>, <code>GET /dead-letters</code>) are available to anyone your tenant and workspace dependencies let through, so add your own authentication in front of the router. The mutating routes also depend on <code>mutation_role_check</code>, which has no default. <code>celery_control</code> is any Celery app instance with <code>.control.revoke(task_id, terminate=True)</code>. The worker module's <code>app</code> from section 2 is not available in the web process, so either import it or build one there with <code>build_celery_app(settings, session_factory=...)</code> (one per process, see section 2). Without it, <code>abort</code> still cancels <code>queued</code> jobs but only records the request for <code>processing</code> ones.</p>
 <p>Watch <code>GET /ingestion/status</code>: <code>by_status</code> shows backlog (<code>queued</code>) and in-flight (<code>processing</code>) counts, and <code>failure_rate</code> is <code>failed / (done + failed)</code>. A growing <code>queued</code> count with no <code>processing</code> jobs means no worker is consuming the queue. The route table is on the <a href="../../modules/ingestion/#management-routes">module page</a>.</p>
 <h2 id="8-testing-your-kind">8. Testing your kind<a class="headerlink" href="#8-testing-your-kind" title="Permanent link">&para;</a></h2>

@@ -2939,11 +2939,10 @@
 <p>It does not run a model server and does not decide your product's prompts or retrieval logic. It resolves <em>which</em> provider, model, prompt and store apply to the caller's scope, and builds them.</p>
 <p>For a hands-on walkthrough, see <a href="../../integration/ai-capabilities/">AI capabilities</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-ai-core</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/ai_core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ai_core-v0.2.2"</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"openai"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pgvector"</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>Provider and backend packages are optional extras, so a bare install stays light. Selecting a provider or backend whose package is missing raises an <code>ImportError</code> (<code>ModuleNotFoundError</code>). Most backends name the extra to install; pgvector and the chat providers report only the missing package (for example <code>langchain_postgres</code>), so use the table below to find the extra.</p>
 <table>
 <thead>
@@ -3066,7 +3065,7 @@
 <p>Note that <code>msflib/ai_core/__init__.py</code> exports nothing: import from the subpackages shown above.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Settings are read from the <code>AI_CORE</code> namespace of your settings object. <code>get_ai_dependencies</code> returns plain callables for programmatic use, and <code>get_provider_dependencies</code> / <code>get_vector_store_dependencies</code> return request-scoped FastAPI dependencies for routers.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ai_dependencies</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ai_dependencies</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AICoreSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
@@ -3080,7 +3079,6 @@
 <span class="n">llm</span> <span class="o">=</span> <span class="n">ai</span><span class="o">.</span><span class="n">get_llm</span><span class="p">()</span>
 <span class="n">embeddings</span> <span class="o">=</span> <span class="n">ai</span><span class="o">.</span><span class="n">get_embeddings</span><span class="p">()</span>
 </code></pre></div>
-
 <p>In your own app, pass the <code>SettingsBase</code> instance you already have; it only needs to carry the <code>AI_CORE</code> scope. This is not the standalone <code>AICoreSettings</code> instance used in the <a href="../../integration/ai-capabilities/#1-settings">AI capabilities guide</a>. The <code>*_from_registry</code> variants additionally take a <code>session</code> and a <code>scope</code> (see <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/291">#291</a>)</p>
@@ -3134,7 +3132,7 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> style only works for composed (field) settings, not for mixin hosts.</p>
+<p>The <code>NAMESPACE__KEY</code> style only works for composed (field) settings, not for subclassed hosts.</p>
 </div>
 <table>
 <thead>

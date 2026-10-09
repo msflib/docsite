@@ -2920,21 +2920,19 @@
 </table>
 <h2 id="scopeenvelope">ScopeEnvelope<a class="headerlink" href="#scopeenvelope" title="Permanent link">&para;</a></h2>
 <p><code>ScopeEnvelope</code> lives in <code>msflib.scope</code>. It is a frozen dataclass whose <code>dimensions</code> map a dimension name to a string or <code>None</code>. Dimension values are always strings (<code>"42"</code>, not <code>42</code>), because the same envelope is compiled into storage keys and filters.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">build_context_scope</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">build_context_scope</span>
 
 <span class="n">scope</span> <span class="o">=</span> <span class="n">build_context_scope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">scope</span><span class="o">.</span><span class="n">dimensions</span>
 <span class="c1"># {'tenant_id': '1', 'workspace_id': None, 'account_id': '5'}</span>
 </code></pre></div>
-
 <p>An absent key and a key with value <code>None</code> mean different things. Absent means "not specified". Present with <code>None</code> means "explicitly null", which for <code>workspace_id</code> is the workspace-less bucket (see below). <code>scope.get_dim(key)</code> returns the value or <code>None</code>; <code>scope.has_dim(key)</code> tells the two cases apart.</p>
 <p>You add other dimensions (<code>conversation_id</code>, <code>project_id</code>, ...) by building a new envelope, since envelopes are immutable:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">scope</span> <span class="o">=</span> <span class="n">ScopeEnvelope</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">scope</span><span class="o">.</span><span class="n">dimensions</span><span class="p">,</span> <span class="s2">"conversation_id"</span><span class="p">:</span> <span class="s2">"c1"</span><span class="p">})</span>
+<div class="highlight"><pre><span></span><code><span class="n">scope</span> <span class="o">=</span> <span class="n">ScopeEnvelope</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">scope</span><span class="o">.</span><span class="n">dimensions</span><span class="p">,</span> <span class="s2">"conversation_id"</span><span class="p">:</span> <span class="s2">"c1"</span><span class="p">})</span>
 </code></pre></div>
-
 <h2 id="getting-the-scope-in-an-endpoint">Getting the scope in an endpoint<a class="headerlink" href="#getting-the-scope-in-an-endpoint" title="Permanent link">&para;</a></h2>
 <p><code>get_scope_dependencies</code> returns a <code>DependencyNamespace</code> of FastAPI dependencies that build the envelope from the caller's resolved identity. You pass in your site's own <code>get_current_*</code> dependencies (from <code>auth.get_account_dependencies</code>, <code>auth.get_user_dependencies</code> and <code>tenancy.deps.get_tenant_dependencies</code>).</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">get_scope_dependencies</span>
 
 <span class="n">scopes</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
@@ -2948,7 +2946,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">list_items</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scopes</span><span class="o">.</span><span class="n">get_account_scope</span><span class="p">)):</span>
     <span class="k">return</span> <span class="n">item_service</span><span class="o">.</span><span class="n">list_for_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 </code></pre></div>
-
 <p>The namespace exposes:</p>
 <ul>
 <li><code>get_account_scope</code>: every tier the caller has. Use for member-facing reads and writes.</li>
@@ -2964,7 +2961,7 @@
 <p>Passing both <code>get_current_account</code> and <code>get_current_active_user</code> raises <code>ValueError</code>, as does passing neither account nor the workspace-and-user pair.</p>
 <h2 id="compiling-a-scope">Compiling a scope<a class="headerlink" href="#compiling-a-scope" title="Permanent link">&para;</a></h2>
 <p><code>ScopeCompiler</code> turns an envelope into a key string, segments or a mapping, validating it against a named operation profile first.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span>
 
 <span class="n">compiler</span> <span class="o">=</span> <span class="n">ScopeCompiler</span><span class="p">()</span>
 <span class="n">compiler</span><span class="o">.</span><span class="n">compile_scope_string</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">)</span>
@@ -2974,7 +2971,6 @@
 <span class="n">compiler</span><span class="o">.</span><span class="n">compile_scope_map</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">,</span> <span class="n">use_sentinel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># {..., 'workspace_id': None, ...}</span>
 </code></pre></div>
-
 <p>Built-in profiles include <code>retrieval.search</code>, <code>memory.put</code>, <code>memory.get</code>, <code>checkpoint.invoke</code>, <code>config.read</code> and <code>audit.query</code>. A profile lists required dimensions, required-but-nullable dimensions and optional ones. In every built-in profile <code>tenant_id</code> is required, so compiling an envelope without a tenant raises <code>ScopeValidationError</code>; <code>workspace_id</code> and <code>account_id</code> are nullable and compile to the sentinel <code>-</code> when null. Register your own profiles on the compiler (<code>register_profile</code>) for your own operations. Modules do this for theirs: <code>msflib.workspace_config.scope_profiles</code> defines <code>workspace_config.storage_key</code>, where tenant, workspace and account are all required-but-nullable, so a tenant-tier row can have a null workspace and a workspace-tier row a null tenant.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/267">#267</a>)</p>

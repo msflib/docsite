@@ -2897,7 +2897,7 @@
 </table>
 <h2 id="resolving">Resolving<a class="headerlink" href="#resolving" title="Permanent link">&para;</a></h2>
 <p>The service takes a store for the persisted tiers and an optional decision logger. <code>ScopedConfigPolicyStoreAdapter</code> from <code>msflib.workspace_config.service</code> is the store backed by <a href="../../modules/workspace-config/">workspace-config</a>. Any object with the three <code>get_*_namespace_values</code> methods satisfies the protocol, so you can also back it with something else.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">,</span> <span class="n">PolicyResolutionService</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">,</span> <span class="n">PolicyResolutionService</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigPolicyStoreAdapter</span><span class="p">,</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">decisions</span> <span class="o">=</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">()</span>
@@ -2921,7 +2921,6 @@
 <span class="n">trace</span><span class="o">.</span><span class="n">rejected_overrides</span>             <span class="c1"># [RejectedOverride(... key='MODEL', reason='Not in allowlist')]</span>
 <span class="n">decisions</span><span class="o">.</span><span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">winning_layers</span>  <span class="c1"># {'MODEL': 'tenant'}</span>
 </code></pre></div>
-
 <p>(<code>ChatSettings</code> is the class from <a href="../tiered-config/">tiered configuration</a>, with <code>MAX_TOKENS</code> in its allowlist and <code>MODEL</code> not.)</p>
 <p>Behavior to rely on:</p>
 <ul>
@@ -2933,7 +2932,7 @@
 </ul>
 <h2 id="policy-fields-with-a-schema">Policy fields with a schema<a class="headerlink" href="#policy-fields-with-a-schema" title="Permanent link">&para;</a></h2>
 <p>A policy field is an ordinary settings field whose value is a structured mapping. Annotate it with a pydantic model, typically a <code>PolicyEnvelope</code> subclass:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolicyEnvelope</span>
@@ -2947,10 +2946,9 @@
     <span class="n">namespace</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"LLM"</span>
     <span class="n">ROUTING_POLICY</span><span class="p">:</span> <span class="n">RoutingPolicy</span> <span class="o">=</span> <span class="n">RoutingPolicy</span><span class="p">()</span>
 </code></pre></div>
-
 <p><code>LlmSettings.get_policy_field_schema("ROUTING_POLICY")</code> returns <code>RoutingPolicy</code>. If the field is annotated as a plain mapping instead, the lookup falls back to a sibling <code>policy.py</code> module next to the settings module, looking for a class named <code>RoutingPolicySchema</code>, then <code>RoutingSchema</code>, <code>RoutingPolicy</code> or <code>RoutingModel</code> (the base name comes from the field name minus <code>_POLICY</code>), or an entry in a <code>POLICY_FIELDS</code> dict there. It raises <code>ValueError</code> if nothing is found.</p>
 <p><code>resolve_policy_field</code> resolves the whole module and returns just one field as a validated dict, with its trace:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">policy</span><span class="p">,</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">policy_service</span><span class="o">.</span><span class="n">resolve_policy_field</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">policy</span><span class="p">,</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">policy_service</span><span class="o">.</span><span class="n">resolve_policy_field</span><span class="p">(</span>
     <span class="n">LlmSettings</span><span class="p">(),</span>
     <span class="n">field_name</span><span class="o">=</span><span class="s2">"ROUTING_POLICY"</span><span class="p">,</span>
     <span class="n">schema</span><span class="o">=</span><span class="n">RoutingPolicy</span><span class="p">,</span>
@@ -2960,7 +2958,6 @@
 <span class="p">)</span>
 <span class="n">policy</span><span class="p">[</span><span class="s2">"default_model"</span><span class="p">]</span>
 </code></pre></div>
-
 <p><code>validate_policy_mapping(value, field_name=..., schema=...)</code> is the same parsing step on its own. It accepts a dict, a pydantic model, or a string containing JSON or a Python literal, and raises <code>ValueError("&lt;field&gt; failed schema validation: ...")</code> on failure.</p>
 <h2 id="in-a-host-app">In a host app<a class="headerlink" href="#in-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Resolve per request, then hand the resolved settings to your own code (a "bridge" that maps the policy to behavior). Modules that support policy, such as ai_core, accept a <code>get_policy_resolver</code> callable in their <code>deps.py</code> factory and fall back to base settings when none is supplied. See <a href="../dependency-injection/">dependency injection</a>.</p>

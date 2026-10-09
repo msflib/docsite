@@ -2966,7 +2966,7 @@
 <li><code>SchemaBase</code>: the base for the Pydantic schemas that describe API input and output.</li>
 <li><code>BaseEnum</code>: a <code>str</code> enum for fixed choices.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/models.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/models.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEnum</span><span class="p">,</span> <span class="n">ModelBase</span><span class="p">,</span> <span class="n">SchemaBase</span>
 
 
@@ -3001,9 +3001,8 @@
     <span class="n">priority</span><span class="p">:</span> <span class="n">Priority</span>
     <span class="n">owner</span><span class="p">:</span> <span class="nb">str</span>
 </code></pre></div>
-
 <p><code>Task</code> is the table. SQLModel names it after the class in lower case, so the table is <code>task</code>, with this DDL on SQLite:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">task</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">task</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
 <span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
 <span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="n">DATETIME</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
@@ -3014,7 +3013,6 @@
 <span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <h3 id="why-four-classes">Why four classes<a class="headerlink" href="#why-four-classes" title="Permanent link">&para;</a></h3>
 <p>MSFLib keeps the table and the schemas separate, and the actions and routers in the next pages rely on that:</p>
 <ul>
@@ -3033,7 +3031,7 @@
 <p>To relate a table to another one without editing either class, call <code>Model.add_relationship(name, Target, link_model=...)</code> after both are defined. It wraps SQLAlchemy's mapper API and is how modules attach relationships to tables you own. See <a href="../../integration/overriding-models/">Overriding models</a>.</p>
 <h2 id="register-the-tables">Register the tables<a class="headerlink" href="#register-the-tables" title="Permanent link">&para;</a></h2>
 <p>A table exists in the database only if its class has been imported before you create tables, because defining a <code>table=True</code> class adds it to <code>SQLModel.metadata</code>. Keep one place that imports every model and builds the migration config:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/migration.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/migration.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.migrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">MigrationConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">SQLModel</span>
 
@@ -3041,11 +3039,10 @@
 
 <span class="n">MIGRATION</span> <span class="o">=</span> <span class="n">MigrationConfig</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">script_location</span><span class="o">=</span><span class="s2">"alembic"</span><span class="p">)</span>
 </code></pre></div>
-
 <p>When you add MSFLib modules, import their models here too (for example <code>from msflib.account import models as account_models</code>). Models that relate to each other must all be imported before the first query, or SQLAlchemy cannot resolve the relationships.</p>
 <h2 id="create-the-tables">Create the tables<a class="headerlink" href="#create-the-tables" title="Permanent link">&para;</a></h2>
 <p><code>migrate(engine, config)</code> brings a database to the current schema, whatever state it is in, and returns what it did. Call it when the app starts:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/main.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncIterator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
@@ -3078,7 +3075,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"ok"</span><span class="p">,</span> <span class="s2">"project"</span><span class="p">:</span> <span class="n">core</span><span class="o">.</span><span class="n">PROJECT_NAME</span><span class="p">}</span>
 </code></pre></div>
-
 <p>Start the app and the <code>task</code> table exists. What <code>migrate</code> does depends on the database:</p>
 <table>
 <thead>
@@ -3112,7 +3108,7 @@
 </table>
 <p>The call is atomic on PostgreSQL and SQLite, and on PostgreSQL concurrent starts take turns on an advisory lock, so several containers can run it at once. Alembic is an optional dependency (<code>pip install "msflib[migrations]"</code>) and is imported only when it is used. <code>script_location</code> points at your Alembic directory (the one with <code>env.py</code> and <code>versions/</code>); it is not read on SQLite, so the placeholder above is enough while you are developing.</p>
 <p>Once you move to PostgreSQL, generate revisions with Alembic as usual, and let <code>alembic/env.py</code> hand the connection over to MSFLib so the stamp and the schema change share one transaction:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># alembic/env.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># alembic/env.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">alembic</span><span class="w"> </span><span class="kn">import</span> <span class="n">context</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.migrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_alembic_env</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">SQLModel</span>
@@ -3126,11 +3122,10 @@
     <span class="n">database_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">SQLALCHEMY_DATABASE_URI</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>alembic revision --autogenerate</code> and <code>alembic upgrade</code> still work from the command line. <code>run_alembic_env</code> supports only Alembic's default <code>alembic_version</code> table.</p>
 <h3 id="an-initial-data-command">An initial-data command<a class="headerlink" href="#an-initial-data-command" title="Permanent link">&para;</a></h3>
 <p>For deployments, a separate command that migrates and seeds is safer than doing it in every worker's startup. <code>run_initial_data_cli</code> builds one from your engine, migration config and a seed function:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/initial_data.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/initial_data.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.cli</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_initial_data_cli</span>
@@ -3158,29 +3153,26 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>app.initial_data<span class="w"> </span>--check<span class="w">   </span><span class="c1"># report only; exit 0 = nothing to do, 3 = changes pending</span>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>app.initial_data<span class="w"> </span>--check<span class="w">   </span><span class="c1"># report only; exit 0 = nothing to do, 3 = changes pending</span>
 python<span class="w"> </span>-m<span class="w"> </span>app.initial_data<span class="w">           </span><span class="c1"># migrate, then seed; safe to run on every deploy</span>
 </code></pre></div>
-
 <p>On an empty SQLite database <code>--check</code> prints:</p>
-<div class="codehilite"><pre><span></span><code>Database state: empty
+<div class="highlight"><pre><span></span><code>Database state: empty
 migrate would: create_all
 Stored revision: (none)
 Head revision: (n/a)
 Pending revisions: (none)
 Differs from the models: missing table task
 </code></pre></div>
-
 <p>and exits with 3. After a plain run it reports <code>Nothing to do</code> and exits 0. Without Alembic (SQLite) the report can only detect missing tables, not changed columns, so an empty report there does not prove the schema matches the models.</p>
-<p><code>--reset</code> drops every table and rebuilds them, for development only. It is refused when <code>CORE__ENVIRONMENT</code> is <code>production</code> or <code>prod</code>, and <code>--yes</code> does not override that. MSFLib treats every database as sensitive except a SQLite file under <code>./tmp/</code> or <code>/tmp/</code>, so on the <code>tasks.db</code> used here a reset needs <code>--yes</code> (or typing <code>RESET</code> at the prompt).</p>
+<p><code>--reset</code> drops every table and rebuilds them, for development only. It is refused when <code>ENVIRONMENT</code> (<code>CORE__ENVIRONMENT</code> in a composed host) is <code>production</code> or <code>prod</code>, and <code>--yes</code> does not override that. MSFLib treats every database as sensitive except a SQLite file under <code>./tmp/</code> or <code>/tmp/</code>, so on the <code>tasks.db</code> used here a reset needs <code>--yes</code> (or typing <code>RESET</code> at the prompt).</p>
 <h3 id="the-destructive-alternative">The destructive alternative<a class="headerlink" href="#the-destructive-alternative" title="Permanent link">&para;</a></h3>
 <p><code>msflib.db.init_db.init_db(engine, metadata, create_tables=True)</code> drops every table in <code>metadata</code> and recreates them, then optionally runs seeders. Use it in throwaway scripts and tests, not in anything that touches data you want to keep. In tests, the usual pattern is <code>SQLModel.metadata.create_all(engine)</code> on a fresh in-memory engine, as shown on the <a href="../endpoints-and-routers/#test-it">last page</a>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <p><strong><code>no such table: task</code>.</strong> The tables were never created, or the model was not imported before <code>migrate</code> ran. Check that <code>migration.py</code> imports <code>models</code> and that the app (or <code>initial_data</code>) imports <code>migration.py</code>.</p>
 <p><strong>A new column is missing after you edit a model.</strong> On SQLite, <code>create_all</code> never alters existing tables, and <code>migrate</code> does not either. Delete the dev database, or run <code>python -m app.initial_data --reset --yes</code>. On PostgreSQL, write an Alembic revision.</p>
 <p><strong><code>MigrationError: The database has tables but no Alembic version.</code></strong> The database was built with <code>create_all</code> earlier and now has Alembic revisions. Set <code>MigrationConfig.baseline_revision</code> to the revision it matches.</p>
-<p><strong><code>Refusing --reset</code>.</strong> Either <code>CORE__ENVIRONMENT</code> is <code>production</code>, or the database is not a throwaway temp file and <code>--yes</code> was not passed.</p>
+<p><strong><code>Refusing --reset</code>.</strong> Either <code>ENVIRONMENT</code> (<code>CORE__ENVIRONMENT</code> in a composed host) is <code>production</code>, or the database is not a throwaway temp file and <code>--yes</code> was not passed.</p>
 <p>Next: <a href="../actions-crud/">Actions and CRUD</a>.</p>
 
 

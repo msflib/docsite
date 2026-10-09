@@ -2995,11 +2995,10 @@
 <p>It owns the queue, retries, dead-lettering and monitoring. It does not know what a "document" or a "note" is: a job only carries a pointer, <code>(subject_type, subject_id)</code>, and the pipeline kind you registered decides how to load and process the thing it points at.</p>
 <p>For a step-by-step setup of a worker and a producer, see <a href="../../integration/long-running-jobs-ingestion/">Long-running jobs and ingestion</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-ingestion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/ingestion"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ingestion-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>This pulls in <code>msflib-tenancy</code> (jobs carry a <code>tenant_id</code> foreign key), <code>celery</code> and <code>redis</code>. There are no extras.</p>
 <p><code>msflib/ingestion/__init__.py</code> lazily exports <code>IngestionSettings</code>, the three actions, <code>IngestionDispatchService</code>, <code>PipelineKindRegistry</code>, <code>default_pipeline_registry</code>, <code>build_celery_app</code> and <code>build_dispatch_task</code>, so <code>from msflib.ingestion import build_dispatch_task</code> works. Everything else is imported from its submodule, as in the examples below.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
@@ -3009,16 +3008,15 @@
 <li>A <strong>Celery worker process</strong> runs the jobs. Its entrypoint registers every pipeline kind, then calls <code>build_celery_app(settings, session_factory=...)</code> and is started with <code>celery -A your_module worker</code>.</li>
 </ul>
 <p>Add <code>IngestionSettings</code> to your settings class, and make sure the ingestion tables are on your metadata (<code>import msflib.ingestion.models</code>) so your migrations or <code>create_all</code> create them.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">IngestionSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="o">...</span>
 </code></pre></div>
-
 <p>Producer side:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ingestion_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDispatchService</span>
 
@@ -3035,15 +3033,13 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Worker side:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
 <span class="n">register_my_pipeline_kinds</span><span class="p">()</span>          <span class="c1"># your code: fills the PipelineKindRegistry</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">))</span>
 </code></pre></div>
-
 <p><code>mutation_role_check</code> is required and has no permissive default. Every mutating route (trigger, retry, abort, replay, discard) depends on it. If your deployment really has no per-request auth, pass an explicit no-op such as <code>lambda: None</code>. <code>get_current_tenant</code> and <code>get_current_workspace</code> are optional; without a tenant dependency the router falls back to the default tenant, so list and status routes are always tenant-filtered.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
@@ -3138,7 +3134,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="a-pipeline-kind-for-your-own-table">A pipeline kind for your own table<a class="headerlink" href="#a-pipeline-kind-for-your-own-table" title="Permanent link">&para;</a></h3>
 <p>This registers a <code>note_index</code> kind, queues jobs from a snapshot, and runs the stage directly with the test helpers. It runs as written against in-memory SQLite. SQLite does not enforce the <code>tenant_id</code> foreign key, so the example seeds tenant 1 explicitly to behave the same on Postgres.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.contracts.subject</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSubjectSnapshot</span>
@@ -3238,10 +3234,9 @@
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">([</span><span class="n">job</span><span class="o">.</span><span class="n">reason</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">])</span>   <span class="c1"># ['delete']</span>
 </code></pre></div>
-
 <p><code>FakeDispatchTask</code> and <code>start_stage_context</code> come from <code>msflib.ingestion.testing</code>. <code>start_stage_context</code> starts an attempt the way the Celery task does and returns the <code>StageContext</code> a stage receives, so a stage can be unit-tested without a broker.</p>
 <p>In the real app, register the same kind in the worker entrypoint (and in the producer process if you mount the management router), and replace <code>FakeDispatchTask</code> with <code>build_dispatch_task(settings)</code>. To enqueue on every write to <code>Note</code> instead of calling <code>enqueue_snapshot</code> by hand:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.sync</span><span class="w"> </span><span class="kn">import</span> <span class="n">sync_model_to_queue</span>
 
 <span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>   <span class="c1"># at app creation</span>
@@ -3250,7 +3245,6 @@
     <span class="n">Note</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">subject_type</span><span class="o">=</span><span class="s2">"note"</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">app_emitter</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The hook fires only while the app emitter is active: in requests (including FastAPI <code>BackgroundTasks</code>), or in your own code wrapped in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>). A write made from a worker, a CLI script or a thread outside that block queues nothing; call <code>queue.enqueue_snapshot</code> there instead.</p>
 <h3 id="management-routes">Management routes<a class="headerlink" href="#management-routes" title="Permanent link">&para;</a></h3>
 <p>With the router mounted at <code>/ingestion</code>:</p>

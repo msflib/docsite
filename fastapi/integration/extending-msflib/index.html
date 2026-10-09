@@ -2893,11 +2893,10 @@
 <p>The <code>msflib-*</code> packages are libraries, not an application. You write the FastAPI app, choose the database, and decide what is mounted where. The packages supply building blocks that you wire together. This page describes those building blocks, what your app owns, and which guide covers each kind of change.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <p>Add the core and the modules you need. Core is required by all modules.</p>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msflib @ git+https://github.com/msflib/fastapi.git#subdirectory=core"</span>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msflib @ git+https://github.com/msflib/fastapi.git#subdirectory=core"</span>
 pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msflib-auth @ git+https://github.com/msflib/fastapi.git#subdirectory=modules/auth"</span>
 pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msflib-account @ git+https://github.com/msflib/fastapi.git#subdirectory=modules/account"</span>
 </code></pre></div>
-
 <p>All packages share the <code>msflib</code> import namespace, so <code>msflib.auth</code>, <code>msflib.account</code> and <code>msflib.workspaces</code> come from different distributions. Several package <code>__init__</code> files export little or nothing (<code>msflib.auth</code>, <code>msflib.account</code>), so import from the subpackage that defines the name, as the examples in these guides do.</p>
 <h2 id="what-the-packages-provide">What the packages provide<a class="headerlink" href="#what-the-packages-provide" title="Permanent link">&para;</a></h2>
 <table>
@@ -2956,7 +2955,7 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msfl
 </div>
 <h2 id="a-host-layout">A host layout<a class="headerlink" href="#a-host-layout" title="Permanent link">&para;</a></h2>
 <p>This is the layout the guides use. It mirrors the repository's reference host app in <code>testsite/app</code>.</p>
-<div class="codehilite"><pre><span></span><code>myapp/
+<div class="highlight"><pre><span></span><code>myapp/
     settings.py      # composed Settings and the settings instance
     models.py        # Account, Profile and your own tables
     actions.py       # action instances (and your subclasses)
@@ -2965,11 +2964,10 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msfl
         notes.py     # your own routers
     main.py          # FastAPI app, include_router calls
 </code></pre></div>
-
 <p><a href="../writing-custom-code/">Writing custom code</a> fills in every file.</p>
 <h2 id="composing-settings">Composing settings<a class="headerlink" href="#composing-settings" title="Permanent link">&para;</a></h2>
-<p>Each module declares its settings as a class with a namespace. You combine the classes you use, plus <code>CoreSettings</code> and <code>SettingsBase</code>, into one class, and override defaults in the body.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
+<p>Each module declares its settings as a class with a namespace. You combine the classes you use, plus <code>CoreSettings</code> and <code>SettingsBase</code>, into one class, either by inheriting them (subclassed, shown here) or with <code>compose_settings_model</code> (composed; see <a href="../../concepts/tiered-config/#subclassed-or-composed">Tiered configuration</a>). Override defaults in the class body.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
 
@@ -2984,15 +2982,14 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msfl
 <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">API_V1_STR</span>            <span class="c1"># "/api/v1"</span>
 <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span><span class="o">.</span><span class="n">ACCESS_TOKEN_EXPIRE_MINUTES</span>  <span class="c1"># 30</span>
 </code></pre></div>
-
-<p>Pass <code>settings</code> to every router and action factory. They read their own values with <code>settings.scope("AUTH")</code>, <code>settings.scope("ACCOUNT")</code> and so on, so one object serves all modules when the settings use this mixin style. With it, an environment variable carries the plain field name (<code>ACCESS_TOKEN_EXPIRE_MINUTES=5</code>).</p>
+<p>Pass <code>settings</code> to every router and action factory. They read their own values with <code>settings.scope("AUTH")</code>, <code>settings.scope("ACCOUNT")</code> and so on, so one object serves all modules when the settings use this subclassed style. With it, an environment variable carries the plain field name (<code>ACCESS_TOKEN_EXPIRE_MINUTES=5</code>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
-<p>The auth router reads <code>settings.SECRET_KEY</code> from the top level of the settings object, so composed (nested) settings fail in it with <code>AttributeError</code> on login and password recovery. Use the mixin style shown here.</p>
+<p>The auth router reads <code>settings.SECRET_KEY</code> from the top level of the settings object, so composed (nested) settings fail in it with <code>AttributeError</code> on login and password recovery. Use the subclassed style shown here.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style (for example <code>AUTH__ACCESS_TOKEN_EXPIRE_MINUTES</code>) only works for composed (field) settings, not for mixin hosts like this one.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style (for example <code>AUTH__ACCESS_TOKEN_EXPIRE_MINUTES</code>) only works for composed (field) settings, not for subclassed hosts like this one.</p>
 </div>
 <p>For per-tenant, per-workspace and per-user values, see <a href="../../concepts/tiered-config/">Tiered configuration</a>.</p>
 <div class="admonition warning">

@@ -2839,17 +2839,15 @@
 </table>
 <h2 id="format">Format<a class="headerlink" href="#format" title="Permanent link">&para;</a></h2>
 <p>Use one admonition per issue at each place it applies, with the issue number in the title so notices can be found with <code>grep -rF 'Known issue ([#' docs</code> (and <code>grep -rF 'may change ([#' docs</code> for the other kind):</p>
-<div class="codehilite"><pre><span></span><code>!!! warning "Known issue ([#273](https://github.com/msflib/fastapi/issues/273))"
+<div class="highlight"><pre><span></span><code>!!! warning "Known issue ([#273](https://github.com/msflib/fastapi/issues/273))"
     <span class="sb">`VerificationResult`</span> has no <span class="sb">`raw`</span> field, so the <span class="sb">`raw=`</span> value both gateways
     pass is dropped. The returned result does not expose the provider response;
     call the provider's API yourself if you need it.
 </code></pre></div>
-
 <p>For behaviour that is undecided:</p>
-<div class="codehilite"><pre><span></span><code>!!! note "Behaviour may change ([#267](https://github.com/msflib/fastapi/issues/267))"
+<div class="highlight"><pre><span></span><code>!!! note "Behaviour may change ([#267](https://github.com/msflib/fastapi/issues/267))"
     Scope profiles require <span class="sb">`tenant_id`</span> but allow a null <span class="sb">`workspace_id`</span>.
 </code></pre></div>
-
 <p>State what happens now, give a workaround if there is one, and keep it short. One notice may list the closely related limitations that a single issue tracks (for example several gateway problems tracked in one payments issue); split it if they affect different parts of the page.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <ul>

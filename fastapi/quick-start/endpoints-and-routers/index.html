@@ -2927,21 +2927,20 @@
 <p>This page exposes the <code>TaskAction</code> from <a href="../actions-crud/">Actions and CRUD</a> over HTTP, mounts it in the app, and tests it. It follows the same shape MSFLib modules use for their own routers, so what you build here is how you will mount <code>msflib-account</code>, <code>msflib-workspaces</code> and the rest.</p>
 <h2 id="a-request-scoped-dependency">A request-scoped dependency<a class="headerlink" href="#a-request-scoped-dependency" title="Permanent link">&para;</a></h2>
 <p>The router needs to know who is calling, to fill <code>owner</code> on create and to scope every read. In a real app that comes from <code>msflib-auth</code> (see <a href="../../integration/authentication/">Authentication</a>). To keep this Quick Start self-contained, a header stands in for it:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/deps.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/deps.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Header</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_owner</span><span class="p">(</span><span class="n">x_owner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"anonymous"</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">x_owner</span>
 </code></pre></div>
-
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>A client-supplied header is not authentication. It is here only so the example has a caller. Replace <code>get_owner</code> with a dependency that resolves the current account from a verified token.</p>
 </div>
 <h2 id="the-router-factory">The router factory<a class="headerlink" href="#the-router-factory" title="Permanent link">&para;</a></h2>
 <p>MSFLib routers are factory functions. The factory takes the dependencies it needs as arguments and returns an <code>APIRouter</code>, instead of importing a global session or user. The same router code then works with any engine and any auth setup, and tests can pass fakes.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/router.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/router.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Query</span>
@@ -3018,7 +3017,6 @@
 
     <span class="k">return</span> <span class="n">api_router</span>
 </code></pre></div>
-
 <p>Things worth noting:</p>
 <ul>
 <li><strong>Scoping is in the query, not the check.</strong> Every handler looks the row up with <code>id=task_id, owner=owner</code>. A task owned by someone else is indistinguishable from one that does not exist, and both give 404.</li>
@@ -3029,7 +3027,7 @@
 </ul>
 <h3 id="substitute-a-schema">Substitute a schema<a class="headerlink" href="#substitute-a-schema" title="Permanent link">&para;</a></h3>
 <p>Because the schema is an argument, a caller can tighten it without touching the router:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaskCreate</span>
 
@@ -3040,10 +3038,9 @@
 
 <span class="n">router</span> <span class="o">=</span> <span class="n">task_router</span><span class="p">(</span><span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="o">=</span><span class="n">get_owner</span><span class="p">,</span> <span class="n">create_type</span><span class="o">=</span><span class="n">StrictTaskCreate</span><span class="p">)</span>
 </code></pre></div>
-
 <p>A <code>POST</code> with <code>{"title": "ab"}</code> now returns 422 and <code>{"title": "abc"}</code> returns 201. The action receives the validated object as <code>data</code> exactly as before. <a href="../../integration/overriding-models/">Overriding models</a> covers the wider pattern.</p>
 <h2 id="mount-it">Mount it<a class="headerlink" href="#mount-it" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/main.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncIterator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
@@ -3084,13 +3081,11 @@
     <span class="n">prefix</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">API_V1_STR</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The prefix comes from settings (<code>/api/v1</code> by default), and the router adds its own <code>/tasks</code>. Mounting a module router is the same call with the module's factory and the dependencies it documents. <a href="../../integration/mounting-routes/">Mounting routes</a> covers prefixes, tags and several routers together.</p>
 <h2 id="run-it">Run it<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>uvicorn<span class="w"> </span>app.main:app<span class="w"> </span>--reload
+<div class="highlight"><pre><span></span><code>uvicorn<span class="w"> </span>app.main:app<span class="w"> </span>--reload
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:8000/api/v1/tasks/<span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:8000/api/v1/tasks/<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s1">'content-type: application/json'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'X-Owner: ann'</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"title": "write docs", "priority": "high"}'</span>
 <span class="c1"># {"id":1,"title":"write docs","done":false,"priority":"high","owner":"ann"}</span>
@@ -3101,11 +3096,10 @@ curl<span class="w"> </span>localhost:8000/api/v1/tasks/<span class="w"> </span>
 curl<span class="w"> </span>localhost:8000/api/v1/tasks/<span class="w"> </span>-H<span class="w"> </span><span class="s1">'X-Owner: bob'</span>
 <span class="c1"># []</span>
 </code></pre></div>
-
 <p><code>/docs</code> now lists the five task routes, and shows <code>TaskCreate</code> as the request body of the <code>POST</code>.</p>
 <h2 id="test-it">Test it<a class="headerlink" href="#test-it" title="Permanent link">&para;</a></h2>
 <p>FastAPI's <code>TestClient</code> drives the app in-process. Replace the session dependency with one bound to a throwaway in-memory database, and the tests never touch <code>tasks.db</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># tests/test_tasks.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># tests/test_tasks.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
@@ -3159,10 +3153,8 @@ curl<span class="w"> </span>localhost:8000/api/v1/tasks/<span class="w"> </span>
         <span class="p">)</span>
         <span class="k">assert</span> <span class="n">task_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="s2">"from a test"</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests
 </code></pre></div>
-
 <p>Two details. <code>StaticPool</code> makes every connection share the one in-memory database; without it each thread gets its own empty database, and <code>TestClient</code> runs the app in a different thread from your test. And <code>dependency_overrides</code> is keyed by the exact <code>get_session</code> function that the router was built with, so import it from <code>app.db</code>, not a copy. The <code>TestClient</code> here is not used as a context manager, so the app's <code>lifespan</code> (and <code>migrate</code>) does not run; the fixture creates the tables itself.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <p><strong>422 on every write, with <code>data</code> reported as a missing query parameter.</strong> The decorator has no <code>validation_types={"data": ...}</code>, so <code>data: Any</code> is treated as a query parameter. Passing <code>validation_types</code> to a plain <code>APIRouter</code> decorator raises <code>TypeError: ... unexpected keyword argument 'validation_types'</code>; register the route on the wrapper returned by <code>create_enhanced_router</code>.</p>

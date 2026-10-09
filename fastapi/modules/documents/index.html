@@ -2938,7 +2938,7 @@
 <p><code>msflib-documents</code> turns uploaded files into searchable vectors. It accepts direct uploads over HTTP, optionally follows files in <a href="../drivelink/">drivelink</a>, and queues each one for ingestion: bytes are fetched from storage, converted to text, chunked, embedded and written to a vector store. It tracks each source as a <code>DocumentRecord</code> with a status, a version and a scope (tenant, workspace, and optionally conversation, thread or private to one account).</p>
 <p>Ingestion runs as a pipeline kind (<code>text_document</code>) on the shared <a href="../ingestion/">ingestion</a> job queue, executed by a Celery worker. The FastAPI process only enqueues jobs. Text extraction, chunking, embeddings and the vector store come from <a href="../ai-core/">ai-core</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-tenancy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/tenancy"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"tenancy-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
@@ -2948,22 +2948,20 @@
 <span class="c1"># only if you want drivelink files ingested automatically:</span>
 <span class="n">msflib-drivelink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/drivelink"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"drivelink-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p><code>msflib-documents</code> also declares a <code>drivelink</code> extra (<code>msflib-documents[drivelink]</code>) that pulls in <code>msflib-drivelink</code>. Without drivelink, the drivelink adapter is simply not registered and direct uploads work normally.</p>
 <p>Extraction is only as capable as the <code>msflib-ai-core</code> extras you install. The built-in fallback loader reads plain text, markdown, JSON and CSV. For PDFs and Office files add the <code>llamaindex</code> or <code>community</code> extra of <code>msflib-ai-core</code> (see <a href="../ai-core/#install">ai-core</a>); without one, extracting such a file fails the ingestion job. You also need an embedding provider and a vector store configured in <code>AI_CORE</code> (a vector store extra such as <code>pgvector</code>).</p>
 <p>The ingestion queue needs a Redis broker (<code>INGESTION.BROKER_URL</code>, default <code>redis://localhost:6379/0</code>) reachable by both the web process and the worker.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>There are three parts: the router, the worker, and (optionally) the drivelink hooks.</p>
 <p><strong>1. Settings.</strong> Include <code>DocumentsSettings</code> and <code>IngestionSettings</code> in your settings class. The upload endpoint also needs the default tenant to exist (seed it at startup; see <a href="../tenancy/">tenancy</a>). Import <code>msflib.tenancy.models.tenant</code>, <code>msflib.documents.models</code> and <code>msflib.ingestion.models</code> before <code>create_all</code>, so the tables and the <code>tenant_id</code> foreign keys are registered.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentsSettings</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentsSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">DocumentsSettings</span><span class="p">,</span> <span class="n">IngestionSettings</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="k">pass</span>
 </code></pre></div>
-
 <p><strong>2. Router.</strong> <code>router</code> in <code>msflib.documents.router</code> takes keyword-only arguments.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">documents_router</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">documents_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_text_document_pipeline</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
@@ -2978,10 +2976,9 @@
 <span class="p">)</span>
 <span class="n">register_text_document_pipeline</span><span class="p">()</span>
 </code></pre></div>
-
 <p><code>get_current_account</code> is optional in the signature but every route except <code>GET /ingestion/status</code> answers 401 without it. <code>get_current_workspace</code> and <code>get_current_tenant</code> are optional; with no tenant dependency the router falls back to the tenant with slug <code>default</code> and returns 500 if it has not been seeded. <code>dispatch_task</code> lets you inject a <code>.delay(job_id)</code>-compatible object instead of the default Celery producer, which is how the tests avoid needing Redis.</p>
 <p><strong>3. Worker.</strong> The process that runs the jobs must register the pipeline and build the Celery app:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_text_document_pipeline</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_text_document_pipeline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
@@ -2994,10 +2991,9 @@
 <span class="n">register_text_document_pipeline</span><span class="p">()</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="n">session_factory</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>msflib.db.session.engine</code> only works in hosts laid out as <code>app.core.config</code>, so build the session from your own engine. Run it with <code>celery -A your_module worker</code>. The repository's <code>testsite/app/ingestion_worker.py</code> is a working entry point that also registers the knowledge pipelines.</p>
 <p><strong>4. Drivelink hooks (optional).</strong> Call <code>bind_app_emitter(app)</code> when you create the app (before startup), then call this once, for example in your lifespan handler, passing <code>get_app_emitter(app)</code>. <code>get_app_emitter</code> binds on first use, and binding adds middleware, which fails with <code>RuntimeError: Cannot add middleware after an application has started</code> inside a lifespan handler if the app was not bound earlier.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentRecordAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentRecordAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.drivelink</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentsIngestionDispatchService</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span><span class="p">,</span> <span class="n">get_app_emitter</span>
@@ -3017,7 +3013,6 @@
     <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
 <p>The router's default-tenant fallback ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, <code>POST /upload</code> returns 500 "Default tenant has not been seeded" even though your seeding used the same settings, while the drivelink hooks (given <code>tenancy_settings</code>) resolve your tenant. Pass <code>get_current_tenant=get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY")).get_current_tenant</code> to the router.</p>
@@ -3099,10 +3094,10 @@
 </tr>
 </tbody>
 </table>
-<p>Flat aliases exist for all four keys. With mixin composition use the flat names (<code>QUEUE_ENABLED=false</code>, <code>MAX_INGEST_BYTES=...</code>); <code>DOCUMENTS__QUEUE_ENABLED</code> is only read when you declare <code>DOCUMENTS: DocumentsSettings = DocumentsSettings()</code> as a field. Both were checked. The flat alias <code>ENABLED</code> is shared with the other modules that declare it, so with documents and drivelink both composed as nested fields <code>DOCUMENTS__ENABLED=false</code> was ignored while <code>DRIVELINK__ENABLED=false</code> switched off both; set the field in code instead, for example <code>DocumentsSettings(ENABLED=False)</code>.</p>
+<p>Flat aliases exist for all four keys. With subclassed settings use the flat names (<code>QUEUE_ENABLED=false</code>, <code>MAX_INGEST_BYTES=...</code>); <code>DOCUMENTS__QUEUE_ENABLED</code> is only read when you declare <code>DOCUMENTS: DocumentsSettings = DocumentsSettings()</code> as a field. Both were checked. The flat alias <code>ENABLED</code> is shared with the other modules that declare it, so with documents and drivelink both composed as nested fields <code>DOCUMENTS__ENABLED=false</code> was ignored while <code>DRIVELINK__ENABLED=false</code> switched off both; set the field in code instead, for example <code>DocumentsSettings(ENABLED=False)</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for subclassed hosts. This may change.</p>
 </div>
 <p>Retries, backoff and attempt limits are not documents settings. They live in <code>INGESTION.*</code> (for example <code>INGESTION.BROKER_URL</code>, <code>INGESTION.MAX_ATTEMPTS</code>); see <a href="../ingestion/">ingestion</a>. Storage location for uploaded files uses core's <code>CORE.STORAGE_METHOD</code> and related keys. Embedding and vector-store selection use <code>AI_CORE.*</code>.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
@@ -3120,7 +3115,7 @@
 <p><code>msflib.documents</code> exposes <code>DocumentRecordAction</code>, <code>DocumentsIngestionDispatchService</code>, <code>DocumentsSettings</code>, <code>loader_registry</code> and <code>register_event_hooks</code> lazily from its package <code>__init__</code>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Upload, inspect, promote and delete through the router. This ran against in-memory SQLite and local file storage, with a <code>Mock</code> in place of the Celery task. In a real deployment omit <code>dispatch_task</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mock</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mock</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">documents_router</span>
@@ -3146,19 +3141,17 @@
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/documents/ingestion/status"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>  <span class="c1"># {'module': 'documents', 'workspace_id': None, 'records': {'queued': 1}}</span>
 <span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/documents/1"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"status"</span><span class="p">]</span>    <span class="c1"># job status, "queued"; the record is now "deleted"</span>
 </code></pre></div>
-
 <p>The <code>status</code> in the delete response is the job's status. The record itself is <code>deleted</code>.</p>
 <p>Ingest drivelink files automatically. With <code>register_event_hooks</code> registered as above, uploading a file through the drivelink router creates a document record and a job, and trashing it marks the record deleted. This ran with the same mock task:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># after drivelink upload of a.txt to a folder</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># after drivelink upload of a.txt to a folder</span>
 <span class="p">[(</span><span class="n">r</span><span class="o">.</span><span class="n">source_key</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">source_type</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">DocumentRecord</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
 <span class="c1"># [('drivelink:2', 'drivelink', 'queued')]</span>
 
 <span class="c1"># after DELETE /drivelink/nodes/2 (soft delete)</span>
 <span class="c1"># [('drivelink:2', 'deleted')]</span>
 </code></pre></div>
-
 <p>Add a source adapter for your own storage:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span><span class="p">,</span> <span class="n">SourceDocument</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span><span class="p">,</span> <span class="n">SourceDocument</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MyAdapter</span><span class="p">:</span>
     <span class="n">source_type</span> <span class="o">=</span> <span class="s2">"mystore"</span>
@@ -3170,7 +3163,6 @@
 
 <span class="n">registry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyAdapter</span><span class="p">())</span>
 </code></pre></div>
-
 <p>Your own code then creates a <code>DocumentRecord</code> whose <code>source_type</code> matches the adapter (using <code>DocumentRecordAction().create(session, data=DocumentRecordCreate(...))</code>) and enqueues it with <code>enqueue_for_record</code>. The ready-made upsert helpers are <code>upsert_from_upload_node</code> and <code>upsert_from_drivelink_node</code>. This adapter snippet was not run.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>

@@ -2938,12 +2938,11 @@
 <p><code>msflib-notifications</code> gives accounts an in-app notification inbox and gives admins a way to broadcast a notification to selected accounts or all of them. A notification can be fanned out over several channels at once: in-app, email and SMS have built-in handlers. Workspace-level notifications are a separate package, <a href="../workspace-notifications/">workspace_notifications</a>, that builds on this one.</p>
 <p>It does not provide push delivery or a Discord integration. <code>push</code> and <code>discord</code> exist in the <code>NotificationChannel</code> enum, but account notifications have no handler for them and skip them with a log warning.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-notifications</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/notifications"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"notifications-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>The package declares <code>sms</code> (Twilio), <code>email</code> (the <code>emails</code> library) and <code>all</code> extras.</p>
 <div class="admonition note">
 <p class="admonition-title">Packaging (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
@@ -2953,7 +2952,7 @@
 <p><code>msflib-notifications</code> also depends on <code>msflib-tenancy</code>. The notification tables need the <code>account</code> table. Tenancy tables are only needed if you use tenant resolution elsewhere; import <code>msflib.tenancy.models.tenant</code> if you do.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Two router factories are exported from <code>msflib.notifications.router</code>. Both take your dependency callables as keyword arguments. See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general pattern and <a href="../auth/">auth</a> for how <code>get_current_account</code> and <code>RoleCheck</code> are produced.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span>
@@ -2994,7 +2993,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>role_check</code> is called as <code>role_check([AccountRole.admin, AccountRole.root])</code> and must return a FastAPI dependency; <code>deps.RoleCheck</code> is what the module's own tests pass. <code>account_action</code> is effectively required: the default bare <code>AccountAction()</code> fails when the route resolves receivers (500, <code>TypeError: AccountAction must be instantiated with concrete generic types</code>).</p>
 <p>Routes added:</p>
 <table>
@@ -3068,10 +3066,10 @@
 </tr>
 </tbody>
 </table>
-<p>Compose it into your settings class, for example <code>class AppSettings(NotificationSettings, AccountSettings, CoreSettings, SettingsBase)</code>. With mixin composition the environment variable is the flat name <code>DASHBOARD_PATH</code>. If you instead declare the namespace as a field (<code>NOTIFICATIONS: NotificationSettings = NotificationSettings()</code>), <code>NOTIFICATIONS__DASHBOARD_PATH</code> also works.</p>
+<p>Compose it into your settings class, for example <code>class AppSettings(NotificationSettings, AccountSettings, CoreSettings, SettingsBase)</code>. With subclassed settings the environment variable is the flat name <code>DASHBOARD_PATH</code>. If you instead declare the namespace as a field (<code>NOTIFICATIONS: NotificationSettings = NotificationSettings()</code>), <code>NOTIFICATIONS__DASHBOARD_PATH</code> also works.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for subclassed hosts. This may change.</p>
 </div>
 <p>Email and SMS delivery read settings that this module does not define:</p>
 <table>
@@ -3111,7 +3109,7 @@
 <p>Sender rules: for <code>NotificationType.admin</code> a <code>sender</code> is required when <code>inapp</code> is requested, otherwise <code>ValueError</code> is raised. System notifications may omit it.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Send an in-app notification from your own code. This was run against an in-memory SQLite database:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountNotificationAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountNotificationAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">NotificationChannel</span><span class="p">,</span>
     <span class="n">NotificationCreate</span><span class="p">,</span>
@@ -3137,9 +3135,8 @@
 <span class="n">ana</span><span class="o">.</span><span class="n">mark_one</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">notification_id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">)</span>  <span class="c1"># toggles; returns the updated row</span>
 <span class="c1"># mark_one takes the notification_id of the inbox row, not its own id</span>
 </code></pre></div>
-
 <p>Adjust recipients at send time with <code>resolve_receivers</code>, a callable that receives the receiver list and returns the list to use for both the inbox rows and the email/SMS handlers:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dispatch_account_notifications</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">dispatch_account_notifications</span><span class="p">(</span>
     <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
     <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
@@ -3148,14 +3145,12 @@
     <span class="n">resolve_receivers</span><span class="o">=</span><span class="k">lambda</span> <span class="n">receivers</span><span class="p">:</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">receivers</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Enable SMS by declaring the Twilio settings on your settings class. The credentials are read as flat attributes, so flat environment variable names are used:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">NotificationSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">NotificationSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="n">TWILIO_ACCOUNT_SID</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">TWILIO_AUTH_TOKEN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">TWILIO_PHONE_NUMBER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
 </code></pre></div>
-
 <p><code>sms_notification(to_number, message, settings)</code> then returns the Twilio message SID, or <code>None</code> on any failure. The SMS handler sends to each receiver's <code>phone</code> attribute and skips receivers without one.</p>
 <p>Use a custom email template per call by passing <code>template_file</code> in the handler context. <code>NotificationHandlerFactory</code> reads <code>context["template_file"]</code> and defaults to <code>notification.html</code>, which ships with core. The template receives <code>title</code>, <code>message</code>, <code>email</code> and <code>link</code>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

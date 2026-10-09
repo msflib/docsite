@@ -2973,16 +2973,15 @@
 <p>It is a storage and organization layer only. It does not read file contents, and indexing for search or RAG lives in <a href="../documents/">documents</a>, which can follow drivelink changes through the event bus.</p>
 <p>This package has no README. This page is written from the source and tests.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-drivelink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/drivelink"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"drivelink-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>It also depends on <code>python-multipart</code> for file uploads. There are no extras. The <code>drivelinknode</code> table has a foreign key to <code>account.id</code>.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Add <code>DrivelinkSettings</code> to your settings class and mount the router. The router factory is <code>router</code> in <code>msflib.drivelink.router</code>. Import <code>msflib.drivelink.models</code> so the <code>drivelinknode</code> table is registered before you create tables.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.drivelink.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DrivelinkSettings</span>
@@ -3006,7 +3005,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>get_current_workspace</code> is optional. When omitted, every request works on the account's personal tree (<code>workspace_id</code> is <code>NULL</code>). When given, it must return an object with an integer <code>id</code> (the <code>WorkspaceContract</code> shape from <code>msflib.account.contracts</code>), and the request works on that workspace's tree. A workspace tree and a personal tree never mix: all lookups filter on the exact <code>workspace_id</code>, and <code>NULL</code> is matched literally, not treated as a wildcard.</p>
 <p>Routes, all relative to the prefix:</p>
 <table>
@@ -3153,10 +3151,10 @@
 </tr>
 </tbody>
 </table>
-<p>Every key has a flat alias. With mixin composition (as above) use the flat environment variable, for example <code>MAX_UPLOAD_BYTES=10485760</code>. <code>DRIVELINK__MAX_UPLOAD_BYTES</code> only works if you declare the namespace as a field (<code>DRIVELINK: DrivelinkSettings = DrivelinkSettings()</code>). Both were checked. Note that the flat name <code>ENABLED</code> is shared by every module that defines it. With several modules composed as nested fields, <code>DRIVELINK__ENABLED</code> is unreliable because of that shared alias (in a host with documents and drivelink, <code>DOCUMENTS__ENABLED=false</code> was ignored while <code>DRIVELINK__ENABLED=false</code> switched off both); set the field in code instead, for example <code>DrivelinkSettings(ENABLED=False)</code>.</p>
+<p>Every key has a flat alias. With subclassed settings (as above) use the flat environment variable, for example <code>MAX_UPLOAD_BYTES=10485760</code>. <code>DRIVELINK__MAX_UPLOAD_BYTES</code> only works if you declare the namespace as a field (<code>DRIVELINK: DrivelinkSettings = DrivelinkSettings()</code>). Both were checked. Note that the flat name <code>ENABLED</code> is shared by every module that defines it. With several modules composed as nested fields, <code>DRIVELINK__ENABLED</code> is unreliable because of that shared alias (in a host with documents and drivelink, <code>DOCUMENTS__ENABLED=false</code> was ignored while <code>DRIVELINK__ENABLED=false</code> switched off both); set the field in code instead, for example <code>DrivelinkSettings(ENABLED=False)</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for subclassed hosts. This may change.</p>
 </div>
 <p>Where bytes are stored is decided by core, not by drivelink: <code>CORE.STORAGE_METHOD</code> (<code>file</code>, <code>cloudinary</code>, <code>s3</code>, <code>gcs</code> or <code>azure</code>) and, for local storage, <code>CORE.STORAGE_PATH</code> and <code>CORE.STORAGE_BASE_URL</code>. See <a href="../core/">core</a>.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
@@ -3180,7 +3178,7 @@
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
 <p><code>DrivelinkAction</code> is a <code>ModelAction</code>, so it emits the standard lifecycle events on the core event bus: <code>drivelinknode-create-pre-commit</code>, <code>drivelinknode-update-pre-commit</code> and <code>drivelinknode-delete-pre-commit</code>. Listeners receive <code>(node, {"session": session, ...})</code>. The documents module uses these to ingest files; see <a href="../documents/">documents</a>.</p>
 <p>Register your own listeners on the app emitter:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 
 <span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
@@ -3189,11 +3187,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">on_node_created</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"created"</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Events reach app-bound listeners only while the app emitter is active: inside a request (including FastAPI <code>BackgroundTasks</code>), or in your own scripts and threads wrapped in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>). Outside that, the default emitter is used and app listeners, including the documents drivelink hooks, are not called. Calling <code>DrivelinkAction(...).create_folder(session, ...)</code> from a script fires nothing on <code>app_emitter</code> unless it runs inside that <code>with</code> block, and a worker process, which has no app, needs its listeners on <code>AppEmitter(get_emitter())</code>. <code>msflib.drivelink.documents_contract</code> documents the identity convention <code>(drivelink_id, node_id, version)</code> for external consumers. Note that <code>msflib.drivelink</code> exports only <code>documents_contract</code> from its package <code>__init__</code>; import everything else from its submodules.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Create a folder, upload a file, and manage it through the router. This ran against an in-memory SQLite database and local file storage:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
@@ -3227,22 +3224,19 @@
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/trash?parent_id=</span><span class="si">{</span><span class="n">folder</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># the trashed q1.txt</span>
 <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">node</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">/restore"</span><span class="p">)</span>    <span class="c1"># 200</span>
 </code></pre></div>
-
 <p>Run several changes atomically with <code>/batch</code>. Each operation has an <code>id</code> you choose, an <code>op</code> (<code>move</code>, <code>delete</code>, <code>rename</code> or <code>copy</code>) and its arguments. Any failure rolls the whole batch back:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/drivelink/batch"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"ops"</span><span class="p">:</span> <span class="p">[</span>
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/drivelink/batch"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"ops"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"op"</span><span class="p">:</span> <span class="s2">"rename"</span><span class="p">,</span> <span class="s2">"node_id"</span><span class="p">:</span> <span class="n">node</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"q1-final.txt"</span><span class="p">},</span>
 <span class="p">]})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 <span class="c1"># {"results": [{"id": "1", "status": "ok", "node_id": 2}]}</span>
 </code></pre></div>
-
 <p>Use the action directly for server-side code. These calls are keyword-only after the session:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.drivelink.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DrivelinkAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.drivelink.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DrivelinkAction</span>
 
 <span class="n">action</span> <span class="o">=</span> <span class="n">DrivelinkAction</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">folder</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">create_folder</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">parent_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Inbox"</span><span class="p">)</span>
 <span class="n">children</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">list_children</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">parent_id</span><span class="o">=</span><span class="n">folder</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
-
 <p>This last snippet was run against the same database as the router example. Called like this, outside a request, it does not fire app-bound event listeners; see Events.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3253,7 +3247,7 @@
 <li><strong>409 when restoring.</strong> A live node with the same name now exists in the destination. Rename or delete it first. "Restore parent folder first." means the parent is still in trash.</li>
 <li><strong>Trashed items never disappear.</strong> The module only sets <code>trash_expires_at</code>; it ships no purge job. Delete expired nodes with <code>DrivelinkAction.hard_delete</code>, or <code>DELETE ...?permanent=true</code>, from your own scheduler.</li>
 <li><strong>Download gives a relative URL like <code>/uploads/...</code>.</strong> With local file storage the "signed" URL is the stored URL under <code>CORE.STORAGE_BASE_URL</code>; your host app must serve that path (for example with a static files mount). If a backend raises HTTP 501 for signing, the router falls back to the raw <code>storage_url</code>.</li>
-<li><strong><code>DRIVELINK__...</code> environment variables are ignored.</strong> See Configuration: with mixin-style settings use the flat names.</li>
+<li><strong><code>DRIVELINK__...</code> environment variables are ignored.</strong> See Configuration: with subclassed settings use the flat names.</li>
 <li><strong>Table is missing at startup.</strong> Import <code>msflib.drivelink.models</code> before creating tables, since the package's <code>__init__</code> does not import the models.</li>
 </ul>
 <h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>

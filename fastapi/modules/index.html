@@ -2839,7 +2839,7 @@
 <p>Modules follow the same shape, so once you have wired one the next is familiar:</p>
 <ol>
 <li><strong>Install</strong> the package (and its extras, if any).</li>
-<li><strong>Settings</strong>: add the module's settings class to your app settings. Each has a namespace, so its values are read as <code>settings.scope("AUTH")</code>. They are set through environment variables: <code>AUTH__ENABLE_GOOGLE_OAUTH</code> when the settings are composed as nested fields, plain <code>ENABLE_GOOGLE_OAUTH</code> when the module's settings class is mixed into yours. See <a href="../concepts/tiered-config/">Tiered configuration</a>.</li>
+<li><strong>Settings</strong>: add the module's settings class to your app settings. Each has a namespace, so its values are read as <code>settings.scope("AUTH")</code>. They are set through environment variables: <code>AUTH__ENABLE_GOOGLE_OAUTH</code> when the settings are composed as nested fields, plain <code>ENABLE_GOOGLE_OAUTH</code> when your settings class inherits the module's settings class (subclassed). See <a href="../concepts/tiered-config/">Tiered configuration</a>.</li>
 <li><strong>Models</strong>: import the module's models before you create tables, so they are registered on <code>SQLModel.metadata</code>. Modules whose tables reference others (ai-core references tenancy) need those models imported too. See <a href="../quick-start/models-data-tables/">Models, data and tables</a>.</li>
 <li><strong>Dependencies</strong>: call the module's dependency factory with your session and settings, and keep the result in one <code>deps.py</code>. See <a href="../concepts/dependency-injection/">Dependency injection</a>.</li>
 <li><strong>Routers</strong>: call the module's router factory with those dependencies and include the result in your app. See <a href="../integration/mounting-routes/">Mounting routes</a>.</li>
@@ -2848,7 +2848,7 @@
 <p>Not every module has every step. The module pages say which apply.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style (step 2) only works when the namespaces are composed as fields, as <code>compose_settings_model</code> does. Hosts that mix the settings classes in must use flat field names.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style (step 2) only works when the namespaces are composed as fields, as <code>compose_settings_model</code> does (composed). Subclassed hosts must use flat field names.</p>
 </div>
 <h2 id="page-layout">Page layout<a class="headerlink" href="#page-layout" title="Permanent link">&para;</a></h2>
 <p>Every module page follows the <a href="../contributing/module-page-template/">module page template</a>: purpose, install, wiring, configuration, key concepts, examples, troubleshooting, API reference, see also.</p>

@@ -2871,7 +2871,7 @@
 <p>MSFLib modules do not import your app's sessions, settings or authentication. Instead, each module that needs request-scoped dependencies ships a factory in its <code>deps.py</code>. You call the factory once, at app setup, passing in your own callables, and it returns a <code>DependencyNamespace</code> holding ready-made FastAPI dependencies. This keeps modules decoupled from your app and lets you swap any piece.</p>
 <h2 id="dependencynamespace">DependencyNamespace<a class="headerlink" href="#dependencynamespace" title="Permanent link">&para;</a></h2>
 <p><code>DependencyNamespace</code> (from <code>msflib.api</code>) is an attribute bag with a few dict helpers. It holds callables you use with <code>Depends(...)</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DependencyNamespace</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">DependencyNamespace</span>
 
 <span class="n">ns</span> <span class="o">=</span> <span class="n">DependencyNamespace</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ns</span><span class="o">.</span><span class="n">a</span>                 <span class="c1"># 1</span>
@@ -2879,7 +2879,6 @@
 <span class="n">ns</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>         <span class="c1"># {'a': 1, 'b': 2}</span>
 <span class="nb">list</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span>             <span class="c1"># ['a', 'b']</span>
 </code></pre></div>
-
 <p>It is deliberately mutable, so a downstream app can wrap or replace one member (for example to add logging around <code>get_current_account</code>) and pass the namespace on to a router.</p>
 <h2 id="the-convention">The convention<a class="headerlink" href="#the-convention" title="Permanent link">&para;</a></h2>
 <p>Every <code>deps.py</code> factory follows the same shape:</p>
@@ -2934,7 +2933,7 @@
 <p>Check each factory's docstring for its exact parameters and return members; some members only exist when you pass certain inputs. For instance <code>get_scope_dependencies</code> omits <code>get_workspace_scope</code> on a site with no workspace dependency.</p>
 <h2 id="wiring-a-host-app">Wiring a host app<a class="headerlink" href="#wiring-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Create the namespaces once at import time or in your app factory, then reference their members in endpoints. The dependencies resolve per request.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">get_scope_dependencies</span>
 
 <span class="c1"># Account, get_session, get_keystore and settings are your app's own objects.</span>
@@ -2958,11 +2957,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">whoami</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scope_deps</span><span class="o">.</span><span class="n">get_account_scope</span><span class="p">)):</span>
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">scope</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Module routers take these callables as arguments in the same spirit. The workspace-config router, for example, is built as <code>router(get_session, settings, get_current_workspace, get_current_workspace_anonymous, get_current_active_user, workspace_role_check, ...)</code>, with each argument coming from your namespaces.</p>
 <h2 id="writing-your-own-factory">Writing your own factory<a class="headerlink" href="#writing-your-own-factory" title="Permanent link">&para;</a></h2>
 <p>Follow the convention for your own app code. This example runs as written:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
@@ -2992,7 +2990,6 @@
 
 <span class="nb">print</span><span class="p">(</span><span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/greeting"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>  <span class="c1"># hello 7</span>
 </code></pre></div>
-
 <p>In tests you can pass fake callables like <code>current_account</code> above instead of real authentication, which is the main practical benefit of the pattern.</p>
 <h2 id="why-a-factory-per-module">Why a factory per module<a class="headerlink" href="#why-a-factory-per-module" title="Permanent link">&para;</a></h2>
 <ul>

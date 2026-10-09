@@ -3016,11 +3016,10 @@
 <p><code>msflib-conversation</code> is a chat-style conversation layer for host apps: channels, direct messages, threads, messages, membership, reactions, pins, read state and attached resources, with access control built in. It is also the identity substrate for the AI modules: a conversation's <code>public_id</code> is the <code>conversation_id</code> scope dimension that <a href="../ai-core/">ai-core</a> checkpoints and memory, and <a href="../knowledge/">knowledge</a> scoping, key off, and a thread's <code>public_id</code> is the <code>sub_thread_id</code>.</p>
 <p>It has no UI or realtime transport. It gives you the tables, services, an optional HTTP router, and an optional bridge that lets an <a href="../ai-api/">ai-api</a> agent write its turns into a conversation.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-conversation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/conversation"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"conversation-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>Dependencies are <code>msflib</code>, <code>msflib-tenancy</code> and <code>python-ulid</code>. There are no extras. The module does not import <code>account</code>, <code>workspaces</code>, <code>ai_core</code> or <code>ai_api</code> at module scope: it takes your account and workspace objects through small protocols that only need an <code>id</code>.</p>
 <p><code>msflib.conversation</code> lazily exports the settings, actions, contracts, services, errors and policy functions (<code>ConversationScope</code>, <code>Participant</code>, <code>ChannelService</code>, <code>AccessService</code>, <code>can_read</code>, ...). Models and schemas are in <code>msflib.conversation.models</code>, and the router and deps are imported from their submodules.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
@@ -3029,7 +3028,7 @@
 <li>Import <code>msflib.conversation.models</code> so the tables are created (and migrated).</li>
 <li>Mount the router, passing your own session, account, workspace and tenant dependencies.</li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_conversation_router</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_conversation_router</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">create_conversation_router</span><span class="p">(</span>
@@ -3043,7 +3042,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>get_current_account</code> only needs to return an object with an <code>id</code>. Without a workspace dependency, every request is in the workspace-less bucket (<code>workspace_id=None</code>). Without a tenant dependency, the tenant with slug <code>default</code> is looked up in the database and must be seeded, otherwise requests fail with 500. </p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
@@ -3193,7 +3191,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="channels-messages-and-history-with-the-services">Channels, messages and history with the services<a class="headerlink" href="#channels-messages-and-history-with-the-services" title="Permanent link">&para;</a></h3>
 <p>This runs as written against in-memory SQLite. It seeds tenant 1 first: SQLite does not enforce the <code>tenant_id</code> foreign key, but Postgres does.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.conversation.models</span>  <span class="c1"># noqa: F401  (registers the tables)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.conversation.models</span>  <span class="c1"># noqa: F401  (registers the tables)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationScope</span><span class="p">,</span> <span class="n">Participant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationCreate</span><span class="p">,</span> <span class="n">MessageCreate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.models.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemberKind</span>
@@ -3243,11 +3241,10 @@
     <span class="n">page</span> <span class="o">=</span> <span class="n">HistoryService</span><span class="p">()</span><span class="o">.</span><span class="n">list_conversation_history</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">conversation</span><span class="o">=</span><span class="n">resolved</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">([(</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">sender_kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">page</span><span class="p">])</span>                     <span class="c1"># [('hello @team', 'user')]</span>
 </code></pre></div>
-
 <p><code>create_channel</code> returns the conversation with the creator's owner membership. <code>post_message</code> raises <code>PermissionError</code> if the membership may not post and <code>ValueError</code> for empty or too-long content. Services use <code>ConversationSettings()</code> defaults unless you pass <code>conversation_settings=</code> at construction. In your own code pass <code>conversation_settings=settings.scope("CONVERSATION").unwrap()</code>, or host overrides are ignored: the router applies them, but a bare <code>MessagingService().post_message(...)</code> does not.</p>
 <h3 id="through-http">Through HTTP<a class="headerlink" href="#through-http" title="Permanent link">&para;</a></h3>
 <p>With the router mounted at <code>/conversation</code> and a seeded default tenant:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 <span class="n">created</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/conversation/conversations"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"general"</span><span class="p">,</span> <span class="s2">"slug"</span><span class="p">:</span> <span class="s2">"general"</span><span class="p">})</span>
@@ -3255,11 +3252,10 @@
 <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/conversation/conversations/</span><span class="si">{</span><span class="n">public_id</span><span class="si">}</span><span class="s2">/messages"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"hello"</span><span class="p">})</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/conversation/conversations/</span><span class="si">{</span><span class="n">public_id</span><span class="si">}</span><span class="s2">/messages"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># newest first</span>
 </code></pre></div>
-
 <p>Request bodies are the module's own <code>ConversationCreate</code>, <code>MessageCreate</code>, <code>MemberAddRequest</code>, <code>ResourceLinkCreate</code> and so on. Tenant, workspace and the acting user always come from your dependencies, never from the body.</p>
 <h3 id="persisting-ai-agent-turns">Persisting AI agent turns<a class="headerlink" href="#persisting-ai-agent-turns" title="Permanent link">&para;</a></h3>
 <p><code>msflib.conversation.integrations.ai_bridge</code> wires an ai-api agent to a conversation without either module importing the other. The user's question and the agent's reply are written as ordinary messages (<code>sender_kind</code> <code>user</code> and <code>agent</code>), so the conversation is the readable transcript, separate from the LangGraph checkpoint state. This is how the repository's reference site mounts it:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_api.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ai_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ai_bridge</span>
 
@@ -3288,7 +3284,6 @@
     <span class="p">],</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>build_conversation_access_dependency</code> reads <code>conversation_id</code> (and <code>sub_thread_id</code>) from the request body and rejects callers who cannot read that conversation before the agent touches any checkpoint or memory state; requests without a <code>conversation_id</code> pass through. <code>build_transcript_writer_factory</code> returns a factory ai-api calls per request; it opens a short session per write, adds the agent as a member of the conversation if it is not an active member, and returns <code>None</code> when the request has no <code>conversation_id</code>. <code>build_speaker_label_factory</code> prefixes each user message with the sender's name and id so an agent in a multi-user conversation can tell people apart; <code>resolve_display_name</code> is your callable <code>(account_id: str) -&gt; str | None</code>. This snippet was not run end to end because it needs a working LLM and a host account system; every name in it is checked against the source. <code>engine</code> and <code>resolve_display_name</code> are supplied by your host. Other helpers in the module are <code>conversation_dimensions</code> (the scope dimensions for a conversation and thread), <code>add_agent_participant</code> and <code>register_memory_cleanup_listener</code>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

@@ -3194,13 +3194,12 @@
 <p><code>msflib-workspaces</code> adds workspaces and workspace membership. A workspace is a team or project space inside a tenant. A membership (the <code>User</code> model, table <code>workspace_user</code>) links one account to one workspace and carries the account's role and status there.</p>
 <p>The module supplies the models, actions, routers for managing workspaces and joining or switching between them, and optional event hooks that create a default workspace and membership when an account is created. It builds on <a href="../account/">msflib-account</a> and <a href="../tenancy/">msflib-tenancy</a>. Request-time workspace resolution is in <a href="../auth/">msflib-auth</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-tenancy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/tenancy"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"tenancy-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-workspaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/workspaces"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"workspaces-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>Import paths:</p>
 <ul>
 <li><code>msflib.workspaces</code> loads attributes lazily and exposes only <code>DependencyNamespace</code> and <code>get_workspace_form_dependencies</code>.</li>
@@ -3209,7 +3208,7 @@
 </ul>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>The tables reference <code>account.id</code> and <code>tenant.id</code>, so import the <code>Account</code> and <code>Tenant</code> models before creating tables. Seed the default tenant at startup, then mount the routers.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span>
@@ -3275,7 +3274,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>account_deps</code> and <code>user_deps</code> are the namespaces from <a href="../auth/#wiring-into-a-host-app">auth</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
@@ -3357,10 +3355,10 @@
 </tr>
 </tbody>
 </table>
-<p>Mixin-style settings take flat names (<code>DEFAULT_WORKSPACE_NAME=Home</code>); composed settings (<code>WORKSPACES: WorkspaceSettings = WorkspaceSettings()</code>) accept <code>WORKSPACES__DEFAULT_WORKSPACE_NAME</code> as well. <code>ENABLE_USERINFO_COLLECTION</code> and <code>USERINFO_TABLE_NAME</code> are the exception: they are resolved when <code>msflib.workspaces.models</code> is first imported, from the environment (<code>WORKSPACES__ENABLE_USERINFO_COLLECTION</code> or the flat name) and not from your settings object, so set them in the process environment.</p>
+<p>Subclassed settings take flat names (<code>DEFAULT_WORKSPACE_NAME=Home</code>); composed settings (<code>WORKSPACES: WorkspaceSettings = WorkspaceSettings()</code>) accept <code>WORKSPACES__DEFAULT_WORKSPACE_NAME</code> as well. <code>ENABLE_USERINFO_COLLECTION</code> and <code>USERINFO_TABLE_NAME</code> are the exception: they are resolved when <code>msflib.workspaces.models</code> is first imported, from the environment (<code>WORKSPACES__ENABLE_USERINFO_COLLECTION</code> or the flat name) and not from your settings object, so set them in the process environment.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for subclassed hosts. With subclassed settings, use the flat names.</p>
 </div>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <h3 id="membership-and-access">Membership and access<a class="headerlink" href="#membership-and-access" title="Permanent link">&para;</a></h3>
@@ -3401,7 +3399,7 @@
 <p>Workspace create and update take <code>multipart/form-data</code> so a logo can be uploaded. <code>get_workspace_form_dependencies(workspace_create_type=, workspace_update_type=)</code> returns a mutable namespace with <code>get_workspace_create</code> and <code>get_workspace_update</code>. Wrap or replace one and pass the namespace as <code>workspace_form_dependencies=</code> to <code>router(...)</code>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="seed-a-tenant-accounts-workspace-and-membership-from-code">Seed a tenant, accounts, workspace and membership from code<a class="headerlink" href="#seed-a-tenant-accounts-workspace-and-membership-from-code" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserType</span>
@@ -3427,20 +3425,18 @@
     <span class="k">assert</span> <span class="n">membership</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">UserType</span><span class="o">.</span><span class="n">owner</span>
     <span class="k">assert</span> <span class="n">acme</span><span class="o">.</span><span class="n">tenant_id</span> <span class="o">==</span> <span class="n">tenant</span><span class="o">.</span><span class="n">id</span>
 </code></pre></div>
-
 <p>What this leaves in the database depends on the emitter context. In a host where the workspaces hooks are registered, a plain session (no emitter context) creates only <code>acme</code> and leaves <code>current_workspace_id</code> unset. Inside <code>with use_app_emitter(app):</code> the hooks also run, so a <code>default-workspace</code> owned by <code>ada</code> is created, <code>ada</code> is a member of both workspaces and her <code>current_workspace_id</code> is set. The assertions pass either way.</p>
 <h3 id="create-join-and-switch-over-http">Create, join and switch over HTTP<a class="headerlink" href="#create-join-and-switch-over-http" title="Permanent link">&para;</a></h3>
 <p>With an admin-role account <code>root@example.com</code> and a plain account <code>bob@example.com</code>, using the routers above:</p>
-<div class="codehilite"><pre><span></span><code>POST /workspaces/        (admin, form: name=Beta, description=Beta team)  -&gt; 201, slug "beta"
+<div class="highlight"><pre><span></span><code>POST /workspaces/        (admin, form: name=Beta, description=Beta team)  -&gt; 201, slug "beta"
 POST /users/join         (bob, {"workspace_id": 3, "user_type": "member"}) -&gt; 200, workspace_slug "beta"
 POST /users/join         (bob, {"workspace_id": 3, "user_type": "admin"})  -&gt; 403 "The requested join role is not allowed."
 GET  /beta/users/me      (bob)                                             -&gt; 200, type "member"
 POST /users/switch       (bob, {"workspace_id": 2})                        -&gt; 401, not a member of workspace 2
 </code></pre></div>
-
 <h3 id="bootstrap-a-default-workspace-when-accounts-are-created">Bootstrap a default workspace when accounts are created<a class="headerlink" href="#bootstrap-a-default-workspace-when-accounts-are-created" title="Permanent link">&para;</a></h3>
 <p>Register the hooks (see the wiring above) and create accounts inside the app's emitter context:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">use_app_emitter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">use_app_emitter</span>
 
 <span class="k">with</span> <span class="n">use_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">tenant_action</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
@@ -3449,10 +3445,9 @@ POST /users/switch       (bob, {"workspace_id": 2})                        -&gt;
     <span class="p">)</span>
     <span class="n">account</span><span class="o">.</span><span class="n">current_workspace_id</span>  <span class="c1"># 1, the default workspace</span>
 </code></pre></div>
-
 <p>With no <code>FIRST_SUPERUSER</code> account present, the new account becomes owner of the default workspace.</p>
 <h3 id="customise-the-membership-type">Customise the membership type<a class="headerlink" href="#customise-the-membership-type" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">my_resolver</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">owner_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserType</span><span class="p">:</span>
@@ -3461,7 +3456,6 @@ POST /users/switch       (bob, {"workspace_id": 2})                        -&gt;
 
 <span class="n">user_action</span> <span class="o">=</span> <span class="n">UserAction</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">](</span><span class="n">membership_type_resolver</span><span class="o">=</span><span class="n">my_resolver</span><span class="p">)</span>
 </code></pre></div>
-
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

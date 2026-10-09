@@ -2915,7 +2915,7 @@
 <p>MSFLib modules do not register endpoints on your app. Each one exposes router factories: functions that take your session dependency, your current-account dependency, your settings and your model types, and return an <code>APIRouter</code>. You decide the prefix, the tags and what sits in front of them. This guide covers the options and what each one affects.</p>
 <h2 id="the-two-prefix-layers">The two prefix layers<a class="headerlink" href="#the-two-prefix-layers" title="Permanent link">&para;</a></h2>
 <p>A factory has a <code>prefix</code> argument, and <code>include_router</code> has its own. They concatenate. The factory prefix is part of the router, and the <code>include_router</code> prefix is applied when you attach it.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
@@ -2934,7 +2934,6 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">)</span>
 </code></pre></div>
-
 <p>This serves <code>POST /api/v1/login</code>, which is the layout of the reference host app. Leave the factory default instead (<code>prefix="/auth"</code>) and the same login is <code>POST /api/v1/auth/login</code>. The defaults and routes of the factories used in this guide:</p>
 <table>
 <thead>
@@ -2979,7 +2978,7 @@
 </div>
 <h2 id="use-your-own-dependencies">Use your own dependencies<a class="headerlink" href="#use-your-own-dependencies" title="Permanent link">&para;</a></h2>
 <p>Every dependency a router needs is an argument, so you can wrap the shared ones. Here, the account endpoints require an account that your app has marked as verified. The wrapped dependency is passed in place of <code>get_current_account</code>, and the prefix is changed at the same time.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_verified_account</span><span class="p">(</span><span class="n">account</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">)):</span>
@@ -3001,12 +3000,11 @@
 <span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">accounts</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v2"</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>GET /api/v2/people/me</code> now answers <code>403</code> for an unverified account. Only the routes that depend on <code>get_current_account</code> are affected: <code>POST /api/v2/people/open</code> stays public, because registration needs no identity.</p>
 <p>The same idea applies to the other callables. <code>role_check</code> for the admin and workspace routers takes a class such as <code>auth_deps.RoleCheck</code> (the router calls it with its <code>roles=</code> list). <code>get_current_workspace</code>, <code>get_current_tenant</code> and similar arguments on the other routers take dependency callables in the same way.</p>
 <h2 id="put-a-router-behind-extra-checks">Put a router behind extra checks<a class="headerlink" href="#put-a-router-behind-extra-checks" title="Permanent link">&para;</a></h2>
 <p><code>include_router(..., dependencies=[...])</code> adds dependencies to every route in the router:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">accounts</span><span class="p">,</span>
@@ -3014,7 +3012,6 @@
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_active_account</span><span class="p">)],</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition warning">
 <p class="admonition-title">Router-wide dependencies also cover public routes</p>
 <p>This applies to every route, including the ones meant for anonymous callers. With the example above, <code>POST /open</code> returns <code>401</code> to a caller who has no token yet, and the same dependency on the auth router would block <code>POST /login</code>. Use router-wide dependencies on routers that are entirely protected, and wrap <code>get_current_account</code> (previous section) when only some routes should change.</p>
@@ -3022,7 +3019,7 @@
 <p>The reference host app uses this form to validate a conversation id before any AI agent route runs (<code>testsite/app/api/api.py</code>).</p>
 <h2 id="shadow-a-route">Shadow a route<a class="headerlink" href="#shadow-a-route" title="Permanent link">&para;</a></h2>
 <p>When two routes have the same method and path, FastAPI uses the first one registered. To replace a module endpoint, declare yours before you include the module's router:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
 
 <span class="n">accounts</span> <span class="o">=</span> <span class="n">account_router</span><span class="p">(</span>
     <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
@@ -3047,22 +3044,20 @@
 <span class="n">v2</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">accounts</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/accounts"</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
 </code></pre></div>
-
 <p>The module's factory prefix is empty here, so its route is <code>/me</code> before <code>include_router</code> adds <code>/accounts</code>; a route with a different factory prefix (such as <code>/people</code>) would end up at a different path and nothing would be shadowed. <code>GET /v2/accounts/me</code> returns your response, and the module's other account routes are still served. The module's version of the route stays in the router and in the OpenAPI document, so use a distinct path if the duplicate in the docs is a problem.</p>
 <h2 id="remove-routes-you-do-not-want">Remove routes you do not want<a class="headerlink" href="#remove-routes-you-do-not-want" title="Permanent link">&para;</a></h2>
 <p>A router has no option to leave routes out. The routes are a plain list, so filter it before you include the router. Paths in the list include the factory prefix.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">accounts</span> <span class="o">=</span> <span class="n">account_router</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/people"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">accounts</span> <span class="o">=</span> <span class="n">account_router</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/people"</span><span class="p">)</span>
 <span class="n">accounts</span><span class="o">.</span><span class="n">routes</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">accounts</span><span class="o">.</span><span class="n">routes</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="s2">"/people/verify-availability"</span><span class="p">]</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">accounts</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v2"</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>POST /api/v2/people/verify-availability</code> is then a <code>404</code>. This depends on the router's internals, not on a documented option, so keep a test that checks the route list, and prefer wrapping a dependency when what you want is to restrict a route rather than remove it.</p>
 <p>For routes you must not expose at all, such as <code>google/login</code> and <code>google/callback</code> when you do not use Google sign-in, note that they already answer <code>403</code> unless the <code>AUTH</code> setting <code>ENABLE_GOOGLE_OAUTH</code> is true.</p>
 <h2 id="mount-the-same-module-twice">Mount the same module twice<a class="headerlink" href="#mount-the-same-module-twice" title="Permanent link">&para;</a></h2>
 <p>Factories return fresh routers, so two calls with different arguments produce independent routers: for example a public registration surface and an admin surface for accounts, or <code>/api/v1</code> and <code>/api/v2</code> with different dependencies. Reuse the same actions and dependencies, and vary the prefix and the callables.</p>
 <h2 id="workspace-scoped-paths">Workspace-scoped paths<a class="headerlink" href="#workspace-scoped-paths" title="Permanent link">&para;</a></h2>
 <p>If routes should live under a workspace, put the path parameter in the prefix and use dependencies built with the matching resolver (see <a href="../authentication/#workspaces">Authentication</a>). The repository's workspace tests mount the AI provider router like this:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">provider_router</span> <span class="k">as</span> <span class="n">create_ai_core_router</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">provider_router</span> <span class="k">as</span> <span class="n">create_ai_core_router</span>
 
 <span class="n">ws_user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># as in Authentication, "Workspaces"</span>
 
@@ -3076,7 +3071,6 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/ai/providers"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <h2 id="testing-mounted-routes">Testing mounted routes<a class="headerlink" href="#testing-mounted-routes" title="Permanent link">&para;</a></h2>
 <p>Override the session and keystore with <code>app.dependency_overrides</code>, using the same function objects you passed to the factories. See the end of <a href="../writing-custom-code/">Writing custom code</a>.</p>
 

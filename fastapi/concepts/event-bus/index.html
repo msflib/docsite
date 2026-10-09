@@ -2857,7 +2857,7 @@
 </ul>
 <h2 id="wiring-it-into-your-app">Wiring it into your app<a class="headerlink" href="#wiring-it-into-your-app" title="Permanent link">&para;</a></h2>
 <p>Bind one emitter per app at creation, then pass the <code>AppEmitter</code> to module hook registrations and register your own listeners.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
@@ -2868,11 +2868,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">on_order_placed</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"order"</span><span class="p">,</span> <span class="n">order</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="s2">"placed"</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>bind_app_emitter(app)</code> stores the emitter on <code>app.state</code>, adds a middleware that activates it for each HTTP and WebSocket request, and is safe to call again (<code>get_app_emitter(app)</code> returns the existing one). <code>@app_emitter.on(...)</code> registers the function as a listener on that emitter.</p>
 <p>The app emitter is active for requests, for FastAPI <code>BackgroundTasks</code>, and for <code>call_later</code> and <code>create_task</code> calls started from a request. Code in your web process that runs outside the request context (scripts, threads, lifespan code, scheduler jobs) uses the default emitter instead; wrap it in <code>with use_app_emitter(app):</code> (from <code>msflib.eventbus</code>) to make the app emitter current. A worker process has no FastAPI app: register its listeners on the worker's emitter, <code>AppEmitter(get_emitter())</code> (both from <code>msflib.eventbus</code>).</p>
 <p>Module hooks are registered by calling the module's <code>register_event_hooks</code>, at import time or in a lifespan handler:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
 
 <span class="n">register_event_hooks</span><span class="p">(</span>
     <span class="n">workspace_action</span><span class="o">=</span><span class="n">workspace_action</span><span class="p">,</span>
@@ -2882,7 +2881,6 @@
     <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Modules that ship hooks, with their <code>eventbus</code> packages, include account, auth, conversation, documents (<code>msflib.documents.drivelink</code>), knowledge and workspaces. Each exports its event names and, where defined, an <code>EVENT_CONTRACTS</code> map from event name to the options type. The core <code>msflib.eventbus</code> also exports <code>EventName</code> (the generic model lifecycle names), <code>EventOptions</code> and <code>merge_event_contracts</code>.</p>
 <p>A <code>TestClient</code> that is not used as a context manager skips the lifespan, so hooks registered there are absent in such tests; use <code>with TestClient(app)</code> or register the hooks at import time.</p>
 <p>The testsite in the repository (<code>testsite/app/main.py</code>) shows how the documents and knowledge hooks are registered in a lifespan handler.</p>
@@ -2916,11 +2914,10 @@
 </table>
 <p><code>emit_optional</code> returns <code>True</code> only when there was at least one listener and all of them succeeded. Use it for notifications that must not break the caller. Use <code>emit_required</code> when a listener's work is part of the operation, for instance work that has to happen inside the same transaction.</p>
 <p>Each has an <code>_async</code> variant (<code>emit_optional_async</code>, <code>emit_required_async</code>, <code>emit_strict_async</code>) that awaits async listeners. The synchronous <code>emit_required</code> and <code>emit_strict</code> reject async listeners with an error, and <code>emit_optional</code> schedules coroutine listeners on the running loop instead of waiting for them. Keep listeners for transactional events synchronous. <code>emit_if_listeners</code> still exists but is deprecated in favor of <code>emit_optional</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">emitter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">emitter</span>
 
 <span class="n">delivered</span> <span class="o">=</span> <span class="n">emitter</span><span class="o">.</span><span class="n">emit_optional</span><span class="p">(</span><span class="s2">"order-placed"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{})</span>
 </code></pre></div>
-
 <h2 id="model-lifecycle-events">Model lifecycle events<a class="headerlink" href="#model-lifecycle-events" title="Permanent link">&para;</a></h2>
 <p>Every <code>ModelAction</code> create, update and delete emits events automatically, so you can hook any model without subclassing its action. For a model named <code>Customer</code>:</p>
 <ul>

@@ -3116,11 +3116,10 @@
 <p><code>msflib-knowledge</code> is a scoped knowledge layer for host apps. Facts (entities, relations, observations) are stored in your Postgres database with provenance and tenant and workspace scope, projected to an Apache AGE graph and a vector store, and read back through a small set of semantic query objects that double as agent tools. You feed it from documents, structured records (forms, JSON payloads, rows in your own tables) or your own code.</p>
 <p>It does not run extraction by itself: ingestion runs as jobs on <a href="../ingestion/">msflib-ingestion</a>, and LLM calls go through <a href="../ai-core/">ai-core</a>. Reads are always scope-filtered; there is no unscoped query.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-knowledge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/knowledge"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"knowledge-v0.2.1"</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"age"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pgvector"</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p><code>msflib-knowledge</code> depends on <code>msflib-ai-core</code>, <code>msflib-documents</code>, <code>msflib-ingestion</code> and <code>msflib-tenancy</code>.</p>
 <table>
 <thead>
@@ -3144,7 +3143,7 @@
 <p>The package <code>__init__</code> lazily exports <code>KnowledgeEngine</code>, <code>KnowledgeSettings</code>, the three row actions, <code>KnowledgeCompiler</code>, <code>KnowledgeFragment</code>, <code>Provenance</code>, <code>OntologyRegistry</code>, <code>default_ontology</code>, <code>KnowledgeToolRegistry</code>, <code>CanonicalProjection</code>, <code>LLMExtractionParser</code>, <code>IngestResult</code> and <code>provision_age_and_pgvector</code>. The examples below import from submodules, which is equally valid.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Add <code>KnowledgeSettings</code> to your settings class and import <code>msflib.knowledge.models</code> so its tables are created. Then build the engine with <code>get_knowledge_dependencies</code>, which wires the canonical projection always, the AGE graph projection when not on SQLite, and a vector-store projection through ai-core's embeddings backend:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
 
 <span class="n">knowledge_deps</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span>
     <span class="n">settings</span><span class="p">,</span>
@@ -3153,13 +3152,12 @@
 <span class="p">)</span>
 <span class="n">knowledge</span> <span class="o">=</span> <span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_knowledge_engine</span><span class="p">()</span>          <span class="c1"># built once, cached</span>
 </code></pre></div>
-
 <p>The namespace has <code>build_knowledge_engine</code> (fresh engine on each call, for tests or your own lifecycle), <code>get_knowledge_engine</code> (the cached one), <code>get_record_ingestion_service</code> (a cached <code>KnowledgeRecordService</code>, which needs <code>record_dispatch_task</code>) and <code>ontology</code> (the registry wired into the engine).</p>
 <p>Other parameters: <code>vector_store_factory</code> to supply your own vector store, <code>ontology</code> for a fully custom <code>OntologyRegistry</code>, <code>additional_ontology_pack_namespaces</code> for your own ontology packs, and <code>ontology_pack_options</code> for per-pack keyword arguments.</p>
 <p>On Postgres the AGE projection writes <code>cypher()</code> statements through the same SQLAlchemy session as the canonical writes, so use a <code>postgresql+psycopg://</code> URL. A different driver logs a warning. Run <code>provision_age_and_pgvector(superuser_dsn, app_role=..., graph_name=...)</code> once per database with a superuser connection to create the extensions, the graph and the grants; the app role cannot do this itself.</p>
 <h3 id="extraction-from-documents">Extraction from documents<a class="headerlink" href="#extraction-from-documents" title="Permanent link">&para;</a></h3>
 <p>When <code>msflib-documents</code> finishes indexing a document, knowledge can extract facts from it. The hooks listen for <code>documents.ingestion.completed</code>, which the worker emits on its default emitter, and for <code>documents.index.deleted</code>, which is emitted inside web requests. Register the hooks with a dispatch service in the worker entrypoint, on an emitter the worker uses, and also in the web process for the delete event. In the worker, register the pipeline kind too.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">get_emitter</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">get_emitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_dispatch_task</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionDispatchService</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.integrations.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">KnowledgeIngestionDispatchService</span>
@@ -3190,7 +3188,6 @@
 
 <span class="n">register_knowledge_extraction_pipeline</span><span class="p">(</span><span class="n">stage</span><span class="o">=</span><span class="n">make_knowledge_extraction_stage</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="n">knowledge</span><span class="p">))</span>
 </code></pre></div>
-
 <p>The hooks enqueue <code>knowledge_extraction</code> jobs. Hooks on the web app's emitter fire for events emitted inside a request (or under <code>with use_app_emitter(app):</code>) but not for an emit outside a request, which is where the worker emits <code>documents.ingestion.completed</code>; <code>AppEmitter(get_emitter())</code> registered at worker start does receive it, from any thread. The stage reads the document through its source adapter, extracts a fragment (with a registered content extractor if one claims the bytes, otherwise with the LLM), and ingests it, superseding facts from earlier versions of the same source.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/289">#289</a>)</p>
@@ -3202,7 +3199,7 @@
 </div>
 <h3 id="structured-records">Structured records<a class="headerlink" href="#structured-records" title="Permanent link">&para;</a></h3>
 <p>Forms, JSON payloads and your own table rows go through the <code>knowledge_record</code> pipeline kind. Register it in the worker and build the service in the web process:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># worker process</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># worker process</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_knowledge_record_stage</span><span class="p">,</span> <span class="n">register_knowledge_record_pipeline</span>
 
 <span class="n">register_knowledge_record_pipeline</span><span class="p">(</span>
@@ -3214,20 +3211,18 @@
 <span class="n">records</span> <span class="o">=</span> <span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_record_ingestion_service</span><span class="p">()</span>
 <span class="n">register_my_record_sources_and_mappers</span><span class="p">()</span>
 </code></pre></div>
-
 <p>See the structured-records example below and the <a href="../../integration/long-running-jobs-ingestion/">long-running jobs guide</a> for the worker and producer setup.</p>
 <h3 id="agent-tools">Agent tools<a class="headerlink" href="#agent-tools" title="Permanent link">&para;</a></h3>
 <p><code>KnowledgeToolRegistry(engine)</code> exposes one tool per supported query type and satisfies ai-core's <code>ToolRegistry</code> protocol. With <a href="../ai-api/">ai-api</a>, pass <code>get_knowledge_engine=knowledge_deps.get_knowledge_engine</code> to the router, or build the registry list yourself with <code>resolve_knowledge_tool_registries</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.integrations.ai_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_knowledge_tool_registries</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.integrations.ai_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_knowledge_tool_registries</span>
 
 <span class="n">get_tool_registries</span> <span class="o">=</span> <span class="n">resolve_knowledge_tool_registries</span><span class="p">(</span><span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_knowledge_engine</span><span class="p">)</span>
 </code></pre></div>
-
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Settings live in the <code>KNOWLEDGE</code> namespace. With a nested <code>KNOWLEDGE</code> settings object, use <code>KNOWLEDGE__GRAPH_BACKEND</code> style variables. These flat aliases also work: <code>KNOWLEDGE_GRAPH_BACKEND</code>, <code>KNOWLEDGE_GRAPH_NAME</code>, <code>KNOWLEDGE_DATABASE_URL</code>, <code>KNOWLEDGE_EXTRACTION_QUEUE_ENABLED</code>, <code>KNOWLEDGE_RECORD_QUEUE_ENABLED</code> and <code>KNOWLEDGE_RECORD_MAX_PAYLOAD_BYTES</code>. When you mix <code>KnowledgeSettings</code> into your settings class, the field names (<code>GRAPH_BACKEND</code>, ...) are top-level.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>KNOWLEDGE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+<p>The <code>KNOWLEDGE__KEY</code> environment variable style only works for settings composed as a field, not for subclassed hosts. This may change.</p>
 </div>
 <table>
 <thead>
@@ -3326,7 +3321,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="ingest-and-query-facts">Ingest and query facts<a class="headerlink" href="#ingest-and-query-facts" title="Permanent link">&para;</a></h3>
 <p>Runs as written against in-memory SQLite (canonical projection only). It seeds tenant 1 explicitly: SQLite does not enforce the <code>tenant_id</code> foreign key, but Postgres does, and without the tenant row inserts fail there.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.knowledge.models</span>  <span class="c1"># noqa: F401  (registers the tables)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.knowledge.models</span>  <span class="c1"># noqa: F401  (registers the tables)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">KnowledgeSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
@@ -3370,11 +3365,10 @@
 <span class="n">found</span> <span class="o">=</span> <span class="n">knowledge</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">FindEntity</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Pump P-101"</span><span class="p">),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>                  <span class="c1"># ['Pump P-101']</span>
 </code></pre></div>
-
 <p><code>result.uid_map</code> maps each fragment-local id to the stored uid. A caller with a different <code>ScopeEnvelope</code> (another tenant or workspace) gets no items from the same query.</p>
 <h3 id="submit-a-structured-record-inline">Submit a structured record inline<a class="headerlink" href="#submit-a-structured-record-inline" title="Permanent link">&para;</a></h3>
 <p>This maps an intake form to facts, queues the job, and runs the stage in-process using the ingestion test helpers. Isolated registries keep the example from touching process-wide defaults. It runs as written against SQLite, and seeds tenant 1 for the same reason as the example above.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.knowledge.models</span>  <span class="c1"># noqa: F401</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">msflib.knowledge.models</span>  <span class="c1"># noqa: F401</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionJob</span>
@@ -3456,12 +3450,11 @@
     <span class="n">found</span> <span class="o">=</span> <span class="n">knowledge</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">FindEntity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>              <span class="c1"># ['Acme Corp']</span>
 </code></pre></div>
-
 <p>In a real app, <code>KnowledgeRecordService</code> comes from <code>get_record_ingestion_service()</code>, the dispatch handle is <code>build_dispatch_task(settings)</code>, and the stage runs in the Celery worker. <code>submit</code> only stores the filtered payload (here <code>password</code> is never stored, and <code>fields=</code> keeps only the listed keys) and queues a pointer; the job is dispatched after your transaction commits.</p>
 <p>Notes for mappers: name each record's root entity uniquely (entities merge by scope, type and lowercase name), put answers that can change on an observation (observations from a record are replaced on reprocessing, entity properties are merged and never shrink), and use types your ontology knows. <code>records.preview(session, record, settings=..., compiler=...)</code> runs a mapper without persisting anything.</p>
 <h3 id="ingest-rows-from-your-own-table">Ingest rows from your own table<a class="headerlink" href="#ingest-rows-from-your-own-table" title="Permanent link">&para;</a></h3>
 <p>Declare a source once, register it in both processes, and keep it in sync:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">version_from_column</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.services.sync</span><span class="w"> </span><span class="kn">import</span> <span class="n">sync_model_to_queue</span>
@@ -3486,7 +3479,6 @@
     <span class="n">emitter</span><span class="o">=</span><span class="n">get_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>From then on, every <code>ModelAction</code> create, update and delete on <code>FormSubmission</code> queues the right job in the same transaction as your write, while the app emitter is active: in requests (including FastAPI <code>BackgroundTasks</code>), or in your own code wrapped in <code>with use_app_emitter(app):</code>. Writes from workers, scripts and threads outside that block queue nothing; call <code>records.queue.enqueue_snapshot</code> there. Edits queue a <code>replace</code>, deletes and soft deletes queue a <code>delete</code>, which archives the record's facts. This snippet was not run (it needs your own model); the names come from <code>msflib.knowledge.records</code> and <code>msflib.ingestion.services.sync</code>. Without a <code>version=</code>, an edit made while a job for the row is running can be missed.</p>
 <h3 id="scope-privacy-and-limits-for-records">Scope, privacy and limits for records<a class="headerlink" href="#scope-privacy-and-limits-for-records" title="Permanent link">&para;</a></h3>
 <p>Sensitive keys (<code>password</code>, tokens, secrets, card numbers, <code>ssn</code>, <code>iban</code> and the like, matched case- and separator-insensitively at every depth) are stripped from payloads and metadata before storage and before the mapper sees them. File uploads in a payload are rejected; store files through <code>msflib.documents</code> and put the document's <code>source_key</code> in the payload. Inline payloads over <code>RECORD_MAX_PAYLOAD_BYTES</code> raise <code>RecordPayloadTooLargeError</code>. <code>scope</code> for <code>submit()</code> must come from your request dependencies, never from the request body.</p>

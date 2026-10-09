@@ -2916,7 +2916,7 @@
 <p>All imports come from subpackages. <code>msflib.ai_core</code> itself exports nothing.</p>
 <h2 id="1-settings">1. Settings<a class="headerlink" href="#1-settings" title="Permanent link">&para;</a></h2>
 <p><code>AICoreSettings</code> holds the provider, model and key fields. In a host app it is read from the <code>AI_CORE</code> namespace of your settings (see the environment variable rules on the <a href="../../modules/ai-core/#configuration">module page</a>). For scripts and tests you can construct it directly:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AICoreSettings</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AICoreSettings</span>
 
 <span class="n">ai_settings</span> <span class="o">=</span> <span class="n">AICoreSettings</span><span class="p">(</span>
     <span class="n">LLM_PROVIDER</span><span class="o">=</span><span class="s2">"openai"</span><span class="p">,</span>
@@ -2926,13 +2926,12 @@
     <span class="n">VECTOR_STORE_URL</span><span class="o">=</span><span class="s2">"postgresql+psycopg://user:password@localhost:5432/app"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
-<p>In a host app, pass <code>settings.scope("AI_CORE")</code> (it works for composed and mixin settings) or use <code>get_ai_dependencies(settings).get_llm()</code>; do not pass the host settings object itself, which raises <code>AttributeError</code> when the settings are composed. The snippets below use the standalone <code>ai_settings</code>.</p>
+<p>In a host app, pass <code>settings.scope("AI_CORE")</code> (it works for composed and subclassed settings) or use <code>get_ai_dependencies(settings).get_llm()</code>; do not pass the host settings object itself, which raises <code>AttributeError</code> when the settings are composed. The snippets below use the standalone <code>ai_settings</code>.</p>
 <p><code>VECTOR_STORE_URL</code> is only needed for <a href="#4-storing-and-searching-with-tenant-isolation">section 4</a>. The default pgvector backend raises <code>ValueError: VECTOR_STORE_URL is required for pgvector backend</code> without it, and so do qdrant, weaviate and milvus. Pinecone needs <code>VECTOR_STORE_API_KEY</code> instead, and chroma and faiss need neither.</p>
 <p>Provider names are plain strings, validated against the provider type registry. The registry mirrors the providers your installed langchain supports (for example <code>openai</code>, <code>azure_openai</code>, <code>anthropic</code>, <code>groq</code>, <code>ollama</code>), and each needs its package installed (see the extras table on the <a href="../../modules/ai-core/">module page</a>). List them with <code>get_provider_type_registry().names()</code> from <code>msflib.ai_core.providers</code>.</p>
 <h2 id="2-a-chat-model-and-embeddings">2. A chat model and embeddings<a class="headerlink" href="#2-a-chat-model-and-embeddings" title="Permanent link">&para;</a></h2>
 <p>The next snippet needs the <code>openai</code> extra.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_embeddings</span><span class="p">,</span> <span class="n">get_llm</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_embeddings</span><span class="p">,</span> <span class="n">get_llm</span>
 
 <span class="n">llm</span> <span class="o">=</span> <span class="n">get_llm</span><span class="p">(</span><span class="n">ai_settings</span><span class="p">)</span>
 <span class="n">reply</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"Summarise MSFLib in one sentence."</span><span class="p">)</span>
@@ -2941,12 +2940,11 @@
 <span class="n">embeddings</span> <span class="o">=</span> <span class="n">get_embeddings</span><span class="p">(</span><span class="n">ai_settings</span><span class="p">)</span>
 <span class="n">vector</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>get_llm</code> and <code>get_embeddings</code> return the underlying langchain objects, so streaming (<code>llm.stream(...)</code>), batching and the rest of the langchain API work unchanged. To use another provider, change <code>LLM_PROVIDER</code> and <code>LLM_MODEL</code>, for example <code>"anthropic"</code> with an Anthropic model id (install the <code>anthropic</code> extra). Embeddings are configured separately with <code>EMBEDDING_PROVIDER</code> and <code>EMBEDDING_MODEL</code>, and Anthropic offers no embeddings.</p>
 <p>In a host app, prefer the registry-aware variants on the dependency namespace (<code>get_llm_from_registry(session, scope=scope)</code>), which pick a database-backed provider profile for the caller's tenant, workspace or user before falling back to settings. See <code>get_ai_dependencies</code> on the module page.</p>
 <h2 id="3-chunking-documents">3. Chunking documents<a class="headerlink" href="#3-chunking-documents" title="Permanent link">&para;</a></h2>
 <p><code>IngestionPipeline</code> loads, cleans and chunks a document and returns the chunks with metadata.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.ingestion_pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionPipeline</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.ingestion_pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionPipeline</span>
 
 <span class="n">pipeline</span> <span class="o">=</span> <span class="n">IngestionPipeline</span><span class="p">()</span>
 
@@ -2961,10 +2959,9 @@
 <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"chunk_index"</span><span class="p">],</span> <span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>result</code> also reports which chunking strategy ran (<code>result.chunk_strategy</code>) and whether it came from the built-in fallback provider (<code>result.fallback_used</code>; the default markdown strategy is a fallback-provider strategy, so this is <code>True</code> in the example above and does not signal an error).</p>
 <p>You can pick the strategy and size per call:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">long_text</span> <span class="o">=</span> <span class="s2">"refund policy "</span> <span class="o">*</span> <span class="mi">400</span>
+<div class="highlight"><pre><span></span><code><span class="n">long_text</span> <span class="o">=</span> <span class="s2">"refund policy "</span> <span class="o">*</span> <span class="mi">400</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span>
     <span class="n">long_text</span><span class="p">,</span>
@@ -2973,7 +2970,6 @@
     <span class="n">chunk_options</span><span class="o">=</span><span class="p">{</span><span class="s2">"chunk_size"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">"chunk_overlap"</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition warning">
 <p class="admonition-title">Default embedder and indexer are placeholders</p>
 <p>Without arguments, <code>IngestionPipeline</code> uses a deterministic stand-in embedder and an indexer that only returns ids like <code>chunk-0</code>. They exist for wiring and tests. For real retrieval, either pass your own <code>embedder=</code> and <code>indexer=</code> callables, or take <code>result.chunks[i].text</code> and store them yourself as shown in the next section. An embedder is <code>embedder(texts: list[str]) -&gt; list[list[float]]</code>; an indexer is <code>indexer(records: list[dict]) -&gt; list[str]</code>, where each record has <code>text</code>, <code>embedding</code> and <code>metadata</code>.</p>
@@ -2981,7 +2977,7 @@
 <p>Other constructor arguments (<code>loaders=</code>, <code>cleaner=</code>, <code>chunking_registry=</code>) and per-call <code>workspace_settings=</code> / <code>chunking_policy=</code> let you add loaders and tune strategy selection. Custom chunking strategies and document loaders are covered in the chunking and extraction READMEs under <code>modules/ai_core/msflib/ai_core/services/</code>.</p>
 <h2 id="4-storing-and-searching-with-tenant-isolation">4. Storing and searching with tenant isolation<a class="headerlink" href="#4-storing-and-searching-with-tenant-isolation" title="Permanent link">&para;</a></h2>
 <p>This section continues from sections 1 to 3 (<code>ai_settings</code>, <code>embeddings</code> and <code>result</code>). It needs the <code>pgvector</code> extra and a Postgres database with the vector extension.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.vector_store</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_vector_store</span><span class="p">,</span> <span class="n">similarity_search_scoped</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.vector_store</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_vector_store</span><span class="p">,</span> <span class="n">similarity_search_scoped</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_context_scope</span>
 
 <span class="n">store</span> <span class="o">=</span> <span class="n">get_vector_store</span><span class="p">(</span><span class="n">ai_settings</span><span class="p">,</span> <span class="s2">"faq"</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
@@ -2997,7 +2993,6 @@
 <span class="n">scope</span> <span class="o">=</span> <span class="n">build_context_scope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 <span class="n">hits</span> <span class="o">=</span> <span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">"How long do refunds take?"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Points to know:</p>
 <ul>
 <li><code>get_vector_store</code> returns a <code>ScopedVectorStore</code>. It supports <code>similarity_search</code>, <code>add_texts</code>, <code>add_documents</code>, <code>delete</code> and <code>close</code>. The native langchain store is available as <code>store.raw</code>.</li>
@@ -3010,7 +3005,7 @@
 <h2 id="5-versioned-prompts">5. Versioned prompts<a class="headerlink" href="#5-versioned-prompts" title="Permanent link">&para;</a></h2>
 <p><code>PromptRegistryService</code> stores prompt versions in the database and resolves the active one by scope, in the order user, then workspace, then global.</p>
 <p>The examples below assume <code>session</code> is an open SQLModel <code>Session</code> from your host app (for instance the one injected by your <code>get_session</code> dependency), and that the <code>ai_prompt_version</code> table exists. Import <code>msflib.tenancy.models.tenant</code> before <code>SQLModel.metadata.create_all</code> (or your migrations), because ai-core's provider and vector-store profile tables reference <code>tenant</code>; see the known issue on the <a href="../../modules/ai-core/#wiring-into-a-host-app">module page</a>.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.prompt_registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRegistryService</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.prompt_registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRegistryService</span>
 
 <span class="n">prompts</span> <span class="o">=</span> <span class="n">PromptRegistryService</span><span class="p">()</span>
 
@@ -3024,10 +3019,9 @@
 <span class="n">prompts</span><span class="o">.</span><span class="n">get_active_version</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
 <span class="c1"># 'You are concise.'</span>
 </code></pre></div>
-
 <p>Registering the same key, version and scope twice raises <code>PromptVersionConflictError</code>. To roll a prompt out without a deploy, register a new version and activate it with <code>set_active</code>. A user-level override uses both <code>workspace_id</code> and <code>account_id</code>.</p>
 <h2 id="6-usage-tracking-and-rate-limiting">6. Usage tracking and rate limiting<a class="headerlink" href="#6-usage-tracking-and-rate-limiting" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llm</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.providers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.tracking.usage</span><span class="w"> </span><span class="kn">import</span> <span class="n">TokenUsageCallback</span>
 
 <span class="n">llm</span> <span class="o">=</span> <span class="n">get_llm</span><span class="p">(</span><span class="n">ai_settings</span><span class="p">)</span>
@@ -3035,9 +3029,8 @@
 <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">"callbacks"</span><span class="p">:</span> <span class="p">[</span><span class="n">usage</span><span class="p">]})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">prompt_tokens</span><span class="p">,</span> <span class="n">usage</span><span class="o">.</span><span class="n">completion_tokens</span><span class="p">,</span> <span class="n">usage</span><span class="o">.</span><span class="n">total_tokens</span><span class="p">)</span>
 </code></pre></div>
-
 <p>The callback accumulates token counts across every call it is attached to, so create one per request. Streaming responses only report usage if the provider includes it. On every model call it also emits <code>ai_core.token_usage</code> on the event bus, but only if a listener is registered. Register it on the app emitter with <code>@app_emitter.on("ai_core.token_usage")</code> (<code>app_emitter = bind_app_emitter(app)</code>). It fires for model calls made inside a request (including <code>BackgroundTasks</code>); in threads or scripts in the web process, wrap the call in <code>with use_app_emitter(app):</code>, otherwise the event goes to the default emitter and the listener never runs. A Celery task has no FastAPI app: register its listener on the worker's emitter, <code>AppEmitter(get_emitter())</code> (both from <code>msflib.eventbus</code>). The payload (<code>workspace_id</code>, <code>prompt_tokens</code>, <code>completion_tokens</code>, <code>total_tokens</code>, <code>total_cost</code>) carries the callback's running totals rather than per-call amounts. Use a fresh callback per request, or subtract the previous totals, before billing from it.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.tracking.limiter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateLimiter</span><span class="p">,</span> <span class="n">RateLimitExceeded</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.tracking.limiter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateLimiter</span><span class="p">,</span> <span class="n">RateLimitExceeded</span>
 
 <span class="n">limiter</span> <span class="o">=</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">rpm</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">redis_url</span><span class="o">=</span><span class="s2">"redis://localhost:6379/0"</span><span class="p">)</span>
 
@@ -3046,7 +3039,6 @@
 <span class="k">except</span> <span class="n">RateLimitExceeded</span><span class="p">:</span>
     <span class="o">...</span>  <span class="c1"># return HTTP 429</span>
 </code></pre></div>
-
 <p><code>check</code> raises <code>RateLimitExceeded</code> once a namespace makes more than <code>rpm</code> calls within the same clock minute (a fixed window, not a sliding one). Without a <code>redis_url</code> (or <code>redis_client</code>), counts are kept in memory and are per process, which is fine for development but not for several workers. If Redis is unreachable, <code>check</code> raises a Redis connection error, not <code>RateLimitExceeded</code>, so handle that separately. Nothing calls the limiter for you; add it where you invoke the model.</p>
 <h2 id="concepts-behind-these-pieces">Concepts behind these pieces<a class="headerlink" href="#concepts-behind-these-pieces" title="Permanent link">&para;</a></h2>
 <ul>

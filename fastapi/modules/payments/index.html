@@ -2972,16 +2972,15 @@
 <p><code>msflib-payments</code> starts and verifies one-off payments through Stripe or Paystack, stores each payment, and runs your own fulfilment code once a payment is verified. You call <code>process_payment</code> from your business flow to create a checkout, expose the module's router so the client can confirm the payment, and subscribe to an event to grant whatever the customer paid for.</p>
 <p>It does not handle webhooks, subscriptions, refunds or invoices. Verification is pull-based: the client calls the verify endpoint with the payment reference.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-payments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/payments"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"payments-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>The <code>stripe</code> SDK is a hard dependency and there are no extras. The <code>payment</code> table has a foreign key to <code>account.id</code>, but <code>msflib-payments</code> does not declare <code>msflib-account</code> itself, so add it to your own dependencies as above (tracked in <a href="https://github.com/msflib/fastapi/issues/273">#273</a>, see Key concepts).</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Add <code>PaymentsSettings</code> to your settings class, then mount the router. <code>router</code> is exported from <code>msflib.payments.router</code> and takes the settings object directly.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaymentsSettings</span>
@@ -3005,7 +3004,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -3068,10 +3066,10 @@
 </tr>
 </tbody>
 </table>
-<p>Every key has a flat alias, so the environment variables are the plain names: <code>PAYSTACK_SECRET_KEY</code>, <code>STRIPE_SECRET_KEY</code>, <code>PAYMENT_GATEWAY</code> and so on. <code>PAYMENTS__PAYSTACK_SECRET_KEY</code> form works only if you declare the namespace as a field (<code>PAYMENTS: PaymentsSettings = PaymentsSettings()</code>); with the mixin style above it is not read. Both styles were checked.</p>
+<p>Every key has a flat alias, so the environment variables are the plain names: <code>PAYSTACK_SECRET_KEY</code>, <code>STRIPE_SECRET_KEY</code>, <code>PAYMENT_GATEWAY</code> and so on. <code>PAYMENTS__PAYSTACK_SECRET_KEY</code> form works only if you declare the namespace as a field (<code>PAYMENTS: PaymentsSettings = PaymentsSettings()</code>); with the subclassed style above it is not read. Both styles were checked.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for mixin hosts. This may change.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for settings composed as a field, not for subclassed hosts. This may change.</p>
 </div>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3107,7 +3105,7 @@
 </ul>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Create a payment from your own endpoint, register a fulfilment listener, and verify. The gateway calls are replaced with stubs so this runs without network access; with real keys, drop the two patches. This was run against in-memory SQLite.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">patch</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
@@ -3159,7 +3157,6 @@
     <span class="c1"># GET /payments/verify/ref-1 now returns 200 with status "verified",</span>
     <span class="c1"># runs activate_subscription, and leaves payment.queue.status == processed</span>
 </code></pre></div>
-
 <p>In a real app <code>process_payment</code> is awaited inside an async endpoint and the response sends <code>payment.authorization_url</code> (Paystack) or <code>payment.access_code</code> (Stripe) to the client. <code>process_payment</code> converts gateway connection and response errors into <code>PaymentError</code> from <code>msflib.payments.service.error</code> (<code>PaymentConnectionError</code> and <code>PaymentResponseError</code> are subclasses that carry the original <code>cause</code>).</p>
 <p>The verify route also compares the gateway's reported amount with <code>convert_amount(payment.amount)</code> and returns 400 "Payment amount mismatch." if they differ.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

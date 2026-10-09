@@ -2915,7 +2915,7 @@
 <p>An <em>action</em> is the service layer for one model: the object that reads and writes its rows. <code>ModelAction</code> gives you create, read, update and delete without writing queries, plus filtered and paged reads and lifecycle events. Routers call actions; so do seed scripts, background jobs and tests. This page continues from <a href="../models-data-tables/">Models, data and tables</a>.</p>
 <h2 id="create-an-action">Create an action<a class="headerlink" href="#create-an-action" title="Permanent link">&para;</a></h2>
 <p><code>ModelAction</code> is generic over three types: the table, the create schema and the update schema. Subclass it with concrete types, which gives you a place for your own queries:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/actions.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/actions.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
@@ -2934,12 +2934,11 @@
 
 <span class="n">task_action</span> <span class="o">=</span> <span class="n">TaskAction</span><span class="p">()</span>
 </code></pre></div>
-
 <p>Create one instance and share it; actions hold no per-request state. If you have nothing to add, skip the subclass: <code>ModelAction[Task, TaskCreate, TaskUpdate]()</code> works, and so does <code>msflib.actions.action(Task, TaskCreate, TaskUpdate)</code>, which returns a cached instance per type triple. Instantiating a bare <code>ModelAction()</code> without type arguments raises <code>TypeError: ModelAction must be instantiated with concrete generic types.</code> the first time it needs the model.</p>
 <p>Every method takes a SQLModel <code>Session</code> as its first argument. The action never opens or closes sessions; you do, or a FastAPI dependency does (see the <a href="../endpoints-and-routers/">next page</a>).</p>
 <h2 id="create-read-update-delete">Create, read, update, delete<a class="headerlink" href="#create-read-update-delete" title="Permanent link">&para;</a></h2>
 <p>This script runs against an in-memory SQLite database:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">app</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>  <span class="c1"># noqa: F401</span>
@@ -2971,7 +2970,6 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">deleted</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">task_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
     <span class="c1"># write docs None</span>
 </code></pre></div>
-
 <p>Points to notice:</p>
 <ul>
 <li><code>create</code> returns the committed row, refreshed, so <code>id</code> and <code>created_at</code> are filled in.</li>
@@ -3021,37 +3019,32 @@
 </div>
 <h2 id="scoping-values-the-client-does-not-supply">Scoping: values the client does not supply<a class="headerlink" href="#scoping-values-the-client-does-not-supply" title="Permanent link">&para;</a></h2>
 <p>The <code>update={...}</code> argument on <code>create</code> and <code>update</code> merges extra values over what the schema produced. Use it for everything that comes from the request context rather than the request body: the owner, the workspace, the tenant. That is why <code>TaskCreate</code> has no <code>owner</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">task_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"owner"</span><span class="p">:</span> <span class="n">current_owner</span><span class="p">})</span>
+<div class="highlight"><pre><span></span><code><span class="n">task_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"owner"</span><span class="p">:</span> <span class="n">current_owner</span><span class="p">})</span>
 </code></pre></div>
-
 <p>On <code>create</code>, keys in <code>update</code> that are not model fields are dropped, and so are schema fields the model does not have. For reads, scope with the filters. Scope every read and write by the owner (or workspace, or tenant) the same way, so a row id alone never selects data:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">mine</span> <span class="o">=</span> <span class="n">task_action</span><span class="o">.</span><span class="n">get_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">current_owner</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">mine</span> <span class="o">=</span> <span class="n">task_action</span><span class="o">.</span><span class="n">get_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">current_owner</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>decorator=</code> takes a function called with the model before it is saved, for last-minute changes that are not plain field values. In real apps the identity values come from <code>msflib-auth</code> dependencies, and the scope dimensions (tenant, workspace, account) from <a href="../../modules/core/#scope"><code>get_scope_dependencies</code></a>.</p>
 <h2 id="transactions">Transactions<a class="headerlink" href="#transactions" title="Permanent link">&para;</a></h2>
 <p>By default each call commits. Pass <code>commit=False</code> to flush instead and leave the commit to you, so several writes succeed or fail together:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">task_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">TaskCreate</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"a"</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"owner"</span><span class="p">:</span> <span class="s2">"ann"</span><span class="p">},</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">task_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">TaskCreate</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"b"</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"owner"</span><span class="p">:</span> <span class="s2">"ann"</span><span class="p">},</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
-
 <p>A rollback discards both. On SQLite this needs the engine wrapped with <code>enable_savepoints</code>, as in <a href="../basics/#engine-and-session">Basics</a>. Rows created with <code>commit=False</code> already have their <code>id</code> after the flush.</p>
 <h2 id="lifecycle-events">Lifecycle events<a class="headerlink" href="#lifecycle-events" title="Permanent link">&para;</a></h2>
 <p>Every write also emits events, so other code can react without the router knowing about it. For <code>Task</code> the names are <code>task-create-pre-commit</code>, <code>task-update-pre-commit</code>, <code>task-delete-pre-commit</code> and their <code>-post-commit</code> counterparts, and generic <code>model-...</code> versions of each. Pre-commit listeners run after the flush, inside the transaction, and see the live row and the session; an exception in one aborts the write. Post-commit listeners run once the outermost commit succeeds, receive a plain snapshot of the row, and cannot affect the write.</p>
-<div class="codehilite"><pre><span></span><code><span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"task-create-post-commit"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">"task-create-post-commit"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">announce</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"created task"</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Listeners are registered on the app emitter you bound in <code>main.py</code> (<code>app_emitter = bind_app_emitter(app)</code>). The app emitter is active during requests, including <code>BackgroundTasks</code> and tasks started from the request. Only writes made through a <code>ModelAction</code> emit events; <code>session.add(...)</code> does not. See <a href="../../concepts/event-bus/">Event bus</a> and, for running code inside every write, <code>on_model_write</code> on the <a href="../../modules/core/#examples">core page</a>.</p>
 <h2 id="test-data">Test data<a class="headerlink" href="#test-data" title="Permanent link">&para;</a></h2>
 <p><code>task_action.random()</code> builds a create schema with random values for the required fields, and <code>random(title="fixed")</code> pins some. Because <code>owner</code> is context rather than input, build the schema and create it yourself so you can pass <code>update</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">task_action</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"fixed"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">task_action</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"fixed"</span><span class="p">)</span>
 <span class="n">task</span> <span class="o">=</span> <span class="n">task_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"owner"</span><span class="p">:</span> <span class="s2">"ann"</span><span class="p">})</span>
 </code></pre></div>
-
 <p><code>create_random(session, count=2)</code> creates rows in one call.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>

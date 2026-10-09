@@ -3150,19 +3150,17 @@
 <p><code>msflib-account</code> provides the account and profile domain: models, schemas, actions, and three routers for self-service, admin management and profiles. An account is the person who signs in. It is independent of any tenant or workspace; per-workspace identity lives in <a href="../workspaces/">msflib-workspaces</a> as a membership row that points at an account.</p>
 <p>Use it with <a href="../auth/">msflib-auth</a>, which supplies the <code>get_current_account</code> and role-check dependencies these routers require.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/account"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"account-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p><code>msflib/account/__init__.py</code> exports nothing. Import from submodules. The abstract bases and schemas are re-exported from <code>msflib.account.models</code>; the concrete table classes are not, so import them from <code>msflib.account.models.account</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">AccountUpdate</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">AccountUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span><span class="p">,</span> <span class="n">Profile</span>
 </code></pre></div>
-
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Create the tables, then mount the routers. This example uses the module's own <code>Account</code> and <code>Profile</code> models and an in-memory SQLite database.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountRead</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">Account</span><span class="p">,</span> <span class="n">Profile</span>
@@ -3249,7 +3247,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>bind_app_emitter(app)</code> activates the event bus for requests; see <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h3 id="routes">Routes<a class="headerlink" href="#routes" title="Permanent link">&para;</a></h3>
 <table>
@@ -3313,13 +3310,13 @@
 </tr>
 </tbody>
 </table>
-<p>With mixin-style settings (as above) set these with flat names such as <code>USERS_OPEN_REGISTRATION=true</code>. With composed settings (<code>ACCOUNT: AccountSettings = AccountSettings()</code>) the nested form <code>ACCOUNT__USERS_OPEN_REGISTRATION=true</code> works too. Code reads values with <code>settings.scope("ACCOUNT")</code>.</p>
-<p>The wiring above sets defaults by overriding fields on a mixin <code>Settings</code> subclass. With composed settings, set them from the environment instead (<code>ACCOUNT__USERS_OPEN_REGISTRATION=true</code>); without it open registration returns 403. Composed settings also hit the auth router issue described on the <a href="../auth/#wiring-into-a-host-app">auth page</a> (#287), which breaks login.</p>
+<p>With subclassed settings (as above) set these with flat names such as <code>USERS_OPEN_REGISTRATION=true</code>. With composed settings (<code>ACCOUNT: AccountSettings = AccountSettings()</code>) the nested form <code>ACCOUNT__USERS_OPEN_REGISTRATION=true</code> works too. Code reads values with <code>settings.scope("ACCOUNT")</code>.</p>
+<p>The wiring above sets defaults by overriding fields on a subclassed <code>Settings</code> class. With composed settings, set them from the environment instead (<code>ACCOUNT__USERS_OPEN_REGISTRATION=true</code>); without it open registration returns 403. Composed settings also hit the auth router issue described on the <a href="../auth/#wiring-into-a-host-app">auth page</a> (#287), which breaks login.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for subclassed hosts. With subclassed settings, use the flat names.</p>
 </div>
-<p>Account creation sends a welcome email when <code>CORE.EMAILS_ENABLED</code> is true. That setting defaults to true whenever the SMTP host, port and from-address are set, and the defaults are set, so disable it in development unless an SMTP server is available: <code>EMAILS_ENABLED=false</code> with mixin settings, <code>CORE__EMAILS_ENABLED=false</code> with composed settings (the flat name is ignored there).</p>
+<p>Account creation sends a welcome email when <code>CORE.EMAILS_ENABLED</code> is true. That setting defaults to true whenever the SMTP host, port and from-address are set, and the defaults are set, so disable it in development unless an SMTP server is available: <code>EMAILS_ENABLED=false</code> with subclassed settings, <code>CORE__EMAILS_ENABLED=false</code> with composed settings (the flat name is ignored there).</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <h3 id="models">Models<a class="headerlink" href="#models" title="Permanent link">&para;</a></h3>
 <ul>
@@ -3332,7 +3329,7 @@
 <p>Subclass <code>AccountBase</code> with <code>table=True</code> to add columns, and pass your class as <code>account_type</code>. See <a href="../../integration/overriding-models/">Overriding models</a>.</p>
 <h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h3>
 <p><code>AccountAction</code> and <code>ProfileAction</code> are generic <code>ModelAction</code> subclasses; parameterise them with your model and schema types:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span><span class="p">,</span> <span class="n">ProfileAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span><span class="p">,</span> <span class="n">ProfileAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">,</span> <span class="n">ProfileCreate</span><span class="p">,</span> <span class="n">ProfileUpdate</span>
 
 <span class="n">profile_action</span> <span class="o">=</span> <span class="n">ProfileAction</span><span class="p">[</span><span class="n">Profile</span><span class="p">,</span> <span class="n">ProfileCreate</span><span class="p">,</span> <span class="n">ProfileUpdate</span><span class="p">]()</span>
@@ -3341,7 +3338,6 @@
     <span class="n">profile_action</span><span class="o">=</span><span class="n">profile_action</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>AccountAction</code> adds <code>get_by_email</code>, <code>authenticate</code>, <code>ensure_unique_fields</code> (checks <code>email</code>, <code>phone</code> and <code>username</code> by default), and <code>create</code>, which hashes the password, lower-cases the email and, when a <code>profile_action</code> is configured and the data has a <code>profile</code>, creates the profile in the same transaction. Constructing it without <code>settings</code> still works but emits a <code>DeprecationWarning</code>.</p>
 <p><code>AccountAction.resolve_workspace_context</code>, <code>build_access_token_claims</code> and <code>decorate_access_token_payload</code> are stubs kept for compatibility and return empty values. The working versions are on <code>WorkspaceAction</code> in <a href="../workspaces/">workspaces</a>.</p>
 <p>The <code>msflib.account.service.account</code> module offers <code>create_account</code>, <code>update_account</code> and <code>get_account</code>, which the routers use; call them if you need the same event and email behaviour outside a route.</p>
@@ -3380,7 +3376,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="register-sign-in-and-read-the-current-account">Register, sign in and read the current account<a class="headerlink" href="#register-sign-in-and-read-the-current-account" title="Permanent link">&para;</a></h3>
 <p>Using the app from the wiring section:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
@@ -3400,19 +3396,17 @@
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/account/me"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"email"</span><span class="p">]</span>  <span class="c1"># "ada@example.com"</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/admin/accounts/"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span>  <span class="c1"># 403: role is "user"</span>
 </code></pre></div>
-
 <h3 id="create-an-account-from-code">Create an account from code<a class="headerlink" href="#create-an-account-from-code" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">account_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
         <span class="n">data</span><span class="o">=</span><span class="n">AccountCreate</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">"ops@example.com"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">"s3cret-pass"</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">"admin"</span><span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div>
-
 <p><code>account_action.random(...)</code> builds a populated <code>AccountCreate</code> for tests and seed scripts.</p>
 <h3 id="use-a-custom-registration-schema">Use a custom registration schema<a class="headerlink" href="#use-a-custom-registration-schema" title="Permanent link">&para;</a></h3>
 <p>Pass <code>account_create_type=</code> to <code>account_router</code> and <code>account_admin_router</code> to validate request bodies against a subclass of <code>AccountCreate</code>. The route path and response model do not change.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">SignupRequest</span><span class="p">(</span><span class="n">AccountCreate</span><span class="p">):</span>
@@ -3431,7 +3425,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>open_registration_path</code> overrides <code>OPEN_REGISTRATION_PATH</code>. Add the extra column on your <code>account_type</code> model if you want <code>referral_code</code> stored; a listener on <code>account-pre-create</code> can also act on it.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

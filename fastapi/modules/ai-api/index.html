@@ -3050,15 +3050,14 @@
 <p><code>msflib-ai-api</code> is the HTTP transport for AI features in a host app. One router gives you scoped retrieval (<code>/search</code>), retrieval-augmented answers (<code>/ask</code>), and a tool-using agent (<code>/agent/ask</code>, with a streaming variant), all resolving the caller's account, workspace and tenant, and delegating model, vector-store and tool behaviour to <a href="../ai-core/">ai-core</a>.</p>
 <p>It is deliberately thin. It has no settings of its own (it reads <code>AI_CORE</code>), no upload endpoint (files go through <a href="../documents/">documents</a> and are indexed there), and no persistence beyond what the agent's checkpointer and the optional transcript writer provide.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-ai-api</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/ai_api"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ai_api-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>This pulls in <code>msflib-account</code>, <code>msflib-ai-core</code> and <code>msflib-tenancy</code>. Model providers, vector backends and optional tools come from ai-core's extras (for example <code>openai</code>, <code>pgvector</code>, <code>mcp</code>); see <a href="../ai-core/#install">ai-core</a>. The package <code>msflib/ai_api/__init__.py</code> is empty, so import from the submodules shown below.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Add <code>AICoreSettings</code> and <code>AccountSettings</code> to your settings class, then mount the router. <code>get_current_account</code> is required, because ai-api has no anonymous surface, and must return an account-like object with <code>id</code>, <code>role</code> and <code>current_workspace_id</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_api.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ai_router</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_api.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_ai_router</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">create_ai_router</span><span class="p">(</span>
@@ -3072,7 +3071,6 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The routes, relative to the router prefix:</p>
 <table>
 <thead>
@@ -3177,7 +3175,7 @@
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>ai-api has no settings namespace. Model, embedding, vector-store, retrieval and web-search behaviour come from <code>AI_CORE</code>; see the table in <a href="../ai-core/#configuration">ai-core</a>. The environment variable names depend on how you compose the settings:</p>
 <ul>
-<li>Mixin (<code>class Settings(AICoreSettings, ...)</code>): the flat names <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code>, <code>VECTOR_STORE_BACKEND</code>, <code>RETRIEVER_K</code> and <code>WEB_SEARCH_BACKEND</code>, (a few also accept <code>AICORE_</code> aliases such as <code>AICORE_LLM_PROVIDER</code>). <code>AI_CORE__LLM_PROVIDER</code> is ignored in this style.</li>
+<li>Subclassed (<code>class Settings(AICoreSettings, ...)</code>): the flat names <code>LLM_PROVIDER</code>, <code>LLM_MODEL</code>, <code>VECTOR_STORE_BACKEND</code>, <code>RETRIEVER_K</code> and <code>WEB_SEARCH_BACKEND</code>, (a few also accept <code>AICORE_</code> aliases such as <code>AICORE_LLM_PROVIDER</code>). <code>AI_CORE__LLM_PROVIDER</code> is ignored in this style.</li>
 <li>Nested field (<code>AI_CORE: AICoreSettings = AICoreSettings()</code>): <code>AI_CORE__LLM_PROVIDER</code>, <code>AI_CORE__LLM_MODEL</code>, <code>AI_CORE__VECTOR_STORE_BACKEND</code>, <code>AI_CORE__RETRIEVER_K</code>, <code>AI_CORE__WEB_SEARCH_BACKEND</code>. The flat <code>RETRIEVER_K</code> is not read.</li>
 </ul>
 <p>One environment variable is read directly:</p>
@@ -3222,7 +3220,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="search-and-ask-with-an-injected-store-and-model">Search and ask, with an injected store and model<a class="headerlink" href="#search-and-ask-with-an-injected-store-and-model" title="Permanent link">&para;</a></h3>
 <p>This runs as written. It stands in a fake vector store and model so no provider or database is needed; in a real app you pass a real <code>get_session</code> and omit <code>get_vector_store</code> and <code>model_name_or_factory</code> so ai-core resolves them from settings.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
@@ -3276,10 +3274,9 @@
 <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">openai</span><span class="p">[</span><span class="s2">"output"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"content"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"text"</span><span class="p">])</span>        <span class="c1"># P-101 feeds V-201.</span>
 </code></pre></div>
-
 <h3 id="your-own-agent">Your own agent<a class="headerlink" href="#your-own-agent" title="Permanent link">&para;</a></h3>
 <p>Inject any LangChain <code>Runnable</code>. Here a trivial one stands in for a real agent; the router calls it with <code>{"messages": [...], "k": ..., ...}</code> and returns whatever it produces:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableLambda</span>
 
 <span class="n">echo_agent</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="p">{</span><span class="s2">"echo"</span><span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]})</span>
 
@@ -3292,10 +3289,9 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>With a mounted app, <code>GET /api/v1/ai/agent/status</code> reports <code>agent_source: "injected"</code>, and <code>POST /api/v1/ai/agent/ask</code> with <code>{"question": "hi"}</code> returns <code>{"echo": "hi"}</code>. This was run against a SQLite-backed app with a seeded default tenant. To receive the tools and the scope-bearing runtime context, write <code>get_injected_agent=lambda tools: build_my_agent(tools)</code> (one positional parameter) and build the agent with <code>context_schema=AgentRuntimeContext</code> from <code>msflib.ai_api.agent_runtime</code>.</p>
 <h3 id="giving-the-agent-knowledge-tools-and-a-transcript">Giving the agent knowledge tools and a transcript<a class="headerlink" href="#giving-the-agent-knowledge-tools-and-a-transcript" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ai_bridge</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ai_bridge</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
 
 <span class="n">knowledge_deps</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">))</span>
@@ -3311,7 +3307,6 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Not run end to end, since it needs a working model and the knowledge and conversation tables; each name was checked against the source. See <a href="../knowledge/#agent-tools">Knowledge</a> and <a href="../conversation/#persisting-ai-agent-turns">Conversation</a>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

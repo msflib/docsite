@@ -3072,14 +3072,14 @@
 </tr>
 </tbody>
 </table>
-<p>A token is a JWT signed with the <code>SECRET_KEY</code> setting (the <code>CORE</code> namespace). The auth router reads it from the top level of your settings object, so use the mixin style. Its <code>sub</code> claim is the account's email. Nothing else is needed to identify the caller, so the account is loaded from the database on every request.</p>
+<p>A token is a JWT signed with the <code>SECRET_KEY</code> setting (the <code>CORE</code> namespace). The auth router reads it from the top level of your settings object, so use the subclassed style. Its <code>sub</code> claim is the account's email. Nothing else is needed to identify the caller, so the account is loaded from the database on every request.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
-<p>With composed (nested) settings the auth router fails on <code>POST /login</code>, <code>POST /password-recovery</code> and <code>POST /reset-password</code> with <code>AttributeError: ... no attribute 'SECRET_KEY'</code>. Adding a top-level <code>SECRET_KEY</code> stops the error but leaves two independent values (<code>SECRET_KEY</code> and <code>CORE__SECRET_KEY</code>), so tokens signed by the router can be rejected by the dependencies. Use the mixin style.</p>
+<p>With composed (nested) settings the auth router fails on <code>POST /login</code>, <code>POST /password-recovery</code> and <code>POST /reset-password</code> with <code>AttributeError: ... no attribute 'SECRET_KEY'</code>. Adding a top-level <code>SECRET_KEY</code> stops the error but leaves two independent values (<code>SECRET_KEY</code> and <code>CORE__SECRET_KEY</code>), so tokens signed by the router can be rejected by the dependencies. Use the subclassed style.</p>
 </div>
 <h2 id="1-wire-it-up">1. Wire it up<a class="headerlink" href="#1-wire-it-up" title="Permanent link">&para;</a></h2>
 <p>You create the dependency namespace once and pass pieces of it to the routers. This is the setup from the previous guide:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
 
@@ -3107,15 +3107,13 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The secret passed to <code>get_account_dependencies</code> and the one in <code>settings</code> must be the same value, since one signs and the other verifies. <code>active_statuses</code> (on both the router and the dependencies) lists the account statuses that count as active; the default is <code>["active", "online"]</code>. Pass the same list to both.</p>
 <h2 id="2-log-in">2. Log in<a class="headerlink" href="#2-log-in" title="Permanent link">&para;</a></h2>
 <p><code>POST /login</code> takes an OAuth2 password form, so the fields are form-encoded and the email goes in <code>username</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/login"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="s2">"a@example.com"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"pw"</span><span class="p">})</span>
+<div class="highlight"><pre><span></span><code><span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/login"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="s2">"a@example.com"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"pw"</span><span class="p">})</span>
 <span class="n">token</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"access_token"</span><span class="p">]</span>
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
 </code></pre></div>
-
 <p>The response has <code>access_token</code>, <code>expires</code>, <code>token_type</code> (<code>bearer</code>), <code>account</code> (serialised with your <code>account_read_type</code>) and <code>user</code> (<code>null</code> unless you add workspaces, see <a href="#workspaces">Workspaces</a>).</p>
 <p>On a successful login the router:</p>
 <ol>
@@ -3126,14 +3124,13 @@
 <li>Signs a token that expires after <code>AUTH.ACCESS_TOKEN_EXPIRE_MINUTES</code> (default 30).</li>
 </ol>
 <p>Listen to the login event to keep an audit trail or start a session record:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventName</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventName</span>
 
 
 <span class="nd">@app_emitter</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">ACCOUNT_LOGGED_IN</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">on_login</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="o">...</span>  <span class="c1"># options["session"] is the request's database session</span>
 </code></pre></div>
-
 <p>There is no refresh token. When a token expires, the client logs in again.</p>
 <h2 id="3-protect-routes">3. Protect routes<a class="headerlink" href="#3-protect-routes" title="Permanent link">&para;</a></h2>
 <p><code>get_account_dependencies</code> returns these members:</p>
@@ -3173,7 +3170,7 @@
 </tr>
 </tbody>
 </table>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountRole</span>
 
 
@@ -3197,7 +3194,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">greeting</span><span class="p">(</span><span class="n">account</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account_or_none</span><span class="p">)):</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"hello"</span><span class="p">:</span> <span class="n">account</span><span class="o">.</span><span class="n">email</span> <span class="k">if</span> <span class="n">account</span> <span class="k">else</span> <span class="s2">"stranger"</span><span class="p">}</span>
 </code></pre></div>
-
 <p>Use <code>get_current_active_account</code> for most routes. <code>get_current_account</code> alone does not check the status, so a suspended account with a valid token still passes it. <code>RoleCheck</code> depends on <code>get_current_account</code>, not the active variant, so combine them when both matter. <code>AccountRole</code> has <code>root</code>, <code>admin</code> and <code>user</code>; the superuser dependency checks for <code>root</code> only, so an <code>admin</code> needs <code>RoleCheck</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/272">#272</a>)</p>
@@ -3211,11 +3207,10 @@
 <li>Revocation applies to the account rather than to individual tokens: logging out ends the account's current sessions, and logging in again clears the revocation. To end a single session, add a unique claim with <code>access_token_claims_decorator</code> and check it in your own dependency.</li>
 <li>With the default in-memory keystore, revocation is per process. Use Redis when you run more than one worker:</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="n">get_keystore</span> <span class="o">=</span> <span class="n">get_keystore_factory</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">get_keystore</span> <span class="o">=</span> <span class="n">get_keystore_factory</span><span class="p">(</span>
     <span class="n">redis_host</span><span class="o">=</span><span class="s2">"redis.internal"</span><span class="p">,</span> <span class="n">redis_password</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">redis_port</span><span class="o">=</span><span class="mi">6379</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>If <code>redis_host</code> or <code>redis_password</code> is missing, or the Redis client cannot be created, the factory falls back to an in-memory store and logs a warning. The keystore also holds the short password-reset codes below.</p>
 <h2 id="customise-the-token">Customise the token<a class="headerlink" href="#customise-the-token" title="Permanent link">&para;</a></h2>
 <p>The router takes four hooks for the login response:</p>
@@ -3250,7 +3245,7 @@
 </tr>
 </tbody>
 </table>
-<div class="codehilite"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">auth_router</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">access_token_claims_decorator</span><span class="o">=</span><span class="k">lambda</span> <span class="n">account</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">role</span><span class="p">)},</span>
@@ -3258,7 +3253,6 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>After this, the decoded token contains <code>{"sub": "a@example.com", "role": "user", "exp": ...}</code>. Claims are for the client's benefit; the server side does not read them back, since <code>get_current_account</code> loads the account on each request. Do not put anything secret in them: a JWT is signed, not encrypted.</p>
 <p>Fields you add to the payload with <code>access_token_decorator</code> only appear in the response if the response model declares them, so pair it with an <code>access_token_response_type</code>.</p>
 <h2 id="password-recovery">Password recovery<a class="headerlink" href="#password-recovery" title="Permanent link">&para;</a></h2>
@@ -3270,7 +3264,7 @@
 </ol>
 <p>The email is built from the template <code>reset_password.html</code> and sent through the core email service, using the SMTP values in the core settings. The link points at <code>CORE.CLIENT_HOST</code> plus <code>AUTH.PASSWORD_RESET_PATH</code> (default <code>/reset</code>) with <code>?token=...</code>. Reset tokens last <code>AUTH.EMAIL_RESET_TOKEN_EXPIRE_HOURS</code> (default 48).</p>
 <p>To send the email yourself, or to capture it in tests, pass <code>send_reset_pwd_email_override</code>. It is called with keyword arguments <code>email_to</code>, <code>username</code>, <code>token</code> and <code>code</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">outbox</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight"><pre><span></span><code><span class="n">outbox</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">auth_router</span><span class="p">(</span>
@@ -3287,23 +3281,22 @@
     <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"token"</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"a@example.com"</span><span class="p">,</span> <span class="s2">"new_password"</span><span class="p">:</span> <span class="s2">"new"</span><span class="p">},</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <h2 id="google-sign-in">Google sign-in<a class="headerlink" href="#google-sign-in" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Not run in this guide</p>
 <p>This section follows the source and the module's tests. It needs real Google credentials, so it was not exercised end to end.</p>
 </div>
-<p>Google sign-in is off by default. Set <code>AUTH.ENABLE_GOOGLE_OAUTH</code>, <code>GOOGLE_OAUTH_CLIENT_ID</code>, <code>GOOGLE_OAUTH_CLIENT_SECRET</code> and <code>GOOGLE_REDIRECT_URI</code> (flat environment names work with the mixin settings style). While the flag is off, both Google routes answer <code>403</code>.</p>
+<p>Google sign-in is off by default. Set <code>AUTH.ENABLE_GOOGLE_OAUTH</code>, <code>GOOGLE_OAUTH_CLIENT_ID</code>, <code>GOOGLE_OAUTH_CLIENT_SECRET</code> and <code>GOOGLE_REDIRECT_URI</code> (flat environment names work with the subclassed settings style). While the flag is off, both Google routes answer <code>403</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for subclassed hosts. With subclassed settings, use the flat names.</p>
 </div>
 <ul>
 <li><code>GET /google/login?redirect_uri=...</code> redirects the browser to Google. The OAuth state is kept in the request session, so add Starlette's <code>SessionMiddleware</code> to the app, as the module's own tests do.</li>
 <li><code>POST /google/callback</code> takes a JSON body <code>{"code": ..., "redirect_uri": ..., "auth_data": ...}</code>, exchanges the code, reads the Google profile and returns the same token response as <code>/login</code>.</li>
 </ul>
 <p>If no account has the Google email, the router creates none by itself. With <code>AUTH.ALLOW_GOOGLE_OAUTH_SIGNUP</code> on, it emits <code>google-account-create</code> and requires a listener to create the account; with no listener it answers <code>500</code>. With the flag off, it answers <code>400</code> and the user must register normally. The listener receives a <code>GoogleUserInfo</code> and <code>{"session": session}</code>. Register it on the app emitter (<code>app_emitter.on</code>); a listener on the global <code>emitter</code> is not seen, and the request still answers <code>500</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">secrets</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">secrets</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventName</span>
 
@@ -3316,11 +3309,10 @@
         <span class="n">data</span><span class="o">=</span><span class="n">AccountCreate</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">user_info</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_urlsafe</span><span class="p">(</span><span class="mi">32</span><span class="p">)),</span>
     <span class="p">)</span>
 </code></pre></div>
-
 <p>To collect extra data from the client on first sign-in, pass <code>auth_payload_type=</code> (a Pydantic class). The callback validates <code>auth_data</code> against it before calling Google and puts the result in <code>user_info.auth_payload</code>.</p>
 <h2 id="workspaces">Workspaces<a class="headerlink" href="#workspaces" title="Permanent link">&para;</a></h2>
 <p>An account can belong to several workspaces. The workspace dependencies answer two questions per request: which workspace is this for, and is the caller a member?</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_dependencies</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpHeaderResolver</span>
 
 <span class="n">user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span>
@@ -3331,7 +3323,6 @@
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">HttpHeaderResolver</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>WorkspaceMember</code> and <code>Workspace</code> are tables defined from the <code>msflib-workspaces</code> bases (see <a href="../overriding-models/#add-columns-to-the-workspace">Overriding models</a>); the module's own <code>Workspace</code> and <code>User</code> tables work too if you do not need extra columns.</p>
 <p><code>user_deps</code> provides:</p>
 <table>
@@ -3370,7 +3361,7 @@
 </tr>
 </tbody>
 </table>
-<div class="codehilite"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/projects"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/projects"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">projects</span><span class="p">(</span>
     <span class="n">workspace</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">),</span>
     <span class="n">user</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_active_user</span><span class="p">),</span>
@@ -3385,7 +3376,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">ws_admin</span><span class="p">():</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"ok"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 </code></pre></div>
-
 <p>With the header resolver, a client sends <code>X-Workspace: acme</code> along with the bearer token. Without the header the route answers <code>404 No workspace specified.</code>, an unknown slug answers <code>404 Workspace not found</code>, and a non-member gets <code>403</code> on <code>ws-admin</code>. Two slugs are special in every resolver: <code>current</code> is the workspace in the account's <code>current_workspace_id</code>, and <code>default</code> is the workspace marked <code>is_default</code>.</p>
 <h3 id="choose-how-the-workspace-is-found">Choose how the workspace is found<a class="headerlink" href="#choose-how-the-workspace-is-found" title="Permanent link">&para;</a></h3>
 <p>A resolver turns the request into a workspace slug. Pick one when you create <code>user_deps</code>:</p>
@@ -3394,7 +3384,7 @@
 <li><code>HttpHeaderResolver()</code> reads <code>X-Workspace</code>; <code>HttpHeaderResolver(header_name="X-Active-Workspace")</code> renames it. The header shows up as an optional header parameter in the OpenAPI document.</li>
 <li>A custom resolver subclasses <code>WorkspaceResolver</code> and implements <code>resolve(context)</code>, returning a slug or <code>None</code>. <code>ResolverContext</code> carries <code>session</code>, <code>account</code>, <code>path_params</code> and <code>headers</code> (header names lower-cased).</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResolverContext</span><span class="p">,</span> <span class="n">WorkspaceResolver</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResolverContext</span><span class="p">,</span> <span class="n">WorkspaceResolver</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">SubdomainResolver</span><span class="p">(</span><span class="n">WorkspaceResolver</span><span class="p">):</span>
@@ -3414,11 +3404,10 @@
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">SubdomainResolver</span><span class="p">(</span><span class="s2">"example.com"</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>A request to <code>acme.example.com</code> resolves the workspace <code>acme</code>. The resolver is chosen per <code>user_deps</code> instance, so different route groups can use different strategies by building several instances.</p>
 <h3 id="include-the-workspace-in-the-token">Include the workspace in the token<a class="headerlink" href="#include-the-workspace-in-the-token" title="Permanent link">&para;</a></h3>
 <p>The workspaces module has two helpers that put the caller's workspace context into the login response and the JWT. Build them from your actions and pass them to the auth router:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">WorkspaceToken</span><span class="p">(</span><span class="n">Token</span><span class="p">):</span>
@@ -3437,7 +3426,6 @@
     <span class="n">access_token_response_type</span><span class="o">=</span><span class="n">WorkspaceToken</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The token then carries <code>user_id</code> and <code>workspace_id</code> claims, and the response lists the caller's workspaces and sets <code>current_workspace_id</code> (the account's first workspace is chosen if it has none, or if the stored one is not among its memberships). If you leave out <code>access_token_response_type</code>, the default <code>Token</code> model keeps only <code>account</code> and <code>user</code> and drops the other fields (see the notice below). The server still resolves the workspace per request from the resolver, not from the claims.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/271">#271</a>)</p>

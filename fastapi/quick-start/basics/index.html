@@ -2900,18 +2900,16 @@
 <p>You need Python 3.10 or later. The snippets were run on Python 3.12 with FastAPI 0.136, SQLModel 0.0.22 and Pydantic 2.12.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <p>Create a project and add the core package. With Poetry, in <code>pyproject.toml</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&gt;=3.10,&lt;3.15"</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>then run <code>poetry install</code>. With pip, the equivalent is:</p>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msflib @ git+https://github.com/msflib/fastapi.git@core-v0.2.1#subdirectory=core"</span>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"msflib @ git+https://github.com/msflib/fastapi.git@core-v0.2.1#subdirectory=core"</span>
 </code></pre></div>
-
 <p><code>msflib</code> brings FastAPI, SQLModel, Pydantic, Uvicorn and httpx with it. For the tests on the last page, add <code>pytest</code> to your dev dependencies. Use a release tag such as <code>core-v0.2.1</code> in place of <code>dev</code> for anything you deploy.</p>
 <h2 id="project-layout">Project layout<a class="headerlink" href="#project-layout" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>tasks/
+<div class="highlight"><pre><span></span><code>tasks/
   .env
   app/
     __init__.py
@@ -2919,33 +2917,57 @@
     db.py
     main.py
 </code></pre></div>
-
 <p>Later pages add <code>models.py</code>, <code>actions.py</code>, <code>deps.py</code> and <code>router.py</code> next to these. Create an empty <code>app/__init__.py</code> now.</p>
 <h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
-<p>MSFLib settings are grouped into namespaces, one per package. The core's namespace is <code>CORE</code>. A host app composes the namespaces it uses into one settings class, and reads each through <code>settings.scope("NAMESPACE")</code>. With only the core installed, there is one:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/settings.py</span>
+<p>MSFLib settings are grouped into namespaces, one per package. The core's namespace is <code>CORE</code>. A host app puts the namespaces it uses into one settings class and reads each through <code>settings.scope("NAMESPACE")</code>. There are two ways to build that class, and both work with everything in this Quick Start. Pick one; the tabs below show each.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Subclassed</label><label for="__tabbed_1_2">Composed</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Inherit the settings classes you use, together with <code>SettingsBase</code>. Fields are top-level, so environment variables use the plain field names.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/settings.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+</code></pre></div>
+<p>When you add a module, add its settings class to the bases, for example <code>class Settings(AuthSettings, CoreSettings, SettingsBase)</code>. Override a default in the class body (<code>PROJECT_NAME: str = "Tasks"</code>).</p>
+<div class="highlight"><pre><span></span><code># .env
+PROJECT_NAME=Tasks
+SQLITE_DATABASE_URI=sqlite:///./tasks.db
+SECRET_KEY=change-me
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Generate a class with one nested field per namespace. Environment variables are nested with a double underscore.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/settings.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">compose_settings_model</span>
 
 <span class="n">Settings</span> <span class="o">=</span> <span class="n">compose_settings_model</span><span class="p">(</span><span class="s2">"Settings"</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="p">[</span><span class="n">CoreSettings</span><span class="p">])</span>
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
 </code></pre></div>
-
-<p>When you add a module, append its settings class to the list, for example <code>[CoreSettings, AuthSettings]</code>. Values come from environment variables and a <code>.env</code> file in the directory you run from. Nested variables use a double underscore:</p>
-<div class="codehilite"><pre><span></span><code># .env
+<p>When you add a module, append its settings class to the list, for example <code>[CoreSettings, AuthSettings]</code>.</p>
+<div class="highlight"><pre><span></span><code># .env
 CORE__PROJECT_NAME=Tasks
 CORE__SQLITE_DATABASE_URI=sqlite:///./tasks.db
 CORE__SECRET_KEY=change-me
 </code></pre></div>
-
+</div>
+</div>
+</div>
+<p>Values come from environment variables and a <code>.env</code> file in the directory you run from. The rest of this guide reads settings with <code>settings.scope("CORE")</code>, which works the same in both layouts. See <a href="../../concepts/tiered-config/#subclassed-or-composed">Tiered configuration</a> for how the two compare.</p>
 <p><code>CoreSettings</code> defaults to SQLite (<code>USE_SQLITE=True</code>) at <code>sqlite:///./tmp/msflib.db</code>. SQLite does not create the <code>tmp</code> directory for you, which is why the <code>.env</code> above points at a file in the project root. <code>SECRET_KEY</code> defaults to a random value generated each time the process starts; set it explicitly for anything beyond a local experiment. <a href="../../modules/core/#configuration">Configuration in the core page</a> lists the other <code>CORE</code> keys, including the PostgreSQL ones.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
-<p>Constructing the settings creates an <code>uploads/</code> directory in the working directory, because <code>CORE__STORAGE_METHOD</code> defaults to <code>file</code>. Set <code>CORE__STORAGE_PATH</code> if you want it elsewhere.</p>
+<p>Constructing the settings creates an <code>uploads/</code> directory in the working directory, because <code>STORAGE_METHOD</code> defaults to <code>file</code>. Set <code>STORAGE_PATH</code> (<code>CORE__STORAGE_PATH</code> in a composed host) if you want it elsewhere.</p>
 </div>
 <h2 id="engine-and-session">Engine and session<a class="headerlink" href="#engine-and-session" title="Permanent link">&para;</a></h2>
 <p>The core does not create your engine. Build it from the settings, and turn it into a FastAPI dependency with <code>get_session_factory</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/db.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/db.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
@@ -2959,14 +2981,13 @@ CORE__SECRET_KEY=change-me
 <span class="p">)</span>
 <span class="n">get_session</span> <span class="o">=</span> <span class="n">get_session_factory</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 </code></pre></div>
-
-<p><code>get_session</code> yields one SQLModel <code>Session</code> per request and closes it afterwards. <code>enable_savepoints</code> is for SQLite only: pysqlite delays <code>BEGIN</code>, so releasing a savepoint commits the work before it. MSFLib features that use savepoints, such as <code>on_model_write</code> callbacks, depend on the wrapped engine, so wrap every SQLite engine you build. To use PostgreSQL instead, set the <code>CORE__POSTGRES_*</code> values (or <code>CORE__SQLALCHEMY_DATABASE_URI</code> directly) and build the engine with <code>create_engine(str(core.SQLALCHEMY_DATABASE_URI))</code> and no wrapper. <code>USE_SQLITE</code> is only a flag, read by the seed CLI and by your own engine code; the core does not switch databases for you.</p>
+<p><code>get_session</code> yields one SQLModel <code>Session</code> per request and closes it afterwards. <code>enable_savepoints</code> is for SQLite only: pysqlite delays <code>BEGIN</code>, so releasing a savepoint commits the work before it. MSFLib features that use savepoints, such as <code>on_model_write</code> callbacks, depend on the wrapped engine, so wrap every SQLite engine you build. To use PostgreSQL instead, set the <code>POSTGRES_*</code> values (or <code>SQLALCHEMY_DATABASE_URI</code> directly) in a subclassed host, or <code>CORE__POSTGRES_*</code> (or <code>CORE__SQLALCHEMY_DATABASE_URI</code>) in a composed host, and build the engine with <code>create_engine(str(core.SQLALCHEMY_DATABASE_URI))</code> and no wrapper. <code>USE_SQLITE</code> is only a flag, read by the seed CLI and by your own engine code; the core does not switch databases for you.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
 <p><code>enable_savepoints</code> does not check the database dialect. Do not wrap a PostgreSQL (or any non-SQLite) engine with it.</p>
 </div>
 <h2 id="the-app">The app<a class="headerlink" href="#the-app" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/main.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 
@@ -2982,21 +3003,18 @@ CORE__SECRET_KEY=change-me
 <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"ok"</span><span class="p">,</span> <span class="s2">"project"</span><span class="p">:</span> <span class="n">core</span><span class="o">.</span><span class="n">PROJECT_NAME</span><span class="p">}</span>
 </code></pre></div>
-
 <p>Two MSFLib details here. <code>core.API_V1_STR</code> (default <code>/api/v1</code>) is the prefix the host app gives to everything it mounts. <code>bind_app_emitter(app)</code> creates one event emitter for this app and installs the middleware that makes it current during each request. Every <code>ModelAction</code> write emits events, and modules register their listeners on this emitter, so bind it once at app creation even if you do not use events yet. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h2 id="run-it">Run it<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code>uvicorn<span class="w"> </span>app.main:app<span class="w"> </span>--reload
+<div class="highlight"><pre><span></span><code>uvicorn<span class="w"> </span>app.main:app<span class="w"> </span>--reload
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>localhost:8000/api/v1/health
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>localhost:8000/api/v1/health
 <span class="c1"># {"status":"ok","project":"Tasks"}</span>
 </code></pre></div>
-
 <p>Open <code>http://localhost:8000/docs</code> for the interactive API docs. The app has no tables or task routes yet.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <p><strong><code>ModuleNotFoundError: No module named 'app'</code>.</strong> Run <code>uvicorn</code> from the project root (the directory that contains <code>app/</code>), not from inside <code>app/</code>.</p>
-<p><strong><code>sqlite3.OperationalError: unable to open database file</code>.</strong> The directory in <code>SQLITE_DATABASE_URI</code> does not exist. The default points into <code>./tmp</code>; set <code>CORE__SQLITE_DATABASE_URI</code> as shown above or create the directory.</p>
-<p><strong><code>CORE__PROJECT_NAME</code> is ignored.</strong> The <code>.env</code> file is read from the current working directory, so start the app from the directory that holds it.</p>
+<p><strong><code>sqlite3.OperationalError: unable to open database file</code>.</strong> The directory in <code>SQLITE_DATABASE_URI</code> does not exist. The default points into <code>./tmp</code>; set <code>SQLITE_DATABASE_URI</code> (<code>CORE__SQLITE_DATABASE_URI</code> in a composed host) as shown above or create the directory.</p>
+<p><strong>A <code>.env</code> value is ignored.</strong> The <code>.env</code> file is read from the current working directory, so start the app from the directory that holds it. Also check the variable names match your layout: plain names (<code>PROJECT_NAME</code>) for a subclassed host, <code>CORE__</code>-prefixed names (<code>CORE__PROJECT_NAME</code>) for a composed one.</p>
 <p>Next: <a href="../models-data-tables/">Models, data and tables</a>.</p>
 
 

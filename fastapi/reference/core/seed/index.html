@@ -3543,7 +3543,7 @@
 
 
 <h3 id="msflib.seed.is_production_db" class="doc doc-heading">
-            <code class=" language-python"><span class="n">is_production_db</span><span class="p">(</span><span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">is_production_db</span><span class="p">(</span><span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.seed.is_production_db" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3567,7 +3567,7 @@ localhost), is sensitive.</p>
 
 
 <h3 id="msflib.seed.run_seed_cli" class="doc doc-heading">
-            <code class=" language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.run_seed_cli" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3768,7 +3768,7 @@ likely in production.</p>
 
 
 <h4 id="msflib.seed.base.SeederBase" class="doc doc-heading">
-              <code class=" language-python"><span class="n">SeederBase</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ConfigSchema</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">SeederBase</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ConfigSchema</span><span class="p">)</span></code>
 
 <a href="#msflib.seed.base.SeederBase" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -3849,7 +3849,7 @@ configuration and seeding logic respectively.</p>
 
 
 <h5 id="msflib.seed.base.SeederBase.seed" class="doc doc-heading">
-            <code class=" language-python"><span class="n">seed</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">seed</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -3962,7 +3962,7 @@ configuration and seeding logic respectively.</p>
 
 
 <h4 id="msflib.seed.base.ActionSeeder" class="doc doc-heading">
-              <code class=" language-python"><span class="n">ActionSeeder</span><span class="p">(</span><span class="n">model_action</span><span class="p">:</span> <span class="n">ModelActionType</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ConfigSchema</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">ActionSeeder</span><span class="p">(</span><span class="n">model_action</span><span class="p">:</span> <span class="n">ModelActionType</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ConfigSchema</span><span class="p">)</span></code>
 
 <a href="#msflib.seed.base.ActionSeeder" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4009,7 +4009,7 @@ Args:
 
 
 <h5 id="msflib.seed.base.ActionSeeder.seed" class="doc doc-heading">
-            <code class=" language-python"><span class="n">seed</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">seed</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span></code>
 
 <a href="#msflib.seed.base.ActionSeeder.seed" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -4079,7 +4079,7 @@ Args:
 
 
 <h4 id="msflib.seed.cli.is_production_db" class="doc doc-heading">
-            <code class=" language-python"><span class="n">is_production_db</span><span class="p">(</span><span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">is_production_db</span><span class="p">(</span><span class="n">db_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.seed.cli.is_production_db" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4103,7 +4103,7 @@ localhost), is sensitive.</p>
 
 
 <h4 id="msflib.seed.cli.run_seed_cli" class="doc doc-heading">
-            <code class=" language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.cli.run_seed_cli" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4311,7 +4311,7 @@ likely in production.</p>
 
 
 <h4 id="msflib.seed.runner.SeedContext" class="doc doc-heading">
-              <code class=" language-python"><span class="n">SeedContext</span><span class="p">(</span><span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ModelBase</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="n">skipped_seeders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="n">seed_stats</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">())</span></code>
+              <code class="highlight language-python"><span class="n">SeedContext</span><span class="p">(</span><span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ModelBase</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(),</span> <span class="n">skipped_seeders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="n">seed_stats</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">())</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -4360,7 +4360,7 @@ likely in production.</p>
 
 
 <h4 id="msflib.seed.runner.SeedRunner" class="doc doc-heading">
-              <code class=" language-python"><span class="n">SeedRunner</span><span class="p">(</span><span class="n">seeders_yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">models_to_seed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show_log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">SeedRunner</span><span class="p">(</span><span class="n">seeders_yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">models_to_seed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show_log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#msflib.seed.runner.SeedRunner" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4608,7 +4608,7 @@ using the provided database engine. Supports both:
 
 
 <h5 id="msflib.seed.runner.SeedRunner.run" class="doc doc-heading">
-            <code class=" language-python"><span class="n">run</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">SeedContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">models_to_seed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reset_context</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dry_run_verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dry_run_quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeedRunResult</span></code>
+            <code class="highlight language-python"><span class="n">run</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">SeedContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">models_to_seed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reset_context</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dry_run_verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dry_run_quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeedRunResult</span></code>
 
 <a href="#msflib.seed.runner.SeedRunner.run" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5009,7 +5009,7 @@ instantiation.</p>
 
 
 <h4 id="msflib.seed.utils.format_seeder_validation_error" class="doc doc-heading">
-            <code class=" language-python"><span class="n">format_seeder_validation_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">seeder_config</span><span class="p">,</span> <span class="n">seeders_yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">format_seeder_validation_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">seeder_config</span><span class="p">,</span> <span class="n">seeders_yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.seed.utils.format_seeder_validation_error" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5027,7 +5027,7 @@ instantiation.</p>
 
 
 <h4 id="msflib.seed.utils.import_lib" class="doc doc-heading">
-            <code class=" language-python"><span class="n">import_lib</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">import_lib</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
 
 <a href="#msflib.seed.utils.import_lib" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5137,7 +5137,7 @@ instantiation.</p>
 
 
 <h4 id="msflib.seed.utils.matches_filters" class="doc doc-heading">
-            <code class=" language-python"><span class="n">matches_filters</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">matches_filters</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.seed.utils.matches_filters" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5160,7 +5160,7 @@ Returns:
 
 
 <h4 id="msflib.seed.utils.get_dependency_value" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_dependency_value</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ConfigSchema</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">get_dependency_value</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ConfigSchema</span><span class="p">,</span> <span class="n">seeds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.seed.utils.get_dependency_value" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5183,7 +5183,7 @@ Returns:
 
 
 <h4 id="msflib.seed.utils.resolve_records_path" class="doc doc-heading">
-            <code class=" language-python"><span class="n">resolve_records_path</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span></code>
+            <code class="highlight language-python"><span class="n">resolve_records_path</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span></code>
 
 <a href="#msflib.seed.utils.resolve_records_path" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5201,7 +5201,7 @@ Returns:
 
 
 <h4 id="msflib.seed.utils.resolve_env_placeholders" class="doc doc-heading">
-            <code class=" language-python"><span class="n">resolve_env_placeholders</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">resolve_env_placeholders</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.seed.utils.resolve_env_placeholders" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5297,7 +5297,7 @@ with the value of the corresponding environment variable.</p>
 
 
 <h4 id="msflib.seed.utils.normalize_null" class="doc doc-heading">
-            <code class=" language-python"><span class="n">normalize_null</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">normalize_null</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.utils.normalize_null" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5382,7 +5382,7 @@ returned unchanged.</p>
 
 
 <h4 id="msflib.seed.utils.get_records" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_records</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span></code>
+            <code class="highlight language-python"><span class="n">get_records</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span></code>
 
 <a href="#msflib.seed.utils.get_records" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5488,7 +5488,7 @@ a list of record dictionaries.</p>
 
 
 <h4 id="msflib.seed.utils.get_yml_config" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_yml_config</span><span class="p">(</span><span class="n">seeders_yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">get_yml_config</span><span class="p">(</span><span class="n">seeders_yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.seed.utils.get_yml_config" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5603,7 +5603,7 @@ a list of record dictionaries.</p>
 
 
 <h4 id="msflib.seed.utils.validate_path" class="doc doc-heading">
-            <code class=" language-python"><span class="n">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
 
 <a href="#msflib.seed.utils.validate_path" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5697,7 +5697,7 @@ a list of record dictionaries.</p>
 
 
 <h4 id="msflib.seed.utils.get_seed_stats" class="doc doc-heading">
-            <code class=" language-python"><span class="n">get_seed_stats</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">,</span> <span class="n">show_log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_seed_stats</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">,</span> <span class="n">show_log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#msflib.seed.utils.get_seed_stats" class="headerlink" title="Permanent link">&para;</a></h4>
 

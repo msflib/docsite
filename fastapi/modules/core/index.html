@@ -3271,10 +3271,9 @@
 <p>The core does not mount any routes of its own and does not create your <code>FastAPI</code> app, engine or session. You assemble those in the host app; the core gives you the parts.</p>
 <p>For a hands-on walk through the core, follow the <a href="../../quick-start/basics/">Quick Start</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -3370,21 +3369,42 @@
 </div>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>A host app does five things with the core: compose its settings, build an engine and session dependency, register models, create the schema, and include routers. The shortest complete version is below; the <a href="../../quick-start/basics/">Quick Start</a> builds the same app step by step.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/settings.py</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Subclassed</label><label for="__tabbed_1_2">Composed</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># app/settings.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+</code></pre></div>
+<p>with a <code>.env</code> file next to where you run the app:</p>
+<div class="highlight"><pre><span></span><code>PROJECT_NAME=Tasks
+SQLITE_DATABASE_URI=sqlite:///./tasks.db
+SECRET_KEY=change-me
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># app/settings.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">compose_settings_model</span>
 
 <span class="n">Settings</span> <span class="o">=</span> <span class="n">compose_settings_model</span><span class="p">(</span><span class="s2">"Settings"</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="p">[</span><span class="n">CoreSettings</span><span class="p">])</span>
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
 </code></pre></div>
-
 <p>with a <code>.env</code> file next to where you run the app:</p>
-<div class="codehilite"><pre><span></span><code>CORE__PROJECT_NAME=Tasks
+<div class="highlight"><pre><span></span><code>CORE__PROJECT_NAME=Tasks
 CORE__SQLITE_DATABASE_URI=sqlite:///./tasks.db
 CORE__SECRET_KEY=change-me
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/db.py</span>
+</div>
+</div>
+</div>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/db.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
@@ -3397,34 +3417,103 @@ CORE__SECRET_KEY=change-me
 <span class="p">)</span>
 <span class="n">get_session</span> <span class="o">=</span> <span class="n">get_session_factory</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="c1"># app/main.py (excerpt; `lifespan`, `get_owner`, `task_router` and the `FastAPI` import are from the Quick Start)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py (excerpt; `lifespan`, `get_owner`, `task_router` and the `FastAPI` import are from the Quick Start)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">PROJECT_NAME</span><span class="p">,</span> <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
 <span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">task_router</span><span class="p">(</span><span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="o">=</span><span class="n">get_owner</span><span class="p">),</span> <span class="n">prefix</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">API_V1_STR</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Module routers follow the same pattern as <code>task_router</code> in the Quick Start: they are factories that take your session and identity dependencies and return an <code>APIRouter</code>. See <a href="../../integration/mounting-routes/">Mounting routes</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
 <p><code>msflib.db.session</code> builds an engine from <code>app.core.config.settings</code> (it reads <code>USE_SQLITE</code>, <code>SQLITE_DATABASE_URI</code>, <code>SQLALCHEMY_DATABASE_URI</code> and <code>DB_DEBUG_MODE</code> off a top-level settings object) and so only imports in a host app that has an <code>app.core.config</code> module with those attributes. Building your own engine, as above, avoids that coupling.</p>
 </div>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p>Settings are Pydantic models grouped by namespace. Each module defines a <code>ModuleSettingsBase</code> subclass with a <code>namespace</code> class variable (<code>CORE</code>, <code>AUTH</code>, <code>AI_CORE</code>, and so on). The host app composes them and reads each through <code>settings.scope("NAMESPACE")</code>.</p>
-<p>There are two ways to compose. <code>scope</code> reads both, but not every module reads settings through <code>scope</code> (see the known issue below):</p>
-<ul>
-<li><strong>Composed (nested)</strong>: <code>compose_settings_model(name, SettingsBase, [CoreSettings, AuthSettings, ...])</code> creates a settings class with one field per namespace. Environment variables are nested with a double underscore: <code>CORE__PROJECT_NAME</code>, <code>AUTH__ENABLE_GOOGLE_OAUTH</code>. A subclass of the class <code>compose_settings_model</code> returns can also declare a field of the same name with a module settings instance (<code>CORE: CoreSettings = CoreSettings(PROJECT_NAME="Tasks")</code>) to change defaults in code.</li>
-<li><strong>Mixin</strong>: inherit all the module settings classes together with <code>SettingsBase</code>, as the repository's testsite does. Fields are then top-level and read from flat environment variables (<code>PROJECT_NAME</code>, <code>ENABLE_GOOGLE_OAUTH</code>). Nested <code>CORE__...</code> variables are not read in this mode.</li>
-</ul>
+<p>Settings are Pydantic models grouped by namespace. Each module defines a <code>ModuleSettingsBase</code> subclass with a <code>namespace</code> class variable (<code>CORE</code>, <code>AUTH</code>, <code>AI_CORE</code>, and so on). The host app puts the ones it uses into one settings class and reads each through <code>settings.scope("NAMESPACE")</code>, which works in both layouts (not every module reads settings through <code>scope</code>; see the known issue below).</p>
+<p>There are two ways to build that class. Both are supported, and neither is deprecated.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Subclassed</label><label for="__tabbed_2_2">Composed</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Inherit the module settings classes together with <code>SettingsBase</code>, as the repository's testsite does. Fields are top-level and environment variables use the plain field names.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthSettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">AuthSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="n">PROJECT_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Tasks"</span>
+
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">PROJECT_NAME</span>                          <span class="c1"># also settings.scope("CORE").PROJECT_NAME</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span><span class="o">.</span><span class="n">ENABLE_GOOGLE_OAUTH</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>PROJECT_NAME=Tasks
+ENABLE_GOOGLE_OAUTH=true
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p><code>compose_settings_model(name, SettingsBase, [CoreSettings, AuthSettings, ...])</code> creates a settings class with one field per namespace. Environment variables are nested with a double underscore.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthSettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">compose_settings_model</span>
+
+<span class="n">Settings</span> <span class="o">=</span> <span class="n">compose_settings_model</span><span class="p">(</span><span class="s2">"Settings"</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="p">[</span><span class="n">CoreSettings</span><span class="p">,</span> <span class="n">AuthSettings</span><span class="p">])</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">CORE</span><span class="o">.</span><span class="n">PROJECT_NAME</span>                     <span class="c1"># also settings.scope("CORE").PROJECT_NAME</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span><span class="o">.</span><span class="n">ENABLE_GOOGLE_OAUTH</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>CORE__PROJECT_NAME=Tasks
+AUTH__ENABLE_GOOGLE_OAUTH=true
+</code></pre></div>
+<p>A subclass of the class <code>compose_settings_model</code> returns can also declare a namespace field with a default instance (<code>CORE: CoreSettings = CoreSettings(PROJECT_NAME="Tasks")</code>) to change defaults in code, with the caveat in the known issue below.</p>
+</div>
+</div>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Subclassed</th>
+<th>Composed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Environment variables</td>
+<td>Plain field names: <code>PROJECT_NAME</code></td>
+<td>Nested: <code>CORE__PROJECT_NAME</code></td>
+</tr>
+<tr>
+<td>Read a value</td>
+<td><code>settings.PROJECT_NAME</code> or <code>settings.scope("CORE")</code></td>
+<td><code>settings.CORE.PROJECT_NAME</code> or <code>settings.scope("CORE")</code></td>
+</tr>
+<tr>
+<td>Change a default in code</td>
+<td>Assign the field in the class body</td>
+<td>Declare a namespace field with a default instance (see the known issue)</td>
+</tr>
+<tr>
+<td>Fields with the same name in several modules</td>
+<td>One shared field (every module defines <code>ENABLED</code>, so a flat <code>ENABLED</code> applies to all of them)</td>
+<td>Separate nested fields per namespace</td>
+</tr>
+<tr>
+<td>Code that reads a top-level attribute</td>
+<td>Works, for example the auth router reads <code>settings.SECRET_KEY</code></td>
+<td>Needs a matching top-level attribute (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>Reading <code>ENABLED</code> through <code>settings.scope(...)</code> can mix values between modules in either layout (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
-<p>The <code>msflib-auth</code> router reads <code>settings.SECRET_KEY</code> from the top level of the settings object. With composed (nested) settings <code>POST /login</code> and the password-recovery endpoints fail with <code>AttributeError</code>. Use the mixin style when you mount the auth router.</p>
+<p>The <code>msflib-auth</code> router reads <code>settings.SECRET_KEY</code> from the top level of the settings object. With composed (nested) settings <code>POST /login</code> and the password-recovery endpoints fail with <code>AttributeError</code>. Use the subclassed style when you mount the auth router.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The <code>NAMESPACE__KEY</code> environment variable style only works for composed (field) settings, not for mixin hosts. In a mixin host use the flat field names.</p>
+<p>The <code>NAMESPACE__KEY</code> environment variable style only works for composed (field) settings, not for subclassed hosts. In a subclassed host use the plain field names.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
@@ -3537,7 +3626,7 @@ CORE__SECRET_KEY=change-me
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>All of these were run against the core on SQLite in memory.</p>
 <h3 id="listen-to-lifecycle-events">Listen to lifecycle events<a class="headerlink" href="#listen-to-lifecycle-events" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span><span class="p">,</span> <span class="n">use_app_emitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
@@ -3568,10 +3657,9 @@ CORE__SECRET_KEY=change-me
 
 <span class="nb">print</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span>  <span class="c1"># [('pre', 'x', True), ('post', 'x')]</span>
 </code></pre></div>
-
 <p><code>use_app_emitter(app)</code> is needed here because there is no request: inside a request the middleware does this for you. The <code>Task</code> model and <code>task_action</code> are from the <a href="../../quick-start/models-data-tables/">Quick Start</a>.</p>
 <h3 id="run-work-inside-every-write">Run work inside every write<a class="headerlink" href="#run-work-inside-every-write" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">on_model_write</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">on_model_write</span>
 
 <span class="n">on_model_write</span><span class="p">(</span>
     <span class="s2">"task"</span><span class="p">,</span>
@@ -3580,26 +3668,23 @@ CORE__SECRET_KEY=change-me
     <span class="n">key</span><span class="o">=</span><span class="s2">"audit"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>app_emitter</code> is the app emitter from the previous example. With this registered, creating a task prints <code>create</code> and the new row id before the commit. <code>on_error="raise"</code> makes a failing callback abort the write; the default logs it and lets the write go ahead. Writes that bypass <code>ModelAction</code> (raw <code>session.add</code>) emit no events and run no hooks.</p>
 <h3 id="build-and-compile-a-scope">Build and compile a scope<a class="headerlink" href="#build-and-compile-a-scope" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span><span class="p">,</span> <span class="n">build_context_scope</span><span class="p">,</span> <span class="n">create_default_registry</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span><span class="p">,</span> <span class="n">build_context_scope</span><span class="p">,</span> <span class="n">create_default_registry</span>
 
 <span class="n">scope</span> <span class="o">=</span> <span class="n">build_context_scope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">compiler</span> <span class="o">=</span> <span class="n">ScopeCompiler</span><span class="p">(</span><span class="n">registry</span><span class="o">=</span><span class="n">create_default_registry</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">compiler</span><span class="o">.</span><span class="n">compile_scope_string</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">))</span>
 <span class="c1"># t/1/a/3/w/7</span>
 </code></pre></div>
-
 <h3 id="passwords-and-tokens">Passwords and tokens<a class="headerlink" href="#passwords-and-tokens" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_access_token</span><span class="p">,</span> <span class="n">get_password_hash</span><span class="p">,</span> <span class="n">verify_password</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_access_token</span><span class="p">,</span> <span class="n">get_password_hash</span><span class="p">,</span> <span class="n">verify_password</span>
 
 <span class="n">hashed</span> <span class="o">=</span> <span class="n">get_password_hash</span><span class="p">(</span><span class="s2">"correct horse"</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">verify_password</span><span class="p">(</span><span class="s2">"correct horse"</span><span class="p">,</span> <span class="n">hashed</span><span class="p">)</span>
 
 <span class="n">token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="s2">"42"</span><span class="p">,</span> <span class="n">secret_key</span><span class="o">=</span><span class="s2">"change-me"</span><span class="p">,</span> <span class="n">expiry_minutes</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>create_access_token(subject, secret_key, expiry_minutes=11520, claims=None)</code> signs an HS256 JWT whose <code>sub</code> is the string form of <code>subject</code>. Login flows built on it live in <a href="../auth/">msflib-auth</a>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <p><strong>An <code>uploads/</code> directory appears in the working directory.</strong></p>
@@ -3607,7 +3692,7 @@ CORE__SECRET_KEY=change-me
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
 <p><code>CoreSettings</code> creates <code>STORAGE_PATH</code> (default <code>uploads</code>) when it is instantiated and <code>STORAGE_METHOD</code> is <code>file</code>. Importing <code>msflib.core.config</code> instantiates a module-level <code>Settings()</code> as well, so the directory is created on import. Set <code>STORAGE_PATH</code> to a directory you want, or a different <code>STORAGE_METHOD</code>.</p>
 </div>
-<p><strong><code>CORE__PROJECT_NAME</code> has no effect.</strong> Either you are using mixin composition, where fields are top-level (use the flat name <code>PROJECT_NAME</code>, or switch to <code>compose_settings_model</code>), or your settings subclass overrides the namespace default in code. With <code>class Settings(Base)</code> where <code>Base</code> comes from <code>compose_settings_model</code>, and <code>CORE: CoreSettings = CoreSettings(PROJECT_NAME="x")</code>, every <code>CORE__...</code> variable is ignored, not only <code>PROJECT_NAME</code> (see the known issue under <a href="#configuration">Configuration</a>). Put the values in the environment or <code>.env</code> instead, or set them in code with <code>settings.scope("CORE").X = ...</code> after construction.</p>
+<p><strong>An environment variable has no effect.</strong> Either the name does not match your layout (a subclassed host reads <code>PROJECT_NAME</code>, a composed host reads <code>CORE__PROJECT_NAME</code>), or your composed settings subclass overrides the namespace default in code. With <code>class Settings(Base)</code> where <code>Base</code> comes from <code>compose_settings_model</code>, and <code>CORE: CoreSettings = CoreSettings(PROJECT_NAME="x")</code>, every <code>CORE__...</code> variable is ignored, not only <code>PROJECT_NAME</code> (see the known issue under <a href="#configuration">Configuration</a>). Put the values in the environment or <code>.env</code> instead, or set them in code with <code>settings.scope("CORE").X = ...</code> after construction.</p>
 <p><strong>On SQLite, work done before a savepoint survives a rollback.</strong> pysqlite defers <code>BEGIN</code>, so releasing the first savepoint in a transaction commits everything before it. Wrap the engine with <code>msflib.db.sqlite.enable_savepoints(engine)</code>. This matters for <code>session.begin_nested()</code>, <code>on_model_write</code> callbacks and <code>commit=False</code> flows. Code that depends on savepoints can call <code>require_sqlite_savepoints(engine, caller=...)</code> to fail fast on an engine that was not wrapped.</p>
 <p><strong><code>TypeError: ... must be instantiated with concrete generic types</code>.</strong> <code>ModelAction()</code> was created without type arguments. Use <code>ModelAction[Model, Create, Update]()</code> or subclass it with concrete types.</p>
 <p><strong>Lifecycle events do not fire.</strong> The listener was registered on a different emitter from the one in use. Outside a request, wrap the code in <code>with use_app_emitter(app):</code> (this includes threads); in a worker process, which has no app, register the listener on <code>AppEmitter(get_emitter())</code>; a listener on the global <code>emitter</code> is not seen by app-bound code; in tests, bind the same app emitter you listen on.</p>

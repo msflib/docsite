@@ -2914,7 +2914,7 @@
 <h1 id="writing-custom-code-with-msflib">Writing custom code with MSFLib<a class="headerlink" href="#writing-custom-code-with-msflib" title="Permanent link">&para;</a></h1>
 <p>This guide builds a small host app with one feature of its own, personal notes, next to the MSFLib <code>auth</code> and <code>account</code> modules. It uses the same pieces every MSFLib feature uses: a settings namespace, a table, an action, an authenticated router and a test. Read <a href="../extending-msflib/">How to extend MSFLib</a> first if you want the overview.</p>
 <p>The app has this layout, and each section below is one file. All of it was run as shown, with an in-memory SQLite database.</p>
-<div class="codehilite"><pre><span></span><code>myapp/
+<div class="highlight"><pre><span></span><code>myapp/
     __init__.py
     settings.py
     models.py
@@ -2925,10 +2925,9 @@
         notes.py
     main.py
 </code></pre></div>
-
 <h2 id="1-settings-a-namespace-of-your-own">1. Settings: a namespace of your own<a class="headerlink" href="#1-settings-a-namespace-of-your-own" title="Permanent link">&para;</a></h2>
 <p>A settings class for your feature is a <code>ModuleSettingsBase</code> with a <code>namespace</code>. Mix it into the <code>Settings</code> class next to the modules you use.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># myapp/settings.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># myapp/settings.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountSettings</span>
@@ -2950,16 +2949,15 @@
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
 </code></pre></div>
-
 <p>Read your values with <code>settings.scope("NOTES").MAX_NOTES_PER_ACCOUNT</code>. Setting the environment variable <code>MAX_NOTES_PER_ACCOUNT=2</code> changes it. Other code, including MSFLib modules, can be given the same <code>settings</code> object.</p>
-<p>This guide uses the mixin settings style: the auth router reads a top-level <code>SECRET_KEY</code>.</p>
+<p>This guide uses the subclassed settings style: the auth router reads a top-level <code>SECRET_KEY</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>)</p>
-<p>With composed (nested) settings, <code>POST /login</code> and the password-recovery endpoints of the auth router fail with <code>AttributeError: ... no attribute 'SECRET_KEY'</code>. Keep to the mixin style shown here when you mount the auth router.</p>
+<p>With composed (nested) settings, <code>POST /login</code> and the password-recovery endpoints of the auth router fail with <code>AttributeError: ... no attribute 'SECRET_KEY'</code>. Keep to the subclassed style shown here when you mount the auth router.</p>
 </div>
 <h2 id="2-models-tables-and-schemas">2. Models: tables and schemas<a class="headerlink" href="#2-models-tables-and-schemas" title="Permanent link">&para;</a></h2>
 <p>The account module does not ship a table for accounts. You define <code>Account</code> and <code>Profile</code> from the module's bases, which is also where you add your own columns (see <a href="../overriding-models/">Overriding models</a>). Your own tables derive from <code>ModelBase</code>, which adds <code>id</code>, <code>created_at</code> and <code>updated_at</code>, and from <code>SchemaBase</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># myapp/models.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># myapp/models.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">ProfileBase</span>
@@ -2999,12 +2997,11 @@
     <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span>
 </code></pre></div>
-
 <p>Keep <code>*Create</code> and <code>*Update</code> schemas to what a client may send. Values that come from the request context, such as <code>account_id</code> here, are not schema fields; they are passed to the action separately (next section).</p>
 <p>The relationship annotation must be <code>Optional["Profile"]</code> rather than <code>"Profile | None"</code>, because SQLAlchemy resolves the string by class name.</p>
 <h2 id="3-actions-your-rules">3. Actions: your rules<a class="headerlink" href="#3-actions-your-rules" title="Permanent link">&para;</a></h2>
 <p>An action is the service layer for one model. <code>ModelAction[Note, NoteCreate, NoteUpdate]</code> already gives you <code>get</code>, <code>get_by_all</code>, <code>get_multi_by_all</code>, <code>create</code>, <code>update</code>, <code>delete</code> and more. Subclass it to add queries and rules. The details are in <a href="../subclassing-actions/">Subclassing actions</a>.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># myapp/actions.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># myapp/actions.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPException</span>
@@ -3046,11 +3043,10 @@
 <span class="n">aa</span> <span class="o">=</span> <span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">profile_action</span><span class="o">=</span><span class="n">pa</span><span class="p">)</span>
 <span class="n">na</span> <span class="o">=</span> <span class="n">NoteAction</span><span class="p">(</span><span class="n">max_per_account</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"NOTES"</span><span class="p">)</span><span class="o">.</span><span class="n">MAX_NOTES_PER_ACCOUNT</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>pa</code> and <code>aa</code> are the account module's actions bound to your table classes. They are passed to the account router below.</p>
 <h2 id="4-dependencies-session-keystore-and-the-current-account">4. Dependencies: session, keystore and the current account<a class="headerlink" href="#4-dependencies-session-keystore-and-the-current-account" title="Permanent link">&para;</a></h2>
 <p>Create the engine and the shared dependencies once. <code>get_session_factory</code> returns a dependency that yields a <code>Session</code>. <code>get_keystore_factory</code> returns a dependency for the token store, which holds revoked tokens (see <a href="../authentication/">Authentication</a>). <code>get_account_dependencies</code> returns a namespace with <code>get_current_account</code>, <code>get_current_active_account</code>, <code>RoleCheck</code> and more.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># myapp/deps.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># myapp/deps.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
@@ -3075,11 +3071,10 @@
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>The <code>StaticPool</code> engine is for a single-process development database that lives in memory. Use a real database URL in production. For one dependency namespace per <code>deps.py</code>, see <a href="../../concepts/dependency-injection/">Dependency injection</a>.</p>
 <h2 id="5-a-router-of-your-own">5. A router of your own<a class="headerlink" href="#5-a-router-of-your-own" title="Permanent link">&para;</a></h2>
 <p>Your endpoints are ordinary FastAPI. Use the shared dependencies, and scope every query to the caller. A dependency that loads the note only if the caller owns it keeps that rule in one place.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># myapp/routers/notes.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># myapp/routers/notes.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
@@ -3131,11 +3126,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">delete_note</span><span class="p">(</span><span class="n">note</span><span class="p">:</span> <span class="n">Note</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_own_note</span><span class="p">),</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)):</span>
     <span class="n">na</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>update={"account_id": ...}</code> on <code>create</code> overlays values onto the payload before the row is built, and <code>update</code> on <code>update</code> does the same for changes. This is the supported way to set owner and scope fields that the client must not control.</p>
 <h2 id="6-the-app">6. The app<a class="headerlink" href="#6-the-app" title="Permanent link">&para;</a></h2>
 <p>Create tables, bind an event emitter to the app, and include the module routers and your own. The module routers are factories: you pass your table types, dependencies and settings, and you choose the prefix.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># myapp/main.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># myapp/main.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountRead</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">account_router</span>
@@ -3182,10 +3176,9 @@
 <span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">notes</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">api_v1</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>create_all</code> is for development. For a deployed database, use migrations (see <code>msflib.db.migrations</code> on the <a href="../../modules/core/">core page</a>). <code>bind_app_emitter(app)</code> gives the app its own event bus; actions emit lifecycle events on it during requests and in <code>BackgroundTasks</code>. Register listeners with <code>@app_emitter.on("event-name")</code>; code outside a request (scripts, threads) needs <code>with use_app_emitter(app):</code>, and a worker process, which has no app, registers its listeners on <code>AppEmitter(get_emitter())</code>. See <a href="../subclassing-actions/#lifecycle-events-and-hooks">Subclassing actions</a>.</p>
 <p>Try it with the test client. Open registration is enabled in the settings above, so a client can create an account, log in, and use the notes endpoints with the returned bearer token.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">myapp.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
 
@@ -3200,11 +3193,10 @@
 <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/notes/"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"title"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"First"</span>
 <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/notes/"</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span>
 </code></pre></div>
-
 <p>With <code>MAX_NOTES_PER_ACCOUNT=2</code> set in the environment, the third <code>POST</code> returns <code>409</code> with <code>Note limit reached</code>.</p>
 <h2 id="testing-your-app">Testing your app<a class="headerlink" href="#testing-your-app" title="Permanent link">&para;</a></h2>
 <p>Every module takes its session and keystore through the callables you passed in, so tests swap them with FastAPI's <code>dependency_overrides</code>. Override the same function objects (<code>get_session</code>, <code>get_keystore</code>) that you passed to the factories.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapStore</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
@@ -3229,7 +3221,6 @@
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Create the <code>MapStore</code> once, outside the lambda. If the override builds a new store per request, a token revoked by <code>DELETE /logout</code> is still accepted on the next call.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>

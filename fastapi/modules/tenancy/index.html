@@ -3117,16 +3117,14 @@
 <p>Today the module is deliberately small. It runs the app as a single tenant: one default tenant is seeded at startup and resolved for every caller. It has no router, no provisioning flow, and no tenant-level roles. It is the foundation that lets a host app grow into several tenants without changing every table, and the seam where per-request tenant selection will plug in.</p>
 <p>For how tenants, workspaces and accounts fit together, see <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>. The short version is under <a href="#key-concepts">Key concepts</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-tenancy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/tenancy"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"tenancy-v0.2.0"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>The package depends only on core. <a href="../workspaces/">msflib-workspaces</a> and <a href="../workspace-config/">msflib-workspace-config</a> depend on it.</p>
 <p><code>msflib.tenancy</code> exports <code>TenancySettings</code>, <code>TenantAction</code>, <code>TenantBase</code>, <code>TenantCreate</code>, <code>TenantRead</code>, <code>TenantStatus</code>, <code>TenantUpdate</code>, <code>resolve_default_tenant_id</code> and <code>reset_default_tenant_id_cache</code>. It deliberately does not export the <code>Tenant</code> table class; import it fully qualified:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
 </code></pre></div>
-
 <p><code>get_tenant_dependencies</code> lives in <code>msflib.tenancy.deps</code>, and <code>resolve_scoped_tenant_id</code> in <code>msflib.tenancy.resolver</code>.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <ol>
@@ -3134,7 +3132,7 @@
 <li>Seed the default tenant at startup.</li>
 <li>Build <code>get_current_tenant</code> and pass it to every router or scope dependency that takes one.</li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span><span class="p">,</span> <span class="n">resolve_default_tenant_id</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span><span class="p">,</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
@@ -3150,7 +3148,6 @@
 <span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">tenancy_settings</span><span class="p">)</span>
 <span class="n">get_current_tenant</span> <span class="o">=</span> <span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span>
 </code></pre></div>
-
 <p><code>get_current_tenant</code> returns the <code>Tenant</code> row. It never creates one: if the default tenant was not seeded it raises HTTP 500 ("Default tenant has not been seeded"), because a missing tenant at request time is a deployment error.</p>
 <p>Pass it onward:</p>
 <ul>
@@ -3186,10 +3183,10 @@
 </tr>
 </tbody>
 </table>
-<p>With mixin-style settings use the flat names (<code>DEFAULT_TENANT_SLUG=main</code>); with composed settings (<code>TENANCY: TenancySettings = TenancySettings()</code>) both the flat names and <code>TENANCY__DEFAULT_TENANT_SLUG</code> work. Pass the same settings (<code>settings.scope("TENANCY")</code>) to seeding and to <code>get_tenant_dependencies</code>; otherwise they may resolve different slugs. A standalone <code>TenancySettings()</code> does not read the environment, so it always has the class defaults.</p>
+<p>With subclassed settings use the flat names (<code>DEFAULT_TENANT_SLUG=main</code>); with composed settings (<code>TENANCY: TenancySettings = TenancySettings()</code>) both the flat names and <code>TENANCY__DEFAULT_TENANT_SLUG</code> work. Pass the same settings (<code>settings.scope("TENANCY")</code>) to seeding and to <code>get_tenant_dependencies</code>; otherwise they may resolve different slugs. A standalone <code>TenancySettings()</code> does not read the environment, so it always has the class defaults.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. With mixin settings, use the flat names.</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for subclassed hosts. With subclassed settings, use the flat names.</p>
 </div>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <h3 id="tenants-workspaces-and-accounts-as-scope-dimensions">Tenants, workspaces and accounts as scope dimensions<a class="headerlink" href="#tenants-workspaces-and-accounts-as-scope-dimensions" title="Permanent link">&para;</a></h3>
@@ -3223,7 +3220,7 @@
 <p>A column that should always belong to exactly one tenant is a non-nullable foreign key to <code>tenant.id</code>, filled with a real id from <code>resolve_default_tenant_id</code> or <code>ensure_default_tenant</code>. Do not use placeholders. A column meaningful only for some rows (for example a profile that is tenant-scoped only sometimes) stays nullable, and <code>NULL</code> there means "not tenant-scoped". A scope dimension has no foreign key behind it; scope construction keeps a missing tenant as <code>None</code>, and host code should resolve a real tenant id. Do not use <code>0</code> or any other placeholder for it in your own columns or scopes. The one internal exception is that <code>ai_api</code> (when neither <code>get_current_tenant</code> nor <code>get_session</code> is wired) and the conversation memory-cleanup bridge pass <code>0</code> as a "no tenant" value to satisfy profiles that require a non-null <code>tenant_id</code>; real ids start at 1.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="seed-resolve-and-inject-the-tenant">Seed, resolve and inject the tenant<a class="headerlink" href="#seed-resolve-and-inject-the-tenant" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">TenantAction</span><span class="p">,</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
@@ -3262,20 +3259,17 @@
 
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/tenant"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>  <span class="c1"># {"id": 1, "slug": "default"}</span>
 </code></pre></div>
-
 <h3 id="create-an-additional-tenant">Create an additional tenant<a class="headerlink" href="#create-an-additional-tenant" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">other</span> <span class="o">=</span> <span class="n">tenant_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">TenantCreate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Globex Corp"</span><span class="p">))</span>
     <span class="n">other</span><span class="o">.</span><span class="n">slug</span>  <span class="c1"># "globex-corp"</span>
 </code></pre></div>
-
 <p>Creating a second tenant does not change which tenant <code>get_current_tenant</code> returns: it still resolves the default one. Choosing a tenant per request is not implemented in this module.</p>
 <h3 id="use-the-id-in-a-background-job">Use the id in a background job<a class="headerlink" href="#use-the-id-in-a-background-job" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">tenant_id</span> <span class="o">=</span> <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
     <span class="c1"># stamp tenant_id on rows you create</span>
 </code></pre></div>
-
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

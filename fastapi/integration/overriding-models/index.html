@@ -2954,7 +2954,7 @@
 </div>
 <h2 id="add-columns-to-the-account">Add columns to the account<a class="headerlink" href="#add-columns-to-the-account" title="Permanent link">&para;</a></h2>
 <p>Define <code>Account</code> and <code>Profile</code> from the bases and add fields. The relationship between them must be declared on both sides, as below.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">ProfileBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Relationship</span>
@@ -2971,11 +2971,10 @@
     <span class="n">certifications</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">account</span><span class="p">:</span> <span class="n">Account</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s2">"profile"</span><span class="p">)</span>
 </code></pre></div>
-
 <p>This is the shape of the reference host app's <code>testsite/app/models/account.py</code>. Remember that the new columns need a migration on an existing database.</p>
 <h3 id="request-and-response-schemas">Request and response schemas<a class="headerlink" href="#request-and-response-schemas" title="Permanent link">&para;</a></h3>
 <p>A new column is stored once it is on the table, but the module's endpoints only know the schemas you hand them. Extend the module schemas and pass them to the factory:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">AccountUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">account_router</span>
 
@@ -3005,7 +3004,6 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/accounts"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>With this, <code>POST /accounts/open</code> accepts <code>nickname</code> and stores it, and every response that returns an account includes it. <code>ModelAction.create</code> copies from the schema only the fields that exist on the table, so the extra input reaches the new column without any further code.</p>
 <p><code>account_read_type</code> is also accepted by the auth router, so the login response shows the same shape.</p>
 <h4 id="what-the-account-router-does-not-let-you-override">What the account router does not let you override<a class="headerlink" href="#what-the-account-router-does-not-let-you-override" title="Permanent link">&para;</a></h4>
@@ -3015,7 +3013,7 @@
 <p>There is no <code>account_update_type</code> argument, so extra fields sent to <code>PUT /me</code> and to the admin <code>PUT /{account_id}</code> are dropped. Use your own endpoint, as below, until it is added.</p>
 </div>
 <p>A route registered on its own router and included next to the module's router does not collide with it:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
@@ -3037,11 +3035,10 @@
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">extra</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1/accounts"</span><span class="p">)</span>
 </code></pre></div>
-
 <p>The profile router is more flexible: <code>profile_router</code> takes <code>profile_create_type</code>, <code>profile_update_type</code> and <code>profile_read_type</code>.</p>
 <h2 id="add-columns-to-the-workspace">Add columns to the workspace<a class="headerlink" href="#add-columns-to-the-workspace" title="Permanent link">&para;</a></h2>
 <p>The workspaces module follows the same rule, with two extra tables to consider. <code>WorkspaceBase</code> has foreign keys to <code>account.id</code> and <code>tenant.id</code>, and <code>UserBase</code> (the membership row) has foreign keys to <code>account.id</code> and <code>workspace.id</code>. So your metadata must contain an <code>account</code> table, a <code>tenant</code> table and a <code>workspace</code> table, and the membership table should be named <code>workspace_user</code>, because other tables refer to it by that name (the <code>workspace_notifications</code> receiver column and the optional user-info table both have a foreign key to <code>workspace_user.id</code>).</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># registers the tenant table</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># registers the tenant table</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserBase</span><span class="p">,</span> <span class="n">WorkspaceBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 
@@ -3053,9 +3050,8 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">WorkspaceMember</span><span class="p">(</span><span class="n">UserBase</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">"workspace_user"</span>
 </code></pre></div>
-
 <p>Create the actions with your classes and pass them to the router and the dependencies. Your composed <code>Settings</code> class needs <code>WorkspaceSettings</code> and <code>TenancySettings</code> (from <code>msflib.workspaces.config</code> and <code>msflib.tenancy.config</code>) among its bases.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_workspace_router</span>
 
@@ -3076,17 +3072,15 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/workspaces"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Seed the default tenant at startup, or pass <code>get_current_tenant=</code> to the router. Without either, <code>POST /workspaces/</code> answers <code>500</code> with <code>Default tenant has not been seeded</code>. For example, at startup:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
-
 <p>Setting the new column when you create a workspace in code goes through the <code>update</code> argument, which overlays values on the payload:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 
 <span class="n">tenant</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)))</span>
 <span class="n">workspace</span> <span class="o">=</span> <span class="n">wa</span><span class="o">.</span><span class="n">create_with_owner</span><span class="p">(</span>
@@ -3097,7 +3091,6 @@
     <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"region"</span><span class="p">:</span> <span class="s2">"eu"</span><span class="p">},</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/271">#271</a>)</p>
 <p>The workspace router returns the module's <code>WorkspaceRead</code>. The workspace router's responses are fixed to <code>WorkspaceRead</code>, and it has no <code>workspace_read_type</code> argument. A new column such as <code>region</code> is stored and available on the model (for example to the workspace dependencies in <a href="../authentication/#workspaces">Authentication</a>), but it is not in the module router's JSON. Both <code>WorkspaceBase</code> and <code>WorkspaceRead</code> carry a free-form <code>data</code> JSON field (and <code>settings</code>), which you can use for extra attributes that must round-trip through the module's endpoints without a new column. To return a typed column, add your own endpoint with your own response model.</p>
@@ -3105,9 +3098,8 @@
 <p><code>workspace_create_type</code> and <code>workspace_update_type</code> are accepted by the router if you need extra input fields on those endpoints.</p>
 <h2 id="attach-relationships-later">Attach relationships later<a class="headerlink" href="#attach-relationships-later" title="Permanent link">&para;</a></h2>
 <p>Relationships to your own tables do not have to be declared inside the class. <code>ModelBase.add_relationship</code> attaches one after both classes exist, which is useful when the target is defined in a module that imports the owner.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">Account</span><span class="o">.</span><span class="n">add_relationship</span><span class="p">(</span><span class="s2">"notes"</span><span class="p">,</span> <span class="n">Note</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s2">"selectin"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">Account</span><span class="o">.</span><span class="n">add_relationship</span><span class="p">(</span><span class="s2">"notes"</span><span class="p">,</span> <span class="n">Note</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s2">"selectin"</span><span class="p">)</span>
 </code></pre></div>
-
 <p><code>Note</code> must have a foreign key to <code>account.id</code>. The helper wraps SQLAlchemy's <code>Mapper.add_property</code>, requires both classes to be <code>table=True</code> models, and raises <code>TypeError</code> otherwise. It adds relationships only, not columns.</p>
 <h2 id="checklist-when-you-override-a-table">Checklist when you override a table<a class="headerlink" href="#checklist-when-you-override-a-table" title="Permanent link">&para;</a></h2>
 <ol>

@@ -3173,16 +3173,15 @@
 <p>It does not define your account or workspace models. You pass them in, typically the ones from <a href="../account/">msflib-account</a> and <a href="../workspaces/">msflib-workspaces</a>.</p>
 <p>For the end-to-end picture of how a request becomes a scoped identity, see <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
 <span class="n">msflib-auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/auth"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"auth-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
-
 <p>The package depends on <code>authlib</code> and <code>itsdangerous</code>. It imports no other MSFLib module, so it works with any SQLModel account model that has <code>email</code>, <code>hashed_password</code> and <code>status</code> columns.</p>
 <p><code>msflib/auth/__init__.py</code> exports nothing. Import from the submodules: <code>msflib.auth.deps</code>, <code>msflib.auth.router</code>, <code>msflib.auth.resolvers</code>, <code>msflib.auth.config</code>, <code>msflib.auth.eventbus</code>.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Build the dependency namespaces once at startup, then mount the router.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span><span class="p">,</span> <span class="n">get_user_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathParameterResolver</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
@@ -3217,7 +3216,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>What you supply:</p>
 <table>
 <thead>
@@ -3336,13 +3334,13 @@
 </table>
 <p>How you set these from the environment depends on how you compose settings:</p>
 <ul>
-<li>Mixin style (<code>class Settings(AuthSettings, CoreSettings, SettingsBase)</code>, as used by the repository's test site): use the flat field name, for example <code>ACCESS_TOKEN_EXPIRE_MINUTES=60</code>.</li>
+<li>Subclassed (<code>class Settings(AuthSettings, CoreSettings, SettingsBase)</code>, as used by the repository's test site): use the flat field name, for example <code>ACCESS_TOKEN_EXPIRE_MINUTES=60</code>.</li>
 <li>Composed style (<code>AUTH: AuthSettings = AuthSettings()</code> as a field): use the nested form, <code>AUTH__ACCESS_TOKEN_EXPIRE_MINUTES=60</code>. The flat names also work for every key in the table above.</li>
 </ul>
 <p>Either way, code reads values with <code>settings.scope("AUTH")</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>)</p>
-<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for mixin hosts. Use the flat field name with mixin settings, as described above.</p>
+<p>The nested <code>NS__KEY</code> environment style only works for composed (field) settings, not for subclassed hosts. Use the flat field name with subclassed settings, as described above.</p>
 </div>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <h3 id="account-dependencies">Account dependencies<a class="headerlink" href="#account-dependencies" title="Permanent link">&para;</a></h3>
@@ -3452,7 +3450,7 @@
 <p>Membership is the only path to a workspace. <code>get_current_user</code> never grants access because the account owns the tenant or has a platform role; the account needs a membership row in that specific workspace. See <a href="../workspaces/#membership-and-access">workspaces</a> for how rows are created.</p>
 <h3 id="a-custom-resolver">A custom resolver<a class="headerlink" href="#a-custom-resolver" title="Permanent link">&para;</a></h3>
 <p>Subclass <code>WorkspaceResolver</code> for any other strategy, such as a subdomain or a claim on the account:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResolverContext</span><span class="p">,</span> <span class="n">WorkspaceResolver</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResolverContext</span><span class="p">,</span> <span class="n">WorkspaceResolver</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">SubdomainResolver</span><span class="p">(</span><span class="n">WorkspaceResolver</span><span class="p">):</span>
@@ -3460,7 +3458,6 @@
         <span class="n">host</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"host"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">host</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="k">else</span> <span class="kc">None</span>
 </code></pre></div>
-
 <p>Pass an instance as <code>workspace_resolver=</code>. A resolver is a plain synchronous object, so it is easy to unit-test with a hand-built <code>ResolverContext</code>.</p>
 <p>One resolver applies to everything built by one <code>get_user_dependencies</code> call. To use two strategies in one app, call the factory twice and use each namespace on its own routers.</p>
 <h3 id="token-revocation">Token revocation<a class="headerlink" href="#token-revocation" title="Permanent link">&para;</a></h3>
@@ -3490,7 +3487,7 @@
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="protect-routes-by-account-role-and-workspace-membership">Protect routes by account role and workspace membership<a class="headerlink" href="#protect-routes-by-account-role-and-workspace-membership" title="Permanent link">&para;</a></h3>
 <p>This runs against an in-memory SQLite database using the models from <code>msflib-account</code> and <code>msflib-workspaces</code>. <code>member</code> and <code>guest</code> are workspace roles; the owner passes <code>WorkspaceRoleCheck</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
@@ -3550,9 +3547,8 @@
 <span class="c1"># 403 {"detail": "User not found in specified workspace"}    (a non-member)</span>
 <span class="c1"># GET /nope/public -&gt; 404 "Workspace not found"</span>
 </code></pre></div>
-
 <h3 id="resolve-the-workspace-from-a-header">Resolve the workspace from a header<a class="headerlink" href="#resolve-the-workspace-from-a-header" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpHeaderResolver</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpHeaderResolver</span>
 
 <span class="n">user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span>
     <span class="n">UserModel</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
@@ -3562,11 +3558,10 @@
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">HttpHeaderResolver</span><span class="p">(</span><span class="s2">"X-Workspace"</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>Routes no longer carry a <code>{workspace_slug}</code> path segment. A client sends <code>X-Workspace: acme</code>; without the header the dependency responds 404 "No workspace specified.". <code>X-Workspace: current</code> selects the account's <code>current_workspace_id</code>, and <code>X-Workspace: default</code> the default workspace.</p>
 <h3 id="add-claims-and-extra-response-fields-at-login">Add claims and extra response fields at login<a class="headerlink" href="#add-claims-and-extra-response-fields-at-login" title="Permanent link">&para;</a></h3>
 <p>The response model filters what the login route returns, so extra fields need a response type that declares them.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">LoginResponse</span><span class="p">(</span><span class="n">Token</span><span class="p">):</span>
@@ -3589,7 +3584,6 @@
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p><code>ctx</code> is <code>{"session": session}</code>. The JWT now carries an <code>email_domain</code> claim and the login body includes <code>environment</code>. The workspaces module ships <code>WorkspaceAction.build_access_token_claims</code> and <code>decorate_access_token_payload</code>, which are designed for these two hooks and add the active workspace and membership.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

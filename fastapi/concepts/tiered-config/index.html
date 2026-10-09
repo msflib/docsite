@@ -1479,6 +1479,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Module settings and namespaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subclassed-or-composed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subclassed or composed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2804,6 +2821,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Module settings and namespaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subclassed-or-composed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subclassed or composed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2874,7 +2908,7 @@
 <p>From lowest to highest:</p>
 <ol>
 <li>Field defaults on the settings class.</li>
-<li>Environment variables (read when the settings object is created). They reach the merge only if the base you pass was built by your host settings (<code>settings.scope("CHAT")</code> in the mixin layout, <code>settings.CHAT</code> in the composed layout). A bare <code>ChatSettings()</code> carries class defaults only.</li>
+<li>Environment variables (read when the settings object is created). They reach the merge only if the base you pass was built by your host settings (<code>settings.scope("CHAT")</code> in the subclassed layout, <code>settings.CHAT</code> in the composed layout). A bare <code>ChatSettings()</code> carries class defaults only.</li>
 <li>Tenant values.</li>
 <li>Workspace values.</li>
 <li>User values.</li>
@@ -2883,7 +2917,7 @@
 <p>Later layers win. Mappings merge deeply, so a tenant that sets one key inside a nested dict leaves the other keys alone.</p>
 <h2 id="module-settings-and-namespaces">Module settings and namespaces<a class="headerlink" href="#module-settings-and-namespaces" title="Permanent link">&para;</a></h2>
 <p>Each module declares its settings as a <code>ModuleSettingsBase</code> subclass with a <code>namespace</code>. The namespace is what ties together env vars, the <code>settings.scope(...)</code> lookup and the storage rows.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSettingsBase</span><span class="p">,</span> <span class="n">SettingsBase</span>
 
@@ -2894,18 +2928,44 @@
 
     <span class="n">MAX_TOKENS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
     <span class="n">MODEL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"small"</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">SettingsBase</span><span class="p">):</span>
-    <span class="n">CHAT</span><span class="p">:</span> <span class="n">ChatSettings</span> <span class="o">=</span> <span class="n">ChatSettings</span><span class="p">()</span>
 </code></pre></div>
+<p><code>ModuleSettingsBase</code> also defines <code>ENABLED: bool = True</code> on every module. <code>settings.scope("CHAT")</code> returns a view of that namespace, which is how module code reads its own settings.</p>
+<h3 id="subclassed-or-composed">Subclassed or composed<a class="headerlink" href="#subclassed-or-composed" title="Permanent link">&para;</a></h3>
+<p>A host puts the module settings classes it uses into one <code>Settings</code> class in one of two ways. Both are supported, both work with <code>scope()</code>, and the rest of the docs show them side by side.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Subclassed</label><label for="__tabbed_1_2">Composed</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Inherit the module settings classes together with <code>SettingsBase</code>. Fields are top-level and environment variables use the plain field names.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">ChatSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="k">pass</span>
 
-<p><code>ModuleSettingsBase</code> also defines <code>ENABLED: bool = True</code> on every module. With the composed layout above, environment variables use a double underscore: <code>CHAT__MODEL=medium</code> sets <code>Settings().CHAT.MODEL</code>. <code>settings.scope("CHAT")</code> returns a view of that namespace, which is how module code reads its own settings.</p>
-<p>You can also mix module settings classes directly into your <code>Settings</code> class (multiple inheritance) instead of nesting them. Both layouts work with <code>scope()</code>; the nested layout avoids field-name clashes between modules. In the mixin layout the environment variable is the flat field name (<code>MODEL=...</code>); <code>CHAT__MODEL</code> only applies to the composed layout. Modules can declare <code>flat_aliases</code> so older flat env var names such as <code>ENABLE_X</code> still map into the nested path.</p>
+
+<span class="n">Settings</span><span class="p">()</span><span class="o">.</span><span class="n">MODEL</span>                 <span class="c1"># CHAT.MODEL; MODEL=medium sets it</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Declare one nested field per namespace (or generate the class with <code>compose_settings_model</code>). Environment variables use a double underscore.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">SettingsBase</span><span class="p">):</span>
+    <span class="n">CHAT</span><span class="p">:</span> <span class="n">ChatSettings</span> <span class="o">=</span> <span class="n">ChatSettings</span><span class="p">()</span>
+
+
+<span class="n">Settings</span><span class="p">()</span><span class="o">.</span><span class="n">CHAT</span><span class="o">.</span><span class="n">MODEL</span>            <span class="c1"># CHAT__MODEL=medium sets it</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>How they differ in practice:</p>
+<ul>
+<li><strong>Environment variable names.</strong> Plain field names when subclassed, <code>NAMESPACE__KEY</code> when composed. The wrong style is silently ignored (<a href="https://github.com/msflib/fastapi/issues/280">#280</a>).</li>
+<li><strong>Same field name in several modules.</strong> When subclassed, modules that define the same field name share one field (every module defines <code>ENABLED</code>). When composed, each namespace keeps its own nested field.</li>
+<li><strong>Changing defaults in code.</strong> When subclassed, assign the field in the class body. When composed, declare the namespace field with a default instance on <code>SettingsBase</code>, as in the example above; environment variables still apply. A subclass that overrides a default it inherits from a <code>compose_settings_model</code> result disables that namespace's environment variables (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>).</li>
+<li><strong>Code that reads top-level attributes.</strong> Works when subclassed. When composed it needs a matching top-level attribute, as with the auth router's <code>SECRET_KEY</code> (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>).</li>
+</ul>
+<p>Modules can declare <code>flat_aliases</code> so older flat env var names such as <code>ENABLE_X</code> still map into the nested path.</p>
 <p><code>CoreSettings</code> is the same kind of class with namespace <code>CORE</code>. The other modules follow the same pattern, for example <code>TENANCY</code>, <code>WORKSPACE_CONFIG</code> and <code>AI_CORE</code>.</p>
 <h2 id="resolving-without-a-database">Resolving without a database<a class="headerlink" href="#resolving-without-a-database" title="Permanent link">&para;</a></h2>
 <p><code>resolve_tiered</code> merges layers you already hold and returns a new, validated instance of the same class. It does not touch the database.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">base</span> <span class="o">=</span> <span class="n">ChatSettings</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">base</span> <span class="o">=</span> <span class="n">ChatSettings</span><span class="p">()</span>
 
 <span class="n">resolved</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">resolve_tiered</span><span class="p">(</span>
     <span class="n">tenant_config</span><span class="o">=</span><span class="p">{</span><span class="s2">"MAX_TOKENS"</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">"MODEL"</span><span class="p">:</span> <span class="s2">"tenant-model"</span><span class="p">},</span>
@@ -2914,11 +2974,10 @@
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">resolved</span><span class="o">.</span><span class="n">MAX_TOKENS</span><span class="p">,</span> <span class="n">resolved</span><span class="o">.</span><span class="n">MODEL</span><span class="p">)</span>  <span class="c1"># 50 tenant-model</span>
 </code></pre></div>
-
 <p>There is no separate workspace parameter. Callers fold workspace values into <code>tenant_config</code> first (workspace wins over tenant). <code>merge_config_layers</code> is the underlying function if you need all four layers separately.</p>
 <h2 id="resolving-from-stored-values">Resolving from stored values<a class="headerlink" href="#resolving-from-stored-values" title="Permanent link">&para;</a></h2>
 <p><code>ScopedConfigService</code> from <code>msflib.workspace_config.service</code> stores one JSON mapping per namespace per scope, and resolves a module's settings from them.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
@@ -2938,7 +2997,6 @@
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">resolved</span><span class="o">.</span><span class="n">MAX_TOKENS</span><span class="p">,</span> <span class="n">resolved</span><span class="o">.</span><span class="n">MODEL</span><span class="p">)</span>  <span class="c1"># 5000 tenant-model</span>
 </code></pre></div>
-
 <p>The ids 1, 10 and 25 are examples; on PostgreSQL these rows must exist in the tenant, workspace and account tables, because the stored rows have foreign keys to them.</p>
 <p>Which ids each scope needs:</p>
 <table>
@@ -2967,10 +3025,9 @@
 <p>Rows are stored with a key of the form <code>scope_type:NAMESPACE:tenant:workspace:account</code>, with <code>-</code> for an empty position (for example <code>tenant:CHAT:1:-:-</code>). The <code>ScopedConfigEntry</code> table has foreign keys to the tenant, workspace and account tables, so those modules' models must be imported before you create the table.</p>
 <h2 id="request-overrides">Request overrides<a class="headerlink" href="#request-overrides" title="Permanent link">&para;</a></h2>
 <p>A request override is a last, per-call layer. It comes in two accepted shapes, which <code>normalize_request_override</code> flattens:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="s2">"MAX_TOKENS"</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="s2">"MAX_TOKENS"</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
 <span class="p">{</span><span class="s2">"overrides"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"MAX_TOKENS"</span><span class="p">:</span> <span class="mi">50</span><span class="p">}}</span>
 </code></pre></div>
-
 <p>An envelope with any key other than <code>overrides</code> raises <code>ValueError</code>.</p>
 <p>Because overrides often originate from client input, restrict them. Set <code>request_override_allowlist</code> (a <code>set[str]</code>) on the settings class. When it is <code>None</code>, which is the default, every key is allowed. When set, <code>ScopedConfigService.resolve_module_settings</code> raises <code>ValueError("Unsupported request override keys: ...")</code> for anything outside it. Keep secrets and security-sensitive keys out of the allowlist.</p>
 <h2 id="pitfalls">Pitfalls<a class="headerlink" href="#pitfalls" title="Permanent link">&para;</a></h2>
