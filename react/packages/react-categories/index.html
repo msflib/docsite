@@ -1,0 +1,3926 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSF React monorepo and shared client-side packages">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/react/packages/react-categories">
+      
+      
+        <link rel="prev" href="../react-auth">
+      
+      
+        <link rel="next" href="../react-certificate">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>React Categories - MSF React</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflibreact-categories" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSF React" class="md-header__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSF React
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React Categories
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSF React" class="md-nav__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSF React
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSFLib React
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configure-your-app-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Configure your app once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wrap-your-app-with-queryclient-categoryprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Wrap your app with QueryClient + CategoryProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-consume-one-category-type-in-a-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Consume one category type in a screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-application-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Application Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-endpoint-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Categories Endpoint Override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#categoryprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryProvider
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryProvider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Props
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcategoryapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        createCategoryApi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="createCategoryApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoriesquerykeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        categoriesQueryKeys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeScript Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categorypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatecategorypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UpdateCategoryPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoryconsumercontexttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryConsumerContextType
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults-and-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults and Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-recipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Recipes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Recipes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-gated-categories-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth-gated categories query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-mutation-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using mutation callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usecategory-must-be-used-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategory must be used inside
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-not-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        categories not fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-endpoint-path-or-missing-workspace-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong endpoint path or missing workspace prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tooling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SUMMARY" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packages
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Packages
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configure-your-app-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Configure your app once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wrap-your-app-with-queryclient-categoryprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Wrap your app with QueryClient + CategoryProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-consume-one-category-type-in-a-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Consume one category type in a screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-application-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Application Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-endpoint-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Categories Endpoint Override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#categoryprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryProvider
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryProvider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Props
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcategoryapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        createCategoryApi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="createCategoryApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoriesquerykeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        categoriesQueryKeys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeScript Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categorypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatecategorypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UpdateCategoryPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoryconsumercontexttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryConsumerContextType
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults-and-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults and Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-recipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Recipes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Recipes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-gated-categories-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth-gated categories query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-mutation-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using mutation callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usecategory-must-be-used-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategory must be used inside
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-not-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        categories not fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-endpoint-path-or-missing-workspace-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong endpoint path or missing workspace prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configure-your-app-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Configure your app once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wrap-your-app-with-queryclient-categoryprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Wrap your app with QueryClient + CategoryProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-consume-one-category-type-in-a-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Consume one category type in a screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-application-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Application Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-endpoint-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Categories Endpoint Override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#categoryprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryProvider
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CategoryProvider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Props
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcategoryapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        createCategoryApi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="createCategoryApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoriesquerykeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        categoriesQueryKeys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeScript Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categorypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatecategorypayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UpdateCategoryPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categoryconsumercontexttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CategoryConsumerContextType
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults-and-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults and Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-recipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Recipes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Recipes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-gated-categories-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth-gated categories query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-mutation-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using mutation callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usecategory-must-be-used-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useCategory must be used inside
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#categories-not-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        categories not fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-endpoint-path-or-missing-workspace-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong endpoint path or missing workspace prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflibreact-categories">@msflib/react-categories<a class="headerlink" href="#msflibreact-categories" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Standalone categories module for React applications, built on TanStack Query v5 and integrated with @msflib/core + @msflib/react-shared.</p>
+</blockquote>
+<p>This package provides:</p>
+<ul>
+<li>A strongly typed categories scope provider (CategoryProvider)</li>
+<li>A hook for consuming a single category type with optional query params (useCategories)</li>
+<li>A compatibility alias for older code paths (useCategory)</li>
+<li>A direct API factory (createCategoryApi) for non-context usage</li>
+<li>Exported query keys (categoriesQueryKeys) for cache invalidation from consuming apps</li>
+<li>End-to-end TypeScript types for payloads, responses, and context contracts</li>
+</ul>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#peer-dependencies">Peer Dependencies</a></li>
+<li><a href="#what-this-module-covers">What This Module Covers</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#base-application-configuration">Base Application Configuration</a></li>
+<li><a href="#categories-endpoint-override">Categories Endpoint Override</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#categoryprovider">CategoryProvider</a></li>
+<li><a href="#usecategories">useCategories</a></li>
+<li><a href="#usecategory">useCategory</a></li>
+<li><a href="#createcategoryapi">createCategoryApi</a></li>
+<li><a href="#categoriesquerykeys">categoriesQueryKeys</a></li>
+<li><a href="#typescript-reference">TypeScript Reference</a></li>
+<li><a href="#endpoint-defaults-and-resolution">Endpoint Defaults and Resolution</a></li>
+<li><a href="#caching-behavior">Caching Behavior</a></li>
+<li><a href="#multi-tenancy-behavior">Multi-Tenancy Behavior</a></li>
+<li><a href="#usage-recipes">Usage Recipes</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#public-exports">Public Exports</a></li>
+</ul>
+<hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>add<span class="w"> </span>@msflib/react-categories<span class="w"> </span>@msflib/core<span class="w"> </span>@msflib/react-shared<span class="w"> </span>@tanstack/react-query
+</code></pre></div>
+
+<hr />
+<h2 id="peer-dependencies">Peer Dependencies<a class="headerlink" href="#peer-dependencies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>react</td>
+<td>^18 || ^19</td>
+</tr>
+<tr>
+<td>react-dom</td>
+<td>^18 || ^19</td>
+</tr>
+<tr>
+<td>@tanstack/react-query</td>
+<td>^5</td>
+</tr>
+<tr>
+<td>@msflib/core</td>
+<td>workspace:*</td>
+</tr>
+<tr>
+<td>@msflib/react-shared</td>
+<td>workspace:*</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-this-module-covers">What This Module Covers<a class="headerlink" href="#what-this-module-covers" title="Permanent link">&para;</a></h2>
+<p>The categories module wraps these backend operations:</p>
+<ul>
+<li>GET cat/{category_type}</li>
+<li>POST cat/{category_type}</li>
+<li>PUT cat/{category_type}/{category_id}</li>
+<li>DELETE cat/{category_type}/{category_id}</li>
+</ul>
+<p>At runtime, these route calls are executed through configuredApiClient from @msflib/core, which applies workspace-scoping behavior consistently with the rest of the ecosystem.</p>
+<hr />
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<h3 id="1-configure-your-app-once">1) Configure your app once<a class="headerlink" href="#1-configure-your-app-once" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">categories</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">categories</span><span class="o">:</span><span class="w"> </span><span class="s1">'/cat'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h3 id="2-wrap-your-app-with-queryclient-categoryprovider">2) Wrap your app with QueryClient + CategoryProvider<a class="headerlink" href="#2-wrap-your-app-with-queryclient-categoryprovider" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">React</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">,</span><span class="w"> </span><span class="nx">QueryClientProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">CategoryProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">queryClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">();</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">AppProviders</span><span class="p">({</span><span class="w"> </span><span class="nx">children</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="kt">React.ReactNode</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">QueryClientProvider</span><span class="w"> </span><span class="na">client</span><span class="o">=</span><span class="p">{</span><span class="nx">queryClient</span><span class="p">}&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">CategoryProvider</span>
+<span class="w">        </span><span class="na">categoryTypes</span><span class="o">=</span><span class="p">{[</span><span class="s1">'track'</span><span class="p">,</span><span class="w"> </span><span class="s1">'stage'</span><span class="p">,</span><span class="w"> </span><span class="s1">'level'</span><span class="p">]}</span>
+<span class="w">        </span><span class="na">options</span><span class="o">=</span><span class="p">{{</span>
+<span class="w">          </span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">offset</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="kt">100</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">}}</span>
+<span class="w">      </span><span class="p">&gt;</span>
+<span class="w">        </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">CategoryProvider</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">QueryClientProvider</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="3-consume-one-category-type-in-a-screen">3) Consume one category type in a screen<a class="headerlink" href="#3-consume-one-category-type-in-a-screen" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useCategories</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">TrackList</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">categories</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">createCategory</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">updateCategory</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">deleteCategory</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">loading</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCategories</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">categoryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'track'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">offset</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="kt">20</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">Total</span><span class="w"> </span><span class="nx">categories</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">categories</span><span class="p">.</span><span class="nx">length</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span>
+<span class="w">        </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="nx">create</span><span class="p">}</span>
+<span class="w">        </span><span class="na">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span>
+<span class="w">          </span><span class="nx">createCategory</span><span class="p">({</span>
+<span class="w">            </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'frontend'</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Frontend'</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s1">'Frontend topics'</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'react'</span><span class="p">],</span>
+<span class="w">            </span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
+<span class="w">          </span><span class="p">})</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">&gt;</span>
+<span class="w">        </span><span class="nx">Create</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span>
+<span class="w">        </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="nx">update</span><span class="p">}</span>
+<span class="w">        </span><span class="na">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">updateCategory</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Updated Frontend'</span><span class="w"> </span><span class="p">})}</span>
+<span class="w">      </span><span class="p">&gt;</span>
+<span class="w">        </span><span class="nx">Update</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span><span class="w"> </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="ow">delete</span><span class="p">}</span><span class="w"> </span><span class="na">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">deleteCategory</span><span class="p">(</span><span class="mf">1</span><span class="p">)}&gt;</span>
+<span class="w">        </span><span class="nx">Delete</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="base-application-configuration">Base Application Configuration<a class="headerlink" href="#base-application-configuration" title="Permanent link">&para;</a></h3>
+<p>@msflib/react-categories expects @msflib/core application config to be initialized before provider usage.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">workspace</span><span class="o">:</span><span class="w"> </span><span class="s1">'workspace-a'</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h3 id="categories-endpoint-override">Categories Endpoint Override<a class="headerlink" href="#categories-endpoint-override" title="Permanent link">&para;</a></h3>
+<p>By default the module uses /cat. Override it if your API namespace differs:</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">categories</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">categories</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/categories'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<hr />
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="categoryprovider">CategoryProvider<a class="headerlink" href="#categoryprovider" title="Permanent link">&para;</a></h3>
+<p>Context provider for the stable category scope. It also primes TanStack Query
+with the provider-level default query for each configured category type.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">CategoryProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="p">&lt;</span><span class="nt">CategoryProvider</span>
+<span class="w">  </span><span class="na">categoryTypes</span><span class="o">=</span><span class="p">{[</span><span class="s1">'track'</span><span class="p">,</span><span class="w"> </span><span class="s1">'stage'</span><span class="p">,</span><span class="w"> </span><span class="s1">'level'</span><span class="p">]}</span>
+<span class="w">  </span><span class="na">options</span><span class="o">=</span><span class="p">{{</span>
+<span class="w">    </span><span class="nx">isWorkspaceScoped</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">requireAuth</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">isAuthenticated</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">offset</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="kt">100</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">}}</span>
+<span class="p">&gt;</span>
+<span class="w">  </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">CategoryProvider</span><span class="p">&gt;;</span>
+</code></pre></div>
+
+<h4 id="props">Props<a class="headerlink" href="#props" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>children</td>
+<td>React.ReactNode</td>
+<td>Yes</td>
+<td>Descendant tree that will consume category hooks.</td>
+</tr>
+<tr>
+<td>categoryTypes</td>
+<td>string[]</td>
+<td>No</td>
+<td>Category namespaces managed by this provider. Use this for the multi-category setup.</td>
+</tr>
+<tr>
+<td>categoryType</td>
+<td>string</td>
+<td>No</td>
+<td>Backward-compatible single-type fallback if categoryTypes is not supplied.</td>
+</tr>
+<tr>
+<td>options.isWorkspaceScoped</td>
+<td>boolean</td>
+<td>No</td>
+<td>Controls whether endpoints are workspace-scoped. Default: true.</td>
+</tr>
+<tr>
+<td>options.requireAuth</td>
+<td>boolean</td>
+<td>No</td>
+<td>If true, queries only run when isAuthenticated is true. Default: false.</td>
+</tr>
+<tr>
+<td>options.isAuthenticated</td>
+<td>boolean</td>
+<td>No</td>
+<td>Auth gate flag used only when requireAuth is true.</td>
+</tr>
+<tr>
+<td>options.query</td>
+<td>object</td>
+<td>No</td>
+<td>Default list query applied by hooks unless overridden at the hook call site.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="behavior">Behavior<a class="headerlink" href="#behavior" title="Permanent link">&para;</a></h4>
+<ul>
+<li>The provider defines the stable category scope and default query config.</li>
+<li>The hook decides which category type to load and which query params to use.</li>
+<li>Mutations invalidate the matching category type + workspace cache scope.</li>
+</ul>
+<hr />
+<h3 id="usecategories">useCategories<a class="headerlink" href="#usecategories" title="Permanent link">&para;</a></h3>
+<p>Hook that returns data and actions for one category type:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useCategories</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">categories</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">createCategory</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">updateCategory</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">deleteCategory</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">refetch</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">loading</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCategories</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">categoryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'track'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">offset</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="kt">20</span><span class="w"> </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>If used outside CategoryProvider, it throws:</p>
+<div class="codehilite"><pre><span></span><code>useCategories must be used inside &lt;CategoryProvider /&gt;
+</code></pre></div>
+
+<h3 id="usecategory">useCategory<a class="headerlink" href="#usecategory" title="Permanent link">&para;</a></h3>
+<p>Backward-compatible alias for <code>useCategories</code>.</p>
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useCategory</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">trackCategories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCategory</span><span class="p">({</span><span class="w"> </span><span class="nx">categoryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'track'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<hr />
+<hr />
+<h3 id="createcategoryapi">createCategoryApi<a class="headerlink" href="#createcategoryapi" title="Permanent link">&para;</a></h3>
+<p>Factory for direct API usage (without context).</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createCategoryApi</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">categoryApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createCategoryApi</span><span class="p">(</span><span class="s1">'track'</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// isWorkspaceScoped = true by default</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">categoryApi</span><span class="p">.</span><span class="nx">list</span><span class="p">();</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">categoryApi</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'frontend'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Frontend'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s1">'Frontend topics'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'react'</span><span class="p">],</span>
+<span class="w">  </span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
+<span class="p">});</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">categoryApi</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Updated Frontend'</span><span class="w"> </span><span class="p">});</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">categoryApi</span><span class="p">.</span><span class="ow">delete</span><span class="p">(</span><span class="mf">10</span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="signature">Signature<a class="headerlink" href="#signature" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">createCategoryApi</span><span class="p">(</span><span class="nx">categoryType</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">isWorkspaceScoped?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3 id="categoriesquerykeys">categoriesQueryKeys<a class="headerlink" href="#categoriesquerykeys" title="Permanent link">&para;</a></h3>
+<p>Exported helper for category query cache key generation.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">categoriesQueryKeys</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+
+<span class="nx">categoriesQueryKeys</span><span class="p">.</span><span class="nx">all</span><span class="p">();</span>
+<span class="nx">categoriesQueryKeys</span><span class="p">.</span><span class="nx">scope</span><span class="p">(</span><span class="s1">'track'</span><span class="p">,</span><span class="w"> </span><span class="s1">'workspace-slug'</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Use these keys from consuming apps for invalidation:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">categoriesQueryKeys</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-categories'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useQueryClient</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">queryClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useQueryClient</span><span class="p">();</span>
+
+<span class="k">await</span><span class="w"> </span><span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="kt">categoriesQueryKeys.scope</span><span class="p">(</span><span class="s1">'track'</span><span class="p">,</span><span class="w"> </span><span class="s1">'workspace-slug'</span><span class="p">),</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<hr />
+<h2 id="typescript-reference">TypeScript Reference<a class="headerlink" href="#typescript-reference" title="Permanent link">&para;</a></h2>
+<h3 id="category">Category<a class="headerlink" href="#category" title="Permanent link">&para;</a></h3>
+<p>Represents the category entity returned by list/create/update/delete.</p>
+<p>Core fields:</p>
+<ul>
+<li>id: number</li>
+<li>name: string</li>
+<li>title: string</li>
+<li>description: string</li>
+<li>tags: string[]</li>
+<li>order: number</li>
+</ul>
+<p>It also supports extra backend fields through an index signature.</p>
+<h3 id="categorypayload">CategoryPayload<a class="headerlink" href="#categorypayload" title="Permanent link">&para;</a></h3>
+<p>Required:</p>
+<ul>
+<li>name: string</li>
+<li>title: string</li>
+<li>description: string</li>
+<li>tags: string[]</li>
+<li>order: number</li>
+</ul>
+<h3 id="updatecategorypayload">UpdateCategoryPayload<a class="headerlink" href="#updatecategorypayload" title="Permanent link">&para;</a></h3>
+<p>Partial category update payload excluding name.</p>
+<h3 id="categoryconsumercontexttype">CategoryConsumerContextType<a class="headerlink" href="#categoryconsumercontexttype" title="Permanent link">&para;</a></h3>
+<p>Includes:</p>
+<ul>
+<li>categoryType: string</li>
+<li>query?: CategoryListParams</li>
+<li>categories: Category[]</li>
+<li>createCategory(data, options?)</li>
+<li>updateCategory(categoryId, data, options?)</li>
+<li>deleteCategory(categoryId, options?)</li>
+<li>refetch()</li>
+<li>loading flags for all operations</li>
+</ul>
+<p>Mutation option parameters use TanStack MutateOptions for per-call success/error handlers.</p>
+<hr />
+<h2 id="endpoint-defaults-and-resolution">Endpoint Defaults and Resolution<a class="headerlink" href="#endpoint-defaults-and-resolution" title="Permanent link">&para;</a></h2>
+<p>Default categories base endpoint:</p>
+<div class="codehilite"><pre><span></span><code>/cat
+</code></pre></div>
+
+<p>Resolved endpoints:</p>
+<ul>
+<li>GET /cat/:categoryType</li>
+<li>POST /cat/:categoryType</li>
+<li>PUT /cat/:categoryType/:categoryId</li>
+<li>DELETE /cat/:categoryType/:categoryId</li>
+</ul>
+<p>Path generation and workspace scoping are delegated to the core configured API client, so workspace prefixes are applied consistently with your global core configuration.</p>
+<hr />
+<h2 id="caching-behavior">Caching Behavior<a class="headerlink" href="#caching-behavior" title="Permanent link">&para;</a></h2>
+<ul>
+<li>categories query key: categoriesQueryKeys.list(categoryType, activeWorkspaceOrNull, query)</li>
+<li>categories query is stale for 60 seconds (staleTime: 60_000)</li>
+<li>createCategory, updateCategory, deleteCategory all invalidate the same category scope</li>
+</ul>
+<hr />
+<h2 id="multi-tenancy-behavior">Multi-Tenancy Behavior<a class="headerlink" href="#multi-tenancy-behavior" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Provider reads current workspace from useActiveWorkspace().</li>
+<li>When options.isWorkspaceScoped === false, workspace value for query-keying is treated as null.</li>
+</ul>
+<p>This enables downstream modules relying on active workspace to react to workspace changes.</p>
+<hr />
+<h2 id="usage-recipes">Usage Recipes<a class="headerlink" href="#usage-recipes" title="Permanent link">&para;</a></h2>
+<h3 id="auth-gated-categories-query">Auth-gated categories query<a class="headerlink" href="#auth-gated-categories-query" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">CategoryProvider</span>
+<span class="w">  </span><span class="na">categoryTypes</span><span class="o">=</span><span class="p">{[</span><span class="s1">'track'</span><span class="p">,</span><span class="w"> </span><span class="s1">'stage'</span><span class="p">,</span><span class="w"> </span><span class="s1">'level'</span><span class="p">]}</span>
+<span class="w">  </span><span class="na">options</span><span class="o">=</span><span class="p">{{</span>
+<span class="w">    </span><span class="nx">requireAuth</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">isAuthenticated</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}}</span>
+<span class="p">&gt;</span>
+<span class="w">  </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">CategoryProvider</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>When requireAuth is true and isAuthenticated is false, the initial categories request is not executed.</p>
+<h3 id="using-mutation-callbacks">Using mutation callbacks<a class="headerlink" href="#using-mutation-callbacks" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">createCategory</span><span class="p">(</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'frontend'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Frontend'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s1">'Frontend topics'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'react'</span><span class="p">],</span>
+<span class="w">    </span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">onSuccess</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">category</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Created category id:'</span><span class="p">,</span><span class="w"> </span><span class="nx">category</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">onError</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<h3 id="manual-refresh">Manual refresh<a class="headerlink" href="#manual-refresh" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">refetch</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useCategory</span><span class="p">({</span><span class="w"> </span><span class="nx">categoryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'track'</span><span class="w"> </span><span class="p">});</span>
+
+<span class="nx">refetch</span><span class="p">();</span>
+</code></pre></div>
+
+<hr />
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<p>Run package tests:</p>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>--filter<span class="w"> </span>@msflib/react-categories<span class="w"> </span>test:build
+</code></pre></div>
+
+<p>The package includes tests for:</p>
+<ul>
+<li>API endpoint construction and client interaction</li>
+<li>Provider query and mutation behavior</li>
+<li>Auth-gated query execution</li>
+<li>Hook/provider contract smoke coverage</li>
+</ul>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="usecategory-must-be-used-inside">useCategory must be used inside <CategoryProvider /><a class="headerlink" href="#usecategory-must-be-used-inside" title="Permanent link">&para;</a></h3>
+<p>Cause: hook is called outside provider scope.</p>
+<p>Fix: ensure component is rendered under CategoryProvider.</p>
+<h3 id="categories-not-fetching">categories not fetching<a class="headerlink" href="#categories-not-fetching" title="Permanent link">&para;</a></h3>
+<p>Check:</p>
+<ul>
+<li>QueryClientProvider is present</li>
+<li>CategoryProvider is mounted with categoryTypes</li>
+<li>If using auth gating: requireAuth: true and isAuthenticated must be true</li>
+</ul>
+<h3 id="wrong-endpoint-path-or-missing-workspace-prefix">Wrong endpoint path or missing workspace prefix<a class="headerlink" href="#wrong-endpoint-path-or-missing-workspace-prefix" title="Permanent link">&para;</a></h3>
+<p>Check:</p>
+<ul>
+<li>configureApplication(...) ran before provider/API usage</li>
+<li>endpoints.categories.categories override is correct</li>
+<li>isWorkspaceScoped option matches your intended path mode</li>
+</ul>
+<hr />
+<h2 id="public-exports">Public Exports<a class="headerlink" href="#public-exports" title="Permanent link">&para;</a></h2>
+<p>From @msflib/react-categories:</p>
+<ul>
+<li>Context and provider:</li>
+<li>CategoryProvider</li>
+<li>CategoryContext</li>
+<li>Hook:</li>
+<li>useCategory</li>
+<li>API:</li>
+<li>createCategoryApi</li>
+<li>Query keys:</li>
+<li>categoriesQueryKeys</li>
+<li>Types:</li>
+<li>Category</li>
+<li>CategoryPayload</li>
+<li>UpdateCategoryPayload</li>
+<li>CategoryConsumerContextType</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

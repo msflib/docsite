@@ -1,0 +1,2895 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSF React monorepo and shared client-side packages">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/react/packages/react-ai">
+      
+      
+        <link rel="prev" href="../core">
+      
+      
+        <link rel="next" href="../react-auth">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>React AI - MSF React</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflibreact-ai" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSF React" class="md-header__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSF React
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React AI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSF React" class="md-nav__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSF React
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSFLib React
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aiprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AiProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        options Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Tenancy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-hook-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API &amp; Hook Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API &amp; Hook Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usellm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useLlm()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useAgent()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-typed-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol-typed responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payload-shape-shared-by-asksearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payload shape (shared by ask/search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestoptions-second-argument-to-asksearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requestOptions (second argument to ask/search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#returned-hook-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returned Hook Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tooling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SUMMARY" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packages
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Packages
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aiprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AiProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        options Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Tenancy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-hook-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API &amp; Hook Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API &amp; Hook Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usellm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useLlm()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useAgent()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-typed-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol-typed responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payload-shape-shared-by-asksearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payload shape (shared by ask/search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestoptions-second-argument-to-asksearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requestOptions (second argument to ask/search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#returned-hook-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returned Hook Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aiprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AiProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        options Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Tenancy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-hook-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API &amp; Hook Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API &amp; Hook Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usellm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useLlm()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useAgent()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-typed-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol-typed responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payload-shape-shared-by-asksearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payload shape (shared by ask/search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requestoptions-second-argument-to-asksearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requestOptions (second argument to ask/search)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#returned-hook-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returned Hook Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflibreact-ai">@msflib/react-ai<a class="headerlink" href="#msflibreact-ai" title="Permanent link">&para;</a></h1>
+<p>Multi-Tenant LLM + Agent module built on TanStack Query, following the same approach as other @msflib/react-* modules. Wraps the be-ifusion <code>/llm/*</code> and <code>/agent/*</code> endpoints.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>add<span class="w"> </span>@msflib/core<span class="w"> </span>@msflib/react-ai
+</code></pre></div>
+
+<h2 id="peer-dependencies">Peer dependencies<a class="headerlink" href="#peer-dependencies" title="Permanent link">&para;</a></h2>
+<ul>
+<li>react &gt;= 18</li>
+<li>@tanstack/react-query &gt;= 5</li>
+</ul>
+<p>Wrap your app with <code>AiProvider</code> inside your <code>QueryClientProvider</code>.</p>
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="aiprovider"><code>AiProvider</code><a class="headerlink" href="#aiprovider" title="Permanent link">&para;</a></h3>
+<p>A single React context provider that fetches LLM and Agent status on mount and exposes both surfaces through two hooks — <code>useLlm()</code> and <code>useAgent()</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">AiProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ai'</span><span class="p">;</span>
+
+<span class="p">&lt;</span><span class="nt">QueryClientProvider</span><span class="w"> </span><span class="na">client</span><span class="o">=</span><span class="p">{</span><span class="nx">queryClient</span><span class="p">}&gt;</span>
+<span class="w">  </span><span class="p">&lt;</span><span class="nt">AiProvider</span><span class="p">&gt;{</span><span class="cm">/* your app */</span><span class="p">}&lt;/</span><span class="nt">AiProvider</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">QueryClientProvider</span><span class="p">&gt;;</span>
+</code></pre></div>
+
+<p><strong>Props</strong></p>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>children</code></td>
+<td><code>React.ReactNode</code></td>
+<td>Yes</td>
+<td>Child component tree.</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>Configuration options for the provider. See below for details.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="options-configuration"><code>options</code> Configuration<a class="headerlink" href="#options-configuration" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isWorkspaceScoped</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>If <code>true</code>, LLM/Agent calls are isolated per workspace.</td>
+</tr>
+<tr>
+<td><code>requireAuth</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If <code>true</code>, status will only be fetched when <code>isAuthenticated</code> is <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>isAuthenticated</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>The authentication status of the user (e.g. from <code>useAuth().status</code>).</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td><code>AskProtocol</code></td>
+<td><code>native</code> (server default)</td>
+<td>Default <code>protocol</code> applied to every <code>ask</code>/<code>search</code>/<code>askStream</code> call made through <code>useLlm()</code>/<code>useAgent()</code>. Set this once for the whole app instead of passing <code>protocol</code> at every call site.</td>
+</tr>
+<tr>
+<td><code>channel</code></td>
+<td><code>string</code></td>
+<td>none</td>
+<td>Default <code>x-ai-channel</code> applied the same way.</td>
+</tr>
+</tbody>
+</table>
+<p><code>protocol</code> and <code>channel</code> are app-wide decisions in practice — one app talks to the backend via one protocol, not a different one per call — so they're configured once here, the same way <code>isWorkspaceScoped</code> is. A call can still override either by passing its own <code>requestOptions</code> (e.g. <code>ask(payload, { protocol: 'openai' })</code>), which wins over the Provider default for that call only; anything it doesn't specify (e.g. just <code>{ protocol: 'openai' }</code> without <code>channel</code>) still falls back to the Provider's default for the rest.</p>
+<blockquote>
+<p>In Next.js App Router, AiProvider must be in a client component (<code>"use client"</code>).</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="s1">'use client'</span><span class="p">;</span>
+
+<span class="k">import</span><span class="w"> </span><span class="nx">React</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">,</span><span class="w"> </span><span class="nx">QueryClientProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">AiProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ai'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">qc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">();</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">Providers</span><span class="p">({</span><span class="w"> </span><span class="nx">children</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="kt">React.ReactNode</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">QueryClientProvider</span><span class="w"> </span><span class="na">client</span><span class="o">=</span><span class="p">{</span><span class="nx">qc</span><span class="p">}&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">AiProvider</span><span class="p">&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">AiProvider</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">QueryClientProvider</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="multi-tenancy">Multi-Tenancy<a class="headerlink" href="#multi-tenancy" title="Permanent link">&para;</a></h2>
+<p>This module supports multi-tenancy using the <code>isWorkspaceScoped</code> option and the <code>useActiveWorkspace</code> hook from <code>@msflib/react-shared</code>. All API calls are automatically scoped to the current workspace if <code>isWorkspaceScoped</code> is true (default).</p>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<p>Configure the AI endpoints using the <code>configureApplication</code> function. Both <code>llm</code> and <code>agent</code> are sub-paths under a single <code>ai</code> module key:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="kt">process.env.NEXT_PUBLIC_API_URL</span><span class="o">!</span><span class="p">,</span><span class="w"> </span><span class="c1">// should already include /api/v1</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">ai</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">llm</span><span class="o">:</span><span class="w"> </span><span class="s1">'/llm'</span><span class="p">,</span><span class="w"> </span><span class="c1">// default</span>
+<span class="w">      </span><span class="nx">agent</span><span class="o">:</span><span class="w"> </span><span class="s1">'/agent'</span><span class="p">,</span><span class="w"> </span><span class="c1">// default</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h2 id="hook-usage">Hook Usage<a class="headerlink" href="#hook-usage" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useLlm</span><span class="p">,</span><span class="w"> </span><span class="nx">useAgent</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ai'</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">AskAssistant</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">llmStatus</span><span class="p">,</span><span class="w"> </span><span class="nx">ask</span><span class="o">:</span><span class="w"> </span><span class="kt">askLlm</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="o">:</span><span class="w"> </span><span class="kt">llmLoading</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useLlm</span><span class="p">();</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">agentStatus</span><span class="p">,</span><span class="w"> </span><span class="nx">ask</span><span class="o">:</span><span class="w"> </span><span class="kt">askAgent</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="o">:</span><span class="w"> </span><span class="kt">agentLoading</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useAgent</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">handleAskLlm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">answer</span><span class="p">,</span><span class="w"> </span><span class="nx">hits</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">askLlm</span><span class="p">({</span><span class="w"> </span><span class="nx">question</span><span class="o">:</span><span class="w"> </span><span class="s1">'How do I reset my password?'</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">answer</span><span class="p">,</span><span class="w"> </span><span class="nx">hits</span><span class="p">);</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">handleAskAgent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">askAgent</span><span class="p">(</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">question</span><span class="o">:</span><span class="w"> </span><span class="s1">'Draft a reply to this ticket'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">protocol</span><span class="o">:</span><span class="w"> </span><span class="s1">'mcp'</span><span class="p">,</span><span class="w"> </span><span class="nx">channel</span><span class="o">:</span><span class="w"> </span><span class="s1">'slack'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">LLM</span><span class="w"> </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">llmStatus</span><span class="o">?</span><span class="p">.</span><span class="nx">llm_model</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">Agent</span><span class="w"> </span><span class="nx">mode</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">agentStatus</span><span class="o">?</span><span class="p">.</span><span class="nx">mode</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span><span class="w"> </span><span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleAskLlm</span><span class="p">}</span><span class="w"> </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">llmLoading</span><span class="p">.</span><span class="nx">ask</span><span class="p">}&gt;</span><span class="nx">Ask</span><span class="w"> </span><span class="nx">LLM</span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span><span class="w"> </span><span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleAskAgent</span><span class="p">}</span><span class="w"> </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">agentLoading</span><span class="p">.</span><span class="nx">ask</span><span class="p">}&gt;</span><span class="nx">Ask</span><span class="w"> </span><span class="nx">Agent</span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="api-hook-methods">API &amp; Hook Methods<a class="headerlink" href="#api-hook-methods" title="Permanent link">&para;</a></h2>
+<h3 id="usellm"><code>useLlm()</code><a class="headerlink" href="#usellm" title="Permanent link">&para;</a></h3>
+<p>Reads from the <code>/llm/*</code> surface.</p>
+<ul>
+<li><strong><code>status</code></strong> — <code>GET /llm/status</code>, fetched on mount (<code>module</code>, <code>workspace_id</code>, <code>llm_provider</code>, <code>llm_model</code>, <code>vector_store_backend</code>).</li>
+<li><strong><code>protocols</code></strong> — <code>GET /llm/protocols</code>, fetched on mount. A map of protocol name to supported channels.</li>
+<li><strong><code>search(payload, requestOptions?, mutateOptions?)</code></strong> — <code>POST /llm/search</code>. Raw vector search; returns <code>{ hits, count }</code>. (No <code>protocol</code> param on this endpoint — always this shape.)</li>
+<li><strong><code>ask&lt;TResponse&gt;(payload, requestOptions?, mutateOptions?)</code></strong> — <code>POST /llm/ask</code>. Generic over the response type, defaulting to <code>LlmAskResponse</code> (the <code>native</code> shape). Pass a matching <code>protocol</code> and type argument together to type the response for a different protocol — see "Protocol-typed responses" below.</li>
+<li><strong><code>refetch()</code></strong> — re-fetches <code>status</code> and <code>protocols</code>.</li>
+<li><strong><code>loading</code></strong> — <code>{ status, protocols, search, ask }</code> booleans.</li>
+</ul>
+<h3 id="useagent"><code>useAgent()</code><a class="headerlink" href="#useagent" title="Permanent link">&para;</a></h3>
+<p>Reads from the <code>/agent/*</code> surface.</p>
+<ul>
+<li><strong><code>status</code></strong> — <code>GET /agent/status</code>, fetched on mount (<code>module</code>, <code>mode</code>, <code>workspace_id</code>, <code>agent_source</code>, <code>llm_provider</code>, <code>llm_model</code>).</li>
+<li><strong><code>ask&lt;TResponse&gt;(payload, requestOptions?, mutateOptions?)</code></strong> — <code>POST /agent/ask</code>. Generic over the response type, defaulting to <code>AgentAskResponse</code> (the <code>native</code> shape). Pass a matching <code>protocol</code> and type argument together to type the response for a different protocol — see "Protocol-typed responses" below.</li>
+<li><strong><code>askStream(payload, requestOptions?)</code></strong> — <code>POST /agent/ask/stream</code>. The response body is a stream with no documented JSON schema, so this resolves to the raw <code>Response</code> — read it yourself, e.g. <code>const reader = (await askStream(payload)).body?.getReader()</code>.</li>
+<li><strong><code>refetch()</code></strong> — re-fetches <code>status</code>.</li>
+<li><strong><code>loading</code></strong> — <code>{ status, ask, askStream }</code> booleans.</li>
+</ul>
+<h3 id="protocol-typed-responses">Protocol-typed responses<a class="headerlink" href="#protocol-typed-responses" title="Permanent link">&para;</a></h3>
+<p>The backend's <code>/llm/ask</code>, <code>/agent/ask</code> and <code>/agent/ask/stream</code> endpoints all accept a <code>protocol</code> option (<code>native</code>, <code>openai</code>, <code>langchain</code>, <code>ag_ui</code>, <code>a2ui</code>, <code>mcp</code>, <code>acp</code>, <code>a2a</code>), and <strong>each protocol returns a differently-shaped response.</strong> <code>react-ai</code> is a transport layer, not a chat UI or a specific-protocol client — it doesn't decide which protocol you use, and it can't know the response shape of a protocol it doesn't implement itself. That decision, and the typing that goes with it, belongs to whichever app is consuming this module.</p>
+<p>Concretely, <code>react-ai</code> only implements and owns one shape: <strong><code>native</code></strong> (the server's own default, <code>{ answer, hits }</code> — exported as <code>NativeAskResponse</code>, aliased as <code>LlmAskResponse</code> and <code>AgentAskResponse</code>). <code>ask()</code> defaults to that shape and needs no extra setup:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useLlm</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ai'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ask</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useLlm</span><span class="p">();</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">answer</span><span class="p">,</span><span class="w"> </span><span class="nx">hits</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">ask</span><span class="p">({</span><span class="w"> </span><span class="nx">question</span><span class="o">:</span><span class="w"> </span><span class="s1">'How do I reset my password?'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>For every other protocol, <code>ask()</code> is generic — pass your own response type as a type argument alongside the matching <code>protocol</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useAgent</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ai'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">SomeAgUiType</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@ag-ui/client'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ask</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useAgent</span><span class="p">();</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">ask</span><span class="p">&lt;</span><span class="nt">SomeAgUiType</span><span class="p">&gt;(</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">question</span><span class="o">:</span><span class="w"> </span><span class="s1">'Draft a reply'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">protocol</span><span class="o">:</span><span class="w"> </span><span class="s1">'ag_ui'</span><span class="w"> </span><span class="p">},</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<p>The <code>{ protocol: 'ag_ui' }</code> above is shown as a per-call override for illustration — in practice, if your whole app speaks <code>ag_ui</code>, set it once via <code>&lt;AiProvider options={{ protocol: 'ag_ui' }}&gt;</code> (see "<code>options</code> Configuration" above) instead of passing it on every call.</p>
+<p>Where does <code>SomeAgUiType</code> come from? <strong>The protocol's own SDK — not <code>react-ai</code>.</strong> If your app is speaking <code>ag_ui</code>, <code>openai</code>, <code>mcp</code>, etc., you're already installing that protocol's client library to actually talk it (e.g. <code>@ag-ui/client</code> to run an AG-UI agent, the <code>openai</code> package to use an OpenAI-compatible client). That same library ships its own TypeScript types for its own response shapes — import from there directly. <code>react-ai</code> deliberately does <strong>not</strong> depend on any of these SDKs (not even as an optional peer dependency): doing so would force every consuming app to carry the weight/version churn of every protocol's SDK, even the ones they never use. Only the app that picks a given protocol pays for it.</p>
+<p>As a starting point, here's where each protocol's types are likely to live — verify against whichever version you install, since none of these are pinned or vendored by <code>react-ai</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Likely type source</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>native</code></td>
+<td><code>react-ai</code> itself (<code>NativeAskResponse</code>)</td>
+<td>Confirmed — this is the shape we implement.</td>
+</tr>
+<tr>
+<td><code>openai</code></td>
+<td>the <code>openai</code> npm package (OpenAI Chat Completions types)</td>
+<td>Reasonably confident, unverified against this specific backend.</td>
+</tr>
+<tr>
+<td><code>langchain</code></td>
+<td><code>@langchain/core</code> (message/response types)</td>
+<td>Reasonably confident, unverified against this specific backend.</td>
+</tr>
+<tr>
+<td><code>ag_ui</code></td>
+<td><code>@ag-ui/client</code> / <code>@ag-ui/core</code></td>
+<td>Reasonably confident, unverified against this specific backend.</td>
+</tr>
+<tr>
+<td><code>mcp</code></td>
+<td><code>@modelcontextprotocol/sdk</code></td>
+<td>Reasonably confident, unverified against this specific backend.</td>
+</tr>
+<tr>
+<td><code>a2a</code></td>
+<td>Google's A2A protocol SDK</td>
+<td>Package name not verified — check the A2A protocol's official docs.</td>
+</tr>
+<tr>
+<td><code>acp</code>, <code>a2ui</code></td>
+<td>Unknown</td>
+<td>Not verified at all — confirm with the backend team which library (if any) defines these before relying on a type.</td>
+</tr>
+</tbody>
+</table>
+<p>This module also intentionally does <strong>not</strong> know about any particular chat UI (e.g. <code>ChatBox</code> from <code>@msflib/react-components</code>). Mapping a specific protocol's response into a specific UI's props is glue code that belongs in the consuming app (or a dedicated adapter package), not here — the same reasoning as above, applied to UI instead of protocol SDKs.</p>
+<h3 id="payload-shape-shared-by-asksearch"><code>payload</code> shape (shared by <code>ask</code>/<code>search</code>)<a class="headerlink" href="#payload-shape-shared-by-asksearch" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nx">question</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="c1">// `query` for search</span>
+<span class="w">  </span><span class="nx">sub_thread_id?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">conversation_id?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">k?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1-50, default 4</span>
+<span class="w">  </span><span class="nx">document_type?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">source_id?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="requestoptions-second-argument-to-asksearch"><code>requestOptions</code> (second argument to <code>ask</code>/<code>search</code>)<a class="headerlink" href="#requestoptions-second-argument-to-asksearch" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nx">protocol</span><span class="o">?:</span><span class="w"> </span><span class="s1">'native'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'openai'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'langchain'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'ag_ui'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'a2ui'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'mcp'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'acp'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'a2a'</span><span class="p">;</span><span class="w"> </span><span class="c1">// sent as the `protocol` query param</span>
+<span class="w">  </span><span class="nx">channel?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="c1">// sent as the `x-ai-channel` header</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="returned-hook-shape">Returned Hook Shape<a class="headerlink" href="#returned-hook-shape" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="c1">// useLlm()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">LlmStatus</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">protocols</span><span class="o">:</span><span class="w"> </span><span class="kt">Record</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">search</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">requestOptions</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">mutateOptions</span><span class="o">?</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">hits</span><span class="o">:</span><span class="w"> </span><span class="kt">AiDocument</span><span class="p">[];</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">ask</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">TResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">LlmAskResponse</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">requestOptions</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">mutateOptions</span><span class="o">?</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">TResponse</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">refetch</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">loading</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span><span class="w"> </span><span class="nx">protocols</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span><span class="w"> </span><span class="nx">search</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span><span class="w"> </span><span class="nx">ask</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// useAgent()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">AgentStatus</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">ask</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">TResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">AgentAskResponse</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">requestOptions</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">mutateOptions</span><span class="o">?</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">TResponse</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">askStream</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">requestOptions</span><span class="o">?</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Response</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">refetch</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">loading</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span><span class="w"> </span><span class="nx">ask</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span><span class="w"> </span><span class="nx">askStream</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>AiProvider</code> must be rendered in a client component in Next.js (<code>"use client"</code>).</li>
+<li><code>status</code>/<code>protocols</code> queries are cached for 60 seconds by default.</li>
+<li>All API calls are workspace-aware if <code>isWorkspaceScoped</code> is true (default).</li>
+<li><code>useLlm()</code> and <code>useAgent()</code> both read off the same <code>AiProvider</code> — you only need to wrap your app once.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

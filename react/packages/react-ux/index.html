@@ -1,0 +1,2792 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSF React monorepo and shared client-side packages">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/react/packages/react-ux">
+      
+      
+        <link rel="prev" href="../react-users">
+      
+      
+        <link rel="next" href="../react-workspace">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>React UX - MSF React</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflibreact-ux" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSF React" class="md-header__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSF React
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React UX
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSF React" class="md-nav__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSF React
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSFLib React
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Imports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-explorer-utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Explorer Utilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Explorer Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buildexplorerrows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buildExplorerRows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#folder-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder Aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendering-with-any-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendering With Any Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#row-click-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row Click Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icon-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Icon Helpers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Helpers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outside-interaction-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outside Interaction Hook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lazy-tree-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy Tree Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Principles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tooling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SUMMARY" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packages
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Packages
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Imports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-explorer-utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Explorer Utilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Explorer Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buildexplorerrows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buildExplorerRows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#folder-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder Aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendering-with-any-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendering With Any Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#row-click-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row Click Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icon-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Icon Helpers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Helpers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outside-interaction-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outside Interaction Hook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lazy-tree-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy Tree Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Principles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Imports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-explorer-utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Explorer Utilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Explorer Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buildexplorerrows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buildExplorerRows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#folder-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder Aggregation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendering-with-any-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendering With Any Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#row-click-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row Click Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icon-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Icon Helpers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Helpers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outside-interaction-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outside Interaction Hook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lazy-tree-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy Tree Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Principles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflibreact-ux">@msflib/react-ux<a class="headerlink" href="#msflibreact-ux" title="Permanent link">&para;</a></h1>
+<p>Small, UI-agnostic React utilities for common product interactions.</p>
+<p>This package intentionally does not ship visual components. It provides focused helpers that can be used with any design system, table component, card layout, modal, menu, or custom UI.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>add<span class="w"> </span>@msflib/react-ux
+</code></pre></div>
+
+<h2 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">&para;</a></h2>
+<p>Import everything from the package root:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">buildExplorerRows</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">useExplorerRowClick</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">useCloseOnOutsideInteraction</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux'</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Or import from focused subpaths:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">buildExplorerRows</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/file-explorer'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useCloseOnOutsideInteraction</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/interactions'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useLazyTreeData</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/tree-view'</span><span class="p">;</span>
+</code></pre></div>
+
+<h2 id="file-explorer-utilities">File Explorer Utilities<a class="headerlink" href="#file-explorer-utilities" title="Permanent link">&para;</a></h2>
+<p>The file explorer utilities transform a flat backend list of files into rows that can represent folders and files.</p>
+<p>The only required backend field is <code>file_path</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">FileLike</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">file_size?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">created_at?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">updated_at?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="p">[</span><span class="nx">key</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">unknown</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>All other backend fields are preserved on file rows. The library only computes the fields it needs for explorer behavior.</p>
+<h3 id="buildexplorerrows">buildExplorerRows<a class="headerlink" href="#buildexplorerrows" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">buildExplorerRows</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/file-explorer'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp/cohort2/epic.png'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_size</span><span class="o">:</span><span class="w"> </span><span class="s1">'20 KB'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-04T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-05T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">owner</span><span class="o">:</span><span class="w"> </span><span class="s1">'Drew Cano'</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp/onboard.pdf'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_size</span><span class="o">:</span><span class="w"> </span><span class="s1">'720 KB'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-02T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-04T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">];</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">buildExplorerRows</span><span class="p">(</span><span class="nx">files</span><span class="p">);</span>
+</code></pre></div>
+
+<p>At the root path, this returns the first visible folder level:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'folder:/kodecamp'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'kodecamp'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">entryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'folder'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_size</span><span class="o">:</span><span class="w"> </span><span class="kt">757760</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-02T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-05T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div>
+
+<p>To read inside a folder, pass <code>currentPath</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">kodecampRows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">buildExplorerRows</span><span class="p">(</span><span class="nx">files</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">currentPath</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp'</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>This returns folders and files directly inside <code>/kodecamp</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'folder:/kodecamp/cohort2'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'cohort2'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp/cohort2'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">entryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'folder'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_size</span><span class="o">:</span><span class="w"> </span><span class="kt">20480</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-04T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-05T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'onboard.pdf'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp/onboard.pdf'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">entryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'file'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">extension</span><span class="o">:</span><span class="w"> </span><span class="s1">'pdf'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">file_size</span><span class="o">:</span><span class="w"> </span><span class="s1">'720 KB'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-02T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="s1">'2025-01-04T00:00:00.000Z'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">source</span><span class="o">:</span><span class="w"> </span><span class="kt">files</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div>
+
+<h3 id="folder-aggregation">Folder Aggregation<a class="headerlink" href="#folder-aggregation" title="Permanent link">&para;</a></h3>
+<p>Folder rows are computed from descendant files:</p>
+<ul>
+<li><code>file_size</code> is the sum of descendant file sizes, returned in bytes.</li>
+<li><code>created_at</code> is the earliest descendant <code>created_at</code>.</li>
+<li><code>updated_at</code> is the latest descendant <code>updated_at</code>.</li>
+</ul>
+<p>Supported size units:</p>
+<div class="codehilite"><pre><span></span><code>b, kb, mb, gb, tb
+</code></pre></div>
+
+<p>If a file size cannot be parsed, it contributes <code>0</code> to the folder total.</p>
+<h3 id="file-rows">File Rows<a class="headerlink" href="#file-rows" title="Permanent link">&para;</a></h3>
+<p>File rows preserve backend data and add explorer fields:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="p">...</span><span class="nx">backendFile</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'epic.png'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">file_path</span><span class="o">:</span><span class="w"> </span><span class="s1">'/kodecamp/cohort2/epic.png'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">entryType</span><span class="o">:</span><span class="w"> </span><span class="s1">'file'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">extension</span><span class="o">:</span><span class="w"> </span><span class="s1">'png'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">source</span><span class="o">:</span><span class="w"> </span><span class="kt">backendFile</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This means consumers can decide which columns to render and how to map backend data into labels.</p>
+<h3 id="rendering-with-any-table">Rendering With Any Table<a class="headerlink" href="#rendering-with-any-table" title="Permanent link">&para;</a></h3>
+<p>The package is not tied to a table implementation.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useMemo</span><span class="p">,</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">buildExplorerRows</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">useExplorerRowClick</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/file-explorer'</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">FilesView</span><span class="p">({</span><span class="w"> </span><span class="nx">files</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">currentPath</span><span class="p">,</span><span class="w"> </span><span class="nx">setCurrentPath</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="s1">'/'</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useMemo</span><span class="p">(</span>
+<span class="w">    </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">buildExplorerRows</span><span class="p">(</span><span class="nx">files</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">currentPath</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">    </span><span class="p">[</span><span class="nx">files</span><span class="p">,</span><span class="w"> </span><span class="nx">currentPath</span><span class="p">],</span>
+<span class="w">  </span><span class="p">);</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">handleExplorerRowClick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useExplorerRowClick</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">onFolderClick</span><span class="o">:</span><span class="w"> </span><span class="kt">setCurrentPath</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">onFileClick</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'open file'</span><span class="p">,</span><span class="w"> </span><span class="nx">file</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">TableWidget</span>
+<span class="w">      </span><span class="na">rows</span><span class="o">=</span><span class="p">{</span><span class="nx">rows</span><span class="p">}</span>
+<span class="w">      </span><span class="na">columns</span><span class="o">=</span><span class="p">{</span><span class="nx">columns</span><span class="p">}</span>
+<span class="w">      </span><span class="na">onRowClick</span><span class="o">=</span><span class="p">{({</span><span class="w"> </span><span class="nx">row</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">handleExplorerRowClick</span><span class="p">(</span><span class="nx">row</span><span class="p">)}</span>
+<span class="w">    </span><span class="p">/&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="row-click-handling">Row Click Handling<a class="headerlink" href="#row-click-handling" title="Permanent link">&para;</a></h3>
+<p><code>useExplorerRowClick</code> returns a generic row click handler.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">handleExplorerRowClick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useExplorerRowClick</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">onFolderClick</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">path</span><span class="p">,</span><span class="w"> </span><span class="nx">row</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">setCurrentPath</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">onFileClick</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">row</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">openPreview</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">onRowClick</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">row</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'clicked any row'</span><span class="p">,</span><span class="w"> </span><span class="nx">row</span><span class="p">);</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Behavior:</p>
+<ul>
+<li>Folder rows call <code>onFolderClick(row.file_path, row)</code>.</li>
+<li>File rows call <code>onFileClick(row.source, row)</code>.</li>
+<li>Every row calls <code>onRowClick(row)</code> when provided.</li>
+</ul>
+<p>For non-React usage, use <code>createExplorerRowClickHandler</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">handleExplorerRowClick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createExplorerRowClickHandler</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">onFolderClick</span><span class="o">:</span><span class="w"> </span><span class="kt">setCurrentPath</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h2 id="icon-helpers">Icon Helpers<a class="headerlink" href="#icon-helpers" title="Permanent link">&para;</a></h2>
+<p>The package does not ship icons. Consumers provide their own icons, images, or React nodes.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">buildExplorerIcon</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/file-explorer'</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">FileIcon</span><span class="p">({</span><span class="w"> </span><span class="nx">row</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">buildExplorerIcon</span><span class="p">(</span><span class="nx">row</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">icons</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">folder</span><span class="o">:</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">FolderIcon</span><span class="w"> </span><span class="p">/&gt;,</span>
+<span class="w">      </span><span class="nx">pdf</span><span class="o">:</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">PdfIcon</span><span class="w"> </span><span class="p">/&gt;,</span>
+<span class="w">      </span><span class="nx">image</span><span class="o">:</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">ImageIcon</span><span class="w"> </span><span class="p">/&gt;,</span>
+<span class="w">      </span><span class="nx">video</span><span class="o">:</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">VideoIcon</span><span class="w"> </span><span class="p">/&gt;,</span>
+<span class="w">      </span><span class="nx">audio</span><span class="o">:</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">AudioIcon</span><span class="w"> </span><span class="p">/&gt;,</span>
+<span class="w">      </span><span class="nb">document</span><span class="o">:</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">DocumentIcon</span><span class="w"> </span><span class="p">/&gt;,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>buildExplorerIcon</code> uses:</p>
+<ul>
+<li><code>folder</code> when <code>entryType</code> is <code>folder</code></li>
+<li><code>pdf</code> for <code>.pdf</code></li>
+<li><code>image</code> for <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.gif</code>, <code>.webp</code>, <code>.svg</code></li>
+<li><code>video</code> for <code>.mp4</code>, <code>.mov</code>, <code>.avi</code>, <code>.mkv</code>, <code>.webm</code></li>
+<li><code>audio</code> for <code>.mp3</code>, <code>.wav</code>, <code>.aac</code>, <code>.m4a</code>, <code>.ogg</code></li>
+<li><code>document</code> as the fallback file type</li>
+</ul>
+<p>Use <code>getExplorerIconType</code> directly if you only need the icon category:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">iconType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getExplorerIconType</span><span class="p">(</span><span class="s1">'pdf'</span><span class="p">);</span><span class="w"> </span><span class="c1">// "pdf"</span>
+</code></pre></div>
+
+<h2 id="path-helpers">Path Helpers<a class="headerlink" href="#path-helpers" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="nx">normalizeExplorerPath</span><span class="p">(</span><span class="s1">'kodecamp/cohort2/'</span><span class="p">);</span>
+<span class="c1">// "/kodecamp/cohort2"</span>
+
+<span class="nx">joinExplorerPath</span><span class="p">(</span><span class="s1">'/kodecamp'</span><span class="p">,</span><span class="w"> </span><span class="s1">'cohort2'</span><span class="p">);</span>
+<span class="c1">// "/kodecamp/cohort2"</span>
+</code></pre></div>
+
+<h2 id="outside-interaction-hook">Outside Interaction Hook<a class="headerlink" href="#outside-interaction-hook" title="Permanent link">&para;</a></h2>
+<p><code>useCloseOnOutsideInteraction</code> closes menus, popovers, cards, and similar UI when the user clicks outside the referenced element or presses Escape.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useRef</span><span class="p">,</span><span class="w"> </span><span class="nx">useState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useCloseOnOutsideInteraction</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/interactions'</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">WorkspaceMenu</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">open</span><span class="p">,</span><span class="w"> </span><span class="nx">setOpen</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">menuRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useRef</span><span class="p">&lt;</span><span class="nt">HTMLDivElement</span><span class="p">&gt;(</span><span class="kc">null</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">useCloseOnOutsideInteraction</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">ref</span><span class="o">:</span><span class="w"> </span><span class="kt">menuRef</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">enabled</span><span class="o">:</span><span class="w"> </span><span class="kt">open</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">onClose</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setOpen</span><span class="p">(</span><span class="kc">false</span><span class="p">),</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">open</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">div</span><span class="w"> </span><span class="na">ref</span><span class="o">=</span><span class="p">{</span><span class="nx">menuRef</span><span class="p">}&gt;</span><span class="nx">Workspace</span><span class="w"> </span><span class="nx">content</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Options:</p>
+<div class="codehilite"><pre><span></span><code><span class="kr">type</span><span class="w"> </span><span class="nx">UseCloseOnOutsideInteractionOptions</span><span class="o">&lt;</span><span class="nx">TNode</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">ref</span><span class="o">:</span><span class="w"> </span><span class="kt">RefObject</span><span class="o">&lt;</span><span class="nx">TNode</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">enabled?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">onClose</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">PointerEvent</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">KeyboardEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">closeOnEscape?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">closeOnPointerDownOutside?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Disable Escape handling:</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">useCloseOnOutsideInteraction</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">ref</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">enabled</span><span class="o">:</span><span class="w"> </span><span class="kt">open</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">onClose</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">closeOnEscape</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Disable pointer outside handling:</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">useCloseOnOutsideInteraction</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">ref</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">enabled</span><span class="o">:</span><span class="w"> </span><span class="kt">open</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">onClose</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">closeOnPointerDownOutside</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h2 id="lazy-tree-data">Lazy Tree Data<a class="headerlink" href="#lazy-tree-data" title="Permanent link">&para;</a></h2>
+<p><code>useLazyTreeData</code> bridges a backend that returns nodes <strong>per parent</strong> (fetch root nodes, then fetch a folder's children only when it's opened — e.g. <code>@msflib/react-drivelink</code>'s <code>listNodes({ parent_id })</code>) into a nested tree structure. It's not tied to MUI or any tree component: the shape it returns (<code>{ id, label, expandable, children }</code>) is a plain object that structurally matches what MUI X's <code>RichTreeView</code> <code>items</code> prop expects, so you can pass it straight through without this package depending on <code>@mui/x-tree-view</code> at all — same reasoning as the rest of this package staying UI-agnostic.</p>
+<p>It solves the specific problem of <strong>not re-fetching a folder's children every time it's expanded</strong>: each parent's children are fetched once and cached; concurrent expand clicks on the same folder are deduped into a single request; already-loaded folders return instantly from cache.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useLazyTreeData</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-ux/tree-view'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">TreeView</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-components'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useDrivelink</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-drivelink'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">DrivelinkNode</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-drivelink'</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">DriveTree</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">listNodes</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useDrivelink</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">isLoading</span><span class="p">,</span><span class="w"> </span><span class="nx">onItemExpansionToggle</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useLazyTreeData</span><span class="p">&lt;</span><span class="nt">DrivelinkNode</span><span class="p">&gt;({</span>
+<span class="w">    </span><span class="nx">adapter</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">getId</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">node</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">String</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">getLabel</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">node</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">isExpandable</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">node</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'folder'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">getExtension</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">node</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">pop</span><span class="p">(),</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">fetchChildren</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">parentId</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span>
+<span class="w">      </span><span class="nx">listNodes</span><span class="p">({</span><span class="w"> </span><span class="nx">parent_id</span><span class="o">:</span><span class="w"> </span><span class="kt">parentId</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">Number</span><span class="p">(</span><span class="nx">parentId</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">TreeView</span>
+<span class="w">      </span><span class="na">items</span><span class="o">=</span><span class="p">{</span><span class="nx">items</span><span class="p">}</span>
+<span class="w">      </span><span class="na">onItemExpansionToggle</span><span class="o">=</span><span class="p">{</span><span class="nx">onItemExpansionToggle</span><span class="p">}</span>
+<span class="w">      </span><span class="na">isItemLoading</span><span class="o">=</span><span class="p">{</span><span class="nx">isLoading</span><span class="p">}</span>
+<span class="w">      </span><span class="na">showIcons</span>
+<span class="w">    </span><span class="p">/&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>On mount, it calls <code>fetchChildren(null)</code> once to load the root/home level (disable with <code>autoLoadRoot: false</code> if you want to trigger it yourself).</li>
+<li>Wire <code>onItemExpansionToggle</code> directly to the tree view — when an item expands, its children are fetched (or served from cache if already loaded) and nested under it in <code>items</code>.</li>
+<li><code>isLoading(parentId)</code> / <code>getError(parentId)</code> give per-folder loading and error state, e.g. to show a spinner or retry affordance for the folder currently being opened.</li>
+<li><code>refreshChildren(parentId)</code> force-refetches a folder — useful after a mutation inside it (upload, delete, rename) invalidates what's cached.</li>
+<li><code>loadChildren(parentId)</code> is the same thing <code>onItemExpansionToggle</code> calls internally — use it directly if you need to trigger a fetch outside of an expansion event (e.g. programmatically opening a path).</li>
+</ul>
+<p><code>adapter</code> is how the hook stays generic across backends — <code>getId</code>/<code>getLabel</code>/<code>isExpandable</code> are the only required fields; everything else about the node is preserved on <code>item.node</code> for you to use in custom rendering. Two optional accessors feed <code>@msflib/react-components</code>'s <code>TreeView</code> icon system with zero extra glue:</p>
+<ul>
+<li><code>getExtension?: (node) =&gt; string | undefined</code> — becomes <code>item.extension</code>, used by <code>TreeView</code>'s <code>showIcons</code>/<code>fileIconMap</code> to pick a default file-type icon.</li>
+<li><code>getIcon?: (node) =&gt; ReactNode</code> — becomes <code>item.icon</code>, a full per-item icon override.</li>
+</ul>
+<p><strong>Recommended pairing</strong>: <code>@msflib/react-components</code>'s <code>TreeView</code> (built specifically to consume this hook's output — see its README) rather than MUI X's <code>RichTreeView</code>, since MUI's own dynamic/lazy-loading support (<code>dataSource</code>) is Pro-plan only — confirmed against MUI's own docs — while this hook + <code>TreeView</code> gets you the same capability in the MIT tier. <code>items</code>/<code>onItemExpansionToggle</code> are still plain enough to wire into MUI's <code>RichTreeView</code> too if you're already on a Pro license and prefer it; just note some <code>@mui/x-tree-view</code> versions only show the expand arrow once an item already has at least one child in <code>items</code>, so you may need a placeholder child for not-yet-loaded items — verify against your installed version's docs.</p>
+<h2 id="design-principles">Design Principles<a class="headerlink" href="#design-principles" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Require only the data needed for computation.</li>
+<li>Preserve backend data instead of guessing display fields.</li>
+<li>Keep utilities UI-agnostic.</li>
+<li>Let consuming apps decide columns, cards, icons, and styling.</li>
+<li>Prefer small, direct APIs over broad abstractions.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

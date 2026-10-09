@@ -1,0 +1,3803 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSF React monorepo and shared client-side packages">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/react/packages/react-auth">
+      
+      
+        <link rel="prev" href="../react-ai">
+      
+      
+        <link rel="next" href="../react-categories">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>React Auth - MSF React</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflibreact-auth" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSF React" class="md-header__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSF React
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React Auth
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSF React" class="md-nav__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSF React
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSFLib React
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AuthProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useAuth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="useAuth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#me" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        me
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logindata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        login(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recoverpassworddata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recoverPassword(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifytokendata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyToken(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resetpassworddata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resetPassword(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resendcodedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resendCode(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logoutoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logout(options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatemedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        updateMe(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifyavailabilitydata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyAvailability(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticatedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        authenticate(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifyotpdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyOtp(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssologindata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoLogin(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssoredirectdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoRedirect(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssoretrieveoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoRetrieve(options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Tenancy Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-the-initial-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting the initial workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearing-the-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clearing the workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tooling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SUMMARY" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packages
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Packages
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AuthProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useAuth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="useAuth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#me" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        me
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logindata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        login(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recoverpassworddata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recoverPassword(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifytokendata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyToken(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resetpassworddata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resetPassword(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resendcodedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resendCode(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logoutoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logout(options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatemedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        updateMe(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifyavailabilitydata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyAvailability(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticatedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        authenticate(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifyotpdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyOtp(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssologindata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoLogin(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssoredirectdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoRedirect(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssoretrieveoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoRetrieve(options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Tenancy Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-the-initial-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting the initial workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearing-the-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clearing the workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-users" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AuthProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useAuth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="useAuth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#me" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        me
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logindata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        login(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recoverpassworddata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recoverPassword(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifytokendata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyToken(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resetpassworddata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resetPassword(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resendcodedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resendCode(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logoutoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logout(options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatemedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        updateMe(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifyavailabilitydata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyAvailability(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticatedata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        authenticate(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifyotpdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifyOtp(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssologindata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoLogin(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssoredirectdata-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoRedirect(data, options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssoretrieveoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ssoRetrieve(options?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Tenancy Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-the-initial-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting the initial workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearing-the-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clearing the workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflibreact-auth">@msflib/react-auth<a class="headerlink" href="#msflibreact-auth" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Standalone authentication module for React applications. Built on <a href="https://tanstack.com/query/latest">TanStack Query v5</a>. Supports real-time multi-tenant switching via <code>@msflib/core</code>.</p>
+</blockquote>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#peer-dependencies">Peer Dependencies</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#application-config">Application Config</a></li>
+<li><a href="#custom-endpoints">Custom Endpoints</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#authprovider">AuthProvider</a></li>
+<li><a href="#useauth">useAuth</a></li>
+<li><a href="#multi-tenancy-support">Multi-Tenancy Support</a></li>
+<li><a href="#typescript-types">TypeScript Types</a></li>
+<li><a href="#endpoint-defaults">Endpoint Defaults</a></li>
+</ul>
+<hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>add<span class="w"> </span>@msflib/react-auth<span class="w"> </span>@msflib/core<span class="w"> </span>@msflib/react-shared
+</code></pre></div>
+
+<hr />
+<h2 id="peer-dependencies">Peer Dependencies<a class="headerlink" href="#peer-dependencies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>react</code></td>
+<td><code>&gt;= 18</code></td>
+</tr>
+<tr>
+<td><code>react-dom</code></td>
+<td><code>&gt;= 18</code></td>
+</tr>
+<tr>
+<td><code>@tanstack/react-query</code></td>
+<td><code>&gt;= 5</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<p><strong>1. Configure the application once</strong> (e.g. in your app's entry point):</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// app/config.ts</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="kt">process.env.NEXT_PUBLIC_API_URL</span><span class="o">!</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">auth</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">login</span><span class="o">:</span><span class="w"> </span><span class="s1">'/auth/login'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">me</span><span class="o">:</span><span class="w"> </span><span class="s1">'/auth/me'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">logout</span><span class="o">:</span><span class="w"> </span><span class="s1">'/auth/logout'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p><strong>2. Wrap your app</strong> with <code>QueryClientProvider</code> and <code>AuthProvider</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// app/providers.tsx</span>
+<span class="s1">'use client'</span><span class="p">;</span><span class="w"> </span><span class="c1">// Next.js App Router</span>
+
+<span class="k">import</span><span class="w"> </span><span class="nx">React</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">,</span><span class="w"> </span><span class="nx">QueryClientProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">AuthProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-auth'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">queryClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">();</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">Providers</span><span class="p">({</span><span class="w"> </span><span class="nx">children</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="kt">React.ReactNode</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">QueryClientProvider</span><span class="w"> </span><span class="na">client</span><span class="o">=</span><span class="p">{</span><span class="nx">queryClient</span><span class="p">}&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">AuthProvider</span><span class="p">&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">AuthProvider</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">QueryClientProvider</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>3. Use the <code>useAuth</code> hook</strong> in any child component:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useAuth</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-auth'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">LoginForm</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">login</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">status</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useAuth</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">handleSubmit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="o">:</span><span class="w"> </span><span class="kt">React.FormEvent</span><span class="p">&lt;</span><span class="nt">HTMLFormElement</span><span class="p">&gt;)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FormData</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">login</span><span class="p">(</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">form.get</span><span class="p">(</span><span class="s1">'email'</span><span class="p">)</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="kt">form.get</span><span class="p">(</span><span class="s1">'password'</span><span class="p">)</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">onSuccess</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Logged in!'</span><span class="p">)</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">status</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'authenticated'</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">Already</span><span class="w"> </span><span class="nx">logged</span><span class="w"> </span><span class="ow">in</span><span class="p">.&lt;/</span><span class="nt">p</span><span class="p">&gt;;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">form</span><span class="w"> </span><span class="na">onSubmit</span><span class="o">=</span><span class="p">{</span><span class="nx">handleSubmit</span><span class="p">}&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">input</span><span class="w"> </span><span class="na">name</span><span class="o">=</span><span class="s">"email"</span><span class="w"> </span><span class="na">type</span><span class="o">=</span><span class="s">"email"</span><span class="w"> </span><span class="p">/&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">input</span><span class="w"> </span><span class="na">name</span><span class="o">=</span><span class="s">"password"</span><span class="w"> </span><span class="na">type</span><span class="o">=</span><span class="s">"password"</span><span class="w"> </span><span class="p">/&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span><span class="w"> </span><span class="na">type</span><span class="o">=</span><span class="s">"submit"</span><span class="w"> </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="nx">login</span><span class="p">}&gt;</span>
+<span class="w">        </span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="nx">login</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">'Logging in…'</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">'Login'</span><span class="p">}</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="application-config">Application Config<a class="headerlink" href="#application-config" title="Permanent link">&para;</a></h3>
+<p>Call <code>configureApplication</code> <strong>once</strong> before rendering your app. It is idempotent — subsequent calls after the first are silently ignored.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span><span class="w"> </span><span class="c1">// localStorage key for the JWT</span>
+<span class="w">  </span><span class="nx">workspace</span><span class="o">:</span><span class="w"> </span><span class="s1">'acme'</span><span class="p">,</span><span class="w"> </span><span class="c1">// optional: initial active workspace</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">auth</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="cm">/* override defaults here */</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h3 id="custom-endpoints">Custom Endpoints<a class="headerlink" href="#custom-endpoints" title="Permanent link">&para;</a></h3>
+<p>All endpoint keys are optional. Omitted keys fall back to the defaults listed in <a href="#endpoint-defaults">Endpoint Defaults</a>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'my_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">auth</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">login</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/login'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">register</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/register'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">me</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/me'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">logout</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/logout'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">recoverPassword</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/recover'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">verifyToken</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/verify'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">resetPassword</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/reset'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">resendCode</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/resend'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">verifyAvailability</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/verify-availability'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">authenticate</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/authenticate'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">verifyOtp</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/verify-otp'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">ssoLogin</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/sso-login'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">ssoRedirect</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/sso-redirect'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">ssoRetrieve</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/auth/sso-retrieve'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<hr />
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="authprovider"><code>AuthProvider</code><a class="headerlink" href="#authprovider" title="Permanent link">&para;</a></h3>
+<p>A React context provider that manages authentication state. Must be rendered inside a <code>QueryClientProvider</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">AuthProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-auth'</span><span class="p">;</span>
+
+<span class="p">&lt;</span><span class="nt">QueryClientProvider</span><span class="w"> </span><span class="na">client</span><span class="o">=</span><span class="p">{</span><span class="nx">queryClient</span><span class="p">}&gt;</span>
+<span class="w">  </span><span class="p">&lt;</span><span class="nt">AuthProvider</span><span class="p">&gt;{</span><span class="cm">/* your app */</span><span class="p">}&lt;/</span><span class="nt">AuthProvider</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">QueryClientProvider</span><span class="p">&gt;;</span>
+</code></pre></div>
+
+<p><strong>Props</strong></p>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>children</code></td>
+<td><code>React.ReactNode</code></td>
+<td>Yes</td>
+<td>Child component tree.</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>Configuration options for the provider. See below for details.</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>options</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isWorkspaceScoped</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>If <code>true</code>, the session is isolated per workspace.</td>
+</tr>
+<tr>
+<td><code>requireAuth</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If <code>true</code>, the <code>/me</code> query only runs when <code>isAuthenticated</code> is <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>isAuthenticated</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>The authentication status of the user, used when <code>requireAuth</code> is <code>true</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Behaviour</strong></p>
+<ul>
+<li>On mount, <code>AuthProvider</code> automatically calls <code>GET /me</code> to restore the user session.</li>
+<li>The result is cached for <strong>60 seconds</strong> via TanStack Query (<code>staleTime: 60_000</code>).</li>
+<li>When <code>login()</code> succeeds, the access token is stored via <code>@msflib/core</code>'s <code>storage</code> and the query cache is populated immediately — no second round-trip to <code>/me</code> required.</li>
+<li>When <code>logout()</code> succeeds, the token is removed from storage, the query cache is cleared, and <code>status</code> transitions to <code>'unauthenticated'</code>.</li>
+</ul>
+<hr />
+<h3 id="useauth"><code>useAuth</code><a class="headerlink" href="#useauth" title="Permanent link">&para;</a></h3>
+<p>Returns the authentication context. Must be called inside a component tree wrapped by <code>AuthProvider</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useAuth</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-auth'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">status</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">me</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">login</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">register</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">recoverPassword</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">verifyToken</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">resetPassword</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">resendCode</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">logout</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">updateMe</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">verifyAvailability</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">authenticate</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">verifyOtp</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">ssoLogin</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">ssoRedirect</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">ssoRetrieve</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">loading</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useAuth</span><span class="p">();</span>
+</code></pre></div>
+
+<h4 id="status"><code>status</code><a class="headerlink" href="#status" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'loading'</code></td>
+<td>The initial <code>/me</code> fetch is in progress.</td>
+</tr>
+<tr>
+<td><code>'authenticated'</code></td>
+<td>A user session is active.</td>
+</tr>
+<tr>
+<td><code>'unauthenticated'</code></td>
+<td>No session — user is logged out or <code>/me</code> returned an error.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="me"><code>me</code><a class="headerlink" href="#me" title="Permanent link">&para;</a></h4>
+<p><code>Me | null</code> — The current user object. Is <code>null</code> when unauthenticated.</p>
+<h4 id="logindata-options"><code>login(data, options?)</code><a class="headerlink" href="#logindata-options" title="Permanent link">&para;</a></h4>
+<p>Authenticates the user. Sends <code>x-www-form-urlencoded</code> — maps <code>email</code> → <code>username</code> automatically.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">login</span><span class="p">({</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="p">,</span><span class="w"> </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="s1">'secret'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;AuthUser&gt;</code>.</p>
+<h4 id="registerdata-options"><code>register(data, options?)</code><a class="headerlink" href="#registerdata-options" title="Permanent link">&para;</a></h4>
+<p>Creates a new user account.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">register</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">username</span><span class="o">:</span><span class="w"> </span><span class="s1">'john'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'john@example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="s1">'secret'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">phone</span><span class="o">:</span><span class="w"> </span><span class="s1">'555-1234'</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;RegisterResponse&gt;</code>.</p>
+<h4 id="recoverpassworddata-options"><code>recoverPassword(data, options?)</code><a class="headerlink" href="#recoverpassworddata-options" title="Permanent link">&para;</a></h4>
+<p>Sends a password recovery email.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">recoverPassword</span><span class="p">({</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;{ msg: string }&gt;</code>.</p>
+<h4 id="verifytokendata-options"><code>verifyToken(data, options?)</code><a class="headerlink" href="#verifytokendata-options" title="Permanent link">&para;</a></h4>
+<p>Verifies an OTP or recovery token.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">verifyToken</span><span class="p">({</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="s1">'123456'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;{ msg: string }&gt;</code>.</p>
+<h4 id="resetpassworddata-options"><code>resetPassword(data, options?)</code><a class="headerlink" href="#resetpassworddata-options" title="Permanent link">&para;</a></h4>
+<p>Resets the user's password using a valid token.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">resetPassword</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="s1">'abc123'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">new_password</span><span class="o">:</span><span class="w"> </span><span class="s1">'newSecret'</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;{ msg: string }&gt;</code>.</p>
+<h4 id="resendcodedata-options"><code>resendCode(data, options?)</code><a class="headerlink" href="#resendcodedata-options" title="Permanent link">&para;</a></h4>
+<p>Resends the verification code.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">resendCode</span><span class="p">({</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;{ sent: boolean }&gt;</code>.</p>
+<h4 id="logoutoptions"><code>logout(options?)</code><a class="headerlink" href="#logoutoptions" title="Permanent link">&para;</a></h4>
+<p>Calls <code>POST /logout</code>, removes the stored access token, and clears the cached user.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">logout</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;void&gt;</code>.</p>
+<h4 id="updatemedata-options"><code>updateMe(data, options?)</code><a class="headerlink" href="#updatemedata-options" title="Permanent link">&para;</a></h4>
+<p>Updates the current user's account fields.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">updateMe</span><span class="p">({</span><span class="w"> </span><span class="nx">username</span><span class="o">:</span><span class="w"> </span><span class="s1">'new_name'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;User&gt;</code>.</p>
+<h4 id="verifyavailabilitydata-options"><code>verifyAvailability(data, options?)</code><a class="headerlink" href="#verifyavailabilitydata-options" title="Permanent link">&para;</a></h4>
+<p>Checks whether an email, username, or phone is already taken — useful for inline signup-form validation before submitting.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">verifyAvailability</span><span class="p">({</span><span class="w"> </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="s1">'email'</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;{ msg: string }&gt;</code>.</p>
+<h4 id="authenticatedata-options"><code>authenticate(data, options?)</code><a class="headerlink" href="#authenticatedata-options" title="Permanent link">&para;</a></h4>
+<p>Step 1 of the OTP login flow: verifies the email/password and sends a one-time code to the user's email. Does not establish a session by itself — follow up with <code>verifyOtp</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">authenticate</span><span class="p">({</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="p">,</span><span class="w"> </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="s1">'secret'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;{ msg: string }&gt;</code>.</p>
+<h4 id="verifyotpdata-options"><code>verifyOtp(data, options?)</code><a class="headerlink" href="#verifyotpdata-options" title="Permanent link">&para;</a></h4>
+<p>Step 2 of the OTP login flow: verifies the code sent by <code>authenticate</code> and completes the login. On success, stores the access token and refreshes <code>me</code> — same as <code>login</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">verifyOtp</span><span class="p">({</span><span class="w"> </span><span class="nx">code</span><span class="o">:</span><span class="w"> </span><span class="s1">'123456'</span><span class="p">,</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">'user@example.com'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;AuthUser&gt;</code>.</p>
+<h4 id="ssologindata-options"><code>ssoLogin(data, options?)</code><a class="headerlink" href="#ssologindata-options" title="Permanent link">&para;</a></h4>
+<p>Exchanges an SSO token (typically read from a redirect query param) for a session in one call. On success, stores the access token and refreshes <code>me</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">ssoLogin</span><span class="p">({</span><span class="w"> </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">ssoTokenFromQueryParam</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;AuthUser&gt;</code>.</p>
+<h4 id="ssoredirectdata-options"><code>ssoRedirect(data, options?)</code><a class="headerlink" href="#ssoredirectdata-options" title="Permanent link">&para;</a></h4>
+<p>Hands an SSO token off to the backend (<code>application/x-www-form-urlencoded</code>) as part of the SSO handshake, optionally carrying a <code>path_location</code> to return to afterwards. Does not itself change auth state — pair with <code>ssoRetrieve</code> to pull the resulting session.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">ssoRedirect</span><span class="p">({</span><span class="w"> </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">ssoToken</span><span class="p">,</span><span class="w"> </span><span class="nx">path_location</span><span class="o">:</span><span class="w"> </span><span class="s1">'/dashboard'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;unknown&gt;</code> (the backend's response shape isn't fixed).</p>
+<h4 id="ssoretrieveoptions"><code>ssoRetrieve(options?)</code><a class="headerlink" href="#ssoretrieveoptions" title="Permanent link">&para;</a></h4>
+<p>Retrieves the session established by a prior <code>ssoRedirect</code> (no arguments — the backend resolves it from the request itself, e.g. a cookie). On success, stores the access token and refreshes <code>me</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">ssoRetrieve</span><span class="p">();</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">path_location</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">'/'</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Returns <code>Promise&lt;AuthUser &amp; { path_location?: string }&gt;</code>.</p>
+<h4 id="loading"><code>loading</code><a class="headerlink" href="#loading" title="Permanent link">&para;</a></h4>
+<p>An object of booleans indicating in-flight mutations:</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">loading</span><span class="p">.</span><span class="nx">login</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">register</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">recoverPassword</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">verifyToken</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">resendCode</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">resetPassword</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">logout</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">updateMe</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">verifyAvailability</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">verifyOtp</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">ssoLogin</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">ssoRedirect</span><span class="p">;</span>
+<span class="nx">loading</span><span class="p">.</span><span class="nx">ssoRetrieve</span><span class="p">;</span>
+</code></pre></div>
+
+<hr />
+<h2 id="multi-tenancy-support">Multi-Tenancy Support<a class="headerlink" href="#multi-tenancy-support" title="Permanent link">&para;</a></h2>
+<p><code>@msflib/react-auth</code> integrates with the workspace runtime in <code>@msflib/core</code>, but unlike most other <code>msflib</code> modules, <code>AuthProvider</code> does not subscribe to workspace changes itself.</p>
+<h3 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Endpoint paths</strong> — The API layer is created via <code>createAuthApi(options?.isWorkspaceScoped)</code>, which uses <code>configuredApiClient()</code> from <code>@msflib/core</code>. Scoped requests are prefixed/headered for the active workspace at request time, same as every other module.</li>
+<li><strong>Query cache</strong> — The <code>me</code> query uses a fixed key (<code>authQueryKeys.me()</code>), not one derived from the active workspace. <code>AuthProvider</code> does not call <code>useActiveWorkspace()</code>, so changing the active workspace via <code>setActiveWorkspace()</code> does <strong>not</strong> by itself trigger a re-fetch of <code>/me</code>.</li>
+</ol>
+<p>If your app needs the session to refresh when the user switches workspace, invalidate it explicitly:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useQueryClient</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">setActiveWorkspace</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">authQueryKeys</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-auth'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">queryClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useQueryClient</span><span class="p">();</span>
+
+<span class="nx">setActiveWorkspace</span><span class="p">(</span><span class="s1">'new-workspace'</span><span class="p">);</span>
+<span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span><span class="w"> </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="kt">authQueryKeys.me</span><span class="p">()</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<h3 id="setting-the-initial-workspace">Setting the initial workspace<a class="headerlink" href="#setting-the-initial-workspace" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">workspace</span><span class="o">:</span><span class="w"> </span><span class="s1">'acme-corp'</span><span class="p">,</span><span class="w"> </span><span class="c1">// seeds the active workspace on startup</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h3 id="clearing-the-workspace">Clearing the workspace<a class="headerlink" href="#clearing-the-workspace" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">setActiveWorkspace</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span><span class="w"> </span><span class="c1">// or setActiveWorkspace('')</span>
+</code></pre></div>
+
+<hr />
+<h2 id="typescript-types">TypeScript Types<a class="headerlink" href="#typescript-types" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">AuthStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'loading'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'authenticated'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'unauthenticated'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">created_at</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">updated_at</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">username</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">phone?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">data?</span><span class="o">:</span><span class="w"> </span><span class="kt">Record</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">unknown</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">[</span><span class="nx">k</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">unknown</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">UpdateMePayload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Partial</span><span class="o">&lt;</span><span class="nx">Me</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">current_password?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">new_password?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">firstname</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">lastname</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">date_of_birth</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">gender</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">marital_status</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="p">[</span><span class="nx">k</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">unknown</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">AuthUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">access_token</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">token_type</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">expires</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">account?</span><span class="o">:</span><span class="w"> </span><span class="kt">Me</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">LoginPayload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">RegisterPayload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">username?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">email?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">phone?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">profile?</span><span class="o">:</span><span class="w"> </span><span class="kt">Omit</span><span class="o">&lt;</span><span class="nx">Profile</span><span class="p">,</span><span class="w"> </span><span class="s1">'id'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'email'</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">[</span><span class="nx">key</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">unknown</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">RegisterResponse</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">Me</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">profile</span><span class="o">:</span><span class="w"> </span><span class="kt">Profile</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">RecoverPasswordPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">VerifyTokenPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ResendCodePayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ResetPasswordPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">new_password</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">VerifyAvailabilityField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'email'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'username'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'phone'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">VerifyAvailabilityPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="kt">VerifyAvailabilityField</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">AuthenticatePayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">VerifyOtpPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">code</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">SsoLoginParams</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">SsoRedirectPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">path_location?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">SsoRetrieveResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">AuthUser</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">path_location?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<hr />
+<h2 id="endpoint-defaults">Endpoint Defaults<a class="headerlink" href="#endpoint-defaults" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>HTTP Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>login</code></td>
+<td><code>/login</code></td>
+<td><code>POST</code> (form)</td>
+</tr>
+<tr>
+<td><code>register</code></td>
+<td><code>/open</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>recoverPassword</code></td>
+<td><code>/password-recovery</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>verifyToken</code></td>
+<td><code>/verify-token</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>resendCode</code></td>
+<td><code>/resend-code</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>resetPassword</code></td>
+<td><code>/reset-password</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>me</code></td>
+<td><code>/me</code></td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td><code>logout</code></td>
+<td><code>/logout</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>verifyAvailability</code></td>
+<td><code>/verify-availability</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>authenticate</code></td>
+<td><code>/authenticate</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>verifyOtp</code></td>
+<td><code>/verify-otp</code></td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td><code>ssoLogin</code></td>
+<td><code>/sso-login</code></td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td><code>ssoRedirect</code></td>
+<td><code>/sso-redirect</code></td>
+<td><code>POST</code> (form)</td>
+</tr>
+<tr>
+<td><code>ssoRetrieve</code></td>
+<td><code>/sso-retrieve</code></td>
+<td><code>GET</code></td>
+</tr>
+</tbody>
+</table>
+<p>Override any key via <code>configureApplication({ endpoints: { auth: { ... } } })</code>.</p>
+<p>Notes:
+- <code>verifyAvailability</code>, <code>authenticate</code>, <code>verifyOtp</code> are the pre-login OTP flow (<code>accounts</code>/<code>otp_accounts</code> on the backend) and don't require an access token.
+- <code>ssoLogin</code>, <code>ssoRedirect</code>, <code>ssoRetrieve</code> cover the SSO handshake (<code>sso-auth</code> on the backend) and don't require an access token either.
+- <code>ssoRedirect</code> sends <code>application/x-www-form-urlencoded</code> (not JSON), matching the backend contract.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

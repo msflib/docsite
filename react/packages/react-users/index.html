@@ -1,0 +1,3835 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSF React monorepo and shared client-side packages">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/react/packages/react-users">
+      
+      
+        <link rel="prev" href="../react-trainers">
+      
+      
+        <link rel="next" href="../react-ux">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>React Users - MSF React</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflibreact-users" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSF React" class="md-header__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSF React
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              React Users
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSF React" class="md-nav__button md-logo" aria-label="MSF React" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSF React
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSFLib React
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configure-your-app-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Configure your app once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wrap-your-app-with-queryclient-usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Wrap your app with QueryClient + UsersProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-consume-data-and-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Consume data and actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-application-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Application Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-endpoint-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users Endpoint Override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UsersProvider
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UsersProvider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Props
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useUsers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createusersapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        createUsersApi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="createUsersApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usersquerykeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        usersQueryKeys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeScript Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrecord" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRecord
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joinworkspacepayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JoinWorkspacePayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switchworkspacepayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SwitchWorkspacePayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#userscontexttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UsersContextType
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults-and-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults and Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-recipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Recipes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Recipes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-gated-user-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth-gated user query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-mutation-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using mutation callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useusers-must-be-used-inside-usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useUsers must be used inside &lt;UsersProvider /&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-not-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user not fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-endpoint-path-or-missing-workspace-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong endpoint path or missing workspace prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tooling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SUMMARY" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Packages
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Packages
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ai" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-auth" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-categories" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Categories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-certificate" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Certificate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-components" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-courses" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Courses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-curriculum" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Curriculum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-documents" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-drivelink" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lesson" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lesson
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-lottery" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Lottery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-notification" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Notification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-profile" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-shared" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Shared
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-students" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Students
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-support" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-tasks" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-trainers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Trainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Users
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configure-your-app-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Configure your app once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wrap-your-app-with-queryclient-usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Wrap your app with QueryClient + UsersProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-consume-data-and-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Consume data and actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-application-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Application Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-endpoint-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users Endpoint Override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UsersProvider
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UsersProvider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Props
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useUsers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createusersapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        createUsersApi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="createUsersApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usersquerykeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        usersQueryKeys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeScript Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrecord" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRecord
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joinworkspacepayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JoinWorkspacePayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switchworkspacepayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SwitchWorkspacePayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#userscontexttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UsersContextType
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults-and-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults and Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-recipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Recipes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Recipes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-gated-user-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth-gated user query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-mutation-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using mutation callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useusers-must-be-used-inside-usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useUsers must be used inside &lt;UsersProvider /&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-not-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user not fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-endpoint-path-or-missing-workspace-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong endpoint path or missing workspace prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-ux" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React UX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../react-workspace" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    React Workspace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peer-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configure-your-app-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Configure your app once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-wrap-your-app-with-queryclient-usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Wrap your app with QueryClient + UsersProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-consume-data-and-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Consume data and actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-application-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Application Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-endpoint-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users Endpoint Override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UsersProvider
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UsersProvider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Props
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useusers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useUsers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createusersapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        createUsersApi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="createUsersApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usersquerykeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        usersQueryKeys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typescript-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TypeScript Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TypeScript Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#userrecord" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserRecord
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joinworkspacepayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JoinWorkspacePayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switchworkspacepayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SwitchWorkspacePayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#userscontexttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UsersContextType
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-defaults-and-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Defaults and Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-tenancy-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Tenancy Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-recipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Recipes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Recipes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-gated-user-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth-gated user query
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-mutation-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using mutation callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useusers-must-be-used-inside-usersprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        useUsers must be used inside &lt;UsersProvider /&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-not-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user not fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrong-endpoint-path-or-missing-workspace-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong endpoint path or missing workspace prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflibreact-users">@msflib/react-users<a class="headerlink" href="#msflibreact-users" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Standalone users module for React applications, built on TanStack Query v5 and integrated with <code>@msflib/core</code> + <code>@msflib/react-shared</code>.</p>
+</blockquote>
+<p>This package provides:</p>
+<ul>
+<li>A strongly typed Users context provider (<code>UsersProvider</code>)</li>
+<li>A hook for consumers (<code>useUsers</code>)</li>
+<li>A direct API factory (<code>createUsersApi</code>) for non-context usage</li>
+<li>Exported query keys (<code>usersQueryKeys</code>) for cache invalidation from consuming apps</li>
+<li>End-to-end TypeScript types for payloads, responses, and context contracts</li>
+</ul>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#peer-dependencies">Peer Dependencies</a></li>
+<li><a href="#what-this-module-covers">What This Module Covers</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#base-application-configuration">Base Application Configuration</a></li>
+<li><a href="#users-endpoint-override">Users Endpoint Override</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#usersprovider">UsersProvider</a></li>
+<li><a href="#useusers">useUsers</a></li>
+<li><a href="#createusersapi">createUsersApi</a></li>
+<li><a href="#usersquerykeys">usersQueryKeys</a></li>
+<li><a href="#typescript-reference">TypeScript Reference</a></li>
+<li><a href="#endpoint-defaults-and-resolution">Endpoint Defaults and Resolution</a></li>
+<li><a href="#caching-behavior">Caching Behavior</a></li>
+<li><a href="#multi-tenancy-behavior">Multi-Tenancy Behavior</a></li>
+<li><a href="#usage-recipes">Usage Recipes</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#public-exports">Public Exports</a></li>
+</ul>
+<hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>add<span class="w"> </span>@msflib/react-users<span class="w"> </span>@msflib/core<span class="w"> </span>@msflib/react-shared<span class="w"> </span>@tanstack/react-query
+</code></pre></div>
+
+<hr />
+<h2 id="peer-dependencies">Peer Dependencies<a class="headerlink" href="#peer-dependencies" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>react</code></td>
+<td><code>^18 \|\| ^19</code></td>
+</tr>
+<tr>
+<td><code>react-dom</code></td>
+<td><code>^18 \|\| ^19</code></td>
+</tr>
+<tr>
+<td><code>@tanstack/react-query</code></td>
+<td><code>^5</code></td>
+</tr>
+<tr>
+<td><code>@msflib/core</code></td>
+<td><code>workspace:*</code></td>
+</tr>
+<tr>
+<td><code>@msflib/react-shared</code></td>
+<td><code>workspace:*</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-this-module-covers">What This Module Covers<a class="headerlink" href="#what-this-module-covers" title="Permanent link">&para;</a></h2>
+<p>The users module wraps these backend operations:</p>
+<ul>
+<li><code>POST users/join</code></li>
+<li><code>POST users/switch</code></li>
+<li><code>GET users/me</code></li>
+<li><code>GET users/{user_id}</code></li>
+</ul>
+<p>At runtime, these route calls are executed through <code>configuredApiClient</code> from <code>@msflib/core</code>, which applies tenant-scoping behavior consistently with the rest of the ecosystem.</p>
+<p><code>user</code> and <code>get</code> are workspace-scoped. <code>joinWorkspace</code> and <code>switchWorkspace</code> are <strong>never</strong> workspace-scoped — they run before a workspace is joined/selected, so there's no workspace context to scope them to.</p>
+<hr />
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<h3 id="1-configure-your-app-once">1) Configure your app once<a class="headerlink" href="#1-configure-your-app-once" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">users</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">users</span><span class="o">:</span><span class="w"> </span><span class="s1">'/users'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h3 id="2-wrap-your-app-with-queryclient-usersprovider">2) Wrap your app with QueryClient + UsersProvider<a class="headerlink" href="#2-wrap-your-app-with-queryclient-usersprovider" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">React</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">,</span><span class="w"> </span><span class="nx">QueryClientProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">UsersProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">queryClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">QueryClient</span><span class="p">();</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">AppProviders</span><span class="p">({</span><span class="w"> </span><span class="nx">children</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="kt">React.ReactNode</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">QueryClientProvider</span><span class="w"> </span><span class="na">client</span><span class="o">=</span><span class="p">{</span><span class="nx">queryClient</span><span class="p">}&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">UsersProvider</span><span class="p">&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">UsersProvider</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">QueryClientProvider</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="3-consume-data-and-actions">3) Consume data and actions<a class="headerlink" href="#3-consume-data-and-actions" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useUsers</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">WorkspaceSwitcher</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="p">,</span><span class="w"> </span><span class="nx">joinWorkspace</span><span class="p">,</span><span class="w"> </span><span class="nx">switchWorkspace</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useUsers</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">Current</span><span class="w"> </span><span class="nx">workspace</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">user</span><span class="o">?</span><span class="p">.</span><span class="nx">workspace_slug</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="s1">'none'</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span>
+<span class="w">        </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="nx">joinWorkspace</span><span class="p">}</span>
+<span class="w">        </span><span class="na">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span>
+<span class="w">          </span><span class="nx">joinWorkspace</span><span class="p">({</span>
+<span class="w">            </span><span class="nx">workspace_id</span><span class="o">:</span><span class="w"> </span><span class="kt">10</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">user_type</span><span class="o">:</span><span class="w"> </span><span class="s1">'learner'</span><span class="p">,</span>
+<span class="w">          </span><span class="p">})</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">&gt;</span>
+<span class="w">        </span><span class="nx">Join</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+
+<span class="w">      </span><span class="p">&lt;</span><span class="nt">button</span>
+<span class="w">        </span><span class="na">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">loading</span><span class="p">.</span><span class="nx">switchWorkspace</span><span class="p">}</span>
+<span class="w">        </span><span class="na">onClick</span><span class="o">=</span><span class="p">{()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">switchWorkspace</span><span class="p">({</span><span class="w"> </span><span class="nx">workspace_id</span><span class="o">:</span><span class="w"> </span><span class="s1">'10'</span><span class="w"> </span><span class="p">})}</span>
+<span class="w">      </span><span class="p">&gt;</span>
+<span class="w">        </span><span class="nx">Switch</span>
+<span class="w">      </span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="base-application-configuration">Base Application Configuration<a class="headerlink" href="#base-application-configuration" title="Permanent link">&para;</a></h3>
+<p><code>@msflib/react-users</code> expects <code>@msflib/core</code> application config to be initialized before provider usage.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">configureApplication</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/core'</span><span class="p">;</span>
+
+<span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">workspace</span><span class="o">:</span><span class="w"> </span><span class="s1">'workspace-a'</span><span class="p">,</span><span class="w"> </span><span class="c1">// optional initial workspace</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h3 id="users-endpoint-override">Users Endpoint Override<a class="headerlink" href="#users-endpoint-override" title="Permanent link">&para;</a></h3>
+<p>By default the module uses <code>/users</code>. Override it if your API namespace differs:</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">configureApplication</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s1">'https://api.example.com'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">accessTokenKey</span><span class="o">:</span><span class="w"> </span><span class="s1">'access_token'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">endpoints</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">users</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">users</span><span class="o">:</span><span class="w"> </span><span class="s1">'/v2/users'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<hr />
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="usersprovider">UsersProvider<a class="headerlink" href="#usersprovider" title="Permanent link">&para;</a></h3>
+<p>Context provider for user profile/workspace membership actions.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">UsersProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+
+<span class="p">&lt;</span><span class="nt">UsersProvider</span>
+<span class="w">  </span><span class="na">options</span><span class="o">=</span><span class="p">{{</span>
+<span class="w">    </span><span class="nx">isWorkspaceScoped</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">requireAuth</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">isAuthenticated</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}}</span>
+<span class="p">&gt;</span>
+<span class="w">  </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">UsersProvider</span><span class="p">&gt;;</span>
+</code></pre></div>
+
+<h4 id="props">Props<a class="headerlink" href="#props" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>children</code></td>
+<td><code>React.ReactNode</code></td>
+<td>Yes</td>
+<td>Descendant tree that will consume <code>useUsers</code>.</td>
+</tr>
+<tr>
+<td><code>options.isWorkspaceScoped</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>Controls whether endpoints are workspace-scoped. Default: <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>options.requireAuth</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>If <code>true</code>, <code>user</code> query only runs when <code>isAuthenticated === true</code>. Default: <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>options.isAuthenticated</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>Auth gate flag used only when <code>requireAuth</code> is <code>true</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="behavior">Behavior<a class="headerlink" href="#behavior" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>user</code> is loaded through TanStack <code>useQuery</code> with:</li>
+<li><code>staleTime: 60_000</code></li>
+<li><code>retry: false</code></li>
+<li><code>joinWorkspace</code> and <code>switchWorkspace</code> on success:</li>
+<li>call <code>setActiveWorkspace(user.workspace_slug)</code></li>
+<li>rely on the active workspace change to move subsequent <code>user</code> requests onto the next query key</li>
+</ul>
+<hr />
+<h3 id="useusers">useUsers<a class="headerlink" href="#useusers" title="Permanent link">&para;</a></h3>
+<p>Hook that returns the full users context contract:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useUsers</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">getUser</span><span class="p">,</span><span class="w"> </span><span class="nx">joinWorkspace</span><span class="p">,</span><span class="w"> </span><span class="nx">switchWorkspace</span><span class="p">,</span><span class="w"> </span><span class="nx">refetchUser</span><span class="p">,</span><span class="w"> </span><span class="nx">loading</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="nx">useUsers</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If used outside <code>UsersProvider</code>, it throws:</p>
+<div class="codehilite"><pre><span></span><code>useUsers must be used inside &lt;UsersProvider /&gt;
+</code></pre></div>
+
+<hr />
+<h3 id="createusersapi">createUsersApi<a class="headerlink" href="#createusersapi" title="Permanent link">&para;</a></h3>
+<p>Factory for direct API usage (without context).</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createUsersApi</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">usersApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createUsersApi</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// workspaceScoped = true by default</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">currentUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">usersApi</span><span class="p">.</span><span class="nx">user</span><span class="p">();</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">userById</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">usersApi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mf">123</span><span class="p">);</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">usersApi</span><span class="p">.</span><span class="nx">joinWorkspace</span><span class="p">({</span><span class="w"> </span><span class="nx">workspace_id</span><span class="o">:</span><span class="w"> </span><span class="kt">20</span><span class="p">,</span><span class="w"> </span><span class="nx">user_type</span><span class="o">:</span><span class="w"> </span><span class="s1">'learner'</span><span class="w"> </span><span class="p">});</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">usersApi</span><span class="p">.</span><span class="nx">switchWorkspace</span><span class="p">({</span><span class="w"> </span><span class="nx">workspace_id</span><span class="o">:</span><span class="w"> </span><span class="s1">'20'</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<h4 id="signature">Signature<a class="headerlink" href="#signature" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">createUsersApi</span><span class="p">(</span><span class="nx">workspaceScoped?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<h3 id="usersquerykeys">usersQueryKeys<a class="headerlink" href="#usersquerykeys" title="Permanent link">&para;</a></h3>
+<p>Exported helper for query cache key generation.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usersQueryKeys</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+
+<span class="nx">usersQueryKeys</span><span class="p">.</span><span class="nx">all</span><span class="p">();</span>
+<span class="nx">usersQueryKeys</span><span class="p">.</span><span class="nx">user</span><span class="p">(</span><span class="s1">'workspace-slug'</span><span class="p">);</span>
+<span class="nx">usersQueryKeys</span><span class="p">.</span><span class="nx">byId</span><span class="p">(</span><span class="s1">'workspace-slug'</span><span class="p">,</span><span class="w"> </span><span class="mf">123</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Use these keys from consuming apps for invalidation:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usersQueryKeys</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@msflib/react-users'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useQueryClient</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@tanstack/react-query'</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">queryClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useQueryClient</span><span class="p">();</span>
+
+<span class="k">await</span><span class="w"> </span><span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="kt">usersQueryKeys.user</span><span class="p">(</span><span class="s1">'workspace-slug'</span><span class="p">),</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<hr />
+<h2 id="typescript-reference">TypeScript Reference<a class="headerlink" href="#typescript-reference" title="Permanent link">&para;</a></h2>
+<h3 id="userrecord"><code>UserRecord</code><a class="headerlink" href="#userrecord" title="Permanent link">&para;</a></h3>
+<p>Represents the response entity returned by <code>user</code>, <code>get</code>, <code>joinWorkspace</code>, and <code>switchWorkspace</code>.</p>
+<p>Core fields:</p>
+<ul>
+<li><code>id: number</code></li>
+<li><code>created_at: string</code></li>
+<li><code>updated_at: string</code></li>
+<li><code>account_id: number</code></li>
+<li><code>workspace_id: number</code></li>
+<li><code>type: UserType</code></li>
+<li><code>status: UserStatus</code></li>
+<li><code>workspace_slug: string</code></li>
+</ul>
+<p>It also supports extra backend fields through an index signature.</p>
+<h3 id="joinworkspacepayload"><code>JoinWorkspacePayload</code><a class="headerlink" href="#joinworkspacepayload" title="Permanent link">&para;</a></h3>
+<p>Required:</p>
+<ul>
+<li><code>workspace_id: number</code></li>
+<li><code>user_type: UserType</code></li>
+</ul>
+<p>Optional:</p>
+<ul>
+<li><code>level_id?: number</code></li>
+<li><code>track_id?: number</code></li>
+<li><code>stage_id?: number</code></li>
+<li><code>info?: { ... }</code></li>
+</ul>
+<h3 id="switchworkspacepayload"><code>SwitchWorkspacePayload</code><a class="headerlink" href="#switchworkspacepayload" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>workspace_id: string</code></li>
+</ul>
+<h3 id="userscontexttype"><code>UsersContextType</code><a class="headerlink" href="#userscontexttype" title="Permanent link">&para;</a></h3>
+<p>Includes:</p>
+<ul>
+<li><code>user: UserRecord | null</code></li>
+<li><code>getUser(userId, options?)</code></li>
+<li><code>joinWorkspace(payload, options?)</code></li>
+<li><code>switchWorkspace(payload, options?)</code></li>
+<li><code>refetchUser()</code></li>
+<li><code>loading</code> flags for all operations</li>
+</ul>
+<p>Mutation option parameters use TanStack <code>MutateOptions</code> for per-call success/error handlers.</p>
+<hr />
+<h2 id="endpoint-defaults-and-resolution">Endpoint Defaults and Resolution<a class="headerlink" href="#endpoint-defaults-and-resolution" title="Permanent link">&para;</a></h2>
+<p>Default users base endpoint:</p>
+<div class="codehilite"><pre><span></span><code>/users
+</code></pre></div>
+
+<p>Resolved endpoints:</p>
+<ul>
+<li><code>GET /users/me</code></li>
+<li><code>GET /users/:user_id</code></li>
+<li><code>POST /users/join</code></li>
+<li><code>POST /users/switch</code></li>
+</ul>
+<p>Path generation and workspace scoping are delegated to the core configured API client, so workspace prefixes are applied consistently with your global core configuration.</p>
+<p><code>join</code> and <code>switch</code> always opt out of workspace scoping (<code>isWorkspaceScoped: false</code>), regardless of the <code>isWorkspaceScoped</code> passed to <code>createUsersApi</code>/<code>UsersProvider</code>. This is not configurable — a user has no workspace context to scope into until after <code>join</code>/<code>switch</code> succeeds. Under the <code>path</code> tenancy strategy, this holds even though <code>/users</code> itself is registered as scoped by <code>get</code>/<code>user</code> — <code>@msflib/core</code>'s workspace-scoping registry treats an explicit opt-out as an override that wins over a broader registered base path.</p>
+<hr />
+<h2 id="caching-behavior">Caching Behavior<a class="headerlink" href="#caching-behavior" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>user</code> query key: <code>usersQueryKeys.user(activeWorkspaceOrNull)</code></li>
+<li><code>user</code> query is stale for 60 seconds (<code>staleTime: 60_000</code>)</li>
+<li><code>joinWorkspace</code> and <code>switchWorkspace</code> update the active workspace; the <code>user</code> query refetches naturally when the key changes</li>
+<li><code>getUser</code> is exposed as a mutation (<code>mutateAsync</code>) for on-demand fetch</li>
+</ul>
+<hr />
+<h2 id="multi-tenancy-behavior">Multi-Tenancy Behavior<a class="headerlink" href="#multi-tenancy-behavior" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Provider reads current workspace from <code>useActiveWorkspace()</code>.</li>
+<li>When <code>options.isWorkspaceScoped === false</code>, workspace value for query-keying is treated as <code>null</code>.</li>
+<li><code>joinWorkspace</code>/<code>switchWorkspace</code> requests themselves are always unscoped (see <a href="#endpoint-defaults-and-resolution">Endpoint Defaults and Resolution</a>), independent of <code>options.isWorkspaceScoped</code> — that option only affects <code>user</code>/<code>get</code> and query-key caching.</li>
+<li>On successful join/switch:</li>
+<li>active workspace is updated via <code>setActiveWorkspace(workspace_slug)</code></li>
+<li>subsequent <code>user</code> reads use the next workspace-specific query key</li>
+</ul>
+<p>This enables downstream modules relying on active workspace to react to workspace changes.</p>
+<hr />
+<h2 id="usage-recipes">Usage Recipes<a class="headerlink" href="#usage-recipes" title="Permanent link">&para;</a></h2>
+<h3 id="auth-gated-user-query">Auth-gated <code>user</code> query<a class="headerlink" href="#auth-gated-user-query" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">UsersProvider</span>
+<span class="w">  </span><span class="na">options</span><span class="o">=</span><span class="p">{{</span>
+<span class="w">    </span><span class="nx">requireAuth</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">isAuthenticated</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}}</span>
+<span class="p">&gt;</span>
+<span class="w">  </span><span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">UsersProvider</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>When <code>requireAuth</code> is <code>true</code> and <code>isAuthenticated</code> is <code>false</code>, the initial <code>user</code> request is not executed.</p>
+<h3 id="using-mutation-callbacks">Using mutation callbacks<a class="headerlink" href="#using-mutation-callbacks" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">joinWorkspace</span><span class="p">(</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">workspace_id</span><span class="o">:</span><span class="w"> </span><span class="kt">10</span><span class="p">,</span><span class="w"> </span><span class="nx">user_type</span><span class="o">:</span><span class="w"> </span><span class="s1">'learner'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">onSuccess</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">user</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Joined workspace slug:'</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">workspace_slug</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nx">onError</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<h3 id="manual-refresh">Manual refresh<a class="headerlink" href="#manual-refresh" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">refetchUser</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useUsers</span><span class="p">();</span>
+
+<span class="nx">refetchUser</span><span class="p">();</span>
+</code></pre></div>
+
+<hr />
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<p>Run package tests:</p>
+<div class="codehilite"><pre><span></span><code>pnpm<span class="w"> </span>--filter<span class="w"> </span>@msflib/react-users<span class="w"> </span>test:build
+</code></pre></div>
+
+<p>The package includes tests for:</p>
+<ul>
+<li>API endpoint construction and client interaction</li>
+<li>Provider query/mutation behavior</li>
+<li>Auth-gated query execution</li>
+<li>Hook/provider contract smoke coverage</li>
+</ul>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="useusers-must-be-used-inside-usersprovider"><code>useUsers must be used inside &lt;UsersProvider /&gt;</code><a class="headerlink" href="#useusers-must-be-used-inside-usersprovider" title="Permanent link">&para;</a></h3>
+<p>Cause: hook is called outside provider scope.</p>
+<p>Fix: ensure component is rendered under <code>UsersProvider</code>.</p>
+<h3 id="user-not-fetching"><code>user</code> not fetching<a class="headerlink" href="#user-not-fetching" title="Permanent link">&para;</a></h3>
+<p>Check:</p>
+<ul>
+<li><code>QueryClientProvider</code> is present</li>
+<li><code>UsersProvider</code> is mounted</li>
+<li>If using auth gating: <code>requireAuth: true</code> and <code>isAuthenticated</code> must be <code>true</code></li>
+</ul>
+<h3 id="wrong-endpoint-path-or-missing-workspace-prefix">Wrong endpoint path or missing workspace prefix<a class="headerlink" href="#wrong-endpoint-path-or-missing-workspace-prefix" title="Permanent link">&para;</a></h3>
+<p>Check:</p>
+<ul>
+<li><code>configureApplication(...)</code> ran before provider/API usage</li>
+<li><code>endpoints.users.users</code> override is correct</li>
+<li><code>isWorkspaceScoped</code> option matches your intended path mode</li>
+</ul>
+<hr />
+<h2 id="public-exports">Public Exports<a class="headerlink" href="#public-exports" title="Permanent link">&para;</a></h2>
+<p>From <code>@msflib/react-users</code>:</p>
+<ul>
+<li>Context and provider:</li>
+<li><code>UsersProvider</code></li>
+<li><code>UsersContext</code></li>
+<li>Hook:</li>
+<li><code>useUsers</code></li>
+<li>API:</li>
+<li><code>createUsersApi</code></li>
+<li>Query keys:</li>
+<li><code>usersQueryKeys</code></li>
+<li>Types:</li>
+<li><code>UserType</code></li>
+<li><code>UserStatus</code></li>
+<li><code>UserRecord</code></li>
+<li><code>JoinWorkspacePayload</code></li>
+<li><code>SwitchWorkspacePayload</code></li>
+<li><code>UsersContextType</code></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
