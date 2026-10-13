@@ -7211,7 +7211,8 @@ what to do when it is gone (<code>cleanup</code>). The stage owns everything els
 <li>a newer subject version, or a subject that moved tenant/workspace,
   supersedes the job;</li>
 <li>before any write, a per-subject Postgres advisory lock is taken and the
-  subject reloaded; if its fingerprint changed the attempt is retried;</li>
+  subject reloaded; if its fingerprint changed the attempt is retried. The
+  same check runs again after <code>cleanup</code> and after a failed step;</li>
 <li>each step runs in a savepoint, and a non-stage error is classified only
   after the savepoint rolls back (on Postgres, classifying inside a failed
   transaction would itself fail);</li>
@@ -7257,7 +7258,10 @@ what to do when it is gone (<code>cleanup</code>). The stage owns everything els
 
 
 
-        <p>What <code>prepare</code>/<code>process</code>/<code>cleanup</code> see; <code>subject</code> is <code>None</code> in <code>cleanup</code>.</p>
+        <p>What <code>prepare</code>/<code>process</code>/<code>cleanup</code>/<code>on_failure</code> see.</p>
+<p>In <code>cleanup</code>, <code>subject</code> is the loaded row when it still exists but is
+not live (or the job is a <code>delete</code>), and <code>None</code> when <code>load</code> found
+nothing; <code>snapshot</code> is <code>None</code>.</p>
 
 
 
@@ -7311,7 +7315,7 @@ what to do when it is gone (<code>cleanup</code>). The stage owns everything els
 
 
 <h4 id="msflib.ingestion.services.lifecycle.run_guarded" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_guarded</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">StageContext</span><span class="p">,</span> <span class="n">work</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_T</span></code>
+            <code class="highlight language-python"><span class="n">run_guarded</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">StageContext</span><span class="p">,</span> <span class="n">work</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">_T</span><span class="p">],</span> <span class="n">on_failure</span><span class="p">:</span> <span class="n">FailureHook</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">recheck</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_T</span></code>
 
 <a href="#msflib.ingestion.services.lifecycle.run_guarded" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7319,6 +7323,10 @@ what to do when it is gone (<code>cleanup</code>). The stage owns everything els
     <div class="doc doc-contents ">
 
         <p>Run <code>work</code> in a savepoint; classify a non-stage error after the savepoint rolls back.</p>
+<p>After a failure, a stage error raised by <code>recheck</code> replaces the
+original one. <code>on_failure(error, cause)</code> runs after the rollback for a
+retryable or terminal error, so its writes survive in the outer
+transaction.</p>
 
 
     </div>
@@ -7329,7 +7337,7 @@ what to do when it is gone (<code>cleanup</code>). The stage owns everything els
 
 
 <h4 id="msflib.ingestion.services.lifecycle.ingestion_subject_stage" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ingestion_subject_stage</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">StageContext</span><span class="p">],</span> <span class="n">S</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">],</span> <span class="n">process</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">],</span> <span class="n">prepare</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fingerprint</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reasons</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">IngestionReason</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">completed_event</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">event_payload</span><span class="p">:</span> <span class="n">EventPayload</span> <span class="o">=</span> <span class="n">default_event_payload</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Stage</span></code>
+            <code class="highlight language-python"><span class="n">ingestion_subject_stage</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">load</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">StageContext</span><span class="p">],</span> <span class="n">S</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">snapshot</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">IngestionSubjectSnapshot</span><span class="p">],</span> <span class="n">process</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">],</span> <span class="n">prepare</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fingerprint</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reasons</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="n">IngestionReason</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">completed_event</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">event_payload</span><span class="p">:</span> <span class="n">EventPayload</span> <span class="o">=</span> <span class="n">default_event_payload</span><span class="p">,</span> <span class="n">on_failure</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">IngestionSubjectContext</span><span class="p">[</span><span class="n">S</span><span class="p">],</span> <span class="n">IngestionStageError</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Stage</span></code>
 
 <a href="#msflib.ingestion.services.lifecycle.ingestion_subject_stage" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7341,7 +7349,12 @@ what to do when it is gone (<code>cleanup</code>). The stage owns everything els
 runs unlocked (put slow, read-only work there); <code>process</code> runs after
 the lock and re-check, and receives <code>prepare</code>'s result as
 <code>context.prepared</code>. <code>fingerprint</code> (default: <code>snapshot</code>) decides
-whether the subject changed while the job ran.</p>
+whether the subject changed while the job ran. <code>on_failure(context,
+error, cause)</code> runs after a retryable or terminal failure has rolled
+back, e.g. to record the error on the subject row; <code>context.subject</code>
+is <code>None</code> if the subject could not be loaded. A job whose reason is
+unrecognized or not in <code>reasons</code> fails before any of this, without
+the hook.</p>
 
 
     </div>
@@ -7394,7 +7407,7 @@ whether the subject changed while the job ran.</p>
 
 
 <h4 id="msflib.ingestion.services.queue.IngestionSubjectQueue" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">IngestionSubjectQueue</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">:</span> <span class="n">IngestionDispatchService</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">job_action</span><span class="p">:</span> <span class="n">IngestionJobAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">IngestionSubjectQueue</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">:</span> <span class="n">IngestionDispatchService</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">job_action</span><span class="p">:</span> <span class="n">IngestionJobAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue" class="headerlink" title="Permanent link">&para;</a></h4>
 
