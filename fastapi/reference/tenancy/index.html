@@ -2527,6 +2527,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.tenancy.resolver.mark_pending_create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mark_pending_create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.tenancy.resolver.tenancy_settings_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tenancy_settings_from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.tenancy.resolver.resolve_default_tenant_id" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2969,6 +2991,28 @@
   
     <nav class="md-nav" aria-label="resolver">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.tenancy.resolver.mark_pending_create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mark_pending_create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.tenancy.resolver.tenancy_settings_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tenancy_settings_from
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#msflib.tenancy.resolver.resolve_default_tenant_id" class="md-nav__link">
@@ -3415,8 +3459,47 @@ default tenant hasn't been seeded yet.</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="msflib.tenancy.resolver.mark_pending_create" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mark_pending_create</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">slug</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.tenancy.resolver.mark_pending_create" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Record that <code>slug</code>'s tenant row was flushed, not yet committed, on <code>session</code>.</p>
+<p>The marker is only trusted while its after-commit callback is still queued,
+so a rollback of the transaction or savepoint that flushed the row
+invalidates it.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.tenancy.resolver.tenancy_settings_from" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tenancy_settings_from</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TenancySettings</span></code>
+
+<a href="#msflib.tenancy.resolver.tenancy_settings_from" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>TENANCY</code> settings from app settings (root or already scoped); defaults when absent.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="msflib.tenancy.resolver.resolve_default_tenant_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_action</span><span class="p">:</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_action</span><span class="p">:</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.tenancy.resolver.resolve_default_tenant_id" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3425,8 +3508,9 @@ default tenant hasn't been seeded yet.</p>
 
         <p>Resolve the real int id of the default tenant, creating it if missing.</p>
 <p>Idempotent and cached per slug for the process lifetime. <code>settings</code>
-defaults to a shared process-wide <code>TenancySettings()</code> when omitted --
-pass one explicitly only to resolve against a non-default slug/name.</p>
+accepts the app's root settings or its <code>TENANCY</code> scope; pass them
+whenever available, since the bare <code>TenancySettings()</code> used when
+omitted never reads the app's configured slug.</p>
 <p>Callers frequently invoke this from inside their own <code>commit=False</code>
 unit of work (e.g. an upload flow that must roll back atomically on
 failure), so the first-ever creation of the tenant row is deliberately
@@ -3435,17 +3519,16 @@ here would prematurely commit the <em>caller's</em> whole transaction (every
 change flushed so far in the same session), silently defeating any
 rollback the caller still intends to be able to do.</p>
 <p>Because that creation is only flushed, the process-wide cache is not
-populated until <em>this</em> session actually commits (registered via an
-<code>after_commit</code> listener below) -- caching the id immediately would let
+populated until <em>this</em> session's outermost transaction commits (queued
+with <code>run_after_commit</code> below) -- caching the id immediately would let
 a concurrent session on another connection resolve to an id for a row
 that isn't visible to it yet (MVCC), and fail its own FK check. The
 resolved id is still returned to <em>this</em> caller immediately (it's what
 the row it's about to reference actually got), and a second call within
 the same still-uncommitted transaction re-queries and finds the same
 flushed row rather than creating a duplicate. If the transaction rolls
-back instead of committing, <code>_cache_id_after_commit</code> tears down the
-commit listener so a later, unrelated commit on the same <code>Session</code>
-can't cache an id from the rolled-back attempt.</p>
+back instead of committing, the queued id is dropped, so a later,
+unrelated commit on the same <code>Session</code> can't cache it.</p>
 <p><code>create_if_missing=False</code> is for read-only callers (a query filter,
 not a row being written) that must not have the side effect of an
 INSERT: if the tenant hasn't been seeded yet, there is by definition
@@ -3467,7 +3550,7 @@ that race raise rather than duplicate, but it does not retry.</p>
 
 
 <h3 id="msflib.tenancy.resolver.resolve_scoped_tenant_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_scoped_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">dim_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">resolve_scoped_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">dim_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.tenancy.resolver.resolve_scoped_tenant_id" class="headerlink" title="Permanent link">&para;</a></h3>
 

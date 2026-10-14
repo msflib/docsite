@@ -3508,7 +3508,7 @@ tenant id via <code>get_current_tenant</code>/<code>resolve_default_tenant_id</c
 
 
 <h3 id="msflib.ai_api.deps.get_ai_api_scope_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_ai_api_scope_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_ai_api_scope_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.ai_api.deps.get_ai_api_scope_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3521,12 +3521,10 @@ surface); <code>get_current_workspace</code> is optional. <code>get_current_tena
 is resolved once at the endpoint boundary, the same way
 <code>documents.router()</code>/<code>ingestion.router()</code> resolve it (see
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
-row. When omitted, falls back to <code>resolve_default_tenant_id</code> (today's
-single-tenant resolution) if <code>get_session</code> is wired, else the scope's
-tenant dimension is set to <code>_NO_TENANT_SENTINEL</code> (0) -- mirrors
-<code>get_current_tenant</code> itself being optional: a host app that supplies
-neither gets a scope that still satisfies profiles requiring a non-null
-tenant_id.</p>
+row. When omitted, falls back to <code>resolve_default_tenant_id</code> (with
+<code>settings</code>, the app's root settings) if <code>get_session</code> is wired. A
+request with neither is rejected with a 500, since stored data always
+carries a real tenant id.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>

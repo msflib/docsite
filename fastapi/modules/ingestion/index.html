@@ -3041,11 +3041,10 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">))</span>
 </code></pre></div>
 <p><code>mutation_role_check</code> is required and has no permissive default. Every mutating route (trigger, retry, abort, replay, discard) depends on it. If your deployment really has no per-request auth, pass an explicit no-op such as <code>lambda: None</code>. <code>get_current_tenant</code> and <code>get_current_workspace</code> are optional; without a tenant dependency the router falls back to the default tenant, so list and status routes are always tenant-filtered.</p>
-<div class="admonition warning">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
-<p>The router's default-tenant fallback looks up the tenant with slug <code>default</code> and ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, the routes return 500 "Default tenant has not been seeded". Pass <code>get_current_tenant</code> built from <code>get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY"))</code>.</p>
-</div>
+<p>The router's default-tenant fallback uses the <code>settings</code> the router is built with, so a customised <code>TENANCY.DEFAULT_TENANT_SLUG</code> is honoured. If the tenant was never seeded the routes return 500 "Default tenant has not been seeded".</p>
 <p>The router validates <code>pipeline_kind</code> on <code>POST /jobs/trigger</code> against the registry in the <em>producer</em> process, so register your kinds there too, not only in the worker.</p>
+<p>Ids that cannot name a row (non-numeric, below 1, or above the <code>INTEGER</code> primary key range of the database: 2,147,483,647 on PostgreSQL, 9,223,372,036,854,775,807 on SQLite) are a 404 on the job and dead-letter routes, a 422 for <code>tenant_id</code> and <code>workspace_id</code> in the trigger payload (same limit) and for <code>target_version</code> (a 64-bit <code>BIGINT</code>, limit 9,223,372,036,854,775,807), and a terminal failure for a job whose <code>subject_id</code> is not a valid record id. <code>msflib.ingestion.services.scope.parse_row_id(session, value)</code> is the shared check for stage code.</p>
+<p>A kind can declare <code>subject_scope=</code> on its <code>PipelineDefinition</code>: a function <code>(session, subject_id)</code> returning the subject's <code>(tenant_id, workspace_id)</code>, or <code>None</code> if the subject does not exist. When it is set, <code>POST /jobs/trigger</code> stamps the job with the subject's own workspace instead of the caller's. A subject outside the caller's tenant or workspace, or one that does not exist, is a 404, and a <code>workspace_id</code> in the payload that differs from the subject's is a 422. Without it the job takes the payload's <code>workspace_id</code>, or the caller's. <code>text_document</code> and <code>knowledge_extraction</code> both declare it, so a manual trigger for a document in another workspace is no longer rejected by the stage's scope check.</p>
 <p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general router pattern.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Settings live in the <code>INGESTION</code> namespace. If your settings object holds <code>IngestionSettings</code> as a nested <code>INGESTION</code> field, environment variables use the double-underscore form (<code>INGESTION__BROKER_URL</code>). The flat names below (<code>BROKER_URL</code>, <code>MAX_ATTEMPTS</code>, ...) are accepted as aliases, and they are also the field names when you mix <code>IngestionSettings</code> into your settings class directly, as in the example above.</p>
@@ -3275,7 +3274,7 @@
 </tr>
 <tr>
 <td><code>POST /jobs/trigger</code></td>
-<td>Enqueue a job for any subject. The payload cannot name a tenant or workspace other than the caller's (403). Unknown <code>pipeline_kind</code> is 422.</td>
+<td>Enqueue a job for any subject. The payload cannot name a tenant or workspace other than the caller's (403); for a kind with <code>subject_scope</code>, a <code>workspace_id</code> that differs from the subject's is a 422 instead. Unknown <code>pipeline_kind</code> is 422.</td>
 </tr>
 <tr>
 <td><code>POST /jobs/{job_id}/retry</code></td>

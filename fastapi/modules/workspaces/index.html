@@ -3275,9 +3275,9 @@
 <span class="p">)</span>
 </code></pre></div>
 <p><code>account_deps</code> and <code>user_deps</code> are the namespaces from <a href="../auth/#wiring-into-a-host-app">auth</a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
-<p>Without <code>settings=</code> on <code>get_tenant_dependencies</code> (and where the workspaces router falls back to the default tenant), a host that sets <code>DEFAULT_TENANT_SLUG</code> seeds one slug while requests look for <code>default</code>, and <code>POST /workspaces/</code> returns 500 "Default tenant has not been seeded". Pass <code>settings=settings.scope("TENANCY")</code> as shown above, and keep the slug <code>default</code> if you rely on a router's own fallback.</p>
+<div class="admonition note">
+<p class="admonition-title">Custom default tenant slug</p>
+<p>Pass the same settings to <code>get_tenant_dependencies(..., settings=settings.scope("TENANCY"))</code> and to the workspaces router. Both then look up your <code>DEFAULT_TENANT_SLUG</code>; if one of them is built without settings it looks for <code>default</code>, and <code>POST /workspaces/</code> returns 500 "Default tenant has not been seeded".</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>

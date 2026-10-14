@@ -3111,11 +3111,8 @@
 </tbody>
 </table>
 <p><code>router()</code> composes two factories, <code>create_llm_router</code> (search, ask, status, protocols) and <code>create_agent_router</code> (the <code>/agent</code> routes), both importable from <code>msflib.ai_api.router</code> if you want only one. The prefixes <code>llm_prefix</code> (default empty) and <code>agent_prefix</code> (default <code>/agent</code>) place them under the main prefix.</p>
-<p>Without <code>get_current_tenant</code>, the tenant with slug <code>default</code> is looked up in the database and must already be seeded, otherwise requests fail with 500. Without <code>get_current_workspace</code>, requests run with <code>workspace_id=None</code>, the workspace-less scope.</p>
-<div class="admonition warning">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/288">#288</a>)</p>
-<p>The default-tenant fallback ignores the host's <code>TENANCY.DEFAULT_TENANT_SLUG</code>. If you changed the slug, requests return 500 "Default tenant has not been seeded" even though your seeding used the same settings. Pass <code>get_current_tenant</code> built from <code>get_tenant_dependencies(session_dep=get_session, settings=settings.scope("TENANCY")).get_current_tenant</code>.</p>
-</div>
+<p>Without <code>get_current_tenant</code>, the default tenant is looked up in the database with the slug from your <code>settings</code> (<code>TENANCY.DEFAULT_TENANT_SLUG</code>) and must already be seeded, otherwise requests fail with 500. Without <code>get_current_workspace</code>, requests run with <code>workspace_id=None</code>, the workspace-less scope.</p>
+<p>A request with neither <code>get_current_tenant</code> nor <code>get_session</code> is rejected with 500, because ai-api stores data under the tenant and never invents one. The factory functions <code>get_ai_api_scope_dependencies(...)</code> take the same fallback inputs: <code>get_current_tenant</code>, or <code>get_session</code> plus <code>settings</code>.</p>
 <p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general pattern.</p>
 <h3 id="router-parameters-worth-knowing">Router parameters worth knowing<a class="headerlink" href="#router-parameters-worth-knowing" title="Permanent link">&para;</a></h3>
 <table>
@@ -3319,7 +3316,7 @@
 <tbody>
 <tr>
 <td>500 "Default tenant has not been seeded"</td>
-<td>No tenant dependency was passed and the tenant with slug <code>default</code> is missing. Pass <code>get_current_tenant</code> or seed on startup (see the known issue under Wiring if you changed the slug).</td>
+<td>No tenant dependency was passed and the tenant with the configured <code>TENANCY.DEFAULT_TENANT_SLUG</code> (<code>default</code> unless changed) is missing. Pass <code>get_current_tenant</code> or seed it on startup with the same settings.</td>
 </tr>
 <tr>
 <td>401 "Authentication required"</td>

@@ -3013,6 +3013,7 @@
 </tbody>
 </table>
 <p><code>*_by_all</code> filters are keyword arguments that must all match (<code>owner="ann", done=False</code>); <code>*_by_any</code> matches if any does. <code>*_by_expressions</code> takes SQLAlchemy expressions such as <code>Task.id &gt; 10</code>. The <code>get_multi*</code> methods return at most 100 rows unless you pass <code>limit=</code>; pass <code>limit=None</code> for no limit. Pass <code>order_by=</code> to <code>get_multi_by_expressions</code> when you page, otherwise the row order between calls is not defined.</p>
+<p>An integer <code>id</code> or filter value outside its column's range (for example <code>2**31</code> on an <code>INTEGER</code> key) matches no row (SQLite stores any integer column as signed 64-bit, so only values beyond 64 bits count there): <code>get</code> and <code>get_by_all</code> return <code>None</code>, and the <code>*_multi_*</code> methods return an empty list. PostgreSQL drivers raise a range error for such a parameter instead of matching nothing, which would otherwise surface as a 500. Under <code>*_by_any</code> the value is skipped. <code>*_by_expressions</code> takes your own expressions and is not checked.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
 <p><code>delete_by_expressions</code> is annotated <code>-&gt; list[ModelType]</code> but returns a single row or <code>None</code>. Type checkers will accept list operations on the result; do not rely on the annotation.</p>

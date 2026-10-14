@@ -2509,6 +2509,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.PipelineDefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PipelineDefinition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ingestion.contracts.Stage" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2620,6 +2631,17 @@
     <span class="md-ellipsis">
       
         Stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.PipelineDefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PipelineDefinition
       
     </span>
   </a>
@@ -3273,6 +3295,45 @@
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.scope.max_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        max_row_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.scope.parse_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_row_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -3972,6 +4033,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.PipelineDefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PipelineDefinition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ingestion.contracts.Stage" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4083,6 +4155,17 @@
     <span class="md-ellipsis">
       
         Stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.contracts.stage.PipelineDefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PipelineDefinition
       
     </span>
   </a>
@@ -4740,6 +4823,45 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.scope.max_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        max_row_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.services.scope.parse_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_row_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ingestion.services.sync" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5334,6 +5456,57 @@ same broker.</p>
 
 
 
+<h3 id="msflib.ingestion.contracts.PipelineDefinition" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">PipelineDefinition</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Stage</span><span class="p">],</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span> <span class="n">subject_scope</span><span class="p">:</span> <span class="n">SubjectScopeResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.contracts.PipelineDefinition" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p><code>subject_scope(session, subject_id)</code> returns the subject's <code>(tenant_id,
+workspace_id)</code>, or <code>None</code> if it doesn't exist; <code>POST /jobs/trigger</code> uses it to
+stamp manually triggered jobs with the subject's own scope.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
 <h3 id="msflib.ingestion.contracts.Stage" class="doc doc-heading">
             <code>Stage</code>
 
@@ -5678,6 +5851,57 @@ returns, where session use is unrestricted.</p>
         <p>A single Fetch/Normalize/Transform/Persist/Index/Emit step.</p>
 <p>Implementations are plain callables (functions or callable objects) --
 no base class required, only this shape.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.ingestion.contracts.stage.PipelineDefinition" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">PipelineDefinition</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Stage</span><span class="p">],</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">''</span><span class="p">,</span> <span class="n">subject_scope</span><span class="p">:</span> <span class="n">SubjectScopeResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ingestion.contracts.stage.PipelineDefinition" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p><code>subject_scope(session, subject_id)</code> returns the subject's <code>(tenant_id,
+workspace_id)</code>, or <code>None</code> if it doesn't exist; <code>POST /jobs/trigger</code> uses it to
+stamp manually triggered jobs with the subject's own scope.</p>
 
 
 
@@ -7574,6 +7798,85 @@ they migrate onto it.</p>
 
 
 
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.ingestion.services.scope" class="doc doc-heading">
+            <code>scope</code>
+
+
+<a href="#msflib.ingestion.services.scope" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.scope.max_row_id" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">max_row_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#msflib.ingestion.services.scope.max_row_id" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Largest id an <code>INTEGER</code> primary key holds in <code>session</code>'s database.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ingestion.services.scope.parse_row_id" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parse_row_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ingestion.services.scope.parse_row_id" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>value</code> as a positive row id that fits an <code>INTEGER</code> primary key, else <code>None</code>.</p>
+<p>Subject ids reach the stage as strings; an id that is not numeric or is
+too large for the column can not name a row, and binding it to a query
+raises on some drivers instead of matching nothing.</p>
+
+
+    </div>
+
+</div>
 
 
 
