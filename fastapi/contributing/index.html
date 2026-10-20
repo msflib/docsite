@@ -461,6 +461,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../modules/authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    authz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../modules/workspaces/" class="md-nav__link">
         
   
@@ -2164,6 +2192,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../reference/authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.authz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../reference/conversation/" class="md-nav__link">
         
   
@@ -2692,6 +2748,67 @@
     <span class="md-ellipsis">
       
         Adding a module
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-on-authz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working on authz
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Working on authz">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protecting-an-endpoint-or-adding-a-permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protecting an endpoint or adding a permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-authz-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changing authz itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-and-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation and releases
       
     </span>
   </a>
@@ -3419,6 +3536,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#working-on-authz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working on authz
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Working on authz">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protecting-an-endpoint-or-adding-a-permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protecting an endpoint or adding a permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-authz-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changing authz itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-and-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation and releases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3455,7 +3633,7 @@
 </tr>
 <tr>
 <td><code>modules/&lt;name&gt;/</code></td>
-<td>One installable package per feature module, such as <code>auth</code>, <code>account</code>, <code>tenancy</code>, <code>ai_core</code>.</td>
+<td>One installable package per feature module, such as <code>auth</code>, <code>account</code>, <code>tenancy</code>, <code>authz</code>, <code>ai_core</code>.</td>
 </tr>
 <tr>
 <td><code>testsite/</code></td>
@@ -3647,6 +3825,38 @@
 <li>Add a docs page from the <a href="module-page-template/">module page template</a> and a nav entry. See <a href="writing-docs/">Writing docs</a>.</li>
 <li>Label the pull request <code>release:&lt;module_name&gt;:&lt;bump&gt;</code> if the module should be released when it merges.</li>
 </ol>
+<h2 id="working-on-authz">Working on authz<a class="headerlink" href="#working-on-authz" title="Permanent link">&para;</a></h2>
+<p><code>modules/authz</code> holds the roles, permissions and role assignments that other modules check. Read the <a href="../modules/authz/">authz module page</a> first: it defines <em>tier</em>, <em>owner</em> and <em>assignment scope</em>, which are easy to confuse, and the rules below assume them.</p>
+<h3 id="protecting-an-endpoint-or-adding-a-permission">Protecting an endpoint or adding a permission<a class="headerlink" href="#protecting-an-endpoint-or-adding-a-permission" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Name permission keys <code>&lt;module&gt;.&lt;action&gt;</code>, for example <code>authz.manage_roles</code>. Register them at import time with <code>PERMISSION_REGISTRY.register(key, tenant_cascade=...)</code> from <code>msflib.authz</code>, in the module that owns the feature. Decide <code>tenant_cascade</code> deliberately: <code>True</code> lets a tenant-tier role grant the permission inside any workspace of its tenant; <code>False</code> means only a workspace assignment (or a platform role) does.</li>
+<li>Guard routes with <code>require_permission(key, tier=...)</code>, or <code>require_role(RoleKey(tier, key))</code> when the route names a role. <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> in <code>auth</code> stay supported as the simple attribute-based way; pick one way per route.</li>
+<li>Do not seed role-permission bundles from your module. <code>seed_role_permissions</code> bundles whatever is registered when it runs, so the host app seeds after every module has been imported.</li>
+<li>Test the guard at each tier it supports, including the denial cases (another tenant, another workspace, no assignment).</li>
+</ul>
+<h3 id="changing-authz-itself">Changing authz itself<a class="headerlink" href="#changing-authz-itself" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>There is one rule for "can this assignment grant authority".</strong> It is <code>is_effective_assignment</code> in <code>msflib/authz/validation.py</code> (tier shape, the role's owner scope, expiry), and every read path reaches it through <code>RoleService._effective_assignments</code>. Do not add a resolution query that loads assignments some other way, or a second copy of the rule. A new read path that skips it re-opens the gaps the rule closes.</li>
+<li><strong>Keep the owner and the scope apart in code and names.</strong> <code>role_tenant_id</code> / <code>role_workspace_id</code> is where a role is defined; <code>assignment_tenant_id</code> / <code>assignment_workspace_id</code> is where a grant applies. Never compare a role id with a request or assignment id as if they were the same thing.</li>
+<li><strong>Compare roles by <code>RoleKey(tier, key)</code>, never by the bare key.</strong> The seeded <code>admin</code> exists at tenant and workspace tier, and a bare string cannot tell them apart.</li>
+<li><strong>Writes go through <code>RoleService</code>.</strong> Each public method is one closed unit of work (savepoints inside, one commit at the end; SVC-4), and events fire on that commit. Actions are plain data access and skip validation, so do not write roles or assignments through them outside tests.</li>
+<li><strong>Schema changes need a migration note.</strong> The module ships no migrations; host apps own them. A change to a table or constraint in <code>msflib/authz/models</code> must say so in the PR description and in <a href="releases/">Releases</a> notes, and must keep <code>create_all</code> working for new databases.</li>
+<li><strong>Legacy support is transitional.</strong> The <code>Account.role</code> / <code>User.type</code> fallbacks in <code>msflib/auth/deps.py</code> and the two backfills in <code>msflib/authz/seed.py</code> exist only until assignments replace those attributes. Do not extend them; see the module page for how the two sources combine.</li>
+</ul>
+<h3 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h3>
+<p>Tests live in <code>modules/authz/msflib/authz/tests</code> and run from <code>modules/authz</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>modules/authz<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pytest
+</code></pre></div>
+<ul>
+<li>The <code>make_role</code> and <code>assign</code> fixtures in <code>conftest.py</code> create rows directly, without validation. Use them to build deliberately invalid rows and check that resolution ignores them. Use <code>RoleService</code> to build valid ones.</li>
+<li>When you change a rule, add the case to both the write test (<code>grant</code> rejects it) and the read test (a raw row that breaks it grants nothing).</li>
+<li>The guards' tests are in <code>modules/authz/msflib/authz/tests</code> (<code>test_deps.py</code>, <code>test_require_role.py</code>, <code>test_permission_guard_example.py</code>). <code>auth</code> has its own tests for its attribute-based guards.</li>
+</ul>
+<h3 id="documentation-and-releases">Documentation and releases<a class="headerlink" href="#documentation-and-releases" title="Permanent link">&para;</a></h3>
+<ul>
+<li>When behaviour or a rule changes, update the tables on the <a href="../modules/authz/">authz module page</a> in the same pull request. The valid and invalid combinations table is checked against the code, so keep it that way.</li>
+<li><code>auth</code> does not depend on <code>authz</code>, and <code>authz</code> does not depend on <code>auth</code>; identity arrives as injected callables. Modules that do depend on <code>authz</code> (for example drivelink, in the later parts of the series) pin its release tag. The pins between modules must be release tags, never <code>rev = "dev"</code>; see <a href="releases/#how-modules-pin-each-other">How modules pin each other</a>. Release <code>authz</code> first, so that its dependents can pin its tag.</li>
+</ul>
 
 
 

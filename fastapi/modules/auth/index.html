@@ -724,6 +724,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    authz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../workspaces/" class="md-nav__link">
         
   
@@ -2427,6 +2455,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.authz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/conversation/" class="md-nav__link">
         
   
@@ -3859,6 +3915,7 @@
 <p><code>get_current_active_superuser</code> hard-codes <code>account.role == "root"</code> and ignores <code>account_role_attr</code>. If your role attribute or superuser role differs, require both <code>get_current_active_account</code> and <code>RoleCheck([...])</code> with the roles you want. <code>RoleCheck</code> alone depends on <code>get_current_account</code>, so it also admits inactive accounts that have a matching role.</p>
 </div>
 <p><code>RoleCheck</code> is an exact membership test. <code>RoleCheck(["admin"])</code> does not admit <code>root</code>; list every role you want to allow.</p>
+<p><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> compare a role attribute and read nothing else. For roles that admins create and assign at runtime, tiers and permissions, use the guards in <a href="../authz/#two-ways-to-guard-a-route">authz</a>; <code>msflib-auth</code> does not depend on it.</p>
 <h3 id="workspace-resolution">Workspace resolution<a class="headerlink" href="#workspace-resolution" title="Permanent link">&para;</a></h3>
 <p><code>get_user_dependencies(...)</code> turns a request into a workspace and a membership. The strategy for finding the workspace is a <code>WorkspaceResolver</code>, chosen once at startup.</p>
 <p>A resolver receives a <code>ResolverContext</code> (<code>session</code>, <code>account</code>, <code>path_params</code>, <code>headers</code>) and returns a workspace <strong>slug</strong>, or <code>None</code> when the request does not identify one. Header keys in <code>headers</code> are lower-case. Two resolvers ship in <code>msflib.auth.resolvers</code>:</p>

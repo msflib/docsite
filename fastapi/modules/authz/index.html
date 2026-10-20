@@ -1,0 +1,4606 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the MSFLib FastAPI backend library">
+      
+      
+      
+        <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/modules/authz/">
+      
+      
+        <link rel="prev" href="../tenancy/">
+      
+      
+        <link rel="next" href="../workspaces/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>authz - MSFLIB FastAPI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#msflib-authz" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-header__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MSFLIB FastAPI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              authz
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MSFLIB FastAPI Documentation" class="md-nav__button md-logo" aria-label="MSFLIB FastAPI Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MSFLIB FastAPI Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    authz
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    authz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wiring into a host app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#register-permission-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Register permission keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seeding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guards
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Guards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#require_permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        require_permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#require_role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        require_role
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-ways-to-guard-a-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two ways to guard a route
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#three-questions-about-a-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three questions about a role
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Three questions about a role">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Owner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignment scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid-and-invalid-combinations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valid and invalid combinations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-a-permission-is-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a permission is resolved
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grant-a-workspace-role-and-check-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grant a workspace role and check it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard-a-route-with-a-permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guard a route with a permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ai-api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/models-data-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models, data and tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/actions-crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/endpoints-and-routers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints and routers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving Deeper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diving Deeper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diving deeper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/extending-msflib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend MSFLib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/writing-custom-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing custom code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mounting-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mounting routes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/overriding-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overriding models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/subclassing-actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subclassing actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/long-running-jobs-ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Long-running jobs and ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/sse-websockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/ai-capabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/tiered-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiered configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/scopes-tenancy-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes, tenancy and workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/event-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/dependency-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependency injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/seeding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Seeding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/db/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.db
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/eventbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.eventbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.schemas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/seed/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.seed
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ai-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ai_api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ai-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ai_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.authz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/conversation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.conversation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/drivelink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.drivelink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tenancy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.tenancy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/workspace-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.workspace_config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/workspace-notifications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.workspace_notifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/module-page-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documenting known issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/writing-docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Coding guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coding guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture and scoping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/module-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Module authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/models-and-schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models and schemas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/actions-and-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions and services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/api-boundary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP boundary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/typing-and-contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typing and contracts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies and packaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/self-documenting-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-documenting code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/style-and-comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Style and change policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reviewing pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/agent-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working as an agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/guidelines/pitfalls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Known pitfalls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-into-a-host-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring into a host app
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wiring into a host app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#register-permission-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Register permission keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seeding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guards
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Guards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#require_permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        require_permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#require_role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        require_role
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-ways-to-guard-a-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two ways to guard a route
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#three-questions-about-a-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three questions about a role
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Three questions about a role">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Owner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignment scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid-and-invalid-combinations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valid and invalid combinations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-a-permission-is-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a permission is resolved
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacy-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grant-a-workspace-role-and-check-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grant a workspace role and check it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guard-a-route-with-a-permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guard a route with a permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="msflib-authz">msflib-authz<a class="headerlink" href="#msflib-authz" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p><code>msflib-authz</code> stores roles and their permissions in the database and assigns them to accounts at runtime. It answers two questions:</p>
+<ul>
+<li><em>Does this account hold permission <code>X</code> here?</em> (<code>RoleService.has_permission</code>, the <code>require_permission</code> guard)</li>
+<li><em>Which roles does this account hold here?</em> (<code>RoleService.get_role_keys_for</code>, the <code>require_role</code> guard)</li>
+</ul>
+<p>It sits beside the simple role attributes (<code>Account.role</code>, <code>User.type</code>) that <a href="../auth/">auth</a> guards compare, rather than replacing them. Apps pick either way, or both; see <a href="#two-ways-to-guard-a-route">Two ways to guard a route</a> and <a href="#legacy-roles">Legacy roles</a>. <code>msflib-auth</code> does not depend on this module.</p>
+<p>The terms <em>tier</em>, <em>owner</em> and <em>assignment scope</em> are easy to confuse because they all mention tenants and workspaces. Read <a href="#three-questions-about-a-role">Three questions about a role</a> before the rest.</p>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
+<span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-tenancy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/tenancy"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"tenancy-v0.2.1"</span><span class="w"> </span><span class="p">}</span>
+<span class="n">msflib-authz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"modules/authz"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"authz-v&lt;version&gt;"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>Use the release tag of the version you want; do not pin <code>dev</code>. The package depends on <code>core</code> and <a href="../tenancy/">tenancy</a>. Its names load lazily, so importing <code>msflib.authz</code> does not register the table models; import <code>msflib.authz.models</code> before you create tables.</p>
+<h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Add the <code>role</code>, <code>role_permission</code> and <code>role_assignment</code> tables to your schema. The package ships no migrations: import <code>msflib.authz.models</code> before <code>SQLModel.metadata.create_all</code>, or include the tables in your own migrations (see <a href="../#how-a-module-is-wired">How a module is wired</a>).</li>
+<li>Register permission keys at import time.</li>
+<li>Seed the system roles at startup, after every module has registered its keys.</li>
+<li>Build the guards with <code>get_authz_dependencies</code> and protect routes with <code>require_permission</code> or <code>require_role</code>.</li>
+</ol>
+<h3 id="register-permission-keys">Register permission keys<a class="headerlink" href="#register-permission-keys" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">PERMISSION_REGISTRY</span>
+
+<span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">,</span> <span class="n">tenant_cascade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><code>tenant_cascade</code> decides whether a tenant-tier role grants the permission inside a workspace. A permission that should only ever be held through workspace membership leaves it off.</p>
+<p><code>tiers</code> limits which roles may hold a key (default: any). <code>authz.manage_roles</code> is registered for the platform and tenant tiers only. A role of another tier is ignored for that key during resolution, however the key reached it (including a <code>prefix.*</code> wildcard), and <code>add_permissions</code> rejects an exact key the role's tier may not hold. The seeded workspace roles leave such keys out.</p>
+<div class="highlight"><pre><span></span><code><span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"ops.reset"</span><span class="p">,</span> <span class="n">tiers</span><span class="o">=</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">platform</span><span class="p">,))</span>
+</code></pre></div>
+<p>Registering the same key twice is fine unless <code>tenant_cascade</code> or <code>tiers</code> differ, which raises <code>ValueError</code>.</p>
+<h3 id="seeding">Seeding<a class="headerlink" href="#seeding" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.seed</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">backfill_account_role_assignments</span><span class="p">,</span>
+    <span class="n">seed_role_permissions</span><span class="p">,</span>
+    <span class="n">seed_system_roles</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">roles</span> <span class="o">=</span> <span class="n">seed_system_roles</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">default_tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">)</span>
+<span class="n">seed_role_permissions</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="n">roles</span><span class="p">)</span>  <span class="c1"># after every module has registered its keys</span>
+<span class="n">backfill_account_role_assignments</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="n">roles</span><span class="p">,</span> <span class="n">default_tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">accounts</span><span class="o">=</span><span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">role</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">accounts</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Seeded role</th>
+<th>Tier</th>
+<th>Owner</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>root</code></td>
+<td>platform</td>
+<td>none</td>
+<td>every registered key a platform role may hold</td>
+</tr>
+<tr>
+<td><code>admin</code></td>
+<td>tenant</td>
+<td>default tenant</td>
+<td>every registered key a tenant role may hold</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td>tenant</td>
+<td>default tenant</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>owner</code>, <code>admin</code></td>
+<td>workspace</td>
+<td>none (template)</td>
+<td>every key a workspace role may hold (so not <code>authz.manage_roles</code>, nor a <code>prefix.*</code> key covering it)</td>
+</tr>
+<tr>
+<td><code>member</code>, <code>guest</code></td>
+<td>workspace</td>
+<td>none (template)</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>All the seeders are idempotent, safe to run from several processes at once, and run on every startup. Each is one unit of work and commits once at the end. <code>seed_system_roles</code> refuses, with <code>RoleExistsError</code>, to adopt a custom role that already holds a seeded identity (same key, tier and owner), and commits nothing in that case.</p>
+<p>The backfills mirror the legacy attributes into assignments with <code>source="legacy_backfill"</code>. The source is part of an assignment's identity: a runtime grant and the mirror of the same role are two rows, so a runtime grant (even an expired one) never blocks, renews or revokes the mirror, and the backfill never touches a runtime row. Callers cannot set the source: <code>grant</code> and <code>ensure_assignment</code> always write runtime rows.</p>
+<ul>
+<li><code>backfill_account_role_assignments</code> mirrors <code>(account_id, Account.role)</code>: <code>root</code> as a platform assignment, <code>admin</code> and <code>user</code> as tenant assignments in the default tenant.</li>
+<li><code>backfill_workspace_membership_role_assignments</code> mirrors <code>(account_id, workspace_id, tenant_id, User.type)</code> as workspace assignments. It is not wired into the test site because that app has no workspace model; pass it your memberships.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Pass the complete set</p>
+<p>A backfill treats its input as the whole truth. It revokes every <code>legacy_backfill</code> assignment the input no longer implies, including those of accounts or memberships that are missing from it, which is how deleted accounts and removed memberships lose their mirrored role. A partial list therefore revokes too much. An <strong>empty</strong> list does nothing, so a snapshot that failed to load cannot revoke every mirror; the stale mirrors of a table that really became empty must be revoked by hand. Runtime grants (<code>source="runtime"</code>) are never touched.</p>
+</div>
+<p>Both backfills are transitional and go away once assignments replace the legacy attributes.</p>
+<h3 id="guards">Guards<a class="headerlink" href="#guards" title="Permanent link">&para;</a></h3>
+<h4 id="require_permission"><code>require_permission</code><a class="headerlink" href="#require_permission" title="Permanent link">&para;</a></h4>
+<p><code>get_authz_dependencies(session_dep=..., tenancy_settings=..., get_current_account=..., get_current_workspace=..., get_current_active_user=..., get_current_tenant=...)</code> returns a namespace with <code>require_permission(key, tier=...)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">authz</span> <span class="o">=</span> <span class="n">get_authz_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+    <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
+    <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/docs"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">))],</span>  <span class="c1"># workspace tier</span>
+<span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">"/tenant-settings"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"tenant"</span><span class="p">))],</span>
+<span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">"/ops"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"authz.manage_roles"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"platform"</span><span class="p">))],</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>The default tier is <code>workspace</code>. Workspace guards resolve the workspace from the request; tenant and platform guards never do.</li>
+<li>An unknown <code>tier</code> raises <code>ValueError</code> when the dependency is built.</li>
+<li><code>tier="platform"</code> is satisfied only by platform-tier roles.</li>
+<li>With <code>get_current_tenant</code>, the guard uses the request's tenant, and a request with no tenant is denied. Without it, the default tenant from <code>tenancy_settings</code> is used.</li>
+<li>A workspace that belongs to a different tenant than the request is denied.</li>
+<li>Workspace guards need <code>get_current_workspace</code>, and identify the account from the workspace-and-active-user pair when both are passed, otherwise from <code>get_current_account</code>. Building a workspace guard without <code>get_current_workspace</code> raises <code>ValueError</code>, so a misconfigured app fails at startup instead of denying every request. Tenant and platform guards need <code>get_current_account</code>.</li>
+</ul>
+<p>A guard passes when the caller holds a role, at a tier that reaches the request, that bundles the key (or a <code>prefix.*</code> key covering it):</p>
+<table>
+<thead>
+<tr>
+<th>Guard <code>tier</code></th>
+<th>Satisfied by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>workspace</code> (default)</td>
+<td>a workspace-tier role held in this workspace; a tenant-tier role of the request's tenant, only if the key is registered <code>tenant_cascade=True</code>; a platform-tier role</td>
+</tr>
+<tr>
+<td><code>tenant</code></td>
+<td>a tenant-tier role of the request's tenant; a platform-tier role</td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td>a platform-tier role only</td>
+</tr>
+</tbody>
+</table>
+<p>Denied, with 403, when:</p>
+<ul>
+<li>the key is not registered in this process (a warning is logged, so a typo never grants). A bundled key that is no longer registered counts for nothing either, so every process that checks permissions, including workers and CLIs, must import the modules that register the keys;</li>
+<li>no account can be identified, or a wired <code>get_current_tenant</code> returns no tenant;</li>
+<li>the workspace belongs to another tenant, or a workspace guard has no workspace in the request;</li>
+<li>the matching assignment is expired, or its scope does not fit its role's tier.</li>
+</ul>
+<p>Prefer <code>require_permission</code> for new code: a permission names <em>what</em> may be done, and does not depend on what the roles happen to be called. Use <a href="#require_role"><code>require_role</code></a> when the route is about holding a role.</p>
+<p>To check a permission outside a route, for example inside a service, call <code>RoleService.has_permission</code> with the account, tenant and (for workspace permissions) workspace (see <a href="#how-a-permission-is-resolved">How a permission is resolved</a>).</p>
+<h4 id="require_role"><code>require_role</code><a class="headerlink" href="#require_role" title="Permanent link">&para;</a></h4>
+<p><code>Depends(authz.require_role(RoleKey(tier, key), ...))</code> passes when the caller holds <strong>any</strong> of the roles. Each key is matched at its own tier: a platform role anywhere, a tenant role in the request's tenant, a workspace role in the request's workspace.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleKey</span><span class="p">,</span> <span class="n">RoleTier</span>
+
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">"/ops"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_role</span><span class="p">(</span><span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">platform</span><span class="p">,</span> <span class="s2">"root"</span><span class="p">)))],</span>
+<span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">Depends</span><span class="p">(</span>
+            <span class="n">authz</span><span class="o">.</span><span class="n">require_role</span><span class="p">(</span>
+                <span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">),</span> <span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>It takes <code>RoleKey</code> only. A bare string raises <code>TypeError</code> when the dependency is built, and no keys raises <code>ValueError</code>.</li>
+<li>The same key at another tier does not satisfy it: a tenant <code>admin</code> is not a workspace <code>admin</code>.</li>
+<li>A guard with a workspace-tier key needs a workspace in the request and denies without one. Tenant and platform keys never resolve a workspace.</li>
+<li>Tenant and workspace handling is the same as for <code>require_permission</code>: the request's tenant (denied when missing), a workspace of another tenant denied, account identified from the membership pair or <code>get_current_account</code>.</li>
+<li>A tenant-tier key is held at a workspace route too: a tenant <code>admin</code> passes <code>require_role(RoleKey(RoleTier.tenant, "admin"))</code> on a workspace route. Unlike <code>require_permission</code>, there is no <code>tenant_cascade</code> switch, because the caller named the tenant role explicitly.</li>
+<li>It reads assignments only. The legacy attributes do not count (see <a href="#legacy-roles">Legacy roles</a>).</li>
+</ul>
+<p>Prefer <code>require_permission</code> where the guard names an action, and <code>require_role</code> where it names a role.</p>
+<h3 id="two-ways-to-guard-a-route">Two ways to guard a route<a class="headerlink" href="#two-ways-to-guard-a-route" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>msflib-auth</code></th>
+<th><code>msflib-authz</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Guards</td>
+<td><code>RoleCheck</code>, <code>WorkspaceRoleCheck</code></td>
+<td><code>require_permission</code>, <code>require_role</code></td>
+</tr>
+<tr>
+<td>Reads</td>
+<td><code>Account.role</code>, <code>User.type</code> attributes</td>
+<td>role assignments in the database</td>
+</tr>
+<tr>
+<td>Needs</td>
+<td>nothing beyond your account and user models</td>
+<td>the three authz tables, seeding</td>
+</tr>
+<tr>
+<td>Granularity</td>
+<td>a role name, exact match</td>
+<td>tier, owner and scope; permissions bundled into roles</td>
+</tr>
+<tr>
+<td>Changed at runtime</td>
+<td>by editing the attribute</td>
+<td>by granting or revoking assignments</td>
+</tr>
+</tbody>
+</table>
+<p>Both are supported. Use <code>auth</code> when a role attribute is enough. Use <code>authz</code> when you need roles that admins create and assign at runtime, per-workspace or per-tenant roles, or permissions. The module routers that take a role guard parameter (<code>role_check</code>, <code>workspace_role_check</code>, <code>admin_role_check</code> or <code>mutation_role_check</code>: account admin, notifications, workspaces, workspace config, workspace notifications, ai_core and ingestion) use the <code>auth</code> way, because they pass plain legacy role values.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p><code>msflib-authz</code> has no settings of its own. It reads the default tenant through the <a href="../tenancy/">tenancy</a> settings you pass as <code>tenancy_settings</code> (<code>settings.scope("TENANCY")</code>).</p>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="three-questions-about-a-role">Three questions about a role<a class="headerlink" href="#three-questions-about-a-role" title="Permanent link">&para;</a></h3>
+<p>Every row in <code>role_assignment</code> says "this principal holds this role, here". Three separate things decide what that means, and each lives in a different place.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answered by</th>
+<th>Stored on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What level of authority does the role grant?</strong></td>
+<td>the role's <strong>tier</strong>: <code>platform</code>, <code>tenant</code> or <code>workspace</code></td>
+<td><code>Role.tier</code></td>
+</tr>
+<tr>
+<td><strong>Who defined the role, and who may use it?</strong></td>
+<td>the role's <strong>owner</strong>: nobody (shared), a tenant, or a workspace</td>
+<td><code>Role.tenant_id</code>, <code>Role.workspace_id</code></td>
+</tr>
+<tr>
+<td><strong>Where does this one grant apply?</strong></td>
+<td>the assignment's <strong>scope</strong></td>
+<td><code>RoleAssignment.tenant_id</code>, <code>RoleAssignment.workspace_id</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title"><code>Role.tenant_id</code> is the owner, not the scope</p>
+<p>The <code>tenant_id</code> and <code>workspace_id</code> columns on <code>Role</code> say where the role is <em>defined</em>. They never say where the role applies. A role's authority is decided by its tier together with each assignment's own <code>tenant_id</code> and <code>workspace_id</code>. The columns on the two tables share names, but they are different facts.</p>
+<p>The columns are deliberately not named <code>owner_tenant_id</code> / <code>owner_workspace_id</code>: the longer name adds noise without removing the need to read this section. Whenever you see <code>role_tenant_id</code> / <code>role_workspace_id</code> in the code (for example in <code>validation.py</code>), it is the owner; <code>assignment_tenant_id</code> / <code>assignment_workspace_id</code> is the scope of a grant.</p>
+</div>
+<h4 id="tier">Tier<a class="headerlink" href="#tier" title="Permanent link">&para;</a></h4>
+<p>The tier fixes what <em>shape</em> of scope an assignment must have, and how far the role reaches.</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Assignment <code>tenant_id</code></th>
+<th>Assignment <code>workspace_id</code></th>
+<th>Reaches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>platform</code></td>
+<td>NULL</td>
+<td>NULL</td>
+<td>everywhere</td>
+</tr>
+<tr>
+<td><code>tenant</code></td>
+<td>set</td>
+<td>NULL</td>
+<td>that tenant (and, for cascading permissions, its workspaces)</td>
+</tr>
+<tr>
+<td><code>workspace</code></td>
+<td>set</td>
+<td>set</td>
+<td>exactly that workspace</td>
+</tr>
+</tbody>
+</table>
+<p>Consequences:</p>
+<ul>
+<li><strong>A tenant or platform role cannot be assigned "at a workspace".</strong> Giving a tenant-tier role a <code>workspace_id</code> is invalid, and so is giving a workspace-tier role no <code>workspace_id</code>. Only workspace-tier roles are assigned to a workspace. A tenant-tier role reaches workspaces through the <a href="#how-a-permission-is-resolved">tenant cascade</a>, not through a workspace assignment.</li>
+<li><strong>A platform role must be assigned with both ids NULL.</strong> NULL ids are not what <em>makes</em> a role platform-wide: the role's tier does. NULL ids on an assignment of a tenant or workspace role are simply invalid, and such a row grants nothing.</li>
+<li>A <code>workspace_id</code> always requires a <code>tenant_id</code>; a workspace belongs to a tenant.</li>
+</ul>
+<h4 id="owner">Owner<a class="headerlink" href="#owner" title="Permanent link">&para;</a></h4>
+<p>The owner restricts <em>who may be granted</em> the role. NULL means "no restriction".</p>
+<table>
+<thead>
+<tr>
+<th>Role owner (<code>tenant_id</code>, <code>workspace_id</code>)</th>
+<th>Meaning</th>
+<th>May be assigned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(NULL, NULL)</td>
+<td>shared definition</td>
+<td>in any tenant or workspace its tier allows</td>
+</tr>
+<tr>
+<td>(T, NULL)</td>
+<td>defined by tenant T</td>
+<td>only inside tenant T</td>
+</tr>
+<tr>
+<td>(T, W)</td>
+<td>defined by workspace W of tenant T</td>
+<td>only inside workspace W</td>
+</tr>
+</tbody>
+</table>
+<p>The seeded <code>owner</code>, <code>admin</code>, <code>member</code> and <code>guest</code> workspace roles are shared (NULL, NULL): one definition, assigned per workspace, with every assignment naming its own tenant and workspace. The seeded tenant roles (<code>admin</code>, <code>user</code>) are owned by the default tenant.</p>
+<p>A <em>tier</em> and an <em>owner</em> are independent. A workspace-tier role can be shared, owned by a tenant (a per-tenant template) or owned by one workspace. A platform-tier role must have no owner. A tenant-tier role cannot be owned by a workspace.</p>
+<h4 id="assignment-scope">Assignment scope<a class="headerlink" href="#assignment-scope" title="Permanent link">&para;</a></h4>
+<p><code>RoleAssignment.tenant_id</code> / <code>workspace_id</code> say where <em>this grant</em> applies, for example "Ada is an <code>admin</code> in tenant 5", or "Grace is a <code>member</code> of workspace 12 in tenant 5". Which ids are required follows from the tier (above), and the ids must lie inside the role's owner (above).</p>
+<h4 id="valid-and-invalid-combinations">Valid and invalid combinations<a class="headerlink" href="#valid-and-invalid-combinations" title="Permanent link">&para;</a></h4>
+<p>An assignment is <strong>effective</strong>, meaning it can grant authority, only if all three of the following hold. This single rule is <code>is_effective_assignment</code> in <code>validation.py</code>; every resolution path uses it.</p>
+<ol>
+<li><strong>Its scope has the shape its role's tier requires</strong> (the table under <a href="#tier">Tier</a>).</li>
+<li><strong>It lies inside the role's owner.</strong> For each of tenant and workspace: if the role has an owner there, the assignment must name exactly that id; if the role has none, any id is fine.</li>
+<li><strong>It has not expired</strong> (<code>expires_at</code> is NULL or in the future).</li>
+</ol>
+<p>The owner check only compares when the role <em>has</em> an owner, because a NULL owner means "shared". That asymmetry is intentional, and it does not leave the assignment's own NULLs unchecked:</p>
+<ul>
+<li>If the role has an owner, a NULL assignment id fails the comparison (NULL is not equal to 5).</li>
+<li>If the role is shared, a NULL assignment id is caught by the tier-shape check in step 1.</li>
+</ul>
+<p>The two checks together cover every case:</p>
+<table>
+<thead>
+<tr>
+<th>Role (tier; owner)</th>
+<th>Assignment (tenant, workspace)</th>
+<th>Effective?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>platform; (NULL, NULL)</td>
+<td>(NULL, NULL)</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>platform; (NULL, NULL)</td>
+<td>(5, NULL)</td>
+<td>no</td>
+<td>shape: platform needs no ids</td>
+</tr>
+<tr>
+<td>tenant; (NULL, NULL) shared</td>
+<td>(5, NULL)</td>
+<td>yes</td>
+<td>shared, tenant named</td>
+</tr>
+<tr>
+<td>tenant; (NULL, NULL) shared</td>
+<td>(NULL, NULL)</td>
+<td>no</td>
+<td>shape: tenant tier needs a tenant</td>
+</tr>
+<tr>
+<td>tenant; (5, NULL)</td>
+<td>(5, NULL)</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant; (5, NULL)</td>
+<td>(6, NULL)</td>
+<td>no</td>
+<td>owner: role is tenant 5's</td>
+</tr>
+<tr>
+<td>tenant; (5, NULL)</td>
+<td>(5, 3)</td>
+<td>no</td>
+<td>shape: tenant tier has no workspace</td>
+</tr>
+<tr>
+<td>workspace; (NULL, NULL) template</td>
+<td>(5, 3)</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>workspace; (NULL, NULL) template</td>
+<td>(5, NULL)</td>
+<td>no</td>
+<td>shape: workspace tier needs a workspace</td>
+</tr>
+<tr>
+<td>workspace; (5, NULL)</td>
+<td>(5, 3)</td>
+<td>yes</td>
+<td>any workspace of tenant 5</td>
+</tr>
+<tr>
+<td>workspace; (5, NULL)</td>
+<td>(6, 3)</td>
+<td>no</td>
+<td>owner: role is tenant 5's</td>
+</tr>
+<tr>
+<td>workspace; (5, 3)</td>
+<td>(5, 3)</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>workspace; (5, 3)</td>
+<td>(5, 4)</td>
+<td>no</td>
+<td>owner: role is workspace 3's</td>
+</tr>
+<tr>
+<td>workspace; (5, 3)</td>
+<td>(NULL, NULL)</td>
+<td>no</td>
+<td>shape and owner</td>
+</tr>
+</tbody>
+</table>
+<p><code>RoleService.grant</code> rejects an invalid assignment with <code>ValueError</code>. Resolution <em>also</em> ignores one, so a row that was written some other way (a raw action, a data migration, a bug) still grants nothing. The database enforces what it can without joining tables:</p>
+<ul>
+<li><code>ck_role_tier_scope</code> on <code>role</code>: platform roles have no owner; tenant roles have no workspace owner; a workspace owner implies a tenant owner.</li>
+<li><code>ck_role_assignment_scope</code> on <code>role_assignment</code>: a <code>workspace_id</code> requires a <code>tenant_id</code>.</li>
+<li><code>ck_role_assignment_source</code> on <code>role_assignment</code>: <code>source</code> is <code>runtime</code> or <code>legacy_backfill</code>.</li>
+<li><code>ck_role_scope_ids_positive</code> and <code>ck_role_assignment_ids_positive</code>: scope ids, when set, are positive. The unique identity indexes treat NULL scope columns as equal by coalescing them to <code>-1</code>, so a real id must never equal the sentinel; <code>RoleService</code> also rejects non-positive ids with <code>ValueError</code>.</li>
+</ul>
+<p>The tier-versus-assignment rule (step 1) and the owner rule (step 2) compare columns on two tables, which a CHECK constraint cannot do. They are enforced by the service on write and by resolution on read.</p>
+<h3 id="how-a-permission-is-resolved">How a permission is resolved<a class="headerlink" href="#how-a-permission-is-resolved" title="Permanent link">&para;</a></h3>
+<p><code>RoleService.has_permission(session, account_id=..., tenant_id=..., workspace_id=None, permission_key=...)</code> loads the account's effective assignments for that scope and then applies the reach of each tier:</p>
+<ul>
+<li><strong>platform</strong>: always applies.</li>
+<li><strong>tenant</strong>: applies when the assignment's tenant is the request's tenant, and either the request is tenant-level (no workspace) or the permission was registered with <code>tenant_cascade=True</code>.</li>
+<li><strong>workspace</strong>: applies only when the assignment's <code>(tenant_id, workspace_id)</code> is exactly the request's pair. There is no cascade.</li>
+</ul>
+<p>The permission is granted when any matching role bundles the key (or a <code>prefix.*</code> key covering it). <code>platform_only=True</code> considers platform-tier roles only.</p>
+<h3 id="role-keys">Role keys<a class="headerlink" href="#role-keys" title="Permanent link">&para;</a></h3>
+<p><code>get_role_keys_for(session, principal_kind=..., principal_id=..., tenant_id=None, workspace_id=None)</code> returns the keys of the roles in effect at a scope, as <code>RoleKey(tier, key)</code> values. The tier is part of the value because the same string can exist at several tiers: the seeded <code>admin</code> is a tenant role and a workspace role. Without the tier, a workspace <code>admin</code> could be mistaken for a tenant <code>admin</code>.</p>
+<ul>
+<li>Platform roles are always included.</li>
+<li>Tenant roles are included for <code>tenant_id</code>.</li>
+<li>Workspace roles are included for exactly <code>(tenant_id, workspace_id)</code>.</li>
+<li>With <code>tenant_id=None</code>, only platform roles are returned.</li>
+</ul>
+<h3 id="legacy-roles">Legacy roles<a class="headerlink" href="#legacy-roles" title="Permanent link">&para;</a></h3>
+<p><code>Account.role</code> (<code>root</code>, <code>admin</code>, <code>user</code>) and <code>User.type</code> (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>) are read by the <code>auth</code> guards. The authz guards ignore them: only assignments and their bundled permissions count.</p>
+<p>To move a route from <code>RoleCheck</code> to <code>require_role</code> without losing access, mirror the attributes into assignments first with the backfills (see <a href="#seeding">Seeding</a>). They write <code>legacy_backfill</code> assignments; a runtime grant is a separate row. The two sources are independent afterwards: revoking an assignment does not change the attribute, and editing the attribute does not change assignments until the backfill runs again.</p>
+<p>The seeded role keys reuse the legacy values so the backfills mirror existing data. The shared names are safe because they live at different tiers and every authz check is tier-aware: a legacy <code>admin</code> becomes a tenant-tier <code>admin</code>, <code>root</code> a platform-tier <code>root</code>.</p>
+<h3 id="writing-roles">Writing roles<a class="headerlink" href="#writing-roles" title="Permanent link">&para;</a></h3>
+<p>Write through <code>RoleService</code>; the actions are plain data access.</p>
+<ul>
+<li><code>create_role</code>, <code>ensure_role</code> (get-or-create), <code>add_permissions</code>, <code>grant</code>, <code>ensure_assignment</code> (get-or-grant), <code>revoke</code>. The values the server decides are separate parameters, not schema fields: <code>owner=RoleOwner(...)</code> (default <code>SHARED</code>), <code>is_system</code> and <code>created_by_account_id</code> for a role; <code>scope=RoleAssignmentScope(...)</code> (default <code>UNSCOPED</code>) and <code>granted_by_account_id</code> for an assignment. Renewing an expired grant keeps its original grantor unless a new one is passed. The <code>ensure_*</code> methods are safe to repeat and to run from several processes at once: a caller that loses a creation race gets the winner's row.</li>
+<li>Each public method is one closed unit of work: its writes run in savepoints and it commits once at the end, so a failure leaves nothing half-written. The batch methods (<code>ensure_roles</code>, <code>bundle_permissions</code>, <code>sync_legacy_assignments</code>, used by the seeders) commit once for the whole batch. Events fire on that commit. Because the commit is the session's, any other pending work in the same session is committed with it.</li>
+<li><code>grant</code> validates the assignment (tier shape, owner scope, <code>expires_at</code> in the future) and rejects an existing one with <code>AssignmentExistsError</code>; <code>create_role</code> raises <code>RoleExistsError</code> for a duplicate. Both are <code>ValueError</code> subclasses, and they are raised the same way when a concurrent writer wins the race, so callers handle one error rather than a raw <code>IntegrityError</code>.</li>
+<li>Granting over an <strong>expired</strong> runtime assignment renews it (new <code>expires_at</code>; the original granter is kept unless <code>granted_by_account_id</code> is given) instead of failing, so an expired grant never blocks re-granting. A mirrored legacy assignment of the same role is a separate row and is left alone.</li>
+<li><code>key</code>, <code>name</code> and <code>principal_id</code> are trimmed, must not be blank, and keys and principal ids are limited to 255 characters; scope ids must be positive.</li>
+<li>Events: see <a href="#events">Events</a>.</li>
+</ul>
+<p>A row written straight through an action is not validated, but resolution ignores it if it breaks the rules above.</p>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
+<p><code>RoleService</code> emits two events, <code>role-assignment-granted</code> and <code>role-assignment-revoked</code>, with <code>EventName.ROLE_ASSIGNMENT_GRANTED</code> and <code>EventName.ROLE_ASSIGNMENT_REVOKED</code>. Import the names and the payload contract from the package's eventbus:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EVENT_CONTRACTS</span><span class="p">,</span> <span class="n">EventName</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_emitter</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">on_granted</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="n">get_emitter</span><span class="p">()</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">ROLE_ASSIGNMENT_GRANTED</span><span class="p">,</span> <span class="n">on_granted</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><strong>When.</strong> After the outermost commit of the unit of work, never before. A rollback discards them. A listener error is logged, not raised, so it cannot undo the write.</li>
+<li><strong>Arguments.</strong> <code>row</code> is a snapshot of the assignment's columns (<code>id</code>, <code>role_id</code>, <code>principal_kind</code>, <code>principal_id</code>, <code>tenant_id</code>, <code>workspace_id</code>, <code>source</code>, ...), taken before the commit. It stays readable after the session is closed, so a listener may run later or on another thread. It is not the ORM instance. For <code>revoked</code> it is the row as it was before it was deleted.</li>
+<li><strong><code>payload</code>.</strong> <code>principal_kind</code>, <code>principal_id</code>, <code>role_key</code>, <code>tenant_id</code>, <code>workspace_id</code>. <code>role_key</code> is left out when the role row no longer exists.</li>
+</ul>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="grant-a-workspace-role-and-check-it">Grant a workspace role and check it<a class="headerlink" href="#grant-a-workspace-role-and-check-it" title="Permanent link">&para;</a></h3>
+<p>A shared <code>editor</code> template (tier <code>workspace</code>, no owner), granted to account 42 in workspace 7 of the default tenant:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">PERMISSION_REGISTRY</span><span class="p">,</span> <span class="n">PrincipalKind</span><span class="p">,</span> <span class="n">RoleService</span><span class="p">,</span> <span class="n">RoleTier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleAssignmentScope</span><span class="p">,</span> <span class="n">RoleAssignmentCreate</span><span class="p">,</span> <span class="n">RoleCreate</span>
+
+<span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"docs.publish"</span><span class="p">)</span>
+<span class="n">service</span> <span class="o">=</span> <span class="n">RoleService</span><span class="p">()</span>
+
+<span class="n">editor</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">ensure_role</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">RoleCreate</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">"editor"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Editor"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">service</span><span class="o">.</span><span class="n">add_permissions</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">role_id</span><span class="o">=</span><span class="n">editor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">permission_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"docs.publish"</span><span class="p">])</span>
+<span class="n">service</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">RoleAssignmentCreate</span><span class="p">(</span>
+        <span class="n">role_id</span><span class="o">=</span><span class="n">editor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">principal_kind</span><span class="o">=</span><span class="n">PrincipalKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">principal_id</span><span class="o">=</span><span class="s2">"42"</span>
+    <span class="p">),</span>
+    <span class="n">scope</span><span class="o">=</span><span class="n">RoleAssignmentScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">service</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">permission_key</span><span class="o">=</span><span class="s2">"docs.publish"</span>
+<span class="p">)</span>  <span class="c1"># True</span>
+<span class="n">service</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">permission_key</span><span class="o">=</span><span class="s2">"docs.publish"</span>
+<span class="p">)</span>  <span class="c1"># False: workspace roles do not reach other workspaces</span>
+</code></pre></div>
+<p><code>RoleCreate</code> and <code>RoleAssignmentCreate</code> hold only what a client may send. The values the server decides are separate parameters: <code>owner=RoleOwner(...)</code> (default <code>SHARED</code>) for a role, <code>scope=RoleAssignmentScope(...)</code> (default <code>UNSCOPED</code>) for an assignment, and <code>granted_by_account_id</code> / <code>created_by_account_id</code> for the actor. Build them in the endpoint from the request context; never read them from the body.</p>
+<p>Granting the same role without <code>workspace_id</code> raises <code>ValueError</code> ("tier=workspace requires both tenant_id and workspace_id set"), because a workspace-tier role needs a workspace.</p>
+<h3 id="guard-a-route-with-a-permission">Guard a route with a permission<a class="headerlink" href="#guard-a-route-with-a-permission" title="Permanent link">&para;</a></h3>
+<p>A document-publishing feature, end to end. The module owns the key; the host app seeds and grants.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">PERMISSION_REGISTRY</span><span class="p">,</span> <span class="n">PrincipalKind</span><span class="p">,</span> <span class="n">RoleService</span><span class="p">,</span> <span class="n">RoleTier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleAssignmentScope</span><span class="p">,</span> <span class="n">RoleAssignmentCreate</span><span class="p">,</span> <span class="n">RoleCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.seed</span><span class="w"> </span><span class="kn">import</span> <span class="n">seed_role_permissions</span><span class="p">,</span> <span class="n">seed_system_roles</span>
+
+<span class="c1"># 1. The feature registers its key at import time (not in a function).</span>
+<span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"docs.publish"</span><span class="p">)</span>  <span class="c1"># workspace-level only: no tenant cascade</span>
+
+<span class="c1"># 2. At startup, after every module is imported: seed roles and bundle keys.</span>
+<span class="n">roles</span> <span class="o">=</span> <span class="n">seed_system_roles</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">default_tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">)</span>
+<span class="n">seed_role_permissions</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="n">roles</span><span class="p">)</span>  <span class="c1"># the seeded workspace owner and admin get docs.publish</span>
+
+<span class="c1"># 3. Optionally, a custom workspace role that can publish and nothing else.</span>
+<span class="n">service</span> <span class="o">=</span> <span class="n">RoleService</span><span class="p">()</span>
+<span class="n">editor</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">ensure_role</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">RoleCreate</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">"editor"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Editor"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">service</span><span class="o">.</span><span class="n">add_permissions</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">role_id</span><span class="o">=</span><span class="n">editor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">permission_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">"docs.publish"</span><span class="p">])</span>
+
+<span class="c1"># 4. Grant it to account 42 in workspace 7.</span>
+<span class="n">service</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">RoleAssignmentCreate</span><span class="p">(</span>
+        <span class="n">role_id</span><span class="o">=</span><span class="n">editor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">principal_kind</span><span class="o">=</span><span class="n">PrincipalKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">principal_id</span><span class="o">=</span><span class="s2">"42"</span>
+    <span class="p">),</span>
+    <span class="n">scope</span><span class="o">=</span><span class="n">RoleAssignmentScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># 5. Guard the route (authz comes from get_authz_dependencies, see above).</span>
+<span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/docs/</span><span class="si">{doc_id}</span><span class="s2">/publish"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">publish</span><span class="p">(</span><span class="n">doc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"docs.publish"</span><span class="p">))):</span> <span class="o">...</span>
+</code></pre></div>
+<p>What happens for account 42:</p>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th>Result</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publish in workspace 7</td>
+<td>allowed</td>
+<td><code>editor</code> is held in exactly that workspace and bundles <code>docs.publish</code></td>
+</tr>
+<tr>
+<td>publish in workspace 8</td>
+<td>403</td>
+<td>a workspace role does not reach other workspaces</td>
+</tr>
+<tr>
+<td>a tenant-tier <code>admin</code> publishes in workspace 7</td>
+<td>403</td>
+<td><code>docs.publish</code> is not <code>tenant_cascade</code>; hold a workspace role, or register the key with <code>tenant_cascade=True</code></td>
+</tr>
+<tr>
+<td>the seeded workspace <code>owner</code> publishes in workspace 7</td>
+<td>allowed</td>
+<td><code>seed_role_permissions</code> bundled the key into <code>owner</code></td>
+</tr>
+</tbody>
+</table>
+<p>The same key also reads naturally in code: <code>service.has_permission(session, account_id=42, tenant_id=tenant_id, workspace_id=7, permission_key="docs.publish")</code> returns <code>True</code> for the first row.</p>
+<p>For a tenant-wide action, register the key with <code>tenant_cascade=True</code> if tenant admins should reach it in every workspace, and guard with <code>tier="tenant"</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"docs.audit"</span><span class="p">,</span> <span class="n">tenant_cascade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/audit"</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"docs.audit"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"tenant"</span><span class="p">))])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">audit</span><span class="p">():</span> <span class="o">...</span>
+</code></pre></div>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A role is assigned but grants nothing.</strong> The assignment is not effective. Check, in order, that its <code>tenant_id</code> / <code>workspace_id</code> match the role's tier (platform: none; tenant: tenant only; workspace: both), that they lie inside the role's owner, and that <code>expires_at</code> has not passed. Rows written through a raw action are not validated, and resolution silently ignores a bad one.</li>
+<li><strong><code>ValueError</code> from <code>grant</code>.</strong> The message names the rule that failed: tier shape, owner scope, a missing role, an <code>expires_at</code> that is not in the future, or an existing unexpired assignment (<code>AssignmentExistsError</code>).</li>
+<li><strong>Two processes seeded at once.</strong> Seeding and the backfills use <code>ensure_role</code> / <code>ensure_assignment</code>, so concurrent startups converge on the same rows instead of failing on the unique index.</li>
+<li><strong>A workspace <code>admin</code> does not pass <code>require_role(RoleKey(RoleTier.tenant, "admin"))</code>.</strong> Intended. The tier is part of the key; ask for the workspace-tier key, or use <code>require_permission</code>.</li>
+<li><strong>A tenant admin cannot act in a workspace.</strong> Tenant roles reach workspaces only for permissions registered with <code>tenant_cascade=True</code>. Otherwise grant a workspace-tier role in that workspace.</li>
+<li><strong>A new permission is missing from <code>root</code> or <code>admin</code>.</strong> <code>seed_role_permissions</code> bundles the keys registered when it runs. Run it after every module has been imported.</li>
+<li><strong>A role's key, tier or owner cannot be changed.</strong> They are immutable because changing them would reinterpret existing assignments. Create a new role and move the assignments.</li>
+<li><strong>Revoking an assignment did not remove access to an <code>auth</code> route.</strong> <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> read the attribute, not assignments. Authz guards honour the revoke.</li>
+<li><strong>Requests are denied with no tenant.</strong> <code>get_current_tenant</code> is wired but returned nothing. A missing request tenant is denied, never defaulted.</li>
+<li><strong>A backfill removed assignments it should not have.</strong> It treats its input as the complete set. Pass every account or membership.</li>
+</ul>
+<h2 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<p>See the generated <a href="../../reference/authz/"><code>msflib.authz</code> reference</a>.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../auth/">auth</a>: <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> (the attribute-based guards), and workspace resolution.</li>
+<li><a href="../tenancy/">tenancy</a>: the <code>Tenant</code> model and the default-tenant resolver the guards fall back to.</li>
+<li><a href="../workspaces/">workspaces</a>: workspaces and membership, the source of workspace-tier roles.</li>
+<li><a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>: the scope dimensions in general.</li>
+<li><a href="../../contributing/#working-on-authz">Contributing: working on authz</a>: conventions for changing this module.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
