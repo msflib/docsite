@@ -1948,6 +1948,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.db.limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.limits.resolve_integer_bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_integer_bounds
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.migrations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3628,6 +3656,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.db.limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        limits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.limits.resolve_integer_bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_integer_bounds
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.migrations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4065,6 +4121,83 @@ Notes:
       drop data; see the core README.
     - Alembic is recommended for managing schema migrations in production.
     - All models must be imported before calling this function to register them in metadata.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.db.limits" class="doc doc-heading">
+            <code>limits</code>
+
+
+<a href="#msflib.db.limits" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Limits the database enforces, shared by request schemas, services and actions.</p>
+<p>Declare a limit once as a pydantic <code>Annotated</code> type and use it on both the table
+column and the <code>Create</code>/<code>Update</code> field: SQLModel reads <code>max_length</code> from
+<code>Field</code> into the column's <code>VARCHAR(n)</code> and pydantic raises a validation error for
+an oversized value, which FastAPI answers with a 422 where a bare database error would
+surface as a 500. SQLite ignores most
+of these limits, so a test on SQLite alone never notices a missing one::</p>
+<div class="codehilite"><pre><span></span><code>ResourceType = Annotated[str, NON_BLANK_TEXT, Field(max_length=64)]
+</code></pre></div>
+
+<p>Declare the alias with a literal <code>Annotated</code> so type checkers can read it; a type
+built by a function call is not a valid annotation for them.</p>
+<p>Name an alias after the concept, not the length: <code>ExternalId</code>, not <code>Text255</code>.
+Values that arrive as service arguments rather than through a schema (a string
+from a query parameter or an environment variable) go through
+<code>msflib.core.typing.coerce</code> first, then the same limits apply.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.limits.resolve_integer_bounds" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve_integer_bounds</span><span class="p">(</span><span class="n">column_type</span><span class="p">:</span> <span class="n">TypeEngine</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dialect</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.db.limits.resolve_integer_bounds" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Smallest and largest value an integer column of <code>column_type</code> holds.</p>
+<p><code>None</code> when <code>column_type</code> is not an integer type. SQLite stores every
+integer column as a signed 64-bit value, so only 64 bits count there.</p>
 
 
     </div>
