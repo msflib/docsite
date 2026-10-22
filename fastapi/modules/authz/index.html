@@ -771,6 +771,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#resource-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#events" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3842,6 +3853,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#resource-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#events" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3964,7 +3986,8 @@
 <p>Use the release tag of the version you want; do not pin <code>dev</code>. The package depends on <code>core</code> and <a href="../tenancy/">tenancy</a>. Its names load lazily, so importing <code>msflib.authz</code> does not register the table models; import <code>msflib.authz.models</code> before you create tables.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Add the <code>role</code>, <code>role_permission</code>, <code>role_assignment</code>, <code>group</code> and <code>group_member</code> tables to your schema. An app that already created the first three must add <code>group</code> and <code>group_member</code> before it upgrades: role and permission checks read <code>group_member</code> to expand a user's groups, so they fail with a missing-table error until it exists. The package ships no migrations: import <code>msflib.authz.models</code> before <code>SQLModel.metadata.create_all</code>, or include the tables in your own migrations (see <a href="../#how-a-module-is-wired">How a module is wired</a>).</li>
+<li>Add the <code>role</code>, <code>role_permission</code>, <code>role_assignment</code>, <code>group</code>, <code>group_member</code> and <code>resource_access</code> tables to your schema. An app that already created the first three must add <code>group</code> and <code>group_member</code> before it upgrades: role and permission checks read <code>group_member</code> to expand a user's groups, so they fail with a missing-table error until it exists. The package ships no migrations: import <code>msflib.authz.models</code> before <code>SQLModel.metadata.create_all</code>, or include the tables in your own migrations (see <a href="../#how-a-module-is-wired">How a module is wired</a>).
+   An app that created <code>group</code> from the groups release also has <code>group.workspace_id</code> as <code>NOT NULL</code>, and <code>create_all</code> never alters an existing column. Make it nullable before you create a group with <code>workspace_id=None</code> (the workspace-agnostic bucket); on PostgreSQL that is <code>ALTER TABLE "group" ALTER COLUMN workspace_id DROP NOT NULL</code>.</li>
 <li>Register permission keys at import time.</li>
 <li>Seed the system roles at startup, after every module has registered its keys.</li>
 <li>Build the guards with <code>get_authz_dependencies</code> and protect routes with <code>require_permission</code> or <code>require_role</code>.</li>
@@ -4160,7 +4183,7 @@
 <tr>
 <td>Needs</td>
 <td>nothing beyond your account and user models</td>
-<td>the five authz tables, seeding</td>
+<td>the six authz tables, seeding</td>
 </tr>
 <tr>
 <td>Granularity</td>
@@ -4452,7 +4475,7 @@
 </tr>
 </tbody>
 </table>
-<p><code>GroupService</code> adds and removes members. Each call is one unit of work, like <code>RoleService</code>:</p>
+<p>A group belongs to a workspace, or to the workspace-agnostic bucket when its <code>workspace_id</code> is <code>None</code> (a real scope of its own, not "unscoped"). <code>GroupService</code> adds and removes members. Each call is one unit of work, like <code>RoleService</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupMemberCreate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupService</span>
 
@@ -4466,19 +4489,80 @@
 <span class="n">service</span><span class="o">.</span><span class="n">remove_member</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">removed_by_account_id</span><span class="o">=</span><span class="n">current_account</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
 <p><code>group_id</code> and the acting account come from the request, so they are service parameters, not fields of <code>GroupMemberCreate</code>. For a <code>personal</code> group the acting account must be the owner, otherwise <code>ValueError</code>. Adding an account that is already a member raises <code>GroupMemberExistsError</code>, also when two requests race. <code>GroupCreate</code> likewise has no <code>workspace_id</code> or <code>owner_account_id</code>; pass them with <code>create(update={...})</code>.</p>
+<h3 id="resource-access">Resource access<a class="headerlink" href="#resource-access" title="Permanent link">&para;</a></h3>
+<p>A resource access row gives one user or group a level on one resource, for example a file. Roles answer "what may this account do here"; access rows answer "what may this account do to this one thing". They are independent: <code>AccessService</code> never reads roles. The word <em>permission</em> in this module always means a permission key such as <code>docs.publish</code>; a level on a resource is an <em>access level</em>.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>none</code></td>
+<td>explicit exclusion; blocks access inherited from a parent</td>
+</tr>
+<tr>
+<td><code>viewer</code></td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>commenter</code></td>
+<td>read and comment</td>
+</tr>
+<tr>
+<td><code>editor</code></td>
+<td>read, comment and edit</td>
+</tr>
+<tr>
+<td><code>manager</code></td>
+<td>everything, including sharing</td>
+</tr>
+</tbody>
+</table>
+<p>Resolution walks the resource and then its ancestors, nearest first. At the first level that has an access row for the account (directly, or through a group it belongs to) the highest matching level wins, <code>none</code> included, and farther ancestors are not consulted. No match gives <code>None</code>. The resource's owner is always <code>manager</code>. Use the <code>can_read</code>, <code>can_comment</code>, <code>can_edit</code> and <code>can_manage</code> helpers to turn a level into a yes or no.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccessLevel</span><span class="p">,</span> <span class="n">PrincipalKind</span><span class="p">,</span> <span class="n">ResourceAccessCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.services.access</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccessService</span><span class="p">,</span> <span class="n">can_edit</span>
+
+<span class="n">service</span> <span class="o">=</span> <span class="n">AccessService</span><span class="p">()</span>
+<span class="n">service</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">ResourceAccessCreate</span><span class="p">(</span>
+        <span class="n">principal_kind</span><span class="o">=</span><span class="n">PrincipalKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+        <span class="n">principal_id</span><span class="o">=</span><span class="s2">"42"</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">AccessLevel</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">resource_type</span><span class="o">=</span><span class="s2">"drivelink_node"</span><span class="p">,</span>
+    <span class="n">resource_id</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+    <span class="n">granted_by_account_id</span><span class="o">=</span><span class="n">current_account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">level</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">resolve_access</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">resource_type</span><span class="o">=</span><span class="s2">"drivelink_node"</span><span class="p">,</span>
+    <span class="n">resource_id</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+    <span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">is_owner</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">ancestor_ids</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">can_edit</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+</code></pre></div>
+<p><code>principal_id</code> must be the user's account id or the group id as a positive integer without leading zeros (<code>"42"</code>, not <code>"042"</code>); anything else raises a validation error, because resolution compares it as a string and such a row could never match. The resource (<code>resource_type</code>, <code>resource_id</code>), its <code>workspace_id</code> (<code>None</code> is the workspace-agnostic bucket, a real scope of its own) and the acting account come from the request, so they are parameters of <code>grant</code>, not fields of <code>ResourceAccessCreate</code>, which holds only the principal and the level. <code>resource_type</code> is 1 to 64 characters and <code>resource_id</code> positive, otherwise <code>ValueError</code>. Granting again to the same principal updates the level, records the new grantor when one is passed (otherwise the original stays), and keeps the original <code>workspace_id</code>. <code>revoke</code> deletes an access row. <code>resolve_access</code> and <code>resolve_accesses</code> take the resource's <code>workspace_id</code> and count only rows granted in exactly that workspace (<code>None</code> matches only the workspace-agnostic bucket, not every workspace), so a grant in workspace 7 never authorizes the same resource id in workspace 8. For lists, <code>resolve_accesses</code> resolves many resources at once: one query for the account's groups and one access query per 500 distinct resource ids (a single batch for most lists).</p>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
-<p><code>RoleService</code> emits two events, <code>role-assignment-granted</code> and <code>role-assignment-revoked</code>, with <code>EventName.ROLE_ASSIGNMENT_GRANTED</code> and <code>EventName.ROLE_ASSIGNMENT_REVOKED</code>. <code>GroupService</code> emits <code>group-member-added</code> and <code>group-member-removed</code>, named <code>GroupMemberEventName.GROUP_MEMBER_ADDED</code> and <code>GroupMemberEventName.GROUP_MEMBER_REMOVED</code>. Import the names and the payload contracts from the package's eventbus. <code>EventName</code> is the role-assignment enum, as before groups existed; <code>RoleAssignmentEventName</code> is the same enum under its explicit name:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EVENT_CONTRACTS</span><span class="p">,</span> <span class="n">EventName</span>
+<p><code>RoleService</code> emits two events, <code>role-assignment-granted</code> and <code>role-assignment-revoked</code>, with <code>RoleAssignmentEventName.ROLE_ASSIGNMENT_GRANTED</code> and <code>RoleAssignmentEventName.ROLE_ASSIGNMENT_REVOKED</code>. <code>GroupService</code> emits <code>group-member-added</code> and <code>group-member-removed</code>, named <code>GroupMemberEventName.GROUP_MEMBER_ADDED</code> and <code>GroupMemberEventName.GROUP_MEMBER_REMOVED</code>. <code>AccessService</code> emits <code>resource-access-granted</code> and <code>resource-access-revoked</code>, named <code>ResourceAccessEventName.RESOURCE_ACCESS_GRANTED</code> and <code>ResourceAccessEventName.RESOURCE_ACCESS_REVOKED</code>. Import the names and the payload contracts from the package's eventbus.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EVENT_CONTRACTS</span><span class="p">,</span> <span class="n">RoleAssignmentEventName</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_emitter</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">on_granted</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span> <span class="o">...</span>
 
-<span class="n">get_emitter</span><span class="p">()</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">EventName</span><span class="o">.</span><span class="n">ROLE_ASSIGNMENT_GRANTED</span><span class="p">,</span> <span class="n">on_granted</span><span class="p">)</span>
+<span class="n">get_emitter</span><span class="p">()</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">RoleAssignmentEventName</span><span class="o">.</span><span class="n">ROLE_ASSIGNMENT_GRANTED</span><span class="p">,</span> <span class="n">on_granted</span><span class="p">)</span>
 </code></pre></div>
 <ul>
 <li><strong>When.</strong> After the outermost commit of the unit of work, never before. A rollback discards them. A listener error is logged, not raised, so it cannot undo the write.</li>
-<li><strong>Arguments.</strong> <code>row</code> is a snapshot of the assignment's columns (<code>id</code>, <code>role_id</code>, <code>principal_kind</code>, <code>principal_id</code>, <code>tenant_id</code>, <code>workspace_id</code>, <code>source</code>, ...), taken before the commit. It stays readable after the session is closed, so a listener may run later or on another thread. It is not the ORM instance. For <code>revoked</code> it is the row as it was before it was deleted.</li>
-<li><strong><code>payload</code>.</strong> For role assignments: <code>principal_kind</code>, <code>principal_id</code>, <code>role_key</code>, <code>tenant_id</code>, <code>workspace_id</code>; <code>role_key</code> is left out when the role row no longer exists. For group members: <code>group_id</code>, <code>account_id</code> and, on <code>added</code>, <code>added_by_account_id</code>.</li>
+<li><strong>Arguments.</strong> <code>row</code> is a snapshot of the written row's columns, taken before the commit: for a role assignment <code>id</code>, <code>role_id</code>, <code>principal_kind</code>, <code>principal_id</code>, <code>tenant_id</code>, <code>workspace_id</code>, <code>source</code> and so on; for a group member <code>group_id</code> and <code>account_id</code>; for resource access <code>resource_type</code>, <code>resource_id</code>, <code>principal_kind</code>, <code>principal_id</code>, <code>level</code>, <code>workspace_id</code> and so on. It stays readable after the session is closed, so a listener may run later or on another thread. It is not the ORM instance. For <code>revoked</code> it is the row as it was before it was deleted.</li>
+<li><strong><code>payload</code>.</strong> For role assignments: <code>principal_kind</code>, <code>principal_id</code>, <code>role_key</code>, <code>tenant_id</code>, <code>workspace_id</code>; <code>role_key</code> is left out when the role row no longer exists. For group members: <code>group_id</code>, <code>account_id</code> and, on <code>added</code>, <code>added_by_account_id</code>. For resource access: <code>resource_type</code>, <code>resource_id</code>, <code>principal_kind</code> and <code>principal_id</code>; <code>granted</code> adds <code>level</code> (its name, such as <code>viewer</code>) and <code>workspace_id</code>.</li>
 </ul>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="grant-a-workspace-role-and-check-it">Grant a workspace role and check it<a class="headerlink" href="#grant-a-workspace-role-and-check-it" title="Permanent link">&para;</a></h3>
