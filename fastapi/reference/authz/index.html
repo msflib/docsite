@@ -6244,9 +6244,10 @@ Rows for other principals are not loaded.</p>
         <p>Return a <code>DependencyNamespace</code> exposing <code>require_permission</code> and <code>require_role</code>.</p>
 <p>The identity callables are those of <code>msflib.scope.get_scope_dependencies</code>.
 With <code>get_current_tenant</code> the guard uses the request's tenant; without it
-the default tenant from <code>tenancy_settings</code> is used. A workspace belonging
-to a different tenant is denied. Platform and tenant guards never resolve a
-workspace, but need <code>get_current_account</code>.</p>
+the tenancy namespace's <code>get_current_tenant</code> supplies the default tenant
+from <code>tenancy_settings</code>. A workspace belonging to a different tenant is
+denied. Platform and tenant guards never resolve a workspace, but need
+<code>get_current_account</code>.</p>
 
 
     </div>

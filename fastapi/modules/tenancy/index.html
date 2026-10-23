@@ -3689,7 +3689,7 @@
 <li><code>msflib.scope.get_scope_dependencies(get_current_tenant=..., ...)</code> builds the tenant, workspace and account <code>ScopeEnvelope</code> dependencies used by the AI and document modules.</li>
 <li><code>msflib.workspaces.router.router(..., get_current_tenant=...)</code> stamps new workspaces with the tenant.</li>
 </ul>
-<p>If you omit it, those consumers either carry no tenant dimension or fall back to <code>resolve_default_tenant_id</code>.</p>
+<p><code>get_scope_dependencies</code> requires it: an app that does not deal with tenancy passes this one and gets the default tenant. Other consumers that still accept it as optional either carry no tenant dimension or fall back to <code>resolve_default_tenant_id</code>.</p>
 <p>The fallback honours <code>DEFAULT_TENANT_SLUG</code> as long as the consumer is given your settings. The documents, ingestion, workspaces, ai-core and ai-api routers take the <code>settings=</code> they are built with. <code>get_conversation_dependencies</code> takes <code>tenancy_settings=</code> (the root settings or the <code>TENANCY</code> scope), and <code>get_ai_api_scope_dependencies</code> takes <code>settings=</code> together with <code>get_session</code>. Without them the fallback looks for the slug <code>default</code>.</p>
 <p>There is no router to mount.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>

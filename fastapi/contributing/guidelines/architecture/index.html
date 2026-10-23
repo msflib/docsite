@@ -3665,6 +3665,12 @@ middleware, policy and adapters can change without rewrites.</p>
 (organisation), <code>account_id</code> (user), and optional <code>workspace_id</code>. Use the
 existing scope compiler, policy and retrieval-filter adapters; don't build
 parallel scope implementations.</p>
+<p>A scope is the server-decided place a request runs, identified by those
+dimensions: it bounds which data is visible and what the actor may do. It is not
+a client selector (SCP-3) and not a row fact such as who defined a role or where a
+grant applies; those keep their own types even when the fields match.
+<code>ScopeEnvelope</code> is the boundary and policy form. Code that filters or authorizes
+uses a typed scope (SCP-4).</p>
 <h3 id="scp-2-none-is-a-real-scope-bucket">SCP-2 · <code>None</code> is a real scope bucket<a class="headerlink" href="#scp-2-none-is-a-real-scope-bucket" title="Permanent link">&para;</a></h3>
 <p><code>workspace_id=None</code> means "workspace-agnostic", a valid hard boundary, not
 "unscoped". Preserve explicit-null semantics when compiling and filtering.</p>
@@ -3678,11 +3684,22 @@ payload, a model or an agent tool argument.</p>
 but they must pass an access check for the current principal before they are
 used (as conversation's <code>ai_bridge</code> access dependency does). A model or tool
 output never supplies either kind.</p>
+<p>Resolvers decide which tenant or workspace a request runs in; they do not check
+membership. A router or guard that needs it takes <code>MembershipCheck</code> callbacks
+(<code>msflib.scope</code>), one for the tenant and one for the workspace, supplied by the
+owning module and passed in by the host. It uses them for the caller (403) and for
+any account the request names (404). Don't fall back to a default tenant or to "any
+account" when a check is missing; a host that wants that passes <code>allow_any_member</code>.</p>
 <h3 id="scp-4-compile-scope-once-through-the-modules-profile">SCP-4 · Compile scope once, through the module's profile<a class="headerlink" href="#scp-4-compile-scope-once-through-the-modules-profile" title="Permanent link">&para;</a></h3>
 <p>Register profiles in <code>scope_profiles.py</code> via <code>ProfileRegistry</code> with namespaced
-names (<code>"&lt;module&gt;.&lt;operation&gt;"</code>). Compile <code>ScopeEnvelope</code> into a typed scope
-contract through one helper per module, then filter on that typed object.
-Don't filter ORM queries directly on raw <code>ScopeEnvelope.get_dim(...)</code> calls.
+names (<code>"&lt;module&gt;.&lt;operation&gt;"</code>). Build the typed scope from the <code>ScopeEnvelope</code>
+with <code>ScopeFactory.build(envelope, ScopeType, operation=...)</code>, once, at the
+request boundary, and pass it unchanged to every call below. <code>TenantScope</code>
+(<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a module needing more
+dimensions subclasses it and does not redeclare the identity pair. Filter on the
+typed object, never on raw <code>ScopeEnvelope.get_dim(...)</code> calls, and don't parse
+dimension strings by hand. The type shares fields, not match semantics; an
+equality or hierarchical match belongs to the action method.
 Reference: <code>knowledge/planner/scope_rewriter.py</code> with <code>contracts.KnowledgeScope</code>,
 and <code>ai_core/services/scope_metadata.py</code>.</p>
 

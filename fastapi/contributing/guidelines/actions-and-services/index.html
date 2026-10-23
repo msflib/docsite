@@ -3675,9 +3675,11 @@ Don't coerce types inside actions; shape the models and schemas so data
 arrives typed.</p>
 <h3 id="svc-3-multi-dimension-scoped-queries-take-the-typed-scope-object">SVC-3 · Multi-dimension scoped queries take the typed scope object<a class="headerlink" href="#svc-3-multi-dimension-scoped-queries-take-the-typed-scope-object" title="Permanent link">&para;</a></h3>
 <p>A query filtering on two or more scope dimensions takes the module's scope
-contract (<code>ConversationScope</code>, <code>KnowledgeScope</code>) as one parameter, not a
-growing list of scalars. A single scalar such as <code>tenant_id</code> is fine when only
-one dimension applies.</p>
+contract (a <code>TenantScope</code> subclass such as <code>ConversationScope</code> or
+<code>KnowledgeScope</code>) as one parameter, not a growing list of scalars. The request
+boundary builds it once (SCP-4) and each layer passes it on unchanged; only the
+action unpacks it into column filters. A single scalar such as <code>tenant_id</code> is
+fine when only one dimension applies.</p>
 <h2 id="services">Services<a class="headerlink" href="#services" title="Permanent link">&para;</a></h2>
 <h3 id="svc-4-each-service-function-is-one-closed-unit-of-work">SVC-4 · Each service function is one closed unit of work<a class="headerlink" href="#svc-4-each-service-function-is-one-closed-unit-of-work" title="Permanent link">&para;</a></h3>
 <p>A service function commits itself and takes no <code>commit: bool</code> parameter.</p>

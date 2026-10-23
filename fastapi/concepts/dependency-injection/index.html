@@ -3454,7 +3454,7 @@
 <tr>
 <td><code>get_scope_dependencies</code></td>
 <td><code>msflib.scope</code></td>
-<td>the <code>get_current_*</code> callables above</td>
+<td>the <code>get_current_*</code> callables above, <code>get_current_tenant</code> required</td>
 <td><code>get_account_scope</code>, <code>get_workspace_scope</code>, <code>get_tenant_scope</code></td>
 </tr>
 <tr>
@@ -3470,6 +3470,7 @@
 <p>Create the namespaces once at import time or in your app factory, then reference their members in endpoints. The dependencies resolve per request.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">get_scope_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 
 <span class="c1"># Account, get_session, get_keystore and settings are your app's own objects.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
@@ -3481,7 +3482,9 @@
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">)</span>
 <span class="n">scope_deps</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_active_account</span><span class="p">,</span>
 <span class="p">)</span>
 

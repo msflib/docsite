@@ -4096,7 +4096,7 @@
 <li>The default tier is <code>workspace</code>. Workspace guards resolve the workspace from the request; tenant and platform guards never do.</li>
 <li>An unknown <code>tier</code> raises <code>ValueError</code> when the dependency is built.</li>
 <li><code>tier="platform"</code> is satisfied only by platform-tier roles.</li>
-<li>With <code>get_current_tenant</code>, the guard uses the request's tenant, and a request with no tenant is denied. Without it, the default tenant from <code>tenancy_settings</code> is used.</li>
+<li>With <code>get_current_tenant</code>, the guard uses the request's tenant, and a request with no tenant is denied. Without it, the tenancy namespace's <code>get_current_tenant</code> supplies the default tenant from <code>tenancy_settings</code>.</li>
 <li>A workspace that belongs to a different tenant than the request is denied.</li>
 <li>Workspace guards need <code>get_current_workspace</code>, and identify the account from the workspace-and-active-user pair when both are passed, otherwise from <code>get_current_account</code>. Building a workspace guard without <code>get_current_workspace</code> raises <code>ValueError</code>, so a misconfigured app fails at startup instead of denying every request. Tenant and platform guards need <code>get_current_account</code>.</li>
 </ul>

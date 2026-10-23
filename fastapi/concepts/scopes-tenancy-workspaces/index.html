@@ -1577,6 +1577,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#typed-scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typed scopes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Typed scopes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#membership-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tenants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3364,6 +3392,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#typed-scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typed scopes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Typed scopes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#membership-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tenants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3491,7 +3547,7 @@
 <ul>
 <li>A membership entity distinct from the account (a per-workspace row with status and role): pass <code>get_current_workspace</code> and <code>get_current_active_user</code>. The user dependency is what verifies membership; resolving the workspace alone does not.</li>
 <li>No such entity: pass <code>get_current_account</code>, plus <code>get_current_workspace</code> if your accounts have a workspace attribute, or a workspace dependency that resolves from the request (path or header). Nothing then checks membership, because there is no membership row.</li>
-<li>No tenant concept yet: omit <code>get_current_tenant</code>. The scopes then carry <code>tenant_id=None</code>.</li>
+<li><code>get_current_tenant</code> is always required. A site that does not deal with tenancy passes the one from <code>get_tenant_dependencies</code> (see Tenants), which resolves the default tenant.</li>
 </ul>
 <p>Passing both <code>get_current_account</code> and <code>get_current_active_user</code> raises <code>ValueError</code>, as does passing neither account nor the workspace-and-user pair.</p>
 <h2 id="compiling-a-scope">Compiling a scope<a class="headerlink" href="#compiling-a-scope" title="Permanent link">&para;</a></h2>
@@ -3516,6 +3572,43 @@
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/270">#270</a>)</p>
 <p>Scope constraints on the AI API currently default to log-only (<code>SCOPE_CONSTRAINTS_ENFORCE</code>), so a failing constraint is logged rather than rejected. Whether enforcement should be the default is undecided.</p>
 </div>
+<h2 id="typed-scopes">Typed scopes<a class="headerlink" href="#typed-scopes" title="Permanent link">&para;</a></h2>
+<p>The envelope carries strings. Code that filters rows wants the real types, so a typed scope is built from the envelope once, at the request boundary, and passed down unchanged. <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) is the shared shape. A module that needs more dimensions subclasses it and does not redeclare the identity pair. <code>ScopeFactory.build</code> compiles the envelope through an operation profile and returns the typed object:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span><span class="p">,</span> <span class="n">ScopeFactory</span><span class="p">,</span> <span class="n">TenantScope</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConversationScope</span><span class="p">(</span><span class="n">TenantScope</span><span class="p">):</span>
+    <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">ScopeCompiler</span><span class="p">()</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">register_profile</span><span class="p">(</span>
+    <span class="s2">"chat.read"</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"tenant_id"</span><span class="p">,</span> <span class="s2">"conversation_id"</span><span class="p">],</span>
+        <span class="s2">"required_nullable"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"workspace_id"</span><span class="p">],</span>
+        <span class="s2">"optional"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"sub_thread_id"</span><span class="p">],</span>
+        <span class="s2">"order"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"tenant_id"</span><span class="p">,</span> <span class="s2">"workspace_id"</span><span class="p">,</span> <span class="s2">"conversation_id"</span><span class="p">,</span> <span class="s2">"sub_thread_id"</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="n">ScopeFactory</span><span class="p">(</span><span class="n">compiler</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">ConversationScope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"chat.read"</span><span class="p">)</span>
+<span class="n">scope</span><span class="o">.</span><span class="n">tenant_id</span>  <span class="c1"># 1, an int</span>
+<span class="n">scope</span><span class="o">.</span><span class="n">workspace_id</span>  <span class="c1"># None for the workspace-less bucket</span>
+</code></pre></div>
+<p>The factory applies these rules, and fails with a <code>ScopeError</code> subclass: <code>ProfileValidationError</code> for an unknown operation or a dimension the profile does not allow, and <code>ScopeValidationError</code> for a missing required dimension, an invalid value or a field mismatch:</p>
+<ul>
+<li>Integer fields accept plain digits only. <code>"1_0"</code> and <code>"+5"</code> are rejected.</li>
+<li>A required dimension must parse. A required-nullable dimension keeps an explicit null as <code>None</code>. An optional dimension that the envelope sets to null keeps <code>None</code> on a nullable field, whether it arrived under its canonical name or a registered alias, and is rejected on a non-nullable field. The field default applies only when the envelope does not mention the dimension.</li>
+<li>Every init field of the scope class must be declared by the profile (fields with <code>init=False</code> are derived, not built from the envelope), and every required or required-nullable dimension of the profile must be a field of the class. A profile that requires <code>account_id</code> cannot be built into a class without it: the account boundary would be dropped silently.</li>
+<li>Defaults and <code>default_factory</code> are honoured for fields the envelope omits. A field with neither fails.</li>
+</ul>
+<p>The type shares fields, not match semantics. Whether <code>None</code> means "only the workspace-less bucket" or something wider is decided by the action method that filters on it. See SCP-4 in the <a href="../../contributing/guidelines/architecture/">architecture guidelines</a>.</p>
+<h3 id="membership-checks">Membership checks<a class="headerlink" href="#membership-checks" title="Permanent link">&para;</a></h3>
+<p>Resolving a tenant or workspace does not prove the caller belongs to it. A router or guard that needs that takes <code>MembershipCheck</code> callbacks, one for the tenant and one for the workspace: <code>check(session, *, account_id=..., scope_id=...) -&gt; bool</code>. The module that owns the membership data supplies them and the host passes them in. A host with a single tenant or no membership rules passes <code>allow_any_member</code> explicitly; nothing in msflib assumes it.</p>
 <h2 id="tenants">Tenants<a class="headerlink" href="#tenants" title="Permanent link">&para;</a></h2>
 <p><code>msflib-tenancy</code> provides the <code>Tenant</code> table (<code>name</code>, unique <code>slug</code>, <code>status</code>, a soft <code>owner_account_id</code>), <code>TenantAction</code>, and <code>TenancySettings</code> (namespace <code>TENANCY</code>, with <code>DEFAULT_TENANT_SLUG</code> and <code>DEFAULT_TENANT_NAME</code>, defaulting to <code>"default"</code> and <code>"Default Tenant"</code>).</p>
 <p>Today the library runs single-tenant: one default tenant, resolved by slug. Rows that belong to a tenant carry a <code>tenant_id</code> foreign key to it (workspaces, for example). Three entry points matter to a host app:</p>
@@ -3546,7 +3639,7 @@
 <ul>
 <li>Build the scope from the authenticated caller at the endpoint, not from request parameters. A client-supplied <code>workspace_id</code> that nothing verifies is how data crosses workspaces.</li>
 <li><code>get_workspace_scope</code> does not by itself prove the account belongs to the workspace on sites without a membership row.</li>
-<li>Dimension values are strings. Convert back with <code>int(...)</code> where a column is an integer, and handle <code>None</code> first.</li>
+<li>Dimension values in an envelope are strings. Do not convert them by hand: build a typed scope with <code>ScopeFactory.build</code> (see Typed scopes), which parses ids and handles <code>None</code> once.</li>
 <li><code>ScopeEnvelope</code> is immutable and its mapping fields are read-only proxies. Make a new one instead of mutating.</li>
 </ul>
 
