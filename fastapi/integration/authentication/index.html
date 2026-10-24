@@ -3782,7 +3782,7 @@
 </table>
 <div class="highlight"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">auth_router</span><span class="p">(</span>
-        <span class="o">...</span><span class="p">,</span>
+        <span class="c1"># the other arguments, as in the full example above</span>
         <span class="n">access_token_claims_decorator</span><span class="o">=</span><span class="k">lambda</span> <span class="n">account</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">role</span><span class="p">)},</span>
     <span class="p">),</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
@@ -3803,7 +3803,7 @@
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">auth_router</span><span class="p">(</span>
-        <span class="o">...</span><span class="p">,</span>
+        <span class="c1"># the other arguments, as in the full example above</span>
         <span class="n">send_reset_pwd_email_override</span><span class="o">=</span><span class="k">lambda</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">outbox</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">kw</span><span class="p">[</span><span class="s2">"token"</span><span class="p">],</span> <span class="n">kw</span><span class="p">[</span><span class="s2">"code"</span><span class="p">])),</span>
     <span class="p">),</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
@@ -3951,7 +3951,7 @@
 
 
 <span class="n">auth_router</span><span class="p">(</span>
-    <span class="o">...</span><span class="p">,</span>
+    <span class="c1"># the other arguments, as in the full example above</span>
     <span class="n">access_token_claims_decorator</span><span class="o">=</span><span class="k">lambda</span> <span class="n">account</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">wa</span><span class="o">.</span><span class="n">build_access_token_claims</span><span class="p">(</span>
         <span class="n">ctx</span><span class="p">[</span><span class="s2">"session"</span><span class="p">],</span> <span class="n">account</span><span class="o">=</span><span class="n">account</span><span class="p">,</span> <span class="n">user_action</span><span class="o">=</span><span class="n">ua</span>
     <span class="p">),</span>

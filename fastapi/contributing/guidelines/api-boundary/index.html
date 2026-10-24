@@ -3406,14 +3406,8 @@
 <h3 id="api-1-routers-are-factory-functions-with-injected-dependencies">API-1 · Routers are factory functions with injected dependencies<a class="headerlink" href="#api-1-routers-are-factory-functions-with-injected-dependencies" title="Permanent link">&para;</a></h3>
 <p><code>router(*, get_session, get_current_account, ..., prefix="", tags=None) -&gt; APIRouter</code>.
 The host app supplies session, auth, workspace and tenant resolvers; modules
-hold no app models or session globals. New router factories take
-keyword-only parameters. Reference: <code>conversation/router.py</code>, <code>ai_api/router/</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Known gap</p>
-<p>Older factories such as <code>payments.router.router</code> and <code>auth.router.router</code>
-accept positional parameters. Making them keyword-only breaks existing
-callers, so it needs its own change and a compatibility decision (STY-4).</p>
-</div>
+hold no app models or session globals. Router factories take keyword-only
+parameters. Reference: <code>conversation/router.py</code>, <code>ai_api/router/</code>.</p>
 <h3 id="api-2-extract-depspy-once-a-router-has-real-guard-logic">API-2 · Extract <code>deps.py</code> once a router has real guard logic<a class="headerlink" href="#api-2-extract-depspy-once-a-router-has-real-guard-logic" title="Permanent link">&para;</a></h3>
 <p>When a router does more than one or two trivial checks, move request-scoped
 resolution into a <code>deps.py</code> factory returning a <code>DependencyNamespace</code>:
