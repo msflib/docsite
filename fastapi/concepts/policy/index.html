@@ -3431,9 +3431,9 @@
 </tbody>
 </table>
 <h2 id="resolving">Resolving<a class="headerlink" href="#resolving" title="Permanent link">&para;</a></h2>
-<p>The service takes a store for the persisted tiers and an optional decision logger. <code>ScopedConfigPolicyStoreAdapter</code> from <code>msflib.workspace_config.service</code> is the store backed by <a href="../../modules/workspace-config/">workspace-config</a>. Any object with the three <code>get_*_namespace_values</code> methods satisfies the protocol, so you can also back it with something else.</p>
+<p>The service takes a store for the persisted tiers and an optional decision logger. <code>ScopedConfigPolicyStoreAdapter</code> from <code>msflib.workspace_config.services</code> is the store backed by <a href="../../modules/workspace-config/">workspace-config</a>. Any object with the three <code>get_*_namespace_values</code> methods satisfies the protocol, so you can also back it with something else.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.policy</span><span class="w"> </span><span class="kn">import</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">,</span> <span class="n">PolicyResolutionService</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigPolicyStoreAdapter</span><span class="p">,</span> <span class="n">ScopedConfigService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigPolicyStoreAdapter</span><span class="p">,</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">decisions</span> <span class="o">=</span> <span class="n">InMemoryPolicyDecisionLogger</span><span class="p">()</span>
 <span class="n">policy_service</span> <span class="o">=</span> <span class="n">PolicyResolutionService</span><span class="p">(</span>

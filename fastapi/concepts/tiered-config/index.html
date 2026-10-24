@@ -3511,9 +3511,9 @@
 </code></pre></div>
 <p>There is no separate workspace parameter. Callers fold workspace values into <code>tenant_config</code> first (workspace wins over tenant). <code>merge_config_layers</code> is the underlying function if you need all four layers separately.</p>
 <h2 id="resolving-from-stored-values">Resolving from stored values<a class="headerlink" href="#resolving-from-stored-values" title="Permanent link">&para;</a></h2>
-<p><code>ScopedConfigService</code> from <code>msflib.workspace_config.service</code> stores one JSON mapping per namespace per scope, and resolves a module's settings from them.</p>
+<p><code>ScopedConfigService</code> from <code>msflib.workspace_config.services</code> stores one JSON mapping per namespace per scope, and resolves a module's settings from them.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
 

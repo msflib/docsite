@@ -3683,11 +3683,11 @@
 <p class="admonition-title">Packaging issue (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
 <p>The package does not declare its foreign-key dependencies on the account and workspaces modules. Add <code>msflib-account</code> and <code>msflib-workspaces</code> to your own dependencies yourself, as above.</p>
 </div>
-<p><code>msflib/workspace_config/__init__.py</code> exports nothing. Import from <code>msflib.workspace_config.service</code>, <code>.models</code>, <code>.actions</code>, <code>.router</code>, <code>.config</code>.</p>
+<p><code>msflib/workspace_config/__init__.py</code> exports nothing. Import from <code>msflib.workspace_config.services</code>, <code>.models</code>, <code>.actions</code>, <code>.router</code>, <code>.config</code>.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>The service needs no mounting: construct it and call it with a session.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">config_service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
 </code></pre></div>
@@ -3818,7 +3818,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSettingsBase</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DemoSettings</span><span class="p">(</span><span class="n">ModuleSettingsBase</span><span class="p">):</span>

@@ -3481,7 +3481,7 @@
 <p>The package declares <code>sms</code> (Twilio), <code>email</code> (the <code>emails</code> library) and <code>all</code> extras.</p>
 <div class="admonition note">
 <p class="admonition-title">Packaging (<a href="https://github.com/msflib/fastapi/issues/279">#279</a>)</p>
-<p>On this branch those extras do not change what ends up installed: <code>msflib</code> core already depends on <code>emails</code> and <code>twilio</code> unconditionally, and <code>service/email.py</code> in core imports <code>emails</code> at module level. Treat both channels as available whenever core is installed.</p>
+<p>On this branch those extras do not change what ends up installed: <code>msflib</code> core already depends on <code>emails</code> and <code>twilio</code> unconditionally, and <code>services/email.py</code> in core imports <code>emails</code> at module level. Treat both channels as available whenever core is installed.</p>
 </div>
 <p>The code still guards the Twilio import, so a missing <code>twilio</code> makes SMS return <code>None</code> instead of raising (see Troubleshooting).</p>
 <p><code>msflib-notifications</code> also depends on <code>msflib-tenancy</code>. The notification tables need the <code>account</code> table. Tenancy tables are only needed if you use tenant resolution elsewhere; import <code>msflib.tenancy.models.tenant</code> if you do.</p>
@@ -3637,7 +3637,7 @@
 <li><strong><code>Notification</code></strong>: one row per sent message: <code>title</code>, <code>message</code>, <code>channels</code>, <code>sender_id</code>, <code>notification_type</code> (<code>system</code> or <code>admin</code>) and <code>scope</code>.</li>
 <li><strong><code>AccountNotification</code></strong>: one row per recipient, linking an account (<code>receiver_id</code>) to a notification, with <code>is_read</code>. Deleting a notification cascades to these rows.</li>
 <li><strong><code>NotificationChannel</code></strong>: <code>inapp</code>, <code>push</code>, <code>email</code>, <code>sms</code>, <code>discord</code>. Only <code>inapp</code>, <code>email</code> and <code>sms</code> are handled.</li>
-<li><strong><code>dispatch_account_notifications</code></strong> in <code>msflib.notifications.service.notification</code> is the programmatic entry point. It persists the notification and recipient rows if <code>inapp</code> is among the channels, then calls the email and SMS handlers for the other channels. If <code>inapp</code> is not requested, nothing is stored and the function returns <code>None</code>.</li>
+<li><strong><code>dispatch_account_notifications</code></strong> in <code>msflib.notifications.services.notification</code> is the programmatic entry point. It persists the notification and recipient rows if <code>inapp</code> is among the channels, then calls the email and SMS handlers for the other channels. If <code>inapp</code> is not requested, nothing is stored and the function returns <code>None</code>.</li>
 <li><strong><code>NotificationHandlerFactory</code></strong> maps a channel to a handler. Pass your own via <code>handler_factory=</code> to change or add channels; any object with a <code>get_handler(channel, settings, session)</code> method works.</li>
 <li><strong>Actions</strong>: <code>NotificationAction</code> and <code>AccountNotificationAction</code> in <code>msflib.notifications.actions</code> are standard model actions. <code>AccountNotificationAction</code> adds <code>save_for_recipients</code>, <code>mark_one</code> and <code>mark_all</code>.</li>
 </ul>
@@ -3650,7 +3650,7 @@
     <span class="n">NotificationCreate</span><span class="p">,</span>
     <span class="n">NotificationType</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.service.notification</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispatch_account_notifications</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.notifications.services.notification</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispatch_account_notifications</span>
 
 <span class="n">notification</span> <span class="o">=</span> <span class="n">dispatch_account_notifications</span><span class="p">(</span>
     <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>

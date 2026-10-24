@@ -3875,7 +3875,7 @@
 </code></pre></div>
 <p><code>AccountAction</code> adds <code>get_by_email</code>, <code>authenticate</code>, <code>ensure_unique_fields</code> (checks <code>email</code>, <code>phone</code> and <code>username</code> by default), and <code>create</code>, which hashes the password, lower-cases the email and, when a <code>profile_action</code> is configured and the data has a <code>profile</code>, creates the profile in the same transaction. Constructing it without <code>settings</code> still works but emits a <code>DeprecationWarning</code>.</p>
 <p><code>AccountAction.resolve_workspace_context</code>, <code>build_access_token_claims</code> and <code>decorate_access_token_payload</code> are stubs kept for compatibility and return empty values. The working versions are on <code>WorkspaceAction</code> in <a href="../workspaces/">workspaces</a>.</p>
-<p>The <code>msflib.account.service.account</code> module offers <code>create_account</code>, <code>update_account</code> and <code>get_account</code>, which the routers use; call them if you need the same event and email behaviour outside a route.</p>
+<p>The <code>msflib.account.services.account</code> module offers <code>create_account</code>, <code>update_account</code> and <code>get_account</code>, which the routers use; call them if you need the same event and email behaviour outside a route.</p>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
 <p>Names are in <code>msflib.account.eventbus.EventName</code>:</p>
 <table>

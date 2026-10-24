@@ -2918,10 +2918,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mod-3-new-modules-use-services-plural" class="md-nav__link">
+  <a href="#mod-3-business-logic-lives-in-services-plural" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MOD-3 · New modules use services/ (plural)
+        MOD-3 · Business logic lives in services/ (plural)
       
     </span>
   </a>
@@ -3364,10 +3364,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mod-3-new-modules-use-services-plural" class="md-nav__link">
+  <a href="#mod-3-business-logic-lives-in-services-plural" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MOD-3 · New modules use services/ (plural)
+        MOD-3 · Business logic lives in services/ (plural)
       
     </span>
   </a>
@@ -3484,15 +3484,11 @@ and failing <code>from msflib.foo import x</code> imports behave normally. Refer
 <p><strong>Why:</strong> the namespace package is importable under several <code>sys.path</code> entries.
 Eager model imports register SQLModel tables twice ("Table already defined")
 and pull optional dependencies in at import time.</p>
-<h3 id="mod-3-new-modules-use-services-plural">MOD-3 · New modules use <code>services/</code> (plural)<a class="headerlink" href="#mod-3-new-modules-use-services-plural" title="Permanent link">&para;</a></h3>
-<p>Some existing modules still use <code>service/</code>. Don't rename them as a side effect
-of other work; it breaks import paths for external consumers and needs its own
-change.</p>
-<div class="admonition note">
-<p class="admonition-title">Known gap</p>
-<p><code>template/</code> still scaffolds <code>service/</code>. Rename it after scaffolding until
-the template is updated.</p>
-</div>
+<h3 id="mod-3-business-logic-lives-in-services-plural">MOD-3 · Business logic lives in <code>services/</code> (plural)<a class="headerlink" href="#mod-3-business-logic-lives-in-services-plural" title="Permanent link">&para;</a></h3>
+<p>Every module, and the module template, uses <code>services/</code>. Modules that used to
+have <code>service/</code> keep it as a deprecated alias package that re-exports
+<code>services/</code> and warns on import. Don't add code to a <code>service/</code> alias or import
+from it; the aliases will be removed in a future minor release.</p>
 <h3 id="mod-4-special-logic-gets-its-own-package">MOD-4 · Special logic gets its own package<a class="headerlink" href="#mod-4-special-logic-gets-its-own-package" title="Permanent link">&para;</a></h3>
 <p>Registries, compilers, planners, parsers and adapters, meaning logic that is
 neither CRUD nor orchestration, go in dedicated packages (<code>documents/adapters/</code>,

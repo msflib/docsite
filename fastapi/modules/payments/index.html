@@ -3613,7 +3613,7 @@
 <li><strong><code>PaymentQueue</code></strong> is one row per payment holding an <code>event_key</code> and a JSON <code>data</code> payload from your business flow. It is the hand-off to your fulfilment code. Statuses: <code>queued</code>, then <code>processed</code>.</li>
 <li><strong><code>PaymentStatus</code></strong>: <code>unverified</code> when created, <code>verified</code> once the gateway confirms. <code>failed</code> and <code>fulfilled</code> also exist in the enum; <code>fulfilled</code> is the status the gateways report internally on success.</li>
 <li><strong><code>PaymentProcessor(settings)</code></strong> holds both gateways. Select one with <code>.gateway("paystack")</code> (returns the processor), then <code>await .initiate(account, data)</code> or <code>await .verify(reference)</code>. Calling either without selecting a gateway raises <code>AttributeError</code>. Constructing a processor builds both gateways; <code>StripeGateway</code> sets <code>stripe.api_key</code> globally at construction.</li>
-<li><strong><code>process_payment</code></strong> (in <code>msflib.payments.service.processor</code>) wraps initiation, saves the <code>Payment</code> and the <code>PaymentQueue</code> row, and returns the payment.</li>
+<li><strong><code>process_payment</code></strong> (in <code>msflib.payments.services.processor</code>) wraps initiation, saves the <code>Payment</code> and the <code>PaymentQueue</code> row, and returns the payment.</li>
 <li><strong>Gateway behaviour</strong>:<ul>
 <li>Paystack: initializes a transaction over HTTP and returns an <code>authorization_url</code> for the customer to visit. Status maps <code>success</code> to fulfilled; <code>failed</code> and <code>abandoned</code> raise <code>PaymentStatusError</code>.</li>
 <li>Stripe: creates an embedded Checkout Session (card by default, <code>ui_mode="embedded"</code>, currency fixed to <code>usd</code>). The session <code>client_secret</code> is returned as <code>access_code</code>, <code>authorization_url</code> is empty, and <code>reference</code> is the session id. Pass the <code>client_secret</code> to Stripe's embedded checkout in the browser and do not log it.</li>
@@ -3647,8 +3647,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">PaymentData</span><span class="p">,</span> <span class="n">PaymentGateway</span><span class="p">,</span> <span class="n">PaymentInfo</span><span class="p">,</span> <span class="n">PaymentStatus</span><span class="p">,</span> <span class="n">VerificationResult</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.service.paystack_gateway</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaystackGateway</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.service.processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_payment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.services.paystack_gateway</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaystackGateway</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.payments.services.processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_payment</span>
 
 
 <span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>   <span class="c1"># the FastAPI app that mounts the payments router</span>
@@ -3692,7 +3692,7 @@
     <span class="c1"># GET /payments/verify/ref-1 now returns 200 with status "verified",</span>
     <span class="c1"># runs activate_subscription, and leaves payment.queue.status == processed</span>
 </code></pre></div>
-<p>In a real app <code>process_payment</code> is awaited inside an async endpoint and the response sends <code>payment.authorization_url</code> (Paystack) or <code>payment.access_code</code> (Stripe) to the client. <code>process_payment</code> converts gateway connection and response errors into <code>PaymentError</code> from <code>msflib.payments.service.error</code> (<code>PaymentConnectionError</code> and <code>PaymentResponseError</code> are subclasses that carry the original <code>cause</code>).</p>
+<p>In a real app <code>process_payment</code> is awaited inside an async endpoint and the response sends <code>payment.authorization_url</code> (Paystack) or <code>payment.access_code</code> (Stripe) to the client. <code>process_payment</code> converts gateway connection and response errors into <code>PaymentError</code> from <code>msflib.payments.services.error</code> (<code>PaymentConnectionError</code> and <code>PaymentResponseError</code> are subclasses that carry the original <code>cause</code>).</p>
 <p>The verify route also compares the gateway's reported amount with <code>convert_amount(payment.amount)</code> and returns 400 "Payment amount mismatch." if they differ.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
