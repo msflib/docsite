@@ -2722,6 +2722,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.workspaces.membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        membership
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="membership">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.membership.is_workspace_member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_workspace_member
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.workspaces.models" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3767,6 +3795,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.workspaces.membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        membership
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="membership">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.membership.is_workspace_member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_workspace_member
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.workspaces.models" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4464,6 +4520,71 @@ same default tenant row.</p>
           </tr>
       </tbody>
     </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.workspaces.membership" class="doc doc-heading">
+            <code>msflib.workspaces.membership</code>
+
+
+<a href="#msflib.workspaces.membership" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Workspace membership check: is an account a member of a workspace?</p>
+<p>Satisfies <code>msflib.scope.MembershipCheck</code>. A host passes it to routers and guards
+that validate the caller and the accounts a request names.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.workspaces.membership.is_workspace_member" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_workspace_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">active_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">user_action</span><span class="p">:</span> <span class="n">UserAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.workspaces.membership.is_workspace_member" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether <code>account_id</code> has a membership row in workspace <code>scope_id</code>.</p>
+<p>With <code>active_only</code> (the default) a kicked or banned membership does not count.
+Pass <code>functools.partial(is_workspace_member, active_only=False)</code> to accept any
+membership row.</p>
 
 
     </div>

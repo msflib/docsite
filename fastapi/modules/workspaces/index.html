@@ -633,6 +633,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#membership-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#workspace-model" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3565,6 +3576,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#membership-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#workspace-model" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3907,6 +3929,8 @@
 <li><code>UserAction.create_membership(...)</code> creates one from code. It is idempotent per account and workspace.</li>
 </ul>
 <p><code>POST /users/switch</code> changes <code>current_workspace_id</code> to another workspace the account already belongs to, and refuses locked workspaces (423) or non-members (401).</p>
+<h3 id="membership-check">Membership check<a class="headerlink" href="#membership-check" title="Permanent link">&para;</a></h3>
+<p><code>is_workspace_member(session, *, account_id, scope_id, active_only=True)</code> from <code>msflib.workspaces</code> answers whether an account has a membership row in a workspace. It satisfies <code>msflib.scope.MembershipCheck</code>, so a router or guard takes it as its workspace check. With <code>active_only</code> (the default) only a membership whose status value is <code>active</code> counts, so a kicked or banned one does not (a host's own status enum with an <code>active</code> member works too); use <code>functools.partial(is_workspace_member, active_only=False)</code> to accept any row. The row lookup goes through <code>UserAction</code>, which you can pass as <code>user_action=</code> when you use a customised one.</p>
 <h3 id="workspace-model">Workspace model<a class="headerlink" href="#workspace-model" title="Permanent link">&para;</a></h3>
 <p><code>WorkspaceBase</code> fields: <code>name</code>, <code>slug</code> (unique, derived from the name), <code>description</code>, <code>logo_url</code>, <code>owner_id</code> (foreign key to <code>account.id</code>), <code>tenant_id</code> (foreign key to <code>tenant.id</code>), <code>is_default</code>, <code>status</code>, <code>settings</code> and <code>data</code> (JSON). <code>WorkspaceStatus</code> is <code>open</code>, <code>restricted</code>, <code>readonly</code> or <code>locked</code>.</p>
 <p>Creating a workspace through the router rejects duplicate names, and names that match a reserved list: <code>admin</code>, <code>accounts</code>, <code>workspaces</code>, plus top-level route prefixes found by scanning <code>./testsite/app/api/api.py</code> and <code>./testsite/app/api/api_v1/endpoints/admin/__init__.py</code> relative to the working directory. Those files exist only in this repository's test site, so in a host app only the three built-in names apply unless you extend the check.</p>

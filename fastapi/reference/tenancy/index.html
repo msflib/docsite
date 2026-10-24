@@ -2560,6 +2560,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.tenancy.membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        membership
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="membership">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.tenancy.membership.is_tenant_member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_tenant_member
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.tenancy.models" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3505,6 +3533,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.tenancy.membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        membership
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="membership">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.tenancy.membership.is_tenant_member" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_tenant_member
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.tenancy.models" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3905,6 +3961,71 @@ default tenant hasn't been seeded yet.</p>
           </tr>
       </tbody>
     </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.tenancy.membership" class="doc doc-heading">
+            <code>msflib.tenancy.membership</code>
+
+
+<a href="#msflib.tenancy.membership" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Tenant membership check: is an account a member of a tenant?</p>
+<p>Satisfies <code>msflib.scope.MembershipCheck</code>. Until tenancy has a membership model
+(#268) the library is single-tenant, so every account belongs to the default tenant
+and to no other.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.tenancy.membership.is_tenant_member" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_tenant_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.tenancy.membership.is_tenant_member" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether <code>scope_id</code> is the default tenant, which every account belongs to.</p>
+<p><code>settings</code> is the app's root settings or its <code>TENANCY</code> scope, as for
+<code>resolve_default_tenant_id</code>.</p>
 
 
     </div>
