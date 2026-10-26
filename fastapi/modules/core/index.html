@@ -1152,6 +1152,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../learning-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    learning-structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2406,6 +2434,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/core/tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/core/utils/" class="md-nav__link">
         
   
@@ -2702,6 +2758,34 @@
     
   
     msflib.knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.learning
   
 
     
@@ -4154,7 +4238,8 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>)</p>
 <p>When a subclass of a <code>compose_settings_model</code> result declares a namespace field with a default instance (<code>CORE: CoreSettings = CoreSettings(PROJECT_NAME="Tasks")</code>), every environment variable for that namespace is ignored, because <code>SettingsBase.__init__</code> re-applies the subclass default after the environment has been read. See the <a href="#troubleshooting">troubleshooting entry</a> for workarounds.</p>
 </div>
-<p>Modules that need to keep older flat variable names working declare <code>flat_aliases</code>; nested keys win over flat aliases when both are set. <code>SettingsBase</code> reads <code>.env</code> and uses <code>__</code> as the nested delimiter.</p>
+<p>Modules can declare <code>flat_aliases</code> to map simple, non-namespaced env var names into the nested settings path — useful for deployments that prefer flat names as well as for sites migrating from pre-namespace configurations. Nested keys win over flat aliases when both are set. <code>SettingsBase</code> reads <code>.env</code> and uses <code>__</code> as the nested delimiter.</p>
+<p>A host <code>AppSettings</code> can also override a module default at code level by declaring a root field with the same bare name. <code>scope("NAMESPACE").FIELD</code> returns the root field's value, acting as a permanent code-level override of the module default.</p>
 <p>Every <code>ModuleSettingsBase</code> has an <code>ENABLED: bool = True</code> field. The core namespace is <code>CORE</code> (<code>CoreSettings</code>):</p>
 <table>
 <thead>

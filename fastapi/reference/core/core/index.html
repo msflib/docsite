@@ -818,6 +818,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../modules/learning-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    learning-structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4119,6 +4147,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../utils/" class="md-nav__link">
         
   
@@ -4415,6 +4471,34 @@
     
   
     msflib.knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.learning
   
 
     
@@ -7414,9 +7498,18 @@
         <p>Base class for module settings.</p>
 <p>Module settings classes should declare a <code>namespace</code> that matches the
 key used by <code>SettingsBase.scope()</code> (e.g. <code>CORE</code>).</p>
-<p><code>flat_aliases</code> maps flat env var keys (e.g. <code>ENABLE_SSO_AUTH</code>) to the
-nested settings paths (e.g. <code>AUTH.ENABLE_SSO_AUTH</code>).
-Subclasses can override this mapping to provide their own flat aliases.</p>
+<p><code>flat_aliases</code> maps simple, non-namespaced env var keys (e.g.
+<code>ENABLE_SSO_AUTH</code>) to the nested settings path (e.g.
+<code>AUTH.ENABLE_SSO_AUTH</code>).  Use it whenever a deployment prefers flat env
+var names — whether for a new site with a simpler naming convention or when
+migrating from pre-namespace configurations.  Nested keys (e.g.
+<code>AUTH__ENABLE_SSO_AUTH</code>) take precedence over flat aliases when both are
+set.  Subclasses can override this mapping to provide their own aliases.</p>
+<p>A host <code>AppSettings</code> can also override a module default at code level by
+declaring a root field with the same bare name (e.g. <code>ENABLE_SSO_AUTH:
+bool = True</code> on the host class).  <code>scope("AUTH").ENABLE_SSO_AUTH</code> will
+then return the root field's value.  This is intentional: the root field
+acts as a permanent code-level override of the module default.</p>
 <p><code>request_override_allowlist</code> (optional) is a set of configuration keys that
 are allowed to be overridden in per-request contexts via <code>ScopedConfigService</code>.
 If not set (None), all keys are allowed. Set it to a non-empty set to constrain

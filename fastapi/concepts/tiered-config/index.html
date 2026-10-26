@@ -818,6 +818,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/learning-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    learning-structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2202,6 +2230,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/core/tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/core/utils/" class="md-nav__link">
         
   
@@ -2498,6 +2554,34 @@
     
   
     msflib.knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.learning
   
 
     
@@ -3552,7 +3636,8 @@
 <li><strong>Changing defaults in code.</strong> When subclassed, assign the field in the class body. When composed, declare the namespace field with a default instance on <code>SettingsBase</code>, as in the example above; environment variables still apply. A subclass that overrides a default it inherits from a <code>compose_settings_model</code> result disables that namespace's environment variables (<a href="https://github.com/msflib/fastapi/issues/276">#276</a>).</li>
 <li><strong>Code that reads top-level attributes.</strong> Works when subclassed. When composed it needs a matching top-level attribute, as with the auth router's <code>SECRET_KEY</code> (<a href="https://github.com/msflib/fastapi/issues/287">#287</a>).</li>
 </ul>
-<p>Modules can declare <code>flat_aliases</code> so older flat env var names such as <code>ENABLE_X</code> still map into the nested path.</p>
+<p>Modules can declare <code>flat_aliases</code> to map simple, non-namespaced env var names (e.g. <code>ENABLE_X</code>) into the nested settings path. This is useful both for new deployments that prefer flat names and for sites migrating from pre-namespace configurations. Nested keys take precedence over flat aliases when both are set.</p>
+<p>A host <code>AppSettings</code> can also override a module default at code level by declaring a root field with the same bare name (e.g. <code>ENABLE_X: bool = True</code>). <code>scope("NAMESPACE").ENABLE_X</code> will then return the root field's value rather than the module's default. This lets a host pin a value in code rather than through an environment variable.</p>
 <p><code>CoreSettings</code> is the same kind of class with namespace <code>CORE</code>. The other modules follow the same pattern, for example <code>TENANCY</code>, <code>WORKSPACE_CONFIG</code> and <code>AI_CORE</code>.</p>
 <h2 id="resolving-without-a-database">Resolving without a database<a class="headerlink" href="#resolving-without-a-database" title="Permanent link">&para;</a></h2>
 <p><code>resolve_tiered</code> merges layers you already hold and returns a new, validated instance of the same class. It does not touch the database.</p>
