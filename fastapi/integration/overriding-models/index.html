@@ -1266,10 +1266,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-the-account-router-does-not-let-you-override" class="md-nav__link">
+  <a href="#update-schema-and-response-decorator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What the account router does not let you override
+        Update schema and response decorator
       
     </span>
   </a>
@@ -3378,10 +3378,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-the-account-router-does-not-let-you-override" class="md-nav__link">
+  <a href="#update-schema-and-response-decorator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What the account router does not let you override
+        Update schema and response decorator
       
     </span>
   </a>
@@ -3541,13 +3541,20 @@
 </code></pre></div>
 <p>With this, <code>POST /accounts/open</code> accepts <code>nickname</code> and stores it, and every response that returns an account includes it. <code>ModelAction.create</code> copies from the schema only the fields that exist on the table, so the extra input reaches the new column without any further code.</p>
 <p><code>account_read_type</code> is also accepted by the auth router, so the login response shows the same shape.</p>
-<h4 id="what-the-account-router-does-not-let-you-override">What the account router does not let you override<a class="headerlink" href="#what-the-account-router-does-not-let-you-override" title="Permanent link">&para;</a></h4>
-<p>The account update endpoints (<code>PUT /me</code> and the admin <code>PUT /{account_id}</code>) validate against the module's <code>AccountUpdate</code> and the router has no <code>account_update_type</code> argument. A <code>nickname</code> sent to <code>PUT /me</code> is accepted with <code>200</code> and silently ignored. Add your own endpoint for the new field.</p>
-<div class="admonition warning">
-<p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/272">#272</a>)</p>
-<p>There is no <code>account_update_type</code> argument, so extra fields sent to <code>PUT /me</code> and to the admin <code>PUT /{account_id}</code> are dropped. Use your own endpoint, as below, until it is added.</p>
-</div>
-<p>A route registered on its own router and included next to the module's router does not collide with it:</p>
+<h4 id="update-schema-and-response-decorator">Update schema and response decorator<a class="headerlink" href="#update-schema-and-response-decorator" title="Permanent link">&para;</a></h4>
+<p>The account update endpoints (<code>PUT /me</code> and the admin <code>PUT /{account_id}</code>) validate against the module's <code>AccountUpdate</code> by default. Pass <code>account_update_type</code> to <code>account_router</code> and <code>account_admin_router</code> to validate against your own schema instead, for example one that subclasses <code>AccountUpdate</code> and adds <code>nickname</code>. For <code>PUT /me</code> the schema should keep <code>current_password</code>, <code>new_password</code> and <code>email</code>, because the router uses them to require the current password.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AccountUpdateWithNickname</span><span class="p">(</span><span class="n">AccountUpdate</span><span class="p">):</span>
+    <span class="n">nickname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">account_router</span><span class="p">(</span>
+    <span class="c1"># ...the arguments from the example above, then:</span>
+    <span class="n">account_update_type</span><span class="o">=</span><span class="n">AccountUpdateWithNickname</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Unlike <code>create</code>, <code>ModelAction.update</code> sets every field sent in the request on the account, without checking it against the table, so <code>nickname</code> must exist on your <code>account_type</code> model; a field the model does not have can make the update fail. Without <code>account_update_type</code>, extra fields sent to <code>PUT /me</code> are accepted with <code>200</code> and ignored.</p>
+<p>Both routers also take <code>account_decorator</code>, called as <code>account_decorator(session=session, account=account)</code> before an account is returned. The auth router takes the same argument for the login response.</p>
+<p>To add a separate endpoint for the new field instead, register a route on its own router and include it next to the module's router. It does not collide with it:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>

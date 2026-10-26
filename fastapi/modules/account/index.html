@@ -3888,15 +3888,15 @@
 <tbody>
 <tr>
 <td><code>account-pre-create</code>, <code>account-created-pre-email</code></td>
-<td>Inside <code>create_account</code>, so on open registration and admin creation.</td>
+<td>Inside <code>create_account</code>, so on open registration and admin creation. <code>account-pre-create</code> is emitted strictly: a listener error aborts the creation.</td>
 </tr>
 <tr>
 <td><code>account-created</code></td>
-<td>After open registration only. The admin create route does not emit it.</td>
+<td>Inside <code>create_account</code>, after the welcome email, so on open registration and admin creation. The <code>data</code> in the payload has <code>password</code> set to <code>"[redacted]"</code>; use <code>account-pre-create</code> or <code>account-created-pre-email</code> if a listener needs the plaintext password.</td>
 </tr>
 <tr>
 <td><code>account-pre-update</code>, <code>account-updated</code></td>
-<td>On <code>PUT /account/me</code>.</td>
+<td>Inside <code>update_account</code>, so on <code>PUT /account/me</code> and the admin update route. The pre-update event is emitted strictly: a listener error aborts the update. The <code>data</code> in both payloads has <code>current_password</code> and <code>new_password</code> set to <code>"[redacted]"</code> when the caller sent them, and the plaintext is never stored: the caller's own <code>new_password</code> is hashed into <code>hashed_password</code>, and a password added by a listener is ignored.</td>
 </tr>
 <tr>
 <td><code>profile-pre-create</code>, <code>profile-created</code>, <code>profile-pre-update</code>, <code>profile-updated</code>, <code>profile-avatar-pre-update</code>, <code>profile-avatar-updated</code></td>
@@ -3905,6 +3905,7 @@
 </tbody>
 </table>
 <p>Register your own listeners on the app emitter, for example <code>@app_emitter.on("account-created")</code>.</p>
+<p>The strict events (<code>account-pre-create</code> and <code>account-pre-update</code>, and the <code>profile-pre-*</code> events) run synchronously inside the request. A listener for them must be a plain function: an <code>async def</code> listener makes the emit raise <code>EventBusAsyncListenerNotSupportedError</code> and the request fails with <code>500</code>. The other events accept async listeners.</p>
 <p>Separately, every <code>ModelAction</code> emits lifecycle events named after the model, such as <code>account-create-pre-commit</code>; the workspaces module uses that one.</p>
 <h3 id="workspace-contracts">Workspace contracts<a class="headerlink" href="#workspace-contracts" title="Permanent link">&para;</a></h3>
 <p><code>msflib.account.contracts</code> exports two <code>Protocol</code> classes, <code>WorkspaceContract</code> (needs <code>id</code>) and <code>UserContract</code> (needs <code>id</code>, <code>account_id</code>, <code>workspace_id</code>). Type-hint against them when your code should work with a workspace or membership without importing <code>msflib-workspaces</code>.</p>

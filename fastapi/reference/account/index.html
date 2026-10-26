@@ -2341,6 +2341,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.account.router.AccountDecorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AccountDecorator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.account.router.account_router" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2386,6 +2397,51 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.account.services.account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="account">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.account.services.account.scrub_secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scrub_secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.account.services.account.redact_password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        redact_password
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3705,6 +3761,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.account.router.AccountDecorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AccountDecorator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.account.router.account_router" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3750,6 +3817,51 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.account.services.account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="account">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.account.services.account.scrub_secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scrub_secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.account.services.account.redact_password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        redact_password
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4376,12 +4488,60 @@ any concrete user model that exposes these attributes satisfies this contract.</
 
 
 
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.account.router.AccountDecorator" class="doc doc-heading">
+            <code>AccountDecorator</code>
+
+
+<a href="#msflib.account.router.AccountDecorator" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>Shapes an account before an endpoint returns it; called with keyword arguments.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 <div class="doc doc-object doc-function">
 
 
 <h3 id="msflib.account.router.account_router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">account_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">account_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountBase</span><span class="p">],</span> <span class="n">profile_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ProfileBase</span><span class="p">],</span> <span class="n">account_read_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountRead</span><span class="p">]</span> <span class="o">=</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">account_create_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">profile_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">open_registration_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">unique_account_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/account'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">account_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">account_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountBase</span><span class="p">],</span> <span class="n">profile_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ProfileBase</span><span class="p">],</span> <span class="n">account_read_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountRead</span><span class="p">]</span> <span class="o">=</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">account_create_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountCreate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_update_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountUpdate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">profile_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_decorator</span><span class="p">:</span> <span class="n">AccountDecorator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">open_registration_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">unique_account_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/account'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#msflib.account.router.account_router" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4487,7 +4647,7 @@ any concrete user model that exposes these attributes satisfies this contract.</
                 <code>account_create_type</code>
             </td>
             <td>
-                  <code><span title="type">type</span>[<span title="typing.Any">Any</span>] | None</code>
+                  <code><span title="type">type</span>[<span title="msflib.account.models.AccountCreate">AccountCreate</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4525,6 +4685,24 @@ any concrete user model that exposes these attributes satisfies this contract.</
             <td>
               <div class="doc-md-description">
                 <p>Profile action type (default: profile_action)</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>account_decorator</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="AccountDecorator (msflib.account.router.AccountDecorator)" href="#msflib.account.router.AccountDecorator">AccountDecorator</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional callable <code>(*, session, account) -&gt; object</code> applied
+(with keyword arguments) to the account before it is returned from an
+endpoint. If not provided, the account is returned unchanged.</p>
               </div>
             </td>
             <td>
@@ -4598,6 +4776,23 @@ create and update operations
                   <code>None</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>account_update_type</code>
+            </td>
+            <td>
+                  <code><span title="type">type</span>[<span title="msflib.account.models.AccountUpdate">AccountUpdate</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Account update schema type for request body validation
+on the self-update endpoint (default: AccountUpdate)</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -4610,7 +4805,7 @@ create and update operations
 
 
 <h3 id="msflib.account.router.account_admin_router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">account_admin_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">account_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountBase</span><span class="p">],</span> <span class="n">profile_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ProfileBase</span><span class="p">],</span> <span class="n">account_read_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountRead</span><span class="p">]</span> <span class="o">=</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">account_create_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">profile_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">unique_account_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/admin/accounts'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">account_admin_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">account_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountBase</span><span class="p">],</span> <span class="n">profile_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ProfileBase</span><span class="p">],</span> <span class="n">account_read_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountRead</span><span class="p">]</span> <span class="o">=</span> <span class="n">AccountRead</span><span class="p">,</span> <span class="n">account_create_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountCreate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">profile_action</span><span class="p">:</span> <span class="n">ModelAction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_decorator</span><span class="p">:</span> <span class="n">AccountDecorator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">unique_account_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/admin/accounts'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_update_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountUpdate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#msflib.account.router.account_admin_router" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4700,12 +4895,31 @@ create and update operations
                 <code>account_create_type</code>
             </td>
             <td>
-                  <code><span title="type">type</span>[<span title="typing.Any">Any</span>] | None</code>
+                  <code><span title="type">type</span>[<span title="msflib.account.models.AccountCreate">AccountCreate</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Account create schema type for request body validation
 (default: inferred from account action)</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>account_decorator</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="AccountDecorator (msflib.account.router.AccountDecorator)" href="#msflib.account.router.AccountDecorator">AccountDecorator</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional callable <code>(*, session, account) -&gt; object</code> applied
+(with keyword arguments) to each account before it is returned from an
+endpoint, including once per row on the list endpoint. If not provided,
+accounts are returned unchanged.</p>
               </div>
             </td>
             <td>
@@ -4756,6 +4970,23 @@ create and update operations
             <td>
               <div class="doc-md-description">
                 <p>List of tags for OpenAPI documentation</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>account_update_type</code>
+            </td>
+            <td>
+                  <code><span title="type">type</span>[<span title="msflib.account.models.AccountUpdate">AccountUpdate</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Account update schema type for request body validation
+on the admin update endpoint (default: AccountUpdate)</p>
               </div>
             </td>
             <td>
@@ -5021,6 +5252,84 @@ create and update operations
 
 
 
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.account.services.account" class="doc doc-heading">
+            <code>account</code>
+
+
+<a href="#msflib.account.services.account" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.account.services.account.scrub_secrets" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">scrub_secrets</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">AccountUpdateType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountUpdateType</span></code>
+
+<a href="#msflib.account.services.account.scrub_secrets" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Redact the plaintext password fields of <code>data</code> in place and return it.</p>
+<p>A password that was supplied reads as the placeholder; either way the field
+counts as unset, so it is neither persisted nor dumped.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.account.services.account.redact_password" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">redact_password</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">AccountCreateType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountCreateType</span></code>
+
+<a href="#msflib.account.services.account.redact_password" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a copy of <code>data</code> with the password replaced; <code>data</code> is left unchanged.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
   </div>

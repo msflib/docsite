@@ -1343,10 +1343,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#router-events-are-separate" class="md-nav__link">
+  <a href="#service-and-router-events-are-separate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Router events are separate
+        Service and router events are separate
       
     </span>
   </a>
@@ -3449,10 +3449,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#router-events-are-separate" class="md-nav__link">
+  <a href="#service-and-router-events-are-separate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Router events are separate
+        Service and router events are separate
       
     </span>
   </a>
@@ -3716,8 +3716,8 @@
 <p>Only writes through <code>ModelAction</code> emit these events. Direct <code>session.add(...)</code>, raw SQL and <code>session.exec(update(...))</code> do not.</p>
 <h3 id="events-your-own-code-should-emit-after-commit">Events your own code should emit after commit<a class="headerlink" href="#events-your-own-code-should-emit-after-commit" title="Permanent link">&para;</a></h3>
 <p>If your action also emits events of its own, emit them with <code>msflib.actions.emit_after_commit(session, "event-name", instance, payload)</code>. It queues the event until the outermost transaction commits, which matters when a caller passed <code>commit=False</code>. A rollback discards it. The lower-level <code>run_after_commit(session, callback)</code> does the same for any callback.</p>
-<h3 id="router-events-are-separate">Router events are separate<a class="headerlink" href="#router-events-are-separate" title="Permanent link">&para;</a></h3>
-<p>Module routers also emit their own domain events around the action calls, for example <code>account-created</code> and <code>account-updated</code> from the account router (<code>msflib.account.eventbus.EventName</code>) and <code>account-logged-in</code> from the auth router. These fire only for requests through those routers, not for every <code>AccountAction</code> call. Use them for behaviour tied to an HTTP flow and the lifecycle events for behaviour tied to data.</p>
+<h3 id="service-and-router-events-are-separate">Service and router events are separate<a class="headerlink" href="#service-and-router-events-are-separate" title="Permanent link">&para;</a></h3>
+<p>The account module emits its domain events, such as <code>account-created</code>, <code>account-updated</code> and the <code>profile-*</code> events (<code>msflib.account.eventbus.EventName</code>), from the functions in <code>msflib.account.services</code>. They fire for the module's routers and for any code that calls those service functions, but not for every <code>AccountAction</code> call. Some events are still emitted by a router, such as <code>account-logged-in</code> from the auth router, and fire only for requests through it. Use these for behaviour tied to a flow and the lifecycle events for behaviour tied to data.</p>
 <h2 id="testing-an-action">Testing an action<a class="headerlink" href="#testing-an-action" title="Permanent link">&para;</a></h2>
 <p>Actions need nothing but a session and, for module actions, settings. Use an in-memory SQLite engine:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
