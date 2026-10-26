@@ -575,6 +575,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#dependencies-and-routers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1642,6 +1653,34 @@
     
   
     AI capabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Readiness checks
   
 
     
@@ -3327,6 +3366,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../contributing/guidelines/readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Readiness checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../contributing/guidelines/testing/" class="md-nav__link">
         
   
@@ -3696,6 +3763,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#dependencies-and-routers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3915,7 +3993,7 @@
 <tr>
 <td>Other</td>
 <td><code>msflib.core.pii</code>, <code>msflib.core.records</code>, <code>msflib.core.validators</code>, <code>msflib.schemas</code></td>
-<td>Sensitive-key redaction, structured record helpers, validators, <code>Msg</code> and <code>Token</code> schemas</td>
+<td>Sensitive-key redaction and secret/URL-password masking in text, structured record helpers, validators, <code>Msg</code> and <code>Token</code> schemas</td>
 </tr>
 </tbody>
 </table>
@@ -4181,6 +4259,8 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 <p><code>RowId</code> is an integer from 1 to <code>INTEGER_MAX</code> (2³¹ − 1), safe for a PostgreSQL <code>INTEGER</code> key. <code>NON_BLANK_TEXT</code> (and <code>NonBlankStr</code>) trims and rejects blank text. Text aliases are named for the concept: <code>ExternalId</code> (255, an id from another system), <code>DisplayName</code> (512), <code>ShortLabel</code> (32) and <code>PathText</code> (4096, may be empty, not trimmed); reuse one only when your column means the same thing. <code>UnitInterval</code> is a float from 0 to 1. A loose service argument (a query string, an environment variable) goes through <code>msflib.core.typing.coerce</code> first. <code>SMALLINT_MAX</code>, <code>INTEGER_MAX</code> and <code>BIGINT_MAX</code> name the integer ranges, and <code>resolve_integer_bounds(column_type, dialect=...)</code> returns the range of an integer column (64 bits on SQLite) or <code>None</code> for other types; <code>ModelAction</code> uses it to reject out-of-range ids before they reach the database. Write aliases as a literal <code>Annotated</code>, since type checkers cannot read a type built by a function call.</p>
 <h3 id="seeding">Seeding<a class="headerlink" href="#seeding" title="Permanent link">&para;</a></h3>
 <p><code>SeedRunner</code> reads a <code>seeders.yml</code> that names an action class (<code>class_name</code>) or a factory function (<code>class_factory</code>), plus records and dependencies between seeders, and creates the rows through the actions. Custom seeders subclass <code>SeederBase</code>. <code>run_seed_cli(...)</code> provides the command line. See <a href="../../concepts/seeding/">Seeding</a>.</p>
+<h3 id="readiness">Readiness<a class="headerlink" href="#readiness" title="Permanent link">&para;</a></h3>
+<p><code>msflib.core.readiness</code> runs checks and remedies that tell an operator which deployment requirements are met and applies the safe fixes (<code>python -m msflib.core.readiness --suite app.readiness:suite</code>). Modules contribute the checks for the capability they provide. See <a href="../../integration/readiness/">Readiness checks</a>.</p>
 <h3 id="dependencies-and-routers">Dependencies and routers<a class="headerlink" href="#dependencies-and-routers" title="Permanent link">&para;</a></h3>
 <p><code>get_session_factory(engine)</code> returns a FastAPI dependency that yields a <code>Session</code>. <code>get_keystore_factory(...)</code> returns a dependency for a token store (Redis when host and password are given, otherwise in-memory). <code>DependencyNamespace</code> is the container module dependency factories return. <code>create_enhanced_router(router)</code> adds a <code>validation_types</code> argument to route decorators so the request schema can be chosen when the router is built, which is how modules let you substitute your own create and update schemas. See <a href="../../quick-start/endpoints-and-routers/">Endpoints and routers</a> and <a href="../../concepts/dependency-injection/">Dependency injection</a>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
