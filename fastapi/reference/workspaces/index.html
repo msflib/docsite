@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -2717,6 +2717,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.actions.WorkspaceAction.get_multi_visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_multi_visible
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2739,6 +2750,17 @@
     <span class="md-ellipsis">
       
         resolve_membership_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.actions.UserAction.workspace_ids_of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        workspace_ids_of
       
     </span>
   </a>
@@ -3818,6 +3840,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.actions.WorkspaceAction.get_multi_visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_multi_visible
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3840,6 +3873,17 @@
     <span class="md-ellipsis">
       
         resolve_membership_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.actions.UserAction.workspace_ids_of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        workspace_ids_of
       
     </span>
   </a>
@@ -4279,6 +4323,26 @@ user_id, user.</p>
 
 </div>
 
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.workspaces.actions.WorkspaceAction.get_multi_visible" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_multi_visible</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">member_workspace_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="n">SelectOfScalar</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">WorkspaceType</span><span class="p">]</span></code>
+
+<a href="#msflib.workspaces.actions.WorkspaceAction.get_multi_visible" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Workspaces of <em>tenant_id</em> the account sees: its own, unlocked memberships, open ones.</p>
+<p><em>member_workspace_ids</em> is the membership set to include, normally the subquery from
+<code>UserAction.workspace_ids_of</code>, so it never leaves the database.</p>
+
+
+    </div>
+
+</div>
+
 
 
   </div>
@@ -4385,6 +4449,25 @@ still be beaten by the per-call <code>membership_type</code> argument on
 <p>Downstream callers should prefer option 2 (constructor injection) for
 simple policy changes, and option 3 (subclassing) for more complex
 or advanced membership policies.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.workspaces.actions.UserAction.workspace_ids_of" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">workspace_ids_of</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelectOfScalar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
+
+<a href="#msflib.workspaces.actions.UserAction.workspace_ids_of" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Select the ids of the workspaces <em>account_id</em> belongs to.</p>
+<p>Only active memberships of unlocked workspaces count: kicked and banned ones do not.</p>
 
 
     </div>
@@ -5283,7 +5366,7 @@ membership row.</p>
 
 
 <h3 id="msflib.workspaces.router.router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account_or_none</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">account_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">workspace_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">WorkspaceBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">WorkspaceBase</span><span class="p">,</span> <span class="n">user_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">UserBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">UserBase</span><span class="p">,</span> <span class="n">workspace_create_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_update_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_form_dependencies</span><span class="p">:</span> <span class="n">DependencyNamespace</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_action</span><span class="p">:</span> <span class="n">WorkspaceAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user_action</span><span class="p">:</span> <span class="n">UserAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/workspaces'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
+            <code class="highlight language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account_or_none</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">account_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">AccountBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">workspace_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">WorkspaceBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">WorkspaceBase</span><span class="p">,</span> <span class="n">user_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">UserBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">UserBase</span><span class="p">,</span> <span class="n">workspace_create_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_update_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_form_dependencies</span><span class="p">:</span> <span class="n">DependencyNamespace</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_action</span><span class="p">:</span> <span class="n">WorkspaceAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">user_action</span><span class="p">:</span> <span class="n">UserAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/workspaces'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
 
 <a href="#msflib.workspaces.router.router" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -5297,12 +5380,8 @@ processors by passing <code>workspace_form_dependencies</code> from
 <p>get_current_tenant: resolved once at the endpoint boundary, the same way
 <code>documents.router</code>'s <code>get_current_tenant</code> is (see
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
-row. When omitted, workspace creation falls back to
-<code>resolve_default_tenant_id(create_if_missing=False)</code> (today's
-single-tenant resolution) and raises a 500 if the default tenant hasn't
-been seeded yet, matching <code>get_tenant_dependencies</code>'s own fail-loud
-convention instead of silently inserting one as a side effect of the
-request.</p>
+row. Required; a site without tenancy passes the default
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
 
 
     </div>
@@ -5661,10 +5740,10 @@ applied to every profile before it is returned.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

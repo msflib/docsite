@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4156,8 +4156,8 @@ tool was built for the (keyless) default backend.</p>
 and <code>ai_core.router</code>, which wires <code>get_provider_dependencies</code> and
 <code>msflib.scope.get_scope_dependencies</code> as two separate factory calls): scope
 building and settings/service resolution are two distinct factories here too.
-Both now take <code>get_session</code> (scope building needs it to resolve the caller's
-tenant id via <code>get_current_tenant</code>/<code>resolve_default_tenant_id</code>).</p>
+The scope factory takes the three identity callables; the settings factory
+takes <code>get_session</code> for tiered resolution.</p>
 
 
 
@@ -4183,7 +4183,7 @@ tenant id via <code>get_current_tenant</code>/<code>resolve_default_tenant_id</c
 
 
 <h3 id="msflib.ai_api.deps.get_ai_api_scope_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_ai_api_scope_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_ai_api_scope_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.ai_api.deps.get_ai_api_scope_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4191,15 +4191,15 @@ tenant id via <code>get_current_tenant</code>/<code>resolve_default_tenant_id</c
     <div class="doc doc-contents ">
 
         <p>Return reusable FastAPI dependencies yielding the caller's ai_api ScopeEnvelope.</p>
-<p><code>get_current_account</code> is always required (ai_api has no anonymous
-surface); <code>get_current_workspace</code> is optional. <code>get_current_tenant</code>
+<p><code>get_current_account</code> and <code>get_current_tenant</code> are always required
+(ai_api has no anonymous surface, and stored data always carries a real
+tenant id); <code>get_current_workspace</code> is required and may resolve to <code>None</code>,
+the workspace-less bucket (<code>msflib.scope.no_workspace</code> for a site without
+workspaces). <code>get_current_tenant</code>
 is resolved once at the endpoint boundary, the same way
 <code>documents.router()</code>/<code>ingestion.router()</code> resolve it (see
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
-row. When omitted, falls back to <code>resolve_default_tenant_id</code> (with
-<code>settings</code>, the app's root settings) if <code>get_session</code> is wired. A
-request with neither is rejected with a 500, since stored data always
-carries a real tenant id.</p>
+row.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -4241,7 +4241,7 @@ carries a real tenant id.</p>
 
 
 <h3 id="msflib.ai_api.deps.get_ai_api_settings_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_ai_api_settings_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_ai_api_settings_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.ai_api.deps.get_ai_api_settings_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4759,7 +4759,7 @@ cached for the router's lifetime), this re-resolves per call against
 <code>VectorStoreProfile</code> rows ranked user &lt; workspace &lt; tenant &lt; global for
 <code>scope</code>, falling back to the static settings when none match or
 <code>DB_VECTOR_STORE_REGISTRY_ENABLED</code> is off. <code>ai_settings</code> should already
-be the per-request tiered settings from <code>resolve_ai_settings</code> so a
+be the per-request tiered settings from <code>get_ai_api_settings_dependencies</code> so a
 workspace-level <code>VECTOR_STORE_BACKEND</code> override is honored too.</p>
 
 
@@ -4888,10 +4888,10 @@ workspace-level <code>VECTOR_STORE_BACKEND</code> override is honored too.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

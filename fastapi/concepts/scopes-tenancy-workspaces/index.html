@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3683,13 +3683,13 @@
 <li><code>get_workspace_scope</code>: tenant and workspace, no account. Use for admin surfaces over workspace-scoped rows. Present only when a workspace dependency was passed.</li>
 <li><code>get_tenant_scope</code>: tenant only, for platform-level surfaces.</li>
 </ul>
-<p>Which identity callables to pass depends on how your site models membership:</p>
+<p>The callables follow one rule:</p>
 <ul>
-<li>A membership entity distinct from the account (a per-workspace row with status and role): pass <code>get_current_workspace</code> and <code>get_current_active_user</code>. The user dependency is what verifies membership; resolving the workspace alone does not.</li>
-<li>No such entity: pass <code>get_current_account</code>, plus <code>get_current_workspace</code> if your accounts have a workspace attribute, or a workspace dependency that resolves from the request (path or header). Nothing then checks membership, because there is no membership row.</li>
-<li><code>get_current_tenant</code> is always required. A site that does not deal with tenancy passes the one from <code>get_tenant_dependencies</code> (see Tenants), which resolves the default tenant.</li>
+<li><code>get_current_tenant</code> and <code>get_current_account</code> are required. A site that does not deal with tenancy passes the <code>get_current_tenant</code> from <code>get_tenant_dependencies</code> (see Tenants), which resolves the default tenant.</li>
+<li><code>get_current_workspace</code> is optional in this factory. Omit it for a site with no workspace concept. A workspace that resolves to <code>None</code> is the workspace-less bucket, never "any workspace". The router factories of documents, ingestion, drivelink, conversation and ai-api require it; a site without workspaces passes <code>msflib.scope.no_workspace</code>.</li>
+<li><code>get_scope_ids(...)</code> takes the same callables and returns <code>account_id</code>, <code>tenant_id</code> and <code>workspace_id</code> dependencies that yield plain ids and fail closed (401 for no account, 403 for no tenant, 404 for a workspace of another tenant); <code>workspace_id</code> is <code>None</code> for the workspace-less bucket. Routers use it instead of unpacking <code>.id</code> in each endpoint.</li>
+<li>None of them checks membership. A route that needs it builds its account with <code>get_member_account_dependency(..., get_current_tenant=..., is_workspace_member=...)</code>, where the check is <code>msflib.workspaces.is_workspace_member</code> (active memberships by default) or <code>allow_any_member</code> for a host without membership rules. It answers 404 with no workspace or a workspace of another tenant, and 403 for a non-member.</li>
 </ul>
-<p>Passing both <code>get_current_account</code> and <code>get_current_active_user</code> raises <code>ValueError</code>, as does passing neither account nor the workspace-and-user pair.</p>
 <h2 id="compiling-a-scope">Compiling a scope<a class="headerlink" href="#compiling-a-scope" title="Permanent link">&para;</a></h2>
 <p><code>ScopeCompiler</code> turns an envelope into a key string, segments or a mapping, validating it against a named operation profile first.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeCompiler</span>
@@ -3831,10 +3831,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

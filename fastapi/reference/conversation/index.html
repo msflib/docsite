@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -2875,17 +2875,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.conversation.contracts.identity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        identity
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.conversation.contracts.participants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3064,6 +3053,17 @@
     <span class="md-ellipsis">
       
         ConversationTranscriptWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.ai_bridge.TranscriptPayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TranscriptPayload
       
     </span>
   </a>
@@ -6178,17 +6178,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.conversation.contracts.identity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        identity
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.conversation.contracts.participants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6367,6 +6356,17 @@
     <span class="md-ellipsis">
       
         ConversationTranscriptWriter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.ai_bridge.TranscriptPayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TranscriptPayload
       
     </span>
   </a>
@@ -9251,53 +9251,6 @@ conversations").</p>
 
 
 
-<h3 id="msflib.conversation.contracts.identity" class="doc doc-heading">
-            <code>identity</code>
-
-
-<a href="#msflib.conversation.contracts.identity" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-        <p>Structural contracts for the account/workspace objects a host app passes
-into <code>deps.py</code> -- mirrors <code>msflib.account.contracts.WorkspaceContract</code>'s
-own pattern (a local Protocol satisfied structurally, no inheritance
-required) rather than importing it, so this module keeps zero hard
-dependency on msflib-account/msflib-workspaces (architecture doc: no import
-of account/workspaces/ai_core/documents at module scope).</p>
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-module">
-
-
-
 <h3 id="msflib.conversation.contracts.participants" class="doc doc-heading">
             <code>participants</code>
 
@@ -9629,7 +9582,7 @@ body.</p>
 wrap or replace individual attributes, and pass the whole namespace back
 into <code>router(dependencies=...)</code> -- same seam as <code>workspaces.router</code>'s
 <code>workspace_form_dependencies</code>.</p>
-<p>Typed against this module's own <code>AccountContract</code>/<code>WorkspaceContract</code>
+<p>Typed against the <code>msflib.scope</code> <code>AccountContract</code>/<code>WorkspaceContract</code>
 Protocols (only <code>.id</code> is required) rather than importing
 <code>account</code>/<code>workspaces</code> model types, matching this module's
 zero-hard-coupling design (architecture doc: no import of
@@ -9659,7 +9612,7 @@ account/ai_core/workspaces/documents at module scope).</p>
 
 
 <h3 id="msflib.conversation.deps.get_conversation_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_conversation_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">member_action</span><span class="p">:</span> <span class="n">MemberAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message_action</span><span class="p">:</span> <span class="n">MessageAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">thread_action</span><span class="p">:</span> <span class="n">ThreadAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_conversation_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">member_action</span><span class="p">:</span> <span class="n">MemberAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message_action</span><span class="p">:</span> <span class="n">MessageAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">thread_action</span><span class="p">:</span> <span class="n">ThreadAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.conversation.deps.get_conversation_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -9667,8 +9620,8 @@ account/ai_core/workspaces/documents at module scope).</p>
     <div class="doc doc-contents ">
 
         <p>Build the conversation module's request-scoped dependency chain.</p>
-<p><code>tenancy_settings</code> (the app's root settings or its <code>TENANCY</code> scope) is
-used for the default-tenant fallback when <code>get_current_tenant</code> is omitted.</p>
+<p><code>get_current_tenant</code> is required; a site without tenancy passes the default
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
 
 
     </div>
@@ -9945,6 +9898,54 @@ never holds a DB connection idle.</p>
 
 </div>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.conversation.integrations.ai_bridge.TranscriptPayload" class="doc doc-heading">
+            <code>TranscriptPayload</code>
+
+
+<a href="#msflib.conversation.integrations.ai_bridge.TranscriptPayload" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>The request fields the transcript writer reads.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -9971,7 +9972,7 @@ this.</p>
 
 
 <h4 id="msflib.conversation.integrations.ai_bridge.build_conversation_access_dependency" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_conversation_access_dependency</span><span class="p">(</span><span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">eligibility</span><span class="p">:</span> <span class="n">MemberEligibility</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">ConversationSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build_conversation_access_dependency</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">eligibility</span><span class="p">:</span> <span class="n">MemberEligibility</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">ConversationSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.conversation.integrations.ai_bridge.build_conversation_access_dependency" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -9993,9 +9994,8 @@ importing the other::</p>
 
 <p>A request with no <code>conversation_id</code> in its body passes through
 untouched. <code>get_current_workspace</code> mirrors <code>deps.py</code>'s own dependency
-chain — omitting it would 404 every workspace-scoped conversation, since
-<code>AccessService.resolve_conversation</code> matches <code>workspace_id</code> exactly
-(<code>None</code> means the explicit workspace-less bucket).</p>
+chain, since <code>AccessService.resolve_conversation</code> matches <code>workspace_id</code>
+exactly (<code>None</code> means the explicit workspace-less bucket).</p>
 
 
     </div>
@@ -10025,15 +10025,17 @@ chain — omitting it would 404 every workspace-scoped conversation, since
 
 
 <h4 id="msflib.conversation.integrations.ai_bridge.build_transcript_writer_factory" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_transcript_writer_factory</span><span class="p">(</span><span class="n">make_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Session</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">agent_role</span><span class="p">:</span> <span class="n">MemberRole</span> <span class="o">=</span> <span class="n">MemberRole</span><span class="o">.</span><span class="n">member</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">ConversationSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">eligibility</span><span class="p">:</span> <span class="n">MemberEligibility</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">TranscriptWriter</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build_transcript_writer_factory</span><span class="p">(</span><span class="n">make_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Session</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">agent_role</span><span class="p">:</span> <span class="n">MemberRole</span> <span class="o">=</span> <span class="n">MemberRole</span><span class="o">.</span><span class="n">member</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">ConversationSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">eligibility</span><span class="p">:</span> <span class="n">MemberEligibility</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">TranscriptWriter</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.conversation.integrations.ai_bridge.build_transcript_writer_factory" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Per-request factory: <code>transcript_writer_factory(scope, payload)</code>.
-Returns <code>None</code> when the request carries no <code>conversation_id</code>.</p>
+        <p>Per-request factory: <code>transcript_writer_factory(scope, payload)</code>.</p>
+<p>Returns <code>None</code> when the request carries no <code>conversation_id</code>. The scope must
+carry the request's tenant; without one the factory answers 403 rather than
+write conversation state under a guessed tenant.</p>
 
 
     </div>
@@ -14362,10 +14364,10 @@ starting count and lose an increment.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

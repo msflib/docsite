@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4164,7 +4164,7 @@ used for token revocation checks.</p>
 
 
 <h3 id="msflib.auth.deps.get_user_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">UserModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">WorkspaceModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">account_dependencies</span><span class="p">:</span> <span class="n">DependencyNamespace</span><span class="p">,</span> <span class="n">user_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">current_workspace_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'current_workspace_id'</span><span class="p">,</span> <span class="n">workspace_resolver</span><span class="p">:</span> <span class="n">WorkspaceResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">UserModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">WorkspaceModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">account_dependencies</span><span class="p">:</span> <span class="n">DependencyNamespace</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="n">user_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">current_workspace_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'current_workspace_id'</span><span class="p">,</span> <span class="n">workspace_resolver</span><span class="p">:</span> <span class="n">WorkspaceResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.auth.deps.get_user_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4251,6 +4251,27 @@ used for token revocation checks.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>is_workspace_member</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="MembershipCheck (msflib.scope.MembershipCheck)" href="../core/scope/#msflib.scope.MembershipCheck">MembershipCheck</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The membership check (a <code>msflib.scope.MembershipCheck</code>, such as
+<code>msflib.workspaces.is_workspace_member</code>, or <code>allow_any_member</code> for a host
+without membership rules). With a custom <code>UserModel</code> bind it to that model's
+action: <code>functools.partial(is_workspace_member, user_action=...)</code>.
+<code>get_current_user</code> answers 403 when it rejects the account, so a banned or
+kicked member reaches neither the route nor <code>WorkspaceRoleCheck</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>workspace_resolver</code>
             </td>
             <td>
@@ -4294,7 +4315,6 @@ resolver = PathParameterResolver()
 <li><code>get_current_workspace</code>           — requires authenticated account.</li>
 <li><code>get_current_workspace_anonymous</code> — no authentication needed.</li>
 <li><code>get_current_user</code>                — resolves workspace member.</li>
-<li><code>get_current_active_user</code>         — additionally validates user status.</li>
 <li><code>WorkspaceRoleCheck</code>              — callable class for workspace role guards.</li>
 </ul>
               </div>
@@ -5313,10 +5333,10 @@ of the top-level configuration.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

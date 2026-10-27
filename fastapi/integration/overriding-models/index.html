@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3733,10 +3733,12 @@
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">"workspace_user"</span>
 </code></pre></div>
 <p>Create the actions with your classes and pass them to the router and the dependencies. Your composed <code>Settings</code> class needs <code>WorkspaceSettings</code> and <code>TenancySettings</code> (from <code>msflib.workspaces.config</code> and <code>msflib.tenancy.config</code>) among its bases.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_workspace_router</span>
 
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">wa</span> <span class="o">=</span> <span class="n">WorkspaceAction</span><span class="p">[</span><span class="n">Workspace</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">ua</span> <span class="o">=</span> <span class="n">UserAction</span><span class="p">[</span><span class="n">WorkspaceMember</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">]()</span>
 
@@ -3744,6 +3746,7 @@
     <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
     <span class="n">get_current_account_or_none</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account_or_none</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">role_check</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">RoleCheck</span><span class="p">,</span>
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
     <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
@@ -3754,7 +3757,7 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/workspaces"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>Seed the default tenant at startup, or pass <code>get_current_tenant=</code> to the router. Without either, <code>POST /workspaces/</code> answers <code>500</code> with <code>Default tenant has not been seeded</code>. For example, at startup:</p>
+<p><code>get_current_tenant=</code> is required. A site without tenancy passes the one from <code>get_tenant_dependencies</code>, which resolves the default tenant, so seed it at startup. An unseeded default tenant makes <code>POST /workspaces/</code> answer <code>500</code> with <code>Default tenant has not been seeded</code>. For example, at startup:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
@@ -3841,10 +3844,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

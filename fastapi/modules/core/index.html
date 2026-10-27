@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4334,7 +4334,7 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 <h3 id="event-bus">Event bus<a class="headerlink" href="#event-bus" title="Permanent link">&para;</a></h3>
 <p><code>bind_app_emitter(app)</code> gives each FastAPI app its own emitter and adds middleware that makes it the current emitter for each request. Register listeners with <code>@app_emitter.on("event-name")</code>; <code>get_app_emitter(app)</code> returns the same emitter later. The app emitter is active in request handlers, in <code>BackgroundTasks</code> run after the response, and in <code>call_later</code> or <code>create_task</code> work started from a request. In scripts, threads (a <code>threading.Thread</code> does not inherit it) and lifespan code, wrap the code in <code>with use_app_emitter(app):</code>. A worker process has no app: register its listeners on <code>AppEmitter(get_emitter())</code>. Listener functions take <code>(payload, options, logger=None)</code>. <code>emit_optional</code> is best-effort; <code>emit_required</code> raises when no listener handled the event. Modules that need event wiring expose a <code>register_event_hooks(..., emitter=app_emitter)</code> function; <code>HookRegistry</code> makes such registration idempotent. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h3 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
-<p><code>ScopeEnvelope</code> is an immutable description of whose data an operation touches: dimensions such as <code>tenant_id</code>, <code>workspace_id</code> and <code>account_id</code>, plus an optional principal. <code>ScopeCompiler</code> turns an envelope into a canonical string, segments or mapping for use in cache keys, vector-store filters and similar. <code>get_scope_dependencies(...)</code> takes your identity dependencies (<code>get_current_account</code>, <code>get_current_workspace</code>, <code>get_current_active_user</code>) plus the required <code>get_current_tenant</code>, which <code>msflib.tenancy.deps</code> supplies with a default-tenant fallback and returns a <code>DependencyNamespace</code> of request-scoped dependencies: <code>get_account_scope</code>, <code>get_workspace_scope</code> (when a workspace tier exists) and <code>get_tenant_scope</code>. Which callables to pass is set out in the docstring of <code>get_scope_dependencies</code>. <code>ScopeFactory.build(envelope, ScopeType, operation=...)</code> turns an envelope into a typed scope: <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) or a module's subclass of it. It parses ids, keeps explicit nulls and rejects a profile that requires a dimension the class does not hold. <code>MembershipCheck</code> is the protocol for the tenant and workspace membership callbacks that routers take; <code>allow_any_member</code> is the explicit opt-out. See <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>.</p>
+<p><code>ScopeEnvelope</code> is an immutable description of whose data an operation touches: dimensions such as <code>tenant_id</code>, <code>workspace_id</code> and <code>account_id</code>, plus an optional principal. <code>ScopeCompiler</code> turns an envelope into a canonical string, segments or mapping for use in cache keys, vector-store filters and similar. <code>get_scope_dependencies(...)</code> takes your identity dependencies (<code>get_current_tenant</code> and <code>get_current_account</code> are required, <code>get_current_workspace</code> is optional; <code>msflib.tenancy.deps</code> supplies a tenant dependency with a default-tenant fallback) and returns a <code>DependencyNamespace</code> of request-scoped dependencies: <code>get_account_scope</code>, <code>get_workspace_scope</code> (when a workspace tier exists) and <code>get_tenant_scope</code>. Which callables to pass is set out in the docstring of <code>get_scope_dependencies</code>. <code>ScopeFactory.build(envelope, ScopeType, operation=...)</code> turns an envelope into a typed scope: <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) or a module's subclass of it. It parses ids, keeps explicit nulls and rejects a profile that requires a dimension the class does not hold. <code>MembershipCheck</code> is the protocol for the tenant and workspace membership callbacks that routers take; <code>allow_any_member</code> is the explicit opt-out. <code>get_scope_ids(...)</code> returns <code>account_id</code>, <code>tenant_id</code> and <code>workspace_id</code> dependencies that yield plain ids and fail closed. <code>get_member_account_dependency(...)</code> wraps a <code>MembershipCheck</code> into a dependency that yields the account only when it belongs to the request's workspace (404 with no workspace or a workspace of another tenant, 403 for a non-member). See <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>.</p>
 <h3 id="policy">Policy<a class="headerlink" href="#policy" title="Permanent link">&para;</a></h3>
 <p><code>PolicyEnvelope</code> is a common shape (<code>enabled</code>, <code>defaults</code>, <code>constraints</code>, <code>overrides</code>, <code>selection</code>, <code>fallbacks</code>, <code>observability</code>) for policy-bearing settings. <code>PolicyResolutionService</code> resolves a module's effective settings across tenant, workspace and user layers plus a request override, returning the settings and a <code>PolicyResolutionTrace</code> that records which layer won each key. Scoped values come from a <code>PolicyScopedConfigStore</code>, which <code>msflib-workspace-config</code> implements. See <a href="../../concepts/policy/">Policy</a>.</p>
 <h3 id="database-setup">Database setup<a class="headerlink" href="#database-setup" title="Permanent link">&para;</a></h3>
@@ -4482,10 +4482,10 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

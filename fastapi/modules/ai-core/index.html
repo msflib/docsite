@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3764,7 +3764,7 @@
 <p>Importing <code>msflib.ai_core.models</code> (which the registry services and routers import) registers <code>aiproviderprofile</code> and <code>vectorstoreprofile</code>, whose <code>tenant_id</code> references <code>tenant</code>. If <code>msflib.tenancy.models.tenant</code> has not been imported, <code>create_all</code> and <code>migrate</code> fail with <code>NoReferencedTableError</code>. Import <code>msflib.tenancy.models.tenant</code> before creating tables. <code>ai_prompt_version</code> has no tenant reference, and the package root <code>msflib.ai_core</code> registers nothing by itself.</p>
 </div>
 <p>The namespace members are <code>get_llm</code>, <code>get_embeddings</code>, <code>get_vector_store</code>, their <code>*_from_registry</code> variants (which resolve database profiles for the caller's scope), <code>get_middleware_config</code> and <code>get_summarization_config</code>.</p>
-<p>To expose the profile-management HTTP API, mount the routers from <code>msflib.ai_core.router</code>. Each is a factory that returns an <code>APIRouter</code> and takes keyword arguments only. <code>get_session</code> is a callable FastAPI dependency (not a <code>Session</code> object), and <code>settings</code> is your host settings object. The identity callables differ by router:</p>
+<p>To expose the profile-management HTTP API, mount the routers from <code>msflib.ai_core.router</code>. Each is a factory that returns an <code>APIRouter</code> and takes keyword arguments only. <code>get_session</code> is a callable FastAPI dependency (not a <code>Session</code> object), and <code>settings</code> is your host settings object. The identity callables differ by router: <code>provider_router</code> and <code>vector_store_router</code> are workspace-only: a request that resolves no workspace gets a 404, so do not pass <code>no_workspace</code> to them.</p>
 <table>
 <thead>
 <tr>
@@ -3777,26 +3777,26 @@
 <tbody>
 <tr>
 <td><code>provider_router</code></td>
-<td><code>get_current_workspace</code>, <code>get_current_workspace_anonymous</code>, <code>get_current_active_user</code>, <code>workspace_role_check</code></td>
-<td><code>get_current_tenant</code>, <code>get_policy_resolver</code>, <code>prefix</code>, <code>tags</code></td>
+<td><code>get_current_account</code>, <code>get_current_tenant</code>, <code>get_current_workspace</code>, <code>get_current_workspace_anonymous</code>, <code>is_workspace_member</code>, <code>workspace_role_check</code></td>
+<td><code>get_policy_resolver</code>, <code>prefix</code>, <code>tags</code></td>
 <td><code>/ai/providers</code></td>
 </tr>
 <tr>
 <td><code>vector_store_router</code></td>
-<td><code>get_current_workspace</code>, <code>get_current_active_user</code>, <code>workspace_role_check</code></td>
-<td><code>get_current_tenant</code>, <code>get_policy_resolver</code>, <code>prefix</code>, <code>tags</code></td>
+<td><code>get_current_account</code>, <code>get_current_tenant</code>, <code>get_current_workspace</code>, <code>is_workspace_member</code>, <code>workspace_role_check</code></td>
+<td><code>get_policy_resolver</code>, <code>prefix</code>, <code>tags</code></td>
 <td><code>/ai/vector-stores</code></td>
 </tr>
 <tr>
 <td><code>provider_admin_router</code></td>
-<td><code>get_current_active_superuser</code></td>
-<td><code>get_current_tenant</code>, <code>prefix</code>, <code>tags</code></td>
+<td><code>get_current_active_superuser</code>, <code>get_current_tenant</code></td>
+<td><code>prefix</code>, <code>tags</code></td>
 <td><code>/ai/admin/providers</code></td>
 </tr>
 <tr>
 <td><code>vector_store_admin_router</code></td>
-<td><code>get_current_active_superuser</code></td>
-<td><code>get_current_tenant</code>, <code>prefix</code>, <code>tags</code></td>
+<td><code>get_current_active_superuser</code>, <code>get_current_tenant</code></td>
+<td><code>prefix</code>, <code>tags</code></td>
 <td><code>/ai/admin/vector-stores</code></td>
 </tr>
 </tbody>
@@ -4005,10 +4005,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

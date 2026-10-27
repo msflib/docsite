@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3646,15 +3646,15 @@
     <span class="n">documents_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># optional</span>
-        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>         <span class="c1"># optional</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># may resolve to None</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/documents"</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">register_text_document_pipeline</span><span class="p">(</span><span class="n">stage</span><span class="o">=</span><span class="n">make_text_document_stage</span><span class="p">())</span>
 </code></pre></div>
-<p><code>get_current_account</code> is optional in the signature but every route except <code>GET /ingestion/status</code> answers 401 without it. <code>get_current_workspace</code> and <code>get_current_tenant</code> are optional; with no tenant dependency the router falls back to the tenant with the router's configured <code>TENANCY.DEFAULT_TENANT_SLUG</code> (<code>default</code> unless changed) and returns 500 if it has not been seeded. <code>dispatch_task</code> lets you inject a <code>.delay(job_id)</code>-compatible object instead of the default Celery producer, which is how the tests avoid needing Redis.</p>
+<p><code>get_current_account</code> is required, and so is <code>get_current_workspace</code>, which may resolve to <code>None</code> (the workspace-less bucket; a site without workspaces passes <code>msflib.scope.no_workspace</code>). A resolver that cannot identify the caller must answer 401 itself. <code>get_current_tenant</code> is required; a site without tenancy passes the one from <code>get_tenant_dependencies</code>, which returns 500 if the default tenant has not been seeded. <code>dispatch_task</code> lets you inject a <code>.delay(job_id)</code>-compatible object instead of the default Celery producer, which is how the tests avoid needing Redis.</p>
 <p><strong>3. Worker.</strong> The process that runs the jobs must register the pipeline and build the Celery app:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.services.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">make_text_document_stage</span><span class="p">,</span>
@@ -3800,6 +3800,9 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">documents_router</span><span class="p">(</span>
     <span class="n">get_session</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span> <span class="n">get_current_account</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">account</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_tenant_dependencies</span><span class="p">(</span>
+        <span class="n">session_dep</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">dispatch_task</span><span class="o">=</span><span class="n">dispatch_task</span><span class="p">,</span>
 <span class="p">))</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
@@ -3844,7 +3847,7 @@
 <ul>
 <li><strong>Jobs stay <code>queued</code> and records never become <code>indexed</code>.</strong> The worker is not running, or it did not call <code>register_text_document_pipeline(stage=...)</code>, or it uses a different <code>INGESTION.BROKER_URL</code> from the web process. All three are required. Check the job's status and history on the ingestion router.</li>
 <li><strong><code>503</code> on upload, promote or delete.</strong> <code>DOCUMENTS.QUEUE_ENABLED</code> is false.</li>
-<li><strong><code>500 Default tenant has not been seeded</code>.</strong> Run tenant seeding at startup, or pass <code>get_current_tenant</code>. The fallback looks up the slug in the router's <code>TENANCY.DEFAULT_TENANT_SLUG</code>, so seed with the same settings. The drivelink hooks raise the same error when no default tenant exists.</li>
+<li><strong><code>500 Default tenant has not been seeded</code>.</strong> Run tenant seeding at startup. <code>get_tenant_dependencies</code> looks up the slug in the <code>TENANCY.DEFAULT_TENANT_SLUG</code> of the settings you gave it, so seed with the same settings. The drivelink hooks raise the same error when no default tenant exists.</li>
 <li><strong><code>401 Authentication required</code>.</strong> <code>get_current_account</code> was not passed, or it returned <code>None</code>.</li>
 <li><strong>Record is <code>failed</code> with a <code>last_error</code> mentioning loaders.</strong> The file type needs an extraction backend that is not installed. Install the <code>llamaindex</code> or <code>community</code> extra of <code>msflib-ai-core</code>; the error names the registries that were skipped. Plain text, markdown, JSON and CSV work out of the box.</li>
 <li><strong>Record is <code>failed</code> with a size message.</strong> The file exceeds <code>MAX_INGEST_BYTES</code>.</li>
@@ -3911,10 +3914,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

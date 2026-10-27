@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -8960,7 +8960,7 @@ set_active calls.</p>
 
 
 <h3 id="msflib.ai_core.deps.get_provider_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_provider_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_active_user</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_provider_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.ai_core.deps.get_provider_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -8974,30 +8974,13 @@ of request-scoped dependencies (the module deps convention, see
 rather than in the router guarantees every consumer shares the same
 dependency callables, so FastAPI's per-request cache resolves settings
 once per request no matter how many dependencies consume them.</p>
-<p>Which identity callables to pass reduces to one question (same split as
-:func:<code>msflib.scope.get_scope_dependencies</code>): does this site have a
-membership entity distinct from the account?</p>
-<ul>
-<li><strong>Yes</strong> — pass <code>get_current_workspace</code> + <code>get_current_active_user</code>.
-  Resolution runs over the workspace/user tiers, and the /manage members
-  (workspace-scoped, no user tier) are exposed alongside them.</li>
-<li>
-<p><strong>No</strong> — pass <code>get_current_account</code>. Whether a workspace tier exists
-  at all is then a second, independent choice:</p>
-</li>
-<li>
-<p>No workspace concept: omit <code>get_current_workspace</code>. Resolution runs
-    over the account tier alone, and the /manage members are omitted —
-    there's no workspace-scoped state distinct from the account's own for
-    them to serve.</p>
-</li>
-<li>Workspace exists as an attribute of the account (e.g. an
-    <code>Account.current_workspace_id</code> field), not a separate membership
-    row: also pass <code>get_current_workspace</code> — not
-    <code>get_current_active_user</code>. Resolution runs over the account/
-    workspace tiers, and the /manage members are exposed since a
-    workspace tier is present.</li>
-</ul>
+<p>The identity callables are those of :func:<code>msflib.scope.get_scope_dependencies</code>,
+all required: <code>get_current_account</code>, <code>get_current_tenant</code> and
+<code>get_current_workspace</code>, which may resolve to <code>None</code> (the workspace-less
+bucket; <code>msflib.scope.no_workspace</code> for a site without workspaces). The
+tenant tier of the policy resolution is the resolved tenant. Membership is not
+checked here: pass an account that a router has already checked (see
+:func:<code>msflib.scope.get_member_account_dependency</code>).</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -9017,17 +9000,12 @@ membership entity distinct from the account?</p>
               <div class="doc-md-description">
                 <ul>
 <li><code>get_resolved_ai_settings</code> — AICoreSettings resolved for the
-  request's tenant/workspace/user tiers (workspace sites), tenant/
-  workspace/account tiers (account sites with a workspace tier), or
-  tenant/account tiers (workspace-less sites).</li>
+  request's tenant/workspace/account tiers.</li>
 <li><code>get_manage_resolved_ai_settings</code> — same with the user/account
   tier skipped, for surfaces that only touch workspace-scoped state
-  (e.g. the /manage listing). Only present when a workspace tier
-  exists.</li>
+  (e.g. the /manage listing).</li>
 <li><code>get_registry_service</code> / <code>get_manage_registry_service</code> —
-  ProviderRegistryService bound to the corresponding settings.
-  <code>get_manage_registry_service</code> is only present when a workspace
-  tier exists.</li>
+  ProviderRegistryService bound to the corresponding settings.</li>
 <li><code>user_profiles_enabled</code> — gate raising 403 when the workspace
   disables self-service BYO profiles.</li>
 </ul>
@@ -9066,7 +9044,7 @@ membership entity distinct from the account?</p>
 
 
 <h3 id="msflib.ai_core.deps.get_vector_store_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_vector_store_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_active_user</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_vector_store_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.ai_core.deps.get_vector_store_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -9085,7 +9063,7 @@ ScopeEnvelope is left to :func:<code>msflib.scope.get_scope_dependencies</code> 
 scope creation is included here, since every vector store service
 dependency needs one to resolve tiered settings anyway. Endpoints pull
 <code>get_scope</code>/<code>get_manage_scope</code> directly rather than rebuilding a
-ScopeEnvelope from <code>workspace</code>/<code>current_user</code> themselves.</p>
+ScopeEnvelope from <code>workspace</code>/<code>account</code> themselves.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -10132,18 +10110,20 @@ requested capability.</p>
 
 
 <h4 id="msflib.ai_core.router.ai_provider.router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace_anonymous</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_active_user</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">workspace_role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/providers'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
+            <code class="highlight language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace_anonymous</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="n">workspace_role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/providers'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
 
 <a href="#msflib.ai_core.router.ai_provider.router" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>get_current_tenant: resolved once at the endpoint boundary, the same way
-get_current_workspace/get_current_active_user are (see
+        <p>Every route is workspace-scoped: a request that resolves no workspace is
+answered with 404, so <code>no_workspace</code> is not supported here.</p>
+<p>get_current_tenant: resolved once at the endpoint boundary, the same way
+get_current_workspace/get_current_account are (see
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
-row. When omitted, scope building falls back to
-<code>resolve_default_tenant_id</code>, same as before this parameter existed.</p>
+row. Required; a site without tenancy passes the default
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
 
 
     </div>
@@ -10154,7 +10134,7 @@ row. When omitted, scope building falls back to
 
 
 <h4 id="msflib.ai_core.router.ai_provider.admin_router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">admin_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_active_superuser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/admin/providers'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
+            <code class="highlight language-python"><span class="n">admin_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_active_superuser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/admin/providers'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
 
 <a href="#msflib.ai_core.router.ai_provider.admin_router" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10165,12 +10145,9 @@ row. When omitted, scope building falls back to
 <p>Owns the scopes the workspace router cannot touch: global and tenant
 profiles are created here, and the by-id routes can manage profiles of any
 scope for operational support.</p>
-<p>A superuser isn't acting "as" any one tenant, so unlike the workspace
-router there is no per-request tenant to resolve -- tenant-scoped
-profiles created here are always scoped to the single default tenant
-(see <code>get_current_tenant</code>/<code>resolve_default_tenant_id</code> below).
-Targeting a specific other tenant is a later phase's concern (an explicit
-tenant selector on these endpoints).</p>
+<p>Tenant-scoped profiles created here are scoped to the tenant
+<code>get_current_tenant</code> resolves; a site without tenancy passes the default
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
 
 
     </div>
@@ -10221,19 +10198,20 @@ tenant selector on these endpoints).</p>
 
 
 <h4 id="msflib.ai_core.router.vector_store.router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_active_user</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">workspace_role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/vector-stores'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
+            <code class="highlight language-python"><span class="n">router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="n">workspace_role_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_policy_resolver</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/vector-stores'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
 
 <a href="#msflib.ai_core.router.vector_store.router" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>get_current_tenant: resolved once at the endpoint boundary, the same way
-get_current_workspace/get_current_active_user are (see
+        <p>Every route is workspace-scoped: a request that resolves no workspace is
+answered with 404, so <code>no_workspace</code> is not supported here.</p>
+<p>get_current_tenant: resolved once at the endpoint boundary, the same way
+get_current_workspace/get_current_account are (see
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
-row. When omitted, scope building falls back to
-<code>msflib.scope.build_context_scope</code>'s own default (today's
-single-tenant resolution), same as before this parameter existed.</p>
+row. Required; a site without tenancy passes the default
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
 
 
     </div>
@@ -10244,7 +10222,7 @@ single-tenant resolution), same as before this parameter existed.</p>
 
 
 <h4 id="msflib.ai_core.router.vector_store.admin_router" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">admin_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_active_superuser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/admin/vector-stores'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
+            <code class="highlight language-python"><span class="n">admin_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">get_current_active_superuser</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'/ai/admin/vector-stores'</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">APIRouter</span></code>
 
 <a href="#msflib.ai_core.router.vector_store.admin_router" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10255,12 +10233,9 @@ single-tenant resolution), same as before this parameter existed.</p>
 <p>Owns the scopes the workspace router cannot touch: global and tenant
 profiles are created here, and the by-id routes can manage profiles of
 any scope for operational support.</p>
-<p>A superuser isn't acting "as" any one tenant, so unlike the workspace
-router there is no per-request tenant to resolve -- tenant-scoped
-profiles created here are always scoped to the single default tenant
-(see <code>get_current_tenant</code>/<code>resolve_default_tenant_id</code> below).
-Targeting a specific other tenant is a later phase's concern (an explicit
-tenant selector on these endpoints).</p>
+<p>Tenant-scoped profiles created here are scoped to the tenant
+<code>get_current_tenant</code> resolves; a site without tenancy passes the default
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
 
 
     </div>
@@ -14592,10 +14567,10 @@ contain only alphanumerics/underscores.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4210,13 +4210,16 @@
 <p>Both backfills are transitional and go away once assignments replace the legacy attributes.</p>
 <h3 id="guards">Guards<a class="headerlink" href="#guards" title="Permanent link">&para;</a></h3>
 <h4 id="require_permission"><code>require_permission</code><a class="headerlink" href="#require_permission" title="Permanent link">&para;</a></h4>
-<p><code>get_authz_dependencies(session_dep=..., tenancy_settings=..., get_current_account=..., get_current_workspace=..., get_current_active_user=..., get_current_tenant=...)</code> returns a namespace with <code>require_permission(key, tier=...)</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">authz</span> <span class="o">=</span> <span class="n">get_authz_dependencies</span><span class="p">(</span>
+<p><code>get_authz_dependencies(session_dep=..., get_current_account=..., get_current_tenant=..., get_current_workspace=..., is_workspace_member=...)</code> returns a namespace with <code>require_permission(key, tier=...)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">authz</span> <span class="o">=</span> <span class="n">get_authz_dependencies</span><span class="p">(</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-    <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
     <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
-    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -4236,9 +4239,9 @@
 <li>The default tier is <code>workspace</code>. Workspace guards resolve the workspace from the request; tenant and platform guards never do.</li>
 <li>An unknown <code>tier</code> raises <code>ValueError</code> when the dependency is built.</li>
 <li><code>tier="platform"</code> is satisfied only by platform-tier roles.</li>
-<li>With <code>get_current_tenant</code>, the guard uses the request's tenant, and a request with no tenant is denied. Without it, the tenancy namespace's <code>get_current_tenant</code> supplies the default tenant from <code>tenancy_settings</code>.</li>
+<li><code>get_current_tenant</code> and <code>get_current_account</code> are required. A request with no tenant is denied. An app that does not deal with tenancy passes the <code>get_current_tenant</code> from <code>get_tenant_dependencies</code>, which supplies the default tenant.</li>
 <li>A workspace that belongs to a different tenant than the request is denied.</li>
-<li>Workspace guards need <code>get_current_workspace</code>, and identify the account from the workspace-and-active-user pair when both are passed, otherwise from <code>get_current_account</code>. Building a workspace guard without <code>get_current_workspace</code> raises <code>ValueError</code>, so a misconfigured app fails at startup instead of denying every request. Tenant and platform guards need <code>get_current_account</code>.</li>
+<li><code>get_current_workspace</code> is optional but comes with <code>is_workspace_member</code> (<code>msflib.workspaces.is_workspace_member</code>, or <code>allow_any_member</code> for a host without membership rules). Workspace guards deny an account the check rejects. Building a workspace guard without the pair raises <code>ValueError</code>, so a misconfigured app fails at startup instead of denying every request. Tenant and platform guards need only tenant and account.</li>
 </ul>
 <p>A guard passes when the caller holds a role, at a tier that reaches the request, that bundles the key (or a <code>prefix.*</code> key covering it):</p>
 <table>
@@ -4339,7 +4342,7 @@
 </table>
 <p>Both are supported. Use <code>auth</code> when a role attribute is enough. Use <code>authz</code> when you need roles that admins create and assign at runtime, per-workspace or per-tenant roles, or permissions. The module routers that take a role guard parameter (<code>role_check</code>, <code>workspace_role_check</code>, <code>admin_role_check</code> or <code>mutation_role_check</code>: account admin, notifications, workspaces, workspace config, workspace notifications, ai_core and ingestion) use the <code>auth</code> way, because they pass plain legacy role values.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p><code>msflib-authz</code> has no settings of its own. It reads the default tenant through the <a href="../tenancy/">tenancy</a> settings you pass as <code>tenancy_settings</code> (<code>settings.scope("TENANCY")</code>).</p>
+<p><code>msflib-authz</code> has no settings of its own. It resolves the tenant through the <code>get_current_tenant</code> you pass; see <a href="../tenancy/">tenancy</a> for the default-tenant one.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <h3 id="three-questions-about-a-role">Three questions about a role<a class="headerlink" href="#three-questions-about-a-role" title="Permanent link">&para;</a></h3>
 <p>Every row in <code>role_assignment</code> says "this principal holds this role, here". Three separate things decide what that means, and each lives in a different place.</p>
@@ -4879,10 +4882,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3709,15 +3709,15 @@
     <span class="n">create_conversation_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># optional</span>
-        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>         <span class="c1"># optional</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># may resolve to None</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/conversation"</span><span class="p">,</span>
         <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"conversation"</span><span class="p">],</span>
     <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
-<p><code>get_current_account</code> only needs to return an object with an <code>id</code>. Without a workspace dependency, every request is in the workspace-less bucket (<code>workspace_id=None</code>). Without a tenant dependency, the tenant with the slug from your <code>TENANCY.DEFAULT_TENANT_SLUG</code> setting (<code>default</code> unless you changed it) is looked up in the database and must be seeded, otherwise requests fail with 500.</p>
+<p><code>get_current_account</code> only needs to return an object with an <code>id</code>. <code>get_current_workspace</code> is required; when it resolves to <code>None</code> the request is in the workspace-less bucket (<code>workspace_id=None</code>), and a site without workspaces passes <code>msflib.scope.no_workspace</code>. <code>get_current_tenant</code> is required; a site without tenancy passes <code>get_tenant_dependencies(...).get_current_tenant</code>, which looks up the tenant with the slug from your <code>TENANCY.DEFAULT_TENANT_SLUG</code> setting (<code>default</code> unless you changed it). It must be seeded, otherwise requests fail with 500.</p>
 <p>The router has no prefix of its own (<code>prefix=""</code> by default); its paths are:</p>
 <table>
 <thead>
@@ -3785,7 +3785,7 @@
 </tr>
 </tbody>
 </table>
-<p>Access checks (does the conversation exist, is the caller allowed to see it) run once in the dependency layer, not in each endpoint. To override them, build a namespace with <code>get_conversation_dependencies(...)</code> from <code>msflib.conversation.deps</code>, replace the attributes you need, and pass it as <code>dependencies=</code> to the router. Its members are <code>require_account</code>, <code>get_participant</code>, <code>get_conversation_scope</code>, <code>get_conversation_context</code>, <code>get_message_context</code>, <code>get_thread_context</code> and <code>access_service</code>. A conversation that does not exist in the caller's scope returns 404, and one the caller may not read returns 403. Without <code>get_current_tenant</code>, the default tenant is looked up with the slug from <code>tenancy_settings=</code> (the root settings or their <code>TENANCY</code> scope) when you build the namespace; omit it and the slug <code>default</code> is used.</p>
+<p>Access checks (does the conversation exist, is the caller allowed to see it) run once in the dependency layer, not in each endpoint. To override them, build a namespace with <code>get_conversation_dependencies(...)</code> from <code>msflib.conversation.deps</code>, replace the attributes you need, and pass it as <code>dependencies=</code> to the router. Its members are <code>get_participant</code>, <code>get_conversation_scope</code>, <code>get_conversation_context</code>, <code>get_message_context</code>, <code>get_thread_context</code> and <code>access_service</code>. A conversation that does not exist in the caller's scope returns 404, and one the caller may not read returns 403.</p>
 <p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general router pattern.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Settings live in the <code>CONVERSATION</code> namespace, and the field names are lowercase.</p>
@@ -3946,8 +3946,8 @@
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
         <span class="n">Depends</span><span class="p">(</span>
             <span class="n">ai_bridge</span><span class="o">.</span><span class="n">build_conversation_access_dependency</span><span class="p">(</span>
-                <span class="n">get_session</span><span class="p">,</span>
-                <span class="n">get_current_account</span><span class="p">,</span>
+                <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+                <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
                 <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
                 <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
             <span class="p">)</span>
@@ -3967,7 +3967,7 @@
 <tbody>
 <tr>
 <td>500 "Default tenant has not been seeded"</td>
-<td>The tenant dependency is missing and no tenant with the configured <code>TENANCY.DEFAULT_TENANT_SLUG</code> (<code>default</code> unless changed) exists. Pass <code>get_current_tenant</code> or run your startup seeding with the same settings.</td>
+<td>The default <code>get_current_tenant</code> from <code>get_tenant_dependencies</code> found no tenant with the configured <code>TENANCY.DEFAULT_TENANT_SLUG</code> (<code>default</code> unless changed). Run your startup seeding with the same settings.</td>
 </tr>
 <tr>
 <td><code>ValueError: A conversation with slug 'general' already exists</code> on a fresh database</td>
@@ -4062,10 +4062,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

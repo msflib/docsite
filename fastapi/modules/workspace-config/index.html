@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3831,16 +3831,21 @@
 
 <span class="n">config_service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
 </code></pre></div>
-<p>To expose the categories API, mount its router. It takes the workspace and membership dependencies from <a href="../auth/#workspace-resolution">auth</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">workspace_config_router</span>
+<p>To expose the categories API, mount its router. It takes the account and workspace dependencies from <a href="../auth/#workspace-resolution">auth</a> (<code>account_deps</code> and <code>user_deps</code>), the tenant from <code>get_tenant_dependencies</code>, plus <code>is_workspace_member</code> as the membership check. A workspace of another tenant than the request's is denied with 404:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">workspace_config_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">workspace_config_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
         <span class="n">get_current_workspace_anonymous</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace_anonymous</span><span class="p">,</span>
-        <span class="n">get_current_active_user</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_active_user</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
         <span class="n">workspace_role_check</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">WorkspaceRoleCheck</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/config"</span><span class="p">,</span>
     <span class="p">)</span>
@@ -4004,20 +4009,32 @@
 <h3 id="resolve-settings-inside-a-request">Resolve settings inside a request<a class="headerlink" href="#resolve-settings-inside-a-request" title="Permanent link">&para;</a></h3>
 <p>Combine the service with the scope dependencies so the ids come from the authenticated caller:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_member_account_dependency</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
+
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">get_member_account</span> <span class="o">=</span> <span class="n">get_member_account_dependency</span><span class="p">(</span>
+    <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+    <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/limit"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">limit</span><span class="p">(</span>
     <span class="n">session</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
     <span class="n">workspace</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">),</span>
-    <span class="n">user</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_active_user</span><span class="p">),</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">get_member_account</span><span class="p">),</span>
 <span class="p">):</span>
     <span class="n">resolved</span> <span class="o">=</span> <span class="n">config_service</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
         <span class="n">DemoSettings</span><span class="p">(),</span>
         <span class="n">tenant_id</span><span class="o">=</span><span class="n">workspace</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span>
         <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-        <span class="n">account_id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">account_id</span><span class="p">,</span>
+        <span class="n">account_id</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"limit"</span><span class="p">:</span> <span class="n">resolved</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">}</span>
 </code></pre></div>
@@ -4061,7 +4078,7 @@
 </tr>
 <tr>
 <td>Router call fails with missing arguments</td>
-<td>The router requires <code>get_current_workspace</code>, <code>get_current_workspace_anonymous</code>, <code>get_current_active_user</code> and <code>workspace_role_check</code> in addition to <code>get_session</code> and <code>settings</code>.</td>
+<td>The router requires <code>get_current_workspace</code>, <code>get_current_workspace_anonymous</code>, <code>get_current_account</code>, <code>is_workspace_member</code> and <code>workspace_role_check</code> in addition to <code>get_session</code> and <code>settings</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -4122,10 +4139,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

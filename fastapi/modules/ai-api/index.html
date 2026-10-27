@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3739,8 +3739,8 @@
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># optional</span>
-        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>         <span class="c1"># optional</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># may resolve to None</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
@@ -3786,8 +3786,7 @@
 </tbody>
 </table>
 <p><code>router()</code> composes two factories, <code>create_llm_router</code> (search, ask, status, protocols) and <code>create_agent_router</code> (the <code>/agent</code> routes), both importable from <code>msflib.ai_api.router</code> if you want only one. The prefixes <code>llm_prefix</code> (default empty) and <code>agent_prefix</code> (default <code>/agent</code>) place them under the main prefix.</p>
-<p>Without <code>get_current_tenant</code>, the default tenant is looked up in the database with the slug from your <code>settings</code> (<code>TENANCY.DEFAULT_TENANT_SLUG</code>) and must already be seeded, otherwise requests fail with 500. Without <code>get_current_workspace</code>, requests run with <code>workspace_id=None</code>, the workspace-less scope.</p>
-<p>A request with neither <code>get_current_tenant</code> nor <code>get_session</code> is rejected with 500, because ai-api stores data under the tenant and never invents one. The factory functions <code>get_ai_api_scope_dependencies(...)</code> take the same fallback inputs: <code>get_current_tenant</code>, or <code>get_session</code> plus <code>settings</code>.</p>
+<p><code>get_current_tenant</code> is required, because ai-api stores data under the tenant and never invents one. A site without tenancy passes the one from <code>get_tenant_dependencies</code>, which looks up the default tenant with the slug from your settings (<code>TENANCY.DEFAULT_TENANT_SLUG</code>); it must already be seeded, otherwise requests fail with 500. <code>get_current_workspace</code> is required too. It may resolve to <code>None</code>, which is the workspace-less scope (<code>workspace_id=None</code>, not "any workspace"); a site without workspaces passes <code>msflib.scope.no_workspace</code>. The factory function <code>get_ai_api_scope_dependencies(get_current_account=..., get_current_tenant=..., get_current_workspace=...)</code> takes the same callables.</p>
 <p>See <a href="../../integration/mounting-routes/">Mounting routes</a> for the general pattern.</p>
 <h3 id="router-parameters-worth-knowing">Router parameters worth knowing<a class="headerlink" href="#router-parameters-worth-knowing" title="Permanent link">&para;</a></h3>
 <table>
@@ -3924,6 +3923,7 @@
         <span class="n">get_session</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">"user"</span><span class="p">,</span> <span class="n">current_workspace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
         <span class="n">get_current_tenant</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
         <span class="n">get_vector_store</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">FakeStore</span><span class="p">(),</span>
         <span class="n">model_name_or_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">"P-101 feeds V-201."</span><span class="p">),</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
@@ -3956,6 +3956,7 @@
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
     <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
     <span class="n">get_injected_agent</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">echo_agent</span><span class="p">,</span>      <span class="c1"># zero-arg: used as is, no tools or context</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
@@ -3972,6 +3973,8 @@
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
     <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
     <span class="n">get_knowledge_engine</span><span class="o">=</span><span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_knowledge_engine</span><span class="p">,</span>
     <span class="n">transcript_writer_factory</span><span class="o">=</span><span class="n">ai_bridge</span><span class="o">.</span><span class="n">build_transcript_writer_factory</span><span class="p">(</span>
         <span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">),</span> <span class="n">agent_id</span><span class="o">=</span><span class="s2">"assistant"</span>
@@ -3991,11 +3994,19 @@
 <tbody>
 <tr>
 <td>500 "Default tenant has not been seeded"</td>
-<td>No tenant dependency was passed and the tenant with the configured <code>TENANCY.DEFAULT_TENANT_SLUG</code> (<code>default</code> unless changed) is missing. Pass <code>get_current_tenant</code> or seed it on startup with the same settings.</td>
+<td>The default <code>get_tenant_dependencies</code> resolver is wired, but the tenant with the configured <code>TENANCY.DEFAULT_TENANT_SLUG</code> (<code>default</code> unless changed) is missing. Seed it on startup with the same settings.</td>
 </tr>
 <tr>
 <td>401 "Authentication required"</td>
 <td><code>get_current_account</code> returned <code>None</code> or an account without an id.</td>
+</tr>
+<tr>
+<td>403 "No tenant resolved for this request."</td>
+<td><code>get_current_tenant</code> returned <code>None</code> or a tenant without an id.</td>
+</tr>
+<tr>
+<td>404 "No active workspace."</td>
+<td><code>get_current_workspace</code> resolved a workspace that belongs to another tenant than <code>get_current_tenant</code>.</td>
 </tr>
 <tr>
 <td>503 "AI service configuration unavailable"</td>
@@ -4089,10 +4100,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

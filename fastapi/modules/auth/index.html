@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3860,6 +3860,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span><span class="p">,</span> <span class="n">get_user_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathParameterResolver</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
@@ -3875,6 +3876,7 @@
     <span class="n">WorkspaceModel</span><span class="o">=</span><span class="n">Workspace</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">account_dependencies</span><span class="o">=</span><span class="n">account_deps</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">PathParameterResolver</span><span class="p">(),</span>
 <span class="p">)</span>
 
@@ -4107,11 +4109,7 @@
 </tr>
 <tr>
 <td><code>get_current_user</code></td>
-<td>Finds the <code>UserModel</code> row with <code>account_id == account.id</code> and <code>workspace_id == workspace.id</code>. A missing row is a 403: authenticated, but not a member of this workspace.</td>
-</tr>
-<tr>
-<td><code>get_current_active_user</code></td>
-<td>Also requires <code>user.status == "active"</code>; otherwise 401.</td>
+<td>Finds the <code>UserModel</code> row with <code>account_id == account.id</code> and <code>workspace_id == workspace.id</code>. A missing row is a 403: authenticated, but not a member of this workspace. The <code>is_workspace_member</code> you pass to <code>get_user_dependencies</code> must also accept the account (<code>msflib.workspaces.is_workspace_member</code> rejects banned and kicked members, <code>allow_any_member</code> accepts every row), otherwise the answer is <code>403 Not a member of this workspace.</code> <code>WorkspaceRoleCheck</code> goes through it too. When <code>UserModel</code> is your own membership model, bind the check to it with <code>functools.partial(is_workspace_member, user_action=UserAction[YourUser, ...]())</code>; the unbound check reads the built-in <code>User</code> table and would answer 403 for your rows.</td>
 </tr>
 <tr>
 <td><code>WorkspaceRoleCheck(roles)</code></td>
@@ -4172,11 +4170,15 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathParameterResolver</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_access_token</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapStore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_member_account_dependency</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.user</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models.workspace</span><span class="w"> </span><span class="kn">import</span> <span class="n">Workspace</span>
 
-<span class="c1"># get_session, get_keystore and SECRET_KEY come from your app; see "Wiring".</span>
+<span class="c1"># get_session, get_keystore, settings and SECRET_KEY come from your app; see "Wiring".</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
     <span class="n">oauth_token_url</span><span class="o">=</span><span class="s2">"/login"</span><span class="p">,</span>
@@ -4189,16 +4191,26 @@
     <span class="n">WorkspaceModel</span><span class="o">=</span><span class="n">Workspace</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">account_dependencies</span><span class="o">=</span><span class="n">account_deps</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">PathParameterResolver</span><span class="p">(),</span>
 <span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/whoami"</span><span class="p">)</span>
+<span class="n">get_member_account</span> <span class="o">=</span> <span class="n">get_member_account_dependency</span><span class="p">(</span>
+    <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+    <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/whoami"</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">get_member_account</span><span class="p">)])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">whoami</span><span class="p">(</span>
     <span class="n">workspace</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_workspace</span><span class="p">),</span>
-    <span class="n">user</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_active_user</span><span class="p">),</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">user_deps</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">),</span>
 <span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"workspace"</span><span class="p">:</span> <span class="n">workspace</span><span class="o">.</span><span class="n">slug</span><span class="p">,</span> <span class="s2">"user_id"</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">type</span><span class="p">}</span>
 
@@ -4220,17 +4232,19 @@
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/acme/whoami"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="p">})</span>
 <span class="c1"># 200 {"workspace": "acme", "user_id": 1, "type": "owner"}   (ada is a member)</span>
-<span class="c1"># 403 {"detail": "User not found in specified workspace"}    (a non-member)</span>
+<span class="c1"># 403 {"detail": "Not a member of this workspace."}          (a non-member or inactive member)</span>
 <span class="c1"># GET /nope/public -&gt; 404 "Workspace not found"</span>
 </code></pre></div>
 <h3 id="resolve-the-workspace-from-a-header">Resolve the workspace from a header<a class="headerlink" href="#resolve-the-workspace-from-a-header" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpHeaderResolver</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
 <span class="n">user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span>
     <span class="n">UserModel</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
     <span class="n">WorkspaceModel</span><span class="o">=</span><span class="n">Workspace</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">account_dependencies</span><span class="o">=</span><span class="n">account_deps</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">HttpHeaderResolver</span><span class="p">(</span><span class="s2">"X-Workspace"</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -4362,10 +4376,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
