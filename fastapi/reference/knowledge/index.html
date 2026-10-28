@@ -1932,6 +1932,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../core/graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../core/models/" class="md-nav__link">
         
   
@@ -4130,76 +4158,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.validate_identifier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        validate_identifier
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.parse_agtype" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        parse_agtype
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.agtype_literal" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        agtype_literal
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.parse_agtype_scalar_int" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        parse_agtype_scalar_int
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.knowledge.projections.age.common.matches_scope" class="md-nav__link">
     <span class="md-ellipsis">
       
         matches_scope
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.relation_type_filter" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        relation_type_filter
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.matches_relation_type" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        matches_relation_type
       
     </span>
   </a>
@@ -7924,76 +7886,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.validate_identifier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        validate_identifier
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.parse_agtype" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        parse_agtype
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.agtype_literal" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        agtype_literal
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.parse_agtype_scalar_int" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        parse_agtype_scalar_int
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.knowledge.projections.age.common.matches_scope" class="md-nav__link">
     <span class="md-ellipsis">
       
         matches_scope
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.relation_type_filter" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        relation_type_filter
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.knowledge.projections.age.common.matches_relation_type" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        matches_relation_type
       
     </span>
   </a>
@@ -13685,7 +13581,7 @@ filter, pgvector metadata filter); none implements authorization itself.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Whether the AGE graph has already been created (see <code>create_graph</code>).</p>
+        <p>Whether the AGE graph has already been created (see <code>ensure_graph</code>).</p>
 
 
     </div>
@@ -13722,13 +13618,6 @@ filter, pgvector metadata filter); none implements authorization itself.</p>
     <div class="doc doc-contents ">
 
         <p>Diagnostics snapshot: graph existence plus vertex/edge counts.</p>
-<p>Reuses this class's own session-init and parameter-binding fixes
-(<code>_init_session</code>, <code>CAST(:params AS agtype)</code> in <code>_run_cypher</code>)
-so callers — health-check/diagnostics endpoints in particular —
-don't need to hand-roll their own <code>cypher()</code> call and risk
-reintroducing bugs already solved here (see <code>_run_cypher</code>'s
-docstring on the bind-parameter cast, and <code>common.py</code>'s on session
-init).</p>
 
 
     </div>
@@ -13908,7 +13797,7 @@ init).</p>
 
     <div class="doc doc-contents ">
 
-        <p>Whether the AGE graph has already been created (see <code>create_graph</code>).</p>
+        <p>Whether the AGE graph has already been created (see <code>ensure_graph</code>).</p>
 
 
     </div>
@@ -13945,13 +13834,6 @@ init).</p>
     <div class="doc doc-contents ">
 
         <p>Diagnostics snapshot: graph existence plus vertex/edge counts.</p>
-<p>Reuses this class's own session-init and parameter-binding fixes
-(<code>_init_session</code>, <code>CAST(:params AS agtype)</code> in <code>_run_cypher</code>)
-so callers — health-check/diagnostics endpoints in particular —
-don't need to hand-roll their own <code>cypher()</code> call and risk
-reintroducing bugs already solved here (see <code>_run_cypher</code>'s
-docstring on the bind-parameter cast, and <code>common.py</code>'s on session
-init).</p>
 
 
     </div>
@@ -13980,15 +13862,7 @@ init).</p>
 
     <div class="doc doc-contents ">
 
-        <p>Shared Apache AGE helpers used by both the read projection and the writer.</p>
-<p>AGE's <code>cypher()</code> SQL function requires its graph-name and query-text
-arguments as literal SQL text (its parser hook intercepts them at plan time),
-so those two pieces are string-interpolated here rather than bound as
-parameters. Everything else — property values, scope/lifecycle filters — is
-passed through the function's third <code>agtype</code> argument and referenced in
-Cypher as <code>$name</code>, exactly like Neo4j query parameters. Interpolated
-identifiers (graph name, vertex/edge labels, relation types) are validated
-against a strict allowlist pattern first to keep this injection-safe.</p>
+        <p>Knowledge-specific AGE helpers; the generic client lives in <code>msflib.graph.age</code>.</p>
 
 
 
@@ -14009,88 +13883,6 @@ against a strict allowlist pattern first to keep this injection-safe.</p>
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="msflib.knowledge.projections.age.common.validate_identifier" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">validate_identifier</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#msflib.knowledge.projections.age.common.validate_identifier" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Guard against Cypher injection for values interpolated as literals
-(graph name, relation type used as an edge label) rather than bound as
-<code>agtype</code> parameters.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="msflib.knowledge.projections.age.common.parse_agtype" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">parse_agtype</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
-
-<a href="#msflib.knowledge.projections.age.common.parse_agtype" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Parse one <code>agtype</code> textual result — a JSON body with <code>::type</code>
-annotations after every composite value's closing bracket, including
-nested vertices/edges inside a list (<code>nodes(p)</code>/<code>relationships(p)</code>
-results) — into plain Python data.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="msflib.knowledge.projections.age.common.agtype_literal" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">agtype_literal</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#msflib.knowledge.projections.age.common.agtype_literal" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Serialize a parameter map/list for the <code>cypher()</code> third argument.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="msflib.knowledge.projections.age.common.parse_agtype_scalar_int" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">parse_agtype_scalar_int</span><span class="p">(</span><span class="n">raw_value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
-
-<a href="#msflib.knowledge.projections.age.common.parse_agtype_scalar_int" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Parse a scalar agtype integer result (e.g. from <code>RETURN count(n)</code>).</p>
-<p>Unlike <code>parse_agtype</code> (composite vertex/edge JSON with <code>::type</code> tags
-after a closing bracket), a bare scalar comes back as literal digits
-directly followed by <code>::agtype</code> (e.g. <code>"12::agtype"</code>) — no bracket
-precedes the tag, so <code>_strip_agtype_tags</code> won't touch it — hence the
-separate, simpler parse here.</p>
-
-
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-function">
 
@@ -14119,54 +13911,6 @@ default (<code>hierarchical=True</code>): a vertex/edge with no project/conversa
 stamp is workspace-general and always visible; one stamped with a
 project or conversation is visible only to a caller scoped to that same
 value. See architecture doc §6.1.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="msflib.knowledge.projections.age.common.relation_type_filter" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">relation_type_filter</span><span class="p">(</span><span class="n">relation_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#msflib.knowledge.projections.age.common.relation_type_filter" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p><code>[r:TYPE*1..3]</code>-style label filter for a single type, or empty for
-any type / more than one type.</p>
-<p>AGE 1.5.0's Cypher grammar rejects relationship-type alternation
-(<code>[r:TYPE1|TYPE2]</code>) outright -- confirmed against a live instance,
-<code>ERROR: syntax error at or near "|"</code> regardless of whether each
-alternative repeats the leading colon. A single type still compiles fine
-as a plain label filter, so that case is still pushed down; two or more
-types can't be expressed in the pattern at all here and must be
-filtered client-side by the caller instead (see <code>matches_relation_type</code>
-and its use in <code>projection.py</code>), the same way AGE 1.5.0's missing
-list-predicate functions already force scope/lifecycle/temporal
-filtering to happen client-side rather than in a pushed-down <code>WHERE</code>.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="msflib.knowledge.projections.age.common.matches_relation_type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">matches_relation_type</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">relation_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
-
-<a href="#msflib.knowledge.projections.age.common.matches_relation_type" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Client-side counterpart to <code>relation_type_filter</code> for the 2+-type
-case it can't push down into the Cypher pattern -- see its docstring.</p>
 
 
     </div>
@@ -14211,7 +13955,7 @@ Cypher; relation-type filtering does too when there's exactly one type
 down either -- AGE also rejects relationship-type alternation
 (<code>[r:TYPE1|TYPE2]</code>) as a bare syntax error, confirmed live, so that case
 is filtered client-side the same way scope/lifecycle are (see
-:func:<code>~.common.matches_relation_type</code>).</p>
+:func:<code>~msflib.graph.age.matches_relation_type</code>).</p>
 <p>AGE also has no <code>shortestPath()</code> (absent from its grammar source —
 confirmed both by inspection and live, on 1.5.0 and 1.6.0, that it's a bare
 syntax error). Nor is a fixed-length VLE match (<code>[r*N..N]</code>) a good
@@ -14405,7 +14149,7 @@ cheap, harmless insurance for anyone still on 1.5.0.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Whether the AGE graph has already been created (see <code>create_graph</code>).</p>
+        <p>Whether the AGE graph has already been created (see <code>ensure_graph</code>).</p>
 
 
     </div>
@@ -14442,13 +14186,6 @@ cheap, harmless insurance for anyone still on 1.5.0.</p>
     <div class="doc doc-contents ">
 
         <p>Diagnostics snapshot: graph existence plus vertex/edge counts.</p>
-<p>Reuses this class's own session-init and parameter-binding fixes
-(<code>_init_session</code>, <code>CAST(:params AS agtype)</code> in <code>_run_cypher</code>)
-so callers — health-check/diagnostics endpoints in particular —
-don't need to hand-roll their own <code>cypher()</code> call and risk
-reintroducing bugs already solved here (see <code>_run_cypher</code>'s
-docstring on the bind-parameter cast, and <code>common.py</code>'s on session
-init).</p>
 
 
     </div>
