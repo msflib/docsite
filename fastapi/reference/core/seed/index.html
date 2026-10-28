@@ -4242,7 +4242,7 @@ localhost), is sensitive.</p>
 
 
 <h3 id="msflib.seed.run_seed_cli" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.run_seed_cli" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4371,6 +4371,7 @@ initialization.</p>
                 <code>metadata</code>
             </td>
             <td>
+                  <code><span title="sqlmodel.MetaData">MetaData</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4778,7 +4779,7 @@ localhost), is sensitive.</p>
 
 
 <h4 id="msflib.seed.cli.run_seed_cli" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.cli.run_seed_cli" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4907,6 +4908,7 @@ initialization.</p>
                 <code>metadata</code>
             </td>
             <td>
+                  <code><span title="sqlmodel.MetaData">MetaData</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5439,22 +5441,20 @@ using the provided database engine. Supports both:
         <p>Action seeder specification.</p>
 
 
-<p><span class="doc-section-title">Parameters:</span></p>
+<p><span class="doc-section-title">Attributes:</span></p>
     <table>
       <thead>
         <tr>
           <th>Name</th>
           <th>Type</th>
           <th>Description</th>
-          <th>Default</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
+            <td><code><span title="msflib.seed.schema.ActionSchema.class_name">class_name</span></code></td>
             <td>
-                <code>class_name</code>
-            </td>
-            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5462,15 +5462,11 @@ using the provided database engine. Supports both:
 (e.g., 'app.actions.AccountAction').</p>
               </div>
             </td>
-            <td>
-                <em>required</em>
-            </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><span title="msflib.seed.schema.ActionSchema.class_factory">class_factory</span></code></td>
             <td>
-                <code>class_factory</code>
-            </td>
-            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5479,9 +5475,6 @@ using the provided database engine. Supports both:
 If specified, factory is called instead of direct class
 instantiation.</p>
               </div>
-            </td>
-            <td>
-                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -5536,75 +5529,58 @@ instantiation.</p>
         <p>Configuration for running seeders from a YAML file.</p>
 
 
-<p><span class="doc-section-title">Parameters:</span></p>
+<p><span class="doc-section-title">Attributes:</span></p>
     <table>
       <thead>
         <tr>
           <th>Name</th>
           <th>Type</th>
           <th>Description</th>
-          <th>Default</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
+            <td><code><span title="msflib.seed.schema.SeederConfig.seeders_yml_path">seeders_yml_path</span></code></td>
             <td>
-                <code>seeders_yml_path</code>
-            </td>
-            <td>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Path to the seeders YAML file.</p>
               </div>
             </td>
-            <td>
-                <em>required</em>
-            </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><span title="msflib.seed.schema.SeederConfig.data_paths">data_paths</span></code></td>
             <td>
-                <code>data_paths</code>
-            </td>
-            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>List of directories to search for seeder data files.</p>
               </div>
             </td>
-            <td>
-                <em>required</em>
-            </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><span title="msflib.seed.schema.SeederConfig.models_to_seed">models_to_seed</span></code></td>
             <td>
-                <code>models_to_seed</code>
-            </td>
-            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Optional list of specific seeder names to run.</p>
               </div>
             </td>
-            <td>
-                <em>required</em>
-            </td>
           </tr>
           <tr class="doc-section-item">
+            <td><code><span title="msflib.seed.schema.SeederConfig.show_log">show_log</span></code></td>
             <td>
-                <code>show_log</code>
-            </td>
-            <td>
+                  <code><span title="bool">bool</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Whether to log per-row seeding operations.</p>
               </div>
-            </td>
-            <td>
-                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -5702,7 +5678,7 @@ instantiation.</p>
 
 
 <h4 id="msflib.seed.utils.import_lib" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">import_lib</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">import_lib</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span></code>
 
 <a href="#msflib.seed.utils.import_lib" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5770,6 +5746,7 @@ instantiation.</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>Any</code></td>            <td>
+                  <code><span title="object">object</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6278,7 +6255,7 @@ a list of record dictionaries.</p>
 
 
 <h4 id="msflib.seed.utils.validate_path" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">validate_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 <a href="#msflib.seed.utils.validate_path" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6330,6 +6307,7 @@ a list of record dictionaries.</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>str</code></td>            <td>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
