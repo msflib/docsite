@@ -10625,7 +10625,7 @@ enumerated. A request with no workspace passes.</p>
 
 
 <h3 id="msflib.scope.get_member_account_dependency" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_member_account_dependency</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span></code>
+            <code class="highlight language-python"><span class="n">get_member_account_dependency</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="n">require_workspace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span></code>
 
 <a href="#msflib.scope.get_member_account_dependency" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -10633,10 +10633,12 @@ enumerated. A request with no workspace passes.</p>
     <div class="doc doc-contents ">
 
         <p>Return a dependency yielding the account once it is checked against the workspace.</p>
-<p>Answers 404 when the request resolves no workspace or one that belongs to another
-tenant than the request's, and 403 when <code>is_workspace_member</code> rejects the account.
-The workspace resolvers select by slug without a tenant, so the tenant is checked
-here. Use it where a route is member-facing and the workspace is required.</p>
+<p>Answers 404 when the workspace belongs to another tenant than the request's, and 403
+when <code>is_workspace_member</code> rejects the account; the workspace resolvers select by
+slug without a tenant, so the tenant is checked here. When the request resolves no
+workspace it answers 404, or with <code>require_workspace=False</code> it lets the account
+into the workspace-less bucket, which holds only its own data. Use it where a route
+is member-facing.</p>
 
 
     </div>
@@ -11655,7 +11657,7 @@ resolve, and a router or guard that needs membership takes
 
 
 <h4 id="msflib.scope.deps.get_member_account_dependency" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_member_account_dependency</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span></code>
+            <code class="highlight language-python"><span class="n">get_member_account_dependency</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="n">require_workspace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span></code>
 
 <a href="#msflib.scope.deps.get_member_account_dependency" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -11663,10 +11665,12 @@ resolve, and a router or guard that needs membership takes
     <div class="doc doc-contents ">
 
         <p>Return a dependency yielding the account once it is checked against the workspace.</p>
-<p>Answers 404 when the request resolves no workspace or one that belongs to another
-tenant than the request's, and 403 when <code>is_workspace_member</code> rejects the account.
-The workspace resolvers select by slug without a tenant, so the tenant is checked
-here. Use it where a route is member-facing and the workspace is required.</p>
+<p>Answers 404 when the workspace belongs to another tenant than the request's, and 403
+when <code>is_workspace_member</code> rejects the account; the workspace resolvers select by
+slug without a tenant, so the tenant is checked here. When the request resolves no
+workspace it answers 404, or with <code>require_workspace=False</code> it lets the account
+into the workspace-less bucket, which holds only its own data. Use it where a route
+is member-facing.</p>
 
 
     </div>
