@@ -4123,7 +4123,9 @@ when omitted.</p>
             <td>
               <div class="doc-md-description">
                 <p>the resolved <code>Tenant</code> row or raises <code>HTTPException</code> (500) if the
-default tenant hasn't been seeded yet.</p>
+default tenant hasn't been seeded yet, and <code>is_tenant_member</code>, the
+membership check bound to the same <code>settings</code> so the two always
+agree on which tenant is the default.</p>
               </div>
             </td>
           </tr>
