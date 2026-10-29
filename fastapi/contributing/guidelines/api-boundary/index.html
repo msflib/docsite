@@ -3185,6 +3185,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api-7-identity-parameters-are-required-and-ordered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API-7 · Identity parameters are required and ordered
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3553,6 +3564,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#api-7-identity-parameters-are-required-and-ordered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API-7 · Identity parameters are required and ordered
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3575,7 +3597,9 @@
 <p><code>router(*, get_session, get_current_account, ..., prefix="", tags=None) -&gt; APIRouter</code>.
 The host app supplies session, auth, workspace and tenant resolvers; modules
 hold no app models or session globals. Router factories take keyword-only
-parameters. Reference: <code>conversation/router.py</code>, <code>ai_api/router/</code>.</p>
+parameters (a signature test in <code>tests/test_router_signature.py</code> enforces it, TST-9)
+and follow the identity parameter order of API-7. Reference:
+<code>conversation/router.py</code>, <code>ai_api/router/</code>.</p>
 <h3 id="api-2-extract-depspy-once-a-router-has-real-guard-logic">API-2 · Extract <code>deps.py</code> once a router has real guard logic<a class="headerlink" href="#api-2-extract-depspy-once-a-router-has-real-guard-logic" title="Permanent link">&para;</a></h3>
 <p>When a router does more than one or two trivial checks, move request-scoped
 resolution into a <code>deps.py</code> factory returning a <code>DependencyNamespace</code>:
@@ -3601,6 +3625,30 @@ request bodies and responses. Response builders substitute the related row's
 <h3 id="api-6-request-bodies-reuse-model-schemas">API-6 · Request bodies reuse model schemas<a class="headerlink" href="#api-6-request-bodies-reuse-model-schemas" title="Permanent link">&para;</a></h3>
 <p>See MDL-3 and MDL-4. Router-only request classes are the exception and live in
 the entity's model file.</p>
+<h3 id="api-7-identity-parameters-are-required-and-ordered">API-7 · Identity parameters are required and ordered<a class="headerlink" href="#api-7-identity-parameters-are-required-and-ordered" title="Permanent link">&para;</a></h3>
+<p>A router that scopes data by identity takes these parameters, in this order and
+without defaults: <code>get_session</code>, <code>get_current_account</code>, <code>get_current_tenant</code>,
+<code>get_current_workspace</code>, then the membership checks it uses (SCP-3), in the same
+tenant-then-workspace order: <code>is_tenant_member</code> where the router validates the
+tenant tier (the tenant check is the default-tenant stub until #268, so most
+routers take only the workspace one today), then <code>is_workspace_member</code>. Nothing falls back to a default
+tenant, to "any account" or to "any workspace". A host states each absence as a
+choice: a site
+without tenancy passes <code>msflib.tenancy.deps.get_tenant_dependencies(...)
+.get_current_tenant</code>, one without workspaces passes <code>msflib.scope.no_workspace</code>,
+and one without membership rules passes <code>allow_any_member</code>.</p>
+<ul>
+<li><code>get_current_workspace</code> may resolve to <code>None</code>, the workspace-less bucket
+  (SCP-2); the workspace membership check is not asked then. A route that needs
+  a workspace takes <code>msflib.scope.get_member_account_dependency</code>, which answers
+  404 when there is none.</li>
+<li>A resolved workspace that belongs to another tenant than the request's is a
+  404 (<code>msflib.scope.check_workspace_tenant</code>); a non-member is a 403; a missing
+  account is a 401 (API-3).</li>
+<li>Type the injected values with <code>AccountContract</code>, <code>TenantContract</code> and
+  <code>WorkspaceContract</code> from <code>msflib.scope</code>, not <code>Any</code> (TYP-2).</li>
+</ul>
+<p>Reference: <code>authz/router.py</code>.</p>
 
 
 

@@ -3123,6 +3123,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mod-9-the-module-that-owns-a-membership-model-exports-its-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOD-9 · The module that owns a membership model exports its check
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3597,6 +3608,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mod-9-the-module-that-owns-a-membership-model-exports-its-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOD-9 · The module that owns a membership model exports its check
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3628,6 +3650,7 @@ inside <code>msflib/&lt;name&gt;/</code> is organised.</p>
   eventbus/           # EventName enum + typed event contracts (MOD-5)
   contracts/          # Protocols and type aliases for cross-module structural typing
   deps.py             # request-scoped FastAPI dependencies (API-2), if needed
+  membership.py       # is_&lt;scope&gt;_member, if the module owns a membership model (MOD-9)
   router.py           # only if the module exposes HTTP endpoints
   scope_profiles.py   # if the module registers scope profiles (SCP-4)
   integrations/       # optional integrations with other modules (DEP-2)
@@ -3689,6 +3712,13 @@ factory because it needs a constructed <code>KnowledgeEngine</code>).</p>
 <p>When capabilities change, update the module <code>README.md</code> (what it owns, layout,
 usage snippets, boundaries, status) and its page under <code>docs/modules/</code>. See
 <a href="../../writing-docs/">Writing docs</a>.</p>
+<h3 id="mod-9-the-module-that-owns-a-membership-model-exports-its-check">MOD-9 · The module that owns a membership model exports its check<a class="headerlink" href="#mod-9-the-module-that-owns-a-membership-model-exports-its-check" title="Permanent link">&para;</a></h3>
+<p><code>msflib.workspaces</code> exports <code>is_workspace_member</code> and <code>msflib.tenancy</code> exports
+<code>is_tenant_member</code>, each a <code>MembershipCheck</code> (<code>(session, *, account_id, scope_id)
+-&gt; bool</code>) in <code>membership.py</code>. Other modules never query another module's
+membership tables; their routers and guards take the check as a parameter
+(API-7). A new module that introduces a membership model adds its own check in
+the same way, and its lookups go through its actions.</p>
 
 
 

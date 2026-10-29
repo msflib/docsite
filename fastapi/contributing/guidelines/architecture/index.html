@@ -3854,10 +3854,12 @@ used (as conversation's <code>ai_bridge</code> access dependency does). A model 
 output never supplies either kind.</p>
 <p>Resolvers decide which tenant or workspace a request runs in; they do not check
 membership. A router or guard that needs it takes <code>MembershipCheck</code> callbacks
-(<code>msflib.scope</code>), one for the tenant and one for the workspace, supplied by the
-owning module and passed in by the host. It uses them for the caller (403) and for
-any account the request names (404). Don't fall back to a default tenant or to "any
-account" when a check is missing; a host that wants that passes <code>allow_any_member</code>.</p>
+(<code>msflib.scope</code>), <code>is_tenant_member</code> and <code>is_workspace_member</code>, supplied by the
+owning module (<code>msflib.tenancy</code>, <code>msflib.workspaces</code>) and passed in by the host.
+It uses them for the caller (403) and for any account the request names (404).
+Don't fall back to a default tenant or to "any account" when a check is missing;
+a host that wants that passes <code>allow_any_member</code>. Parameter names and order:
+API-7.</p>
 <h3 id="scp-4-compile-scope-once-through-the-modules-profile">SCP-4 · Compile scope once, through the module's profile<a class="headerlink" href="#scp-4-compile-scope-once-through-the-modules-profile" title="Permanent link">&para;</a></h3>
 <p>Register profiles in <code>scope_profiles.py</code> via <code>ProfileRegistry</code> with namespaced
 names (<code>"&lt;module&gt;.&lt;operation&gt;"</code>). Build the typed scope from the <code>ScopeEnvelope</code>

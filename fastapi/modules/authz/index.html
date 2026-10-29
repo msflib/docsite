@@ -768,6 +768,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group router
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4018,6 +4035,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group router
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4660,6 +4694,46 @@
 <span class="n">service</span><span class="o">.</span><span class="n">remove_member</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">removed_by_account_id</span><span class="o">=</span><span class="n">current_account</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
 <p><code>group_id</code> and the acting account come from the request, so they are service parameters, not fields of <code>GroupMemberCreate</code>. For a <code>personal</code> group the acting account must be the owner, otherwise <code>ValueError</code>. Adding an account that is already a member raises <code>GroupMemberExistsError</code>, also when two requests race. <code>GroupCreate</code> likewise has no <code>workspace_id</code> or <code>owner_account_id</code>; pass them with <code>create(update={...})</code>.</p>
+<h4 id="group-router">Group router<a class="headerlink" href="#group-router" title="Permanent link">&para;</a></h4>
+<p><code>msflib.authz.router.router(...)</code> mounts group and membership endpoints under <code>prefix</code> (default <code>/sharing</code>). The host supplies the dependencies by keyword and the router assumes nothing for it:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">authz_router</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">authz_router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>  <span class="c1"># tenant_deps = get_tenant_dependencies(...) from msflib.tenancy.deps</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>  <span class="c1"># msflib.scope.no_workspace for a site without workspaces</span>
+        <span class="n">is_tenant_member</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">is_tenant_member</span><span class="p">,</span>  <span class="c1"># same settings as get_current_tenant, see below</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The identity parameters are required, in the order account, tenant, workspace, and none has a fallback. A request with no account is a 401 and with no tenant a 400 ("No tenant specified."). <code>get_current_workspace</code> may resolve to <code>None</code>, and then the request works in the workspace-less bucket (<code>workspace_id=None</code>), which has its own groups and is not "every workspace"; a site without workspaces passes <code>msflib.scope.no_workspace</code>. The resolved workspace must expose <code>id</code> and <code>tenant_id</code> (<code>msflib.scope.WorkspaceContract</code>): a workspace without an <code>id</code> or whose <code>tenant_id</code> differs from the tenant is a 404, and one without a <code>tenant_id</code> attribute is a host error. <code>is_tenant_member</code> and <code>is_workspace_member</code> are required membership checks, <code>(session, *, account_id, scope_id) -&gt; bool</code> (<code>msflib.scope.MembershipCheck</code>), supplied by the owning modules; authz cannot read the account tables and assumes nothing about them. Pass <code>msflib.scope.allow_any_member</code> to accept every account. <code>is_tenant_member</code> resolves the default tenant from the settings it is given, so use the one from <code>get_tenant_dependencies(...)</code>, which is bound to the same settings as its <code>get_current_tenant</code>; with a custom <code>DEFAULT_TENANT_SLUG</code> the bare <code>msflib.tenancy.is_tenant_member</code> rejects the configured tenant with a 403. They validate the caller (403 "Not a member of this tenant." or "... workspace.") and the account a request adds to a group (404 "Account not found."). The workspace check runs only when a workspace is resolved. Group names are trimmed, non-blank and at most 255 characters, and a member <code>account_id</code> must be between 1 and 2³¹ − 1. The action and service classes (<code>group_action</code>, <code>group_member_action</code>, <code>group_service</code>, <code>role_service</code>) are optional parameters that default to the built-in ones.</p>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Who may call it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /groups</code></td>
+<td>any account for a <code>personal</code> group; the <code>authz.manage_groups</code> permission for a <code>workspace</code> group</td>
+</tr>
+<tr>
+<td><code>GET /groups</code>, <code>GET /groups/{id}</code>, <code>GET /groups/{id}/members</code></td>
+<td>any account sees the workspace's <code>workspace</code> groups and its own <code>personal</code> ones; another account's personal group is a 404</td>
+</tr>
+<tr>
+<td><code>PATCH</code> / <code>DELETE /groups/{id}</code>, <code>POST /groups/{id}/members</code>, <code>DELETE /groups/{id}/members/{account_id}</code></td>
+<td>the owner of a <code>personal</code> group; <code>authz.manage_groups</code> for a <code>workspace</code> group (403 without it)</td>
+</tr>
+</tbody>
+</table>
+<p><code>authz.manage_groups</code> is held by platform or workspace roles only. Resource shares are exposed by the resource's own module, such as <a href="../drivelink/">drivelink</a>, not here.</p>
 <h3 id="resource-access">Resource access<a class="headerlink" href="#resource-access" title="Permanent link">&para;</a></h3>
 <p>A resource access row gives one user or group a level on one resource, for example a file. Roles answer "what may this account do here"; access rows answer "what may this account do to this one thing". They are independent: <code>AccessService</code> never reads roles. The word <em>permission</em> in this module always means a permission key such as <code>docs.publish</code>; a level on a resource is an <em>access level</em>.</p>
 <table>

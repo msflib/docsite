@@ -3319,6 +3319,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tst-9-new-router-factories-have-a-signature-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TST-9 · New router factories have a signature test
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3597,6 +3608,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tst-9-new-router-factories-have-a-signature-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TST-9 · New router factories have a signature test
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3660,6 +3682,13 @@ same change.</p>
 SDC-1 and SDC-2. Name a test for the behaviour it checks, as
 <code>test_&lt;subject&gt;_&lt;behaviour&gt;[_&lt;condition&gt;]</code>, so a failure reads as a sentence:
 <code>test_agent_stream_writes_partial_transcript_on_stream_failure</code>.</p>
+<h3 id="tst-9-new-router-factories-have-a-signature-test">TST-9 · New router factories have a signature test<a class="headerlink" href="#tst-9-new-router-factories-have-a-signature-test" title="Permanent link">&para;</a></h3>
+<p>A module that adds a <code>router</code> factory adds <code>tests/test_router_signature.py</code> (the
+module template provides it). It asserts that every parameter is keyword-only
+(API-1). A router that scopes data by identity also asserts that the identity
+parameters are required and in the order of API-7. Modules that predate the rule
+add the test when they next change their router. Reference:
+<code>authz/tests/test_router_signature.py</code>.</p>
 
 
 
