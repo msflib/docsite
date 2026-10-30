@@ -2621,6 +2621,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.core.readiness.checks.migration_policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        migration_policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.readiness.checks.migration_risk" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2633,10 +2644,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.core.readiness.checks.migration_risk.find_destructive_operations" class="md-nav__link">
+  <a href="#msflib.core.readiness.checks.migration_risk.find_migration_risks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        find_destructive_operations
+        find_migration_risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.core.readiness.checks.migration_risk.classify_sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify_sql
       
     </span>
   </a>
@@ -6135,6 +6157,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.core.readiness.checks.migration_policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        migration_policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.readiness.checks.migration_risk" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6147,10 +6180,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.core.readiness.checks.migration_risk.find_destructive_operations" class="md-nav__link">
+  <a href="#msflib.core.readiness.checks.migration_risk.find_migration_risks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        find_destructive_operations
+        find_migration_risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.core.readiness.checks.migration_risk.classify_sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify_sql
       
     </span>
   </a>
@@ -9187,6 +9231,51 @@ are reported separately.</p>
 
 
 
+<h5 id="msflib.core.readiness.checks.migration_policy" class="doc doc-heading">
+            <code>migration_policy</code>
+
+
+<a href="#msflib.core.readiness.checks.migration_policy" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+        <p>What the migration gate trusts, as data.</p>
+<p>Every list here is a judgement about SQL that is accepted without a person reading it, so they sit
+together: a reviewer can read the whole allowlist in one place, and a name added for one purpose
+cannot drift from the same name in another. The matching code is in <code>migration_risk</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
 <h5 id="msflib.core.readiness.checks.migration_risk" class="doc doc-heading">
             <code>migration_risk</code>
 
@@ -9195,11 +9284,17 @@ are reported separately.</p>
 
     <div class="doc doc-contents ">
 
-        <p>A static look at pending Alembic revisions for operations that can lose data.</p>
+        <p>Judge pending Alembic revisions by the SQL they render, not by the Python that makes it.</p>
 <p><code>--fix</code> may only apply a migration without a human when nothing in it can destroy data. A
-revision script is arbitrary Python, so this is a conservative scan of the revision file (not its
-<code>downgrade()</code>), not a proof: it flags what it recognises and anything it cannot read. A flagged
-revision is never applied automatically; the operator reviews it and runs the migration.</p>
+revision is arbitrary Python, and reading Python for a destructive call has no end: every alias,
+helper and dynamic lookup is another way to hide one. So the pending revisions are run through
+Alembic's offline mode, which renders the SQL they would execute without a database, and that SQL
+is classified instead. Whatever the Python does, the SQL is the effect.</p>
+<p>The contract is an allowlist, not a blocklist: a statement is safe only when it is recognised as
+additive (<code>CREATE TABLE</code>, <code>ALTER TABLE ... ADD</code>, <code>INSERT</code> ...). <code>DROP</code>, <code>DELETE</code>,
+<code>TRUNCATE</code>, <code>UPDATE</code> of application data, <code>ALTER ... TYPE</code> and anything unrecognised
+(<code>CALL purge_all()</code>, <code>SELECT purge_all()</code>) are left to a person. So is a revision that cannot
+be rendered offline, for example because it queries the database.</p>
 
 
 
@@ -9224,15 +9319,36 @@ revision is never applied automatically; the operator reviews it and runs the mi
 <div class="doc doc-object doc-function">
 
 
-<h6 id="msflib.core.readiness.checks.migration_risk.find_destructive_operations" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">find_destructive_operations</span><span class="p">(</span><span class="n">script_location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">revisions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<h6 id="msflib.core.readiness.checks.migration_risk.find_migration_risks" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_migration_risks</span><span class="p">(</span><span class="n">script_location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">revisions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">dialect_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
-<a href="#msflib.core.readiness.checks.migration_risk.find_destructive_operations" class="headerlink" title="Permanent link">&para;</a></h6>
+<a href="#msflib.core.readiness.checks.migration_risk.find_migration_risks" class="headerlink" title="Permanent link">&para;</a></h6>
 
 
     <div class="doc doc-contents ">
 
-        <p><code>"&lt;revision&gt;: &lt;what&gt;"</code> for every risky operation in the given revisions' <code>upgrade()</code>.</p>
+        <p><code>"&lt;revision&gt;: &lt;statement&gt;"</code> for each pending change that is not recognisably additive.</p>
+<p><em>revisions</em> are the pending revisions, oldest first. An empty result means every statement
+the revisions render is additive; anything else, including a revision that cannot be
+rendered, needs a person.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="msflib.core.readiness.checks.migration_risk.classify_sql" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">classify_sql</span><span class="p">(</span><span class="n">sql</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
+<a href="#msflib.core.readiness.checks.migration_risk.classify_sql" class="headerlink" title="Permanent link">&para;</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>"&lt;revision&gt;: &lt;first words&gt;"</code> for every statement that is not recognisably additive.</p>
 
 
     </div>
@@ -9954,7 +10070,7 @@ or Python warnings; switch it off for a check whose library is known to be noisy
 
 
 <h5 id="msflib.core.readiness.model.Remedy" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">Remedy</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fixes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">apply</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Context</span><span class="p">],</span> <span class="n">RemedyResult</span><span class="p">],</span> <span class="n">safety</span><span class="p">:</span> <span class="n">Safety</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">ready</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Context</span><span class="p">],</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'core'</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">Remedy</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fixes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">apply</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Context</span><span class="p">],</span> <span class="n">RemedyResult</span><span class="p">],</span> <span class="n">safety</span><span class="p">:</span> <span class="n">Safety</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">ready</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Context</span><span class="p">],</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'core'</span><span class="p">,</span> <span class="n">preview</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Context</span><span class="p">],</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -9969,8 +10085,10 @@ or Python warnings; switch it off for a check whose library is known to be noisy
 
         <p>The safe, idempotent fix for the checks it names in <code>fixes</code>.</p>
 <p><code>ready(ctx)</code> returns <code>None</code> when the remedy can run, or the reason it cannot (a missing
-superuser DSN, no supervisor). <code>after</code> orders remedies against each other. <code>safety</code> has no
-default: a remedy that does not say what it can change is never applied by <code>--fix</code>.</p>
+superuser DSN, no supervisor). <code>preview(ctx)</code> says what applying will change, and is shown
+before <code>--fix</code> asks (or, with <code>--yes</code>, before it applies). <code>after</code> orders remedies
+against each other. <code>safety</code> has no default: a remedy that does not say what it can change
+is never applied by <code>--fix</code>.</p>
 
 
 

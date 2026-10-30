@@ -3755,11 +3755,16 @@ lists only what ran; skipped and dry-run remedies are in <code>fixes_not_applied
 with their state.</p>
 <h3 id="rdy-8-the-migration-gate-is-conservative-and-tracked">RDY-8 · The migration gate is conservative and tracked<a class="headerlink" href="#rdy-8-the-migration-gate-is-conservative-and-tracked" title="Permanent link">&para;</a></h3>
 <p><code>core.migrate</code> is applied automatically only when the pending revisions are
-shown not to lose data. The current scan reads the revision's Python and cannot
-be a proof; every bypass found in review (aliases, dynamic built-ins, helpers
-imported from other modules, literal SQL that is not <code>DROP</code>/<code>DELETE</code>) belongs
-in msflib/fastapi#330, which replaces it with a scan of the SQL Alembic renders
-offline. Do not patch the AST scan one bypass at a time.</p>
+shown not to lose data. The gate classifies the SQL Alembic renders offline, not
+the revision's Python: a statement is safe only when it is recognisably additive,
+and anything it cannot classify, or cannot render without a database, is left to
+a person. Add a case as a fixture in <code>test_migration_risk.py</code>; do not teach the
+gate to read Python. What the gate trusts (functions, types, operators,
+extensions) is data in <code>checks/migration_policy.py</code>; reading SQL text is
+<code>msflib.db.sqltext</code> (<code>Statement</code> tokenizes a statement once), so a new check
+reads <code>statement.plain</code>, not another regex over the raw text. Every pattern
+the gate matches with lives in <code>msflib.db.sqlpatterns</code>; look there before writing
+one, and add new ones there, not next to the caller.</p>
 <h3 id="rdy-9-typed-objects-lazy-exports">RDY-9 · Typed objects, lazy exports<a class="headerlink" href="#rdy-9-typed-objects-lazy-exports" title="Permanent link">&para;</a></h3>
 <p>Outcomes use the <code>Outcome</code> verbs, step kinds and run states are enums, and
 reports are dataclasses, not strings and dicts (TYP-2). The package
