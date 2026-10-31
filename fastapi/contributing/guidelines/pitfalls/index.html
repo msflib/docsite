@@ -3392,6 +3392,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-schema-field-named-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A schema field named metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tables-defined-twice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3530,6 +3541,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-schema-field-named-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A schema field named metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tables-defined-twice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3635,6 +3657,13 @@ the row is still there.</p>
 <span class="p">)</span>
 </code></pre></div>
 <p>Don't hand-write the pysqlite event listeners in a fixture.</p>
+<h2 id="a-schema-field-named-metadata">A schema field named <code>metadata</code><a class="headerlink" href="#a-schema-field-named-metadata" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> <code>UserWarning: Field name "metadata" in "X" shadows an attribute in
+parent "SchemaBase"</code> when the class is defined.</p>
+<p><strong>Cause:</strong> <code>SchemaBase</code> is a <code>SQLModel</code>, which reserves <code>metadata</code> for
+SQLAlchemy's <code>MetaData</code>.</p>
+<p><strong>Fix:</strong> use another name (the <code>ai_api</code> contracts use <code>attributes</code>). A
+protocol payload can still emit a <code>"metadata"</code> key; build it explicitly.</p>
 <h2 id="tables-defined-twice">Tables defined twice<a class="headerlink" href="#tables-defined-twice" title="Permanent link">&para;</a></h2>
 <p><strong>Symptom:</strong> <code>Table '...' is already defined for this MetaData instance</code>.</p>
 <p><strong>Cause:</strong> a module <code>__init__.py</code> imports models eagerly, and the namespace

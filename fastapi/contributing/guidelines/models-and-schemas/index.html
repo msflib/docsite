@@ -3660,26 +3660,21 @@
 
 <h1 id="models-and-schemas">Models and schemas<a class="headerlink" href="#models-and-schemas" title="Permanent link">&para;</a></h1>
 <h3 id="mdl-1-use-the-msflib-base-classes">MDL-1 · Use the msflib base classes<a class="headerlink" href="#mdl-1-use-the-msflib-base-classes" title="Permanent link">&para;</a></h3>
-<p>Tables extend <code>ModelBase</code> (id, timestamps, lifecycle events). Every new
-schema extends <code>SchemaBase</code>, never pydantic's bare <code>BaseModel</code>, including
-request fragments and response contracts with no table behind them. Enums
-extend <code>BaseEnum</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Known gap</p>
-<p>Some existing schemas predate this rule and still extend <code>BaseModel</code>:
-<code>documents/schema.py</code>, <code>ingestion/schema.py</code>, <code>ai_api/schema.py</code>,
-<code>ai_api/contracts.py</code>, <code>ai_core/policy.py</code> and
-<code>drivelink/models/validation.py</code>. Don't migrate them as a side effect of
-other work (STY-6); new schemas in those modules still follow this rule.</p>
-</div>
+<p>Tables extend <code>ModelBase</code> (id, timestamps, lifecycle events). Every schema
+extends <code>SchemaBase</code>, never pydantic's bare <code>BaseModel</code>, including request
+fragments and response contracts with no table behind them. Enums extend
+<code>BaseEnum</code>. Settings classes extend <code>ModuleSettingsBase</code> instead.</p>
+<p><code>SchemaBase</code> is a non-table <code>SQLModel</code>, so don't name a schema field
+<code>metadata</code>: SQLModel reserves it (see
+<a href="../pitfalls/#a-schema-field-named-metadata">Known pitfalls</a>).</p>
 <h3 id="mdl-2-schemas-live-next-to-their-table">MDL-2 · Schemas live next to their table<a class="headerlink" href="#mdl-2-schemas-live-next-to-their-table" title="Permanent link">&para;</a></h3>
 <p><code>models/&lt;entity&gt;.py</code> holds the table and its <code>Create</code>/<code>Update</code>/<code>Read</code> schemas,
 which are the <code>ModelAction</code> generic parameters. A request class that doesn't
 match one table's CRUD shape (a composite request, or a narrow slice of a
 shared <code>Update</code>) still lives in the file of the entity it is about. Don't add
 a cross-entity <code>schema.py</code>; when reworking a module that has one, delete it once
-nothing in it lacks a model-file home. Existing <code>schema.py</code> files (see the
-MDL-1 note) are not moved as a side effect of other work.</p>
+nothing in it lacks a model-file home. Existing <code>schema.py</code> files are not
+moved as a side effect of other work.</p>
 <p>Shared column groups go in <code>SchemaBase</code> mixins (<code>AccountFieldsMixin</code>,
 <code>KnowledgeScopeMixin</code>).</p>
 <h3 id="mdl-3-createupdate-hold-only-caller-supplied-fields">MDL-3 · <code>Create</code>/<code>Update</code> hold only caller-supplied fields<a class="headerlink" href="#mdl-3-createupdate-hold-only-caller-supplied-fields" title="Permanent link">&para;</a></h3>
