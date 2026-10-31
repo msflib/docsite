@@ -3642,6 +3642,10 @@ python<span class="w"> </span>-m<span class="w"> </span>msflib.core.readiness<sp
 <td><code>--verbose</code></td>
 <td>Include the library log output that is normally captured</td>
 </tr>
+<tr>
+<td><code>--isolation auto\|process\|thread</code></td>
+<td>Where a check that can hang runs. <code>auto</code> (default) is a killable worker process on Linux and a thread elsewhere; on macOS, pass <code>process</code> to get the worker (see <em>Worker processes</em>)</td>
+</tr>
 </tbody>
 </table>
 <p>Exit codes: <code>0</code> ready, <code>10</code> ready with warnings, <code>1</code> not ready. Warnings use <code>10</code> so a deploy
@@ -3669,9 +3673,26 @@ each one blocks and how to fix it), then <strong>Next steps</strong> in the orde
 module whose settings class the application settings inherit. A module with no readiness checks
 is skipped; one whose checks fail to import is reported as a failing check, not hidden.</p>
 <div class="admonition note">
-<p class="admonition-title">SQLite</p>
-<p>Checks run on worker threads so a hung check can time out. An in-memory or file SQLite
-engine must be created with <code>connect_args={"check_same_thread": False}</code>.</p>
+<p class="admonition-title">Worker processes</p>
+<p>A check runs in a forked worker process that is killed when its timeout passes, so a hung
+check cannot keep logging, warning or writing to the context afterwards. The worker sees the
+suite as it is; what it returns (the outcome, the <code>ctx.cache</code> / <code>ctx.facts</code> entries it added,
+changed or removed, and the secrets it fetched) is pickled back. A change made in place to a
+picklable entry (appending to a cached list) is carried back too. Keep the values you store
+picklable: an unpicklable value the check sets is dropped, and one the check did not set stays
+as it was in the caller, so a change made inside it is not seen. The worker also gives any
+database engine in the cache or facts its own connections; it looks 12 levels deep and through
+20,000 objects, and if it has to stop sooner it adds a warning to the check's log, so keep
+engines near the top of what you store.
+Isolation is used on Linux. On other platforms a check runs on a thread, which can time out
+but cannot be stopped, so its late output is not contained there; <code>Context(isolation=...)</code>
+chooses (<code>"auto"</code>, <code>"process"</code>, <code>"thread"</code>), and the command line has <code>--isolation</code>.
+<strong>On macOS, run with <code>--isolation process</code></strong> to get the same containment as on Linux: a timed-out
+check is killed and cannot log or print afterwards. Auto does not pick it there because macOS
+system libraries are not always fork-safe; if a worker crashes with an Objective-C
+"fork() was called" message, set <code>OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES</code> for the run, or stay
+on the thread default. An in-memory or file SQLite engine used in thread
+mode needs <code>connect_args={"check_same_thread": False}</code>.</p>
 </div>
 <h2 id="what-core-checks">What core checks<a class="headerlink" href="#what-core-checks" title="Permanent link">&para;</a></h2>
 <table>
@@ -3791,14 +3812,26 @@ database be recreated.</p>
   captured log lines, remedy reasons) is masked: URL passwords, every fetched secret, and the
   values under sensitive keys (<code>password</code>, <code>token</code>, ... from <code>msflib.core.pii</code>), recursively.</li>
 <li><strong>Warnings count.</strong> A log record at WARNING or above, or a Python warning, emitted by a check's
-  thread turns a <code>PASS</code> into a <code>WARN</code> (exit code <code>10</code>); INFO and DEBUG never change the verdict.
+  worker turns a <code>PASS</code> into a <code>WARN</code> (exit code <code>10</code>); INFO and DEBUG never change the verdict.
   A check whose library is known to be noisy sets <code>promote_warnings=False</code>. Output is attributed
-  to the check whose thread emitted it, even after that check timed out.</li>
-<li><strong>Remedies are captured too.</strong> Log output and warnings from a remedy's <code>ready()</code> and <code>apply()</code>
+  to the check whose worker emitted it; a killed worker has no late output.</li>
+<li><strong><code>isolated=False</code></strong> runs a check in the calling process, with no timeout, for a check that
+  only reads settings and starts no threads. Three checks use it: <code>config.environment</code>,
+  <code>config.secret_key</code> and <code>config.cors</code>; the other <code>config.*</code> checks, such as <code>config.env_file</code>,
+  probe the filesystem, which can hang, and stay isolated. The default is isolated. In the calling
+  process, <code>print</code>, logging and warnings are collected and masked, but text written straight to a
+  file descriptor or to <code>sys.__stdout__</code> is not: only a check that never writes output belongs here.</li>
+<li><strong>Remedies are captured too.</strong> A remedy's <code>ready()</code> and <code>preview()</code> (60 s limit each) and <code>apply()</code> also run in a
+  worker, so they cannot change Python state in the caller beyond <code>ctx.cache</code> / <code>ctx.facts</code>; what
+  they change must be in the database, the filesystem or another process. Their log output and warnings
   are masked and returned with the plan or in <code>fixes_applied[].log</code>; nothing reaches stdout, so
-  <code>--fix --yes --json</code> stays one document.</li>
-<li><strong>A check that timed out gets no automatic remedy</strong>: its thread may still be using the engine.
-  Re-run once the cause is fixed.</li>
+  <code>--fix --yes --json</code> stays one document.
+  <strong>One exception:</strong> when the suite's engine is an in-memory SQLite database, <code>apply()</code> runs in the
+  calling process, with no timeout and no isolation, because a worker's writes to its copy of that
+  database would never reach the caller. Such a remedy can change any Python state in the caller,
+  so keep it to the database. <code>ready()</code> and <code>preview()</code> still run in a worker.</li>
+<li><strong>A check that timed out gets no automatic remedy</strong>: it did not finish, so what is wrong is
+  unknown. Re-run once the cause is fixed.</li>
 <li><strong>Read core settings with <code>ctx.get_setting(name, namespace="CORE")</code></strong> and test explicit values
   with <code>ctx.is_explicitly_set(name, namespace="CORE")</code>, so the checks see the same values in the
   flat and the nested settings layouts.</li>

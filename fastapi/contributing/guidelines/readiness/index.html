@@ -3248,10 +3248,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rdy-5-assume-a-timed-out-check-keeps-running" class="md-nav__link">
+  <a href="#rdy-5-a-check-that-can-hang-runs-where-it-can-be-killed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RDY-5 · Assume a timed-out check keeps running
+        RDY-5 · A check that can hang runs where it can be killed
       
     </span>
   </a>
@@ -3598,10 +3598,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rdy-5-assume-a-timed-out-check-keeps-running" class="md-nav__link">
+  <a href="#rdy-5-a-check-that-can-hang-runs-where-it-can-be-killed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RDY-5 · Assume a timed-out check keeps running
+        RDY-5 · A check that can hang runs where it can be killed
       
     </span>
   </a>
@@ -3730,12 +3730,15 @@ remedy that lists that check in its <code>fixes</code>.</p>
 <code>BLOCKED</code>, a skipped one is <code>SKIP</code>), then the <code>when</code> predicate. A predicate is
 cheap, runs under the check's timeout, and a predicate that raises is a failure.
 A <code>False</code> predicate settles the finding as <code>SKIP</code>, without running the check.</p>
-<h3 id="rdy-5-assume-a-timed-out-check-keeps-running">RDY-5 · Assume a timed-out check keeps running<a class="headerlink" href="#rdy-5-assume-a-timed-out-check-keeps-running" title="Permanent link">&para;</a></h3>
-<p>Every check has a timeout, and a thread cannot be stopped. After a timeout the
-context is forked, plain data is copied and handles are shared, and the late
-output of the abandoned thread must not reach another check, a restored log
-handler or the JSON document. Do not add more global hooks to contain it; the
-planned replacement is a killable worker process (msflib/fastapi#331).</p>
+<h3 id="rdy-5-a-check-that-can-hang-runs-where-it-can-be-killed">RDY-5 · A check that can hang runs where it can be killed<a class="headerlink" href="#rdy-5-a-check-that-can-hang-runs-where-it-can-be-killed" title="Permanent link">&para;</a></h3>
+<p>Every check has a timeout, and a thread cannot be stopped. A check that opens a
+connection, reads the network or touches a mount runs in a worker process
+(<code>isolated=True</code>, the default), which is killed with its process group on timeout,
+so nothing it started can log, warn or write later. Do not add global hooks to
+contain a thread. Only a check that reads settings and starts no threads sets
+<code>isolated=False</code>. Hand state to later checks through <code>ctx.cache</code> / <code>ctx.facts</code>
+(picklable values); a remedy's effects belong in the database or the
+filesystem, not in the caller's memory.</p>
 <h3 id="rdy-6-all-output-goes-through-masking">RDY-6 · All output goes through masking<a class="headerlink" href="#rdy-6-all-output-goes-through-masking" title="Permanent link">&para;</a></h3>
 <p>Fetch secrets with <code>ctx.get_secret</code>, and mask text and structured data with
 <code>msflib.core.pii</code> (<code>mask_text</code>, <code>mask_url</code>, <code>mask_value</code>, <code>SecretSet</code>,
@@ -3788,7 +3791,7 @@ questions the first pull request was asked, one by one.</p>
 <li>[ ] Can any path end <code>READY</code> without the requirement being checked? (RDY-2)</li>
 <li>[ ] Does every failing check link only remedies that can fix it? (RDY-3)</li>
 <li>[ ] Is each predicate cheap, and what happens when it raises or is false? (RDY-4)</li>
-<li>[ ] What does the check write after its timeout? (RDY-5)</li>
+<li>[ ] Does a check that can hang run isolated, and is what it hands on picklable? (RDY-5)</li>
 <li>[ ] Does every check that cannot run without an engine or migration config declare <code>needs=</code>? (RDY-2)</li>
 <li>[ ] Is every string that reaches the report masked, and does it use <code>msflib.core.pii</code>? (RDY-6)</li>
 <li>[ ] Do the text, the JSON and the exit code agree for this change? (RDY-7)</li>
