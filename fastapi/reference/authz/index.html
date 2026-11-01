@@ -1848,6 +1848,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../core/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../core/core/" class="md-nav__link">
         
   
@@ -3104,6 +3132,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.authz.services.AccessService.revoke_resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        revoke_resources
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3359,6 +3398,17 @@
     <span class="md-ellipsis">
       
         revoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.authz.services.access.AccessService.revoke_resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        revoke_resources
       
     </span>
   </a>
@@ -5611,6 +5661,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.authz.services.AccessService.revoke_resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        revoke_resources
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5866,6 +5927,17 @@
     <span class="md-ellipsis">
       
         revoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.authz.services.access.AccessService.revoke_resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        revoke_resources
       
     </span>
   </a>
@@ -8508,7 +8580,7 @@ ancestor chain is batched the same way.</p>
     <div class="doc doc-contents ">
 
         <p>Effective level for many resources at once, as <code>resolve_access</code> for one.</p>
-<p>Two queries, plus one more per <code>RESOURCE_ID_BATCH_SIZE</code> resource ids beyond the
+<p>Two queries, plus one more per <code>msflib.db.batching.BATCH_SIZE</code> resource ids beyond the
 first batch, so the bound-parameter count stays under the database limit.</p>
 <p><code>chains</code> maps each resource id to its ancestor ids (nearest first),
 all of <code>resource_type</code>. Ids in <code>owned_ids</code> resolve to <code>manager</code>.</p>
@@ -8558,6 +8630,29 @@ this write to the node's creation, then commits once.</p>
     <div class="doc doc-contents ">
 
         <p>Delete a row; commits its own unit of work.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.authz.services.AccessService.revoke_resources" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">revoke_resources</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">resource_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resource_ids</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#msflib.authz.services.AccessService.revoke_resources" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Delete every access row on the given resources, in any workspace; returns the count.</p>
+<p>For the owner of a resource to call when it deletes the resource, so its grants
+do not outlive it (a reused id would otherwise inherit them). Each row emits
+<code>resource-access-revoked</code> as <code>revoke</code> does. <code>commit=False</code> is the
+composition form: the caller deletes the resource in the same unit of work and
+commits once.</p>
 
 
     </div>
@@ -9050,7 +9145,7 @@ ancestor chain is batched the same way.</p>
     <div class="doc doc-contents ">
 
         <p>Effective level for many resources at once, as <code>resolve_access</code> for one.</p>
-<p>Two queries, plus one more per <code>RESOURCE_ID_BATCH_SIZE</code> resource ids beyond the
+<p>Two queries, plus one more per <code>msflib.db.batching.BATCH_SIZE</code> resource ids beyond the
 first batch, so the bound-parameter count stays under the database limit.</p>
 <p><code>chains</code> maps each resource id to its ancestor ids (nearest first),
 all of <code>resource_type</code>. Ids in <code>owned_ids</code> resolve to <code>manager</code>.</p>
@@ -9100,6 +9195,29 @@ this write to the node's creation, then commits once.</p>
     <div class="doc doc-contents ">
 
         <p>Delete a row; commits its own unit of work.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.authz.services.access.AccessService.revoke_resources" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">revoke_resources</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">resource_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resource_ids</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#msflib.authz.services.access.AccessService.revoke_resources" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Delete every access row on the given resources, in any workspace; returns the count.</p>
+<p>For the owner of a resource to call when it deletes the resource, so its grants
+do not outlive it (a reused id would otherwise inherit them). Each row emits
+<code>resource-access-revoked</code> as <code>revoke</code> does. <code>commit=False</code> is the
+composition form: the caller deletes the resource in the same unit of work and
+commits once.</p>
 
 
     </div>

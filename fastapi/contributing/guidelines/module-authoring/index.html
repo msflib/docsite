@@ -1848,6 +1848,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../reference/core/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../reference/core/core/" class="md-nav__link">
         
   
@@ -3134,6 +3162,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mod-10-batch-endpoints-use-msflibbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOD-10 · Batch endpoints use msflib.batch
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3619,6 +3658,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mod-10-batch-endpoints-use-msflibbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOD-10 · Batch endpoints use msflib.batch
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3719,6 +3769,15 @@ usage snippets, boundaries, status) and its page under <code>docs/modules/</code
 membership tables; their routers and guards take the check as a parameter
 (API-7). A new module that introduces a membership model adds its own check in
 the same way, and its lookups go through its actions.</p>
+<h3 id="mod-10-batch-endpoints-use-msflibbatch">MOD-10 · Batch endpoints use <code>msflib.batch</code><a class="headerlink" href="#mod-10-batch-endpoints-use-msflibbatch" title="Permanent link">&para;</a></h3>
+<p>A <code>POST /batch</code> route declares one <code>BatchOp</code> subclass per operation, with <code>op</code> a <code>Literal</code>
+and the operation's required fields, and discriminates the union on <code>op</code> so a malformed
+operation is a 422 at the boundary (TYP-3). It registers one handler per class in a
+<code>BatchRunner</code> and passes the caller and scope as the runner's context. A handler checks
+access, acts with <code>commit=False</code> and returns a typed result; the runner commits once or
+rolls back and raises <code>BatchError</code> with the failing operation's id, which the route maps to
+its own status code. Cap the batch size with a setting.</p>
+<p>Reference: <code>modules/drivelink/msflib/drivelink/services/batch.py</code>.</p>
 
 
 

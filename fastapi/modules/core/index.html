@@ -2182,6 +2182,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/core/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/core/core/" class="md-nav__link">
         
   
@@ -4073,6 +4101,11 @@
 <td>App-scoped emitters, <code>on</code>, <code>HookRegistry</code>, <code>emit_optional</code> and <code>emit_required</code></td>
 </tr>
 <tr>
+<td>Batch operations</td>
+<td><code>msflib.batch</code></td>
+<td><code>BatchOp</code>, <code>BatchRequest</code>, <code>BatchResult</code>, <code>BatchResponse</code>, <code>BatchRunner</code> (all-or-nothing handlers per operation class) and <code>BatchError</code>; a module keeps its own route</td>
+</tr>
+<tr>
 <td>Scope</td>
 <td><code>msflib.scope</code></td>
 <td><code>ScopeEnvelope</code>, <code>ScopeCompiler</code>, <code>ScopeFactory</code>, <code>TenantScope</code>, <code>MembershipCheck</code>, dimension registry, <code>get_scope_dependencies</code></td>
@@ -4297,6 +4330,11 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 <td><code>ENVIRONMENT</code></td>
 <td><code>development</code></td>
 <td><code>production</code> or <code>prod</code> disables destructive DB operations</td>
+</tr>
+<tr>
+<td><code>BATCH_MAX_OPS</code></td>
+<td><code>100</code></td>
+<td>Most operations one <code>msflib.batch</code> batch may hold; a module can set its own cap</td>
 </tr>
 <tr>
 <td><code>SERVER_HOST</code>, <code>CLIENT_HOST</code></td>

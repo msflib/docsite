@@ -1848,6 +1848,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../core/" class="md-nav__link">
         
   
@@ -1946,6 +1974,45 @@
   
     <nav class="md-nav" aria-label="db">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.batching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        batching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="batching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.batching.split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        split
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.batching.select_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        select_in
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#msflib.db.cli" class="md-nav__link">
@@ -2408,6 +2475,34 @@
     <span class="md-ellipsis">
       
         hide_literals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transactions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.atomic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        atomic
       
     </span>
   </a>
@@ -3923,6 +4018,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.db.batching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        batching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="batching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.batching.split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        split
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.batching.select_in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        select_in
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.cli" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4394,6 +4528,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transactions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.atomic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        atomic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4452,6 +4614,88 @@
 
 
 
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.db.batching" class="doc doc-heading">
+            <code>batching</code>
+
+
+<a href="#msflib.db.batching" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Bounded <code>IN</code> queries: a long id list is split so no statement binds too many parameters.</p>
+<p>SQLite before 3.32 allows 999 bound parameters per statement, so one <code>IN</code> over thousands
+of ids fails there while it works on PostgreSQL. Every query that filters on a list of ids
+of unknown length goes through <code>select_in</code> (or <code>split</code> when the query is built elsewhere).</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.batching.split" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">split</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Value</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">BATCH_SIZE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Value</span><span class="p">]]</span></code>
+
+<a href="#msflib.db.batching.split" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The distinct <code>values</code> in order, in lists of at most <code>size</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.batching.select_in" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">select_in</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">stmt</span><span class="p">:</span> <span class="n">Select</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">BATCH_SIZE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
+
+<a href="#msflib.db.batching.select_in" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Rows of <code>stmt</code> whose <code>column</code> is among <code>values</code>: one query per batch.</p>
+<p><code>stmt</code> carries every other filter; a <code>stmt</code> selecting entities returns them.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-module">
 
@@ -5672,6 +5916,66 @@ at (a parenthesis is at the depth outside it), and every quoted piece or comment
     <div class="doc doc-contents ">
 
         <p><em>statement</em> with every string, quoted identifier and <code>$$</code> body replaced by <code>'…'</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.db.transactions" class="doc doc-heading">
+            <code>transactions</code>
+
+
+<a href="#msflib.db.transactions" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Transaction helpers shared by services that compose several writes.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.transactions.atomic" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">atomic</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span></code>
+
+<a href="#msflib.db.transactions.atomic" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Run a block in a savepoint: it is rolled back as a unit if it raises.</p>
 
 
     </div>

@@ -2011,6 +2011,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/core/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/core/core/" class="md-nav__link">
         
   
@@ -3780,9 +3808,22 @@
 <td><code>POST /batch</code></td>
 <td>Apply <code>move</code>, <code>delete</code>, <code>rename</code> and <code>copy</code> operations atomically</td>
 </tr>
+<tr>
+<td><code>PUT /nodes/{node_id}/share</code></td>
+<td>Grant a user or group a level (<code>viewer</code>, <code>commenter</code>, <code>editor</code>, <code>manager</code>, or <code>none</code> to exclude) on a node and everything under it; needs <code>manager</code></td>
+</tr>
+<tr>
+<td><code>GET /nodes/{node_id}/shares</code></td>
+<td>List a node's grants; needs <code>manager</code></td>
+</tr>
+<tr>
+<td><code>DELETE /nodes/{node_id}/share/{grant_id}</code></td>
+<td>Revoke a grant; needs <code>manager</code></td>
+</tr>
 </tbody>
 </table>
-<p>Every route except <code>GET /health</code> requires an authenticated account and only returns nodes owned by it. <code>GET /health</code> depends only on <code>get_session</code>, so it is safe to use as a liveness check. There is no per-node sharing: ownership is <code>account_id</code>, and the <code>can_share</code> capability in responses is a flag derived from <code>SHARING_ENABLED</code>, not a sharing implementation.</p>
+<p>Every route except <code>GET /health</code> requires an authenticated account. <code>GET /health</code> depends only on <code>get_session</code>, so it is safe to use as a liveness check.</p>
+<p>A node is reachable by its owner and by any account holding a grant on it or on an ancestor folder (resolved through <code>msflib.authz</code>, nearest grant wins, an explicit <code>none</code> blocks inheritance). The levels needed are <code>viewer</code> to read, download, copy and list a shared folder's children, <code>editor</code> to rename, trash and replace content, and <code>manager</code> to move, delete permanently and manage shares. An account that can read a node but lacks the level an operation needs gets 403; an account with no access gets 404, so a node's existence is not revealed to strangers. A share target must be an existing account that is a member of the node's workspace, or a group in that workspace; anything else is a 404 "Share target not found." Restoring from trash is owner-only, as is anything about a trashed node. Trash and node metadata (<code>is_starred</code>, <code>color_label</code>, <code>custom_properties</code>) belong to the owner: a trashed node is hidden from grantees, and only the owner can change that metadata. Search, recents, starred and trash stay limited to the caller's own nodes: discovering nodes shared with the caller is not implemented.</p>
 <p>Files cannot be uploaded to the root: <code>POST /nodes/{parent_id}/files</code> takes a required folder id, so create a folder first.</p>
 <div class="admonition warning">
 <p class="admonition-title">Known issue (<a href="https://github.com/msflib/fastapi/issues/275">#275</a>)</p>
@@ -3847,7 +3888,12 @@
 <tr>
 <td><code>SHARING_ENABLED</code></td>
 <td><code>false</code></td>
-<td>Only sets <code>capabilities.can_share</code> in responses; no sharing logic exists behind it (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>)</td>
+<td>Only sets <code>capabilities.can_share</code> in responses; the share routes work whatever its value (<a href="https://github.com/msflib/fastapi/issues/278">#278</a>)</td>
+</tr>
+<tr>
+<td><code>MAX_BATCH_OPS</code></td>
+<td>unset</td>
+<td>Most operations one <code>POST /batch</code> may hold; more answers 413. Unset uses <code>CORE.BATCH_MAX_OPS</code> (100)</td>
 </tr>
 <tr>
 <td><code>MULTIPART_UPLOAD_ENABLED</code></td>
@@ -3873,12 +3919,14 @@
 </div>
 <ul>
 <li><strong><code>DrivelinkNodeRead</code></strong>: the response model. It adds <code>is_trashed</code>, <code>thumbnail_url</code> (the storage URL for image files) and <code>capabilities</code> (<code>can_rename</code>, <code>can_delete</code>, <code>can_download</code>, <code>can_share</code>).</li>
-<li><strong><code>DrivelinkAction(settings)</code></strong> (<code>msflib.drivelink.actions</code>): the domain logic. Methods include <code>create_folder</code>, <code>list_children</code>, <code>get_node_for_owner</code>, <code>rename_node</code>, <code>move_node</code>, <code>copy_node</code>, <code>soft_delete</code>, <code>restore</code>, <code>hard_delete</code>, <code>search_nodes</code>, <code>recent_files</code>, <code>starred_nodes</code>, <code>apply_batch</code>, <code>create_file_from_blob</code>, <code>replace_file_content</code> and <code>total_bytes_used</code>. Scope arguments are keyword-only; domain errors are raised as <code>ValueError</code> with a message the router maps to HTTP status codes.</li>
+<li><strong><code>DrivelinkAction(settings)</code></strong> (<code>msflib.drivelink.actions</code>): the database layer. Methods include <code>create_folder</code>, <code>list_children</code>, <code>get_node_for_owner</code>, <code>get_scoped_node</code>, <code>ancestor_ids</code>, <code>rename_node</code>, <code>move_node</code>, <code>copy_node</code>, <code>soft_delete</code>, <code>restore</code>, <code>hard_delete</code>, <code>search_nodes</code>, <code>recent_files</code>, <code>starred_nodes</code>, <code>create_file_from_blob</code>, <code>replace_file_content</code> and <code>total_bytes_used</code>. Mutations take a node the caller is already authorised for rather than a node id. Scope arguments are keyword-only; domain errors are raised as <code>ValueError</code> with a message the router maps to HTTP status codes.</li>
+<li><strong><code>SharingService(settings, is_workspace_member)</code></strong> (<code>msflib.drivelink.services</code>): authorises node access through grants (<code>node_for</code> raises <code>NodeNotFound</code> or <code>AccessDenied</code>), validates and records shares (<code>share</code>, <code>unshare</code>, <code>list_shares</code>), lists a shared folder's visible children, and composes <code>copy</code> over the action. The router builds it from the same <code>is_workspace_member</code> it takes.</li>
+<li><strong><code>BatchService(sharing, settings)</code></strong> (<code>msflib.drivelink.services</code>): applies <code>MoveOp</code>, <code>DeleteOp</code>, <code>RenameOp</code> and <code>CopyOp</code> through <code>msflib.batch.BatchRunner</code>. Each operation checks the caller's access through <code>SharingService</code> (move needs <code>manager</code>, delete and rename <code>editor</code>, copy <code>viewer</code>) and acts without committing; the runner commits once, or rolls everything back and raises <code>BatchError</code> naming the failing operation.</li>
 <li><strong><code>DrivelinkService(settings)</code></strong> (<code>msflib.drivelink.services</code>): the upload layer. It validates an <code>UploadFile</code> against the size and MIME settings, writes it to storage and then calls the action.</li>
 <li><strong>Names</strong>: names must be non-empty after trimming and may not be <code>.</code> or <code>..</code> or contain <code>/</code> or NUL. A sibling with the same name in the same parent returns HTTP 409 ("already exists"). The model docstring recommends a partial unique index on <code>(parent_id, name) WHERE deleted_at IS NULL</code> in your migrations; the module does not create one.</li>
 <li><strong>Trash</strong>: <code>DELETE</code> sets <code>deleted_at</code> and <code>trash_expires_at</code> on the node and all of its descendants. Restore needs the parent to be live and name-collision free. Hard delete removes rows and also deletes the blob unless another node (including a trashed one) still refers to the same storage object. The blob is deleted after the <code>drivelinknode-delete-pre-commit</code> listeners have run, so a listener that raises leaves both the rows and the blob in place. Nothing in this package purges expired trash on its own; <code>trash_expires_at</code> is a timestamp for your own cleanup job.</li>
 <li><strong>Copying files</strong> creates a new node that shares the original's blob rather than duplicating bytes; the blob is deleted only when its last referencing node is hard-deleted. Replacing a file's content writes a new blob, increments <code>version</code>, and removes the old blob if nothing else refers to it.</li>
-<li><strong>Error mapping</strong> in the router: messages containing "not found" give 404; "already exists" or "collision" give 409; "quota exceeded" or "too large" give 413; everything else raised as <code>ValueError</code> gives 400.</li>
+<li><strong>Error mapping</strong> in the router: <code>AccessDenied</code> gives 403; messages containing "not found" give 404; "already exists" or "collision" give 409; "quota exceeded" or "too large" give 413; everything else raised as <code>ValueError</code> gives 400.</li>
 </ul>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
 <p><code>DrivelinkAction</code> is a <code>ModelAction</code>, so it emits the standard lifecycle events on the core event bus: <code>drivelinknode-create-pre-commit</code>, <code>drivelinknode-update-pre-commit</code> and <code>drivelinknode-delete-pre-commit</code>. Listeners receive <code>(node, {"session": session, ...})</code>. The documents module uses these to ingest files; see <a href="../documents/">documents</a>.</p>
@@ -3933,7 +3981,7 @@
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/trash?parent_id=</span><span class="si">{</span><span class="n">folder</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># the trashed q1.txt</span>
 <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">node</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">/restore"</span><span class="p">)</span>    <span class="c1"># 200</span>
 </code></pre></div>
-<p>Run several changes atomically with <code>/batch</code>. Each operation has an <code>id</code> you choose, an <code>op</code> (<code>move</code>, <code>delete</code>, <code>rename</code> or <code>copy</code>) and its arguments. Any failure rolls the whole batch back:</p>
+<p>Run several changes atomically with <code>/batch</code>. Each operation has an <code>id</code> you choose (unique within the batch), an <code>op</code> (<code>move</code>, <code>delete</code>, <code>rename</code> or <code>copy</code>) and the arguments of that operation: <code>node_id</code> for all, plus <code>parent_id</code> for <code>move</code> (optional) and <code>copy</code> (required), <code>name</code> for <code>rename</code> (required) and <code>copy</code> (optional). A malformed, unknown or duplicate operation is a 422, more than <code>DRIVELINK.MAX_BATCH_OPS</code> (default <code>CORE.BATCH_MAX_OPS</code>) operations a 413. Any failure rolls the whole batch back and answers with the failing operation's id in the message, for example <code>Operation 'second': Node not found.</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/drivelink/batch"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"ops"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"op"</span><span class="p">:</span> <span class="s2">"rename"</span><span class="p">,</span> <span class="s2">"node_id"</span><span class="p">:</span> <span class="n">node</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"q1-final.txt"</span><span class="p">},</span>
 <span class="p">]})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>

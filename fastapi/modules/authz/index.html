@@ -2261,6 +2261,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/core/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.batch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/core/core/" class="md-nav__link">
         
   
@@ -4794,7 +4822,7 @@
 <span class="p">)</span>
 <span class="k">assert</span> <span class="n">can_edit</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
 </code></pre></div>
-<p><code>principal_id</code> must be the user's account id or the group id as a positive integer without leading zeros (<code>"42"</code>, not <code>"042"</code>); anything else raises a validation error, because resolution compares it as a string and such a row could never match. The resource (<code>resource_type</code>, <code>resource_id</code>), its <code>workspace_id</code> (<code>None</code> is the workspace-agnostic bucket, a real scope of its own) and the acting account come from the request, so they are parameters of <code>grant</code>, not fields of <code>ResourceAccessCreate</code>, which holds only the principal and the level. <code>resource_type</code> is 1 to 64 characters and <code>resource_id</code> positive, otherwise <code>ValueError</code>. Granting again to the same principal updates the level, records the new grantor when one is passed (otherwise the original stays), and keeps the original <code>workspace_id</code>. <code>revoke</code> deletes an access row. <code>resolve_access</code> and <code>resolve_accesses</code> take the resource's <code>workspace_id</code> and count only rows granted in exactly that workspace (<code>None</code> matches only the workspace-agnostic bucket, not every workspace), so a grant in workspace 7 never authorizes the same resource id in workspace 8. For lists, <code>resolve_accesses</code> resolves many resources at once: one query for the account's groups and one access query per 500 distinct resource ids (a single batch for most lists).</p>
+<p><code>principal_id</code> must be the user's account id or the group id as a positive integer without leading zeros (<code>"42"</code>, not <code>"042"</code>); anything else raises a validation error, because resolution compares it as a string and such a row could never match. The resource (<code>resource_type</code>, <code>resource_id</code>), its <code>workspace_id</code> (<code>None</code> is the workspace-agnostic bucket, a real scope of its own) and the acting account come from the request, so they are parameters of <code>grant</code>, not fields of <code>ResourceAccessCreate</code>, which holds only the principal and the level. <code>resource_type</code> is 1 to 64 characters and <code>resource_id</code> positive, otherwise <code>ValueError</code>. Granting again to the same principal updates the level, records the new grantor when one is passed (otherwise the original stays), and keeps the original <code>workspace_id</code>. <code>revoke</code> deletes an access row. <code>revoke_resources(resource_type=..., resource_ids=...)</code> deletes every row on the given resources in any workspace and returns the count; the module that owns a resource calls it when deleting the resource, so no grant outlives it (<code>commit=False</code> joins the caller's unit of work). <code>resolve_access</code> and <code>resolve_accesses</code> take the resource's <code>workspace_id</code> and count only rows granted in exactly that workspace (<code>None</code> matches only the workspace-agnostic bucket, not every workspace), so a grant in workspace 7 never authorizes the same resource id in workspace 8. For lists, <code>resolve_accesses</code> resolves many resources at once: one query for the account's groups and one access query per 500 distinct resource ids (a single batch for most lists).</p>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
 <p><code>RoleService</code> emits two events, <code>role-assignment-granted</code> and <code>role-assignment-revoked</code>, with <code>RoleAssignmentEventName.ROLE_ASSIGNMENT_GRANTED</code> and <code>RoleAssignmentEventName.ROLE_ASSIGNMENT_REVOKED</code>. <code>GroupService</code> emits <code>group-member-added</code> and <code>group-member-removed</code>, named <code>GroupMemberEventName.GROUP_MEMBER_ADDED</code> and <code>GroupMemberEventName.GROUP_MEMBER_REMOVED</code>. <code>AccessService</code> emits <code>resource-access-granted</code> and <code>resource-access-revoked</code>, named <code>ResourceAccessEventName.RESOURCE_ACCESS_GRANTED</code> and <code>ResourceAccessEventName.RESOURCE_ACCESS_REVOKED</code>. Import the names and the payload contracts from the package's eventbus.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">EVENT_CONTRACTS</span><span class="p">,</span> <span class="n">RoleAssignmentEventName</span>
