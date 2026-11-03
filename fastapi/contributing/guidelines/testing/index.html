@@ -3358,6 +3358,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tst-10-one-shared-test-client-build-another-app-only-when-the-test-needs-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TST-10 · One shared test client; build another app only when the test needs it
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3647,6 +3658,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tst-10-one-shared-test-client-build-another-app-only-when-the-test-needs-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TST-10 · One shared test client; build another app only when the test needs it
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3717,6 +3739,18 @@ module template provides it). It asserts that every parameter is keyword-only
 parameters are required and in the order of API-7. Modules that predate the rule
 add the test when they next change their router. Reference:
 <code>authz/tests/test_router_signature.py</code>.</p>
+<h3 id="tst-10-one-shared-test-client-build-another-app-only-when-the-test-needs-it">TST-10 · One shared test client; build another app only when the test needs it<a class="headerlink" href="#tst-10-one-shared-test-client-build-another-app-only-when-the-test-needs-it" title="Permanent link">&para;</a></h3>
+<p>Router tests share a <code>client</code> (and the <code>app</code> behind it) from the module's
+<code>conftest.py</code>, so the wiring (session override, account, tenant, router
+factory) is written once. A test does not create its own <code>FastAPI()</code> and
+<code>TestClient</code> unless it needs an app the shared one cannot be: a different
+membership check, workspace resolver or router argument. Even then, ask the
+module <code>conftest.py</code> for it: expose a factory fixture (<code>make_app(**overrides)</code>)
+that takes only what differs, and let <code>app</code> call it with the defaults.
+Reference: <code>drivelink/tests/conftest.py</code> (<code>make_app</code>, <code>app</code>,
+<code>app_with_workspace</code>).</p>
+<p>Per-test or per-module app builders repeat the wiring, drift from the router's
+real signature, and have to be edited together when it changes.</p>
 
 
 

@@ -2526,6 +2526,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.authz.actions.GroupMemberAction.build_any_tenant_group_subquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_any_tenant_group_subquery
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5476,6 +5487,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.authz.actions.GroupMemberAction.build_any_tenant_group_subquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_any_tenant_group_subquery
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7522,14 +7544,14 @@ the account sees: workspace ones and its own personal ones.</p>
 
 
 <h4 id="msflib.authz.actions.GroupMemberAction.get_group_ids_for_account" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_group_ids_for_account</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">get_group_ids_for_account</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
 
 <a href="#msflib.authz.actions.GroupMemberAction.get_group_ids_for_account" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Ids of every group this account belongs to (one query).</p>
+        <p>Ids of the groups of <code>tenant_id</code> this account belongs to (one query).</p>
 
 
     </div>
@@ -7540,15 +7562,35 @@ the account sees: workspace ones and its own personal ones.</p>
 
 
 <h4 id="msflib.authz.actions.GroupMemberAction.build_group_subquery" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_group_subquery</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span></code>
+            <code class="highlight language-python"><span class="n">build_group_subquery</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span></code>
 
 <a href="#msflib.authz.actions.GroupMemberAction.build_group_subquery" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Subquery of the account's group ids as strings, to nest in another query.</p>
+        <p>Subquery of the account's group ids in <code>tenant_id</code> as strings, to nest in another
+query.</p>
 <p>Assignments and access rows store a principal id as a string, so the ids are cast to match.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.authz.actions.GroupMemberAction.build_any_tenant_group_subquery" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_any_tenant_group_subquery</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span></code>
+
+<a href="#msflib.authz.actions.GroupMemberAction.build_any_tenant_group_subquery" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>build_group_subquery</code> over the account's groups in every tenant, for a check made
+outside any tenant.</p>
 
 
     </div>
@@ -11268,14 +11310,15 @@ create-with-initial-shares flow), which then commits.</p>
 
 
 <h4 id="msflib.authz.sharing.ResourceSharing.revoke_all" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">revoke_all</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">resource_ids</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">revoke_all</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">resources</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Shareable</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.authz.sharing.ResourceSharing.revoke_all" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Delete every grant on the given resources of a tenant; call when the module deletes them.</p>
+        <p>Delete every grant on the given resources, in the tenant each belongs to, in any
+workspace; call when the module deletes them.</p>
 <p><code>commit=False</code> joins the caller's unit of work: the module deletes its rows in
 the same transaction and commits once.</p>
 
@@ -11840,14 +11883,15 @@ create-with-initial-shares flow), which then commits.</p>
 
 
 <h5 id="msflib.authz.sharing.service.ResourceSharing.revoke_all" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">revoke_all</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">resource_ids</span><span class="p">:</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">revoke_all</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">resources</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Shareable</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.authz.sharing.service.ResourceSharing.revoke_all" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>Delete every grant on the given resources of a tenant; call when the module deletes them.</p>
+        <p>Delete every grant on the given resources, in the tenant each belongs to, in any
+workspace; call when the module deletes them.</p>
 <p><code>commit=False</code> joins the caller's unit of work: the module deletes its rows in
 the same transaction and commits once.</p>
 

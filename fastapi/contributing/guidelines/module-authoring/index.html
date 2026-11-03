@@ -3809,7 +3809,7 @@ and an owning <code>account_id</code>, all stamped from the request (SCP-3); gra
 tenants, and a row outside any workspace shares within its tenant. Use the sharing object
 for access checks, shares, readable children, "shared with me" and grant cleanup, and
 never query <code>resource_access</code> directly. The module deletes grants with
-<code>revoke_all(..., tenant_id=..., commit=False)</code> in the same transaction as the rows (SVC-5). Map
+<code>revoke_all(resources, commit=False)</code> in the same transaction as the rows (SVC-5). Map
 <code>ResourceNotFoundError</code> to 404 and <code>AccessDeniedError</code> to 403.</p>
 <p>Reference: <code>modules/drivelink/msflib/drivelink/services/sharing.py</code>.</p>
 
