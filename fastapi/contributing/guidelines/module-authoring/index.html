@@ -3173,6 +3173,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mod-11-share-resources-through-msflibauthzsharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOD-11 · Share resources through msflib.authz.sharing
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3669,6 +3680,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mod-11-share-resources-through-msflibauthzsharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOD-11 · Share resources through msflib.authz.sharing
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3778,6 +3800,18 @@ access, acts with <code>commit=False</code> and returns a typed result; the runn
 rolls back and raises <code>BatchError</code> with the failing operation's id, which the route maps to
 its own status code. Cap the batch size with a setting.</p>
 <p>Reference: <code>modules/drivelink/msflib/drivelink/services/batch.py</code>.</p>
+<h3 id="mod-11-share-resources-through-msflibauthzsharing">MOD-11 · Share resources through <code>msflib.authz.sharing</code><a class="headerlink" href="#mod-11-share-resources-through-msflibauthzsharing" title="Permanent link">&para;</a></h3>
+<p>A module whose rows can be shared declares <code>msflib-authz</code> as a dependency (ARC-2) and
+builds a <code>ResourceSharing</code> for its resource type from <code>msflib.authz.sharing</code>, passing its
+ancestor lookup, an account-exists check and the host's <code>is_tenant_member</code> and
+<code>is_workspace_member</code>. The rows carry a required <code>tenant_id</code>, a nullable <code>workspace_id</code>
+and an owning <code>account_id</code>, all stamped from the request (SCP-3); grants never cross
+tenants, and a row outside any workspace shares within its tenant. Use the sharing object
+for access checks, shares, readable children, "shared with me" and grant cleanup, and
+never query <code>resource_access</code> directly. The module deletes grants with
+<code>revoke_all(..., tenant_id=..., commit=False)</code> in the same transaction as the rows (SVC-5). Map
+<code>ResourceNotFoundError</code> to 404 and <code>AccessDeniedError</code> to 403.</p>
+<p>Reference: <code>modules/drivelink/msflib/drivelink/services/sharing.py</code>.</p>
 
 
 

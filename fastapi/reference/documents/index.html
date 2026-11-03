@@ -4996,7 +4996,6 @@ register_event_hooks(
     record_action=DocumentRecordAction(),
     queue=make_text_document_queue(IngestionDispatchService(task=...)),
     emitter=app_emitter,
-    tenancy_settings=settings.scope("TENANCY"),
 )
 </code></pre></div>
 
@@ -5024,7 +5023,7 @@ register_event_hooks(
 
 
 <h3 id="msflib.documents.drivelink.register_event_hooks" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_event_hooks</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register_event_hooks</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.documents.drivelink.register_event_hooks" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -5036,9 +5035,7 @@ register_event_hooks(
 job on <code>queue</code> (the <code>text_document</code> queue, see
 <code>make_text_document_queue</code>) without committing, so the Celery dispatch
 itself only fires once <em>this</em> pre-commit hook's own transaction commits.</p>
-<p><code>tenancy_settings</code> is the app's configured <code>TenancySettings</code>; pass the
-same instance startup seeding and request dependencies use so the hooks
-resolve the same default tenant row.</p>
+<p>Each document record takes the tenant of the node that triggered it.</p>
 
 
     </div>
@@ -5100,7 +5097,7 @@ resolve the same default tenant row.</p>
 
 
 <h4 id="msflib.documents.drivelink.eventbus.register_event_hooks" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_event_hooks</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register_event_hooks</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">AppEmitter</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.documents.drivelink.eventbus.register_event_hooks" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5112,9 +5109,7 @@ resolve the same default tenant row.</p>
 job on <code>queue</code> (the <code>text_document</code> queue, see
 <code>make_text_document_queue</code>) without committing, so the Celery dispatch
 itself only fires once <em>this</em> pre-commit hook's own transaction commits.</p>
-<p><code>tenancy_settings</code> is the app's configured <code>TenancySettings</code>; pass the
-same instance startup seeding and request dependencies use so the hooks
-resolve the same default tenant row.</p>
+<p>Each document record takes the tenant of the node that triggered it.</p>
 
 
     </div>
