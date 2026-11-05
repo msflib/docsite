@@ -3881,6 +3881,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.authz.sharing.ResourceSharing.resolve_levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.authz.sharing.ResourceSharing.filter_readable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4102,6 +4113,17 @@
     <span class="md-ellipsis">
       
         require
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.authz.sharing.service.ResourceSharing.resolve_levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_levels
       
     </span>
   </a>
@@ -6842,6 +6864,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.authz.sharing.ResourceSharing.resolve_levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.authz.sharing.ResourceSharing.filter_readable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7063,6 +7096,17 @@
     <span class="md-ellipsis">
       
         require
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.authz.sharing.service.ResourceSharing.resolve_levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_levels
       
     </span>
   </a>
@@ -11212,6 +11256,25 @@ existence is not revealed; <code>AccessDeniedError</code> when it can read it bu
 <div class="doc doc-object doc-function">
 
 
+<h4 id="msflib.authz.sharing.ResourceSharing.resolve_levels" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve_levels</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">resources</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Shareable</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">AccessLevel</span><span class="p">]</span></code>
+
+<a href="#msflib.authz.sharing.ResourceSharing.resolve_levels" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The account's level on each resource, resolved for the whole list at once.</p>
+<p>The owner is <code>manager</code>; an account with no grant gets <code>none</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="msflib.authz.sharing.ResourceSharing.filter_readable" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">filter_readable</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Shareable</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Row</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span></code>
 
@@ -11776,6 +11839,25 @@ workspace shares within its tenant. <code>label</code> names the resource in err
 <p><code>ResourceNotFoundError</code> when the account cannot read the resource at all, so its
 existence is not revealed; <code>AccessDeniedError</code> when it can read it but not at
 <code>min_level</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.authz.sharing.service.ResourceSharing.resolve_levels" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve_levels</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">resources</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Shareable</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">AccessLevel</span><span class="p">]</span></code>
+
+<a href="#msflib.authz.sharing.service.ResourceSharing.resolve_levels" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The account's level on each resource, resolved for the whole list at once.</p>
+<p>The owner is <code>manager</code>; an account with no grant gets <code>none</code>.</p>
 
 
     </div>

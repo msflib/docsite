@@ -4887,6 +4887,10 @@
 <td>The effective level or <code>None</code>, without raising</td>
 </tr>
 <tr>
+<td><code>resolve_levels(resources, account_id=)</code></td>
+<td>The account's level on each resource of a list (<code>none</code> without access, <code>manager</code> for its own), resolved in batched lookups (one per <code>BATCH_SIZE</code> chunk of rows at each tree level) instead of one per row</td>
+</tr>
+<tr>
 <td><code>filter_readable(parent, children, account_id=)</code></td>
 <td>The children of a folder the account may read, in two queries; the parent's owner reads all of them</td>
 </tr>
