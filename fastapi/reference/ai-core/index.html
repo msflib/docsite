@@ -3022,6 +3022,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.classify_provider_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify_provider_error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.build_provider_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_provider_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.check_task_profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_task_profiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.check_encryption_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_encryption_key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.ai_core.router" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6533,6 +6594,67 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.classify_provider_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        classify_provider_error
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.build_provider_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_provider_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.check_task_profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_task_profiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.readiness.check_encryption_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_encryption_key
+      
+    </span>
+  </a>
   
 </li>
         
@@ -10089,6 +10211,126 @@ requested capability.</p>
     </div>
 
 </div>
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ai_core.readiness" class="doc doc-heading">
+            <code>msflib.ai_core.readiness</code>
+
+
+<a href="#msflib.ai_core.readiness" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Readiness checks for the AI capability: provider settings, real calls, task profiles.</p>
+<p>Collected automatically for any application whose settings compose <code>AICoreSettings</code>. The two
+live calls cost a few tokens each; they are marked <code>paid</code> so <code>--offline</code> skips them.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ai_core.readiness.classify_provider_error" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">classify_provider_error</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+
+<a href="#msflib.ai_core.readiness.classify_provider_error" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>auth</code> | <code>model</code> | <code>quota</code> | <code>network</code> | <code>other</code> from a provider error message.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ai_core.readiness.build_provider_failure" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_provider_failure</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">base_url_var</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Outcome</span></code>
+
+<a href="#msflib.ai_core.readiness.build_provider_failure" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Turn a provider exception into an outcome with the step that fixes that kind of failure.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ai_core.readiness.check_task_profiles" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_task_profiles</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Outcome</span></code>
+
+<a href="#msflib.ai_core.readiness.check_task_profiles" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>TASK_PROFILES</code> binds tasks to profiles; a missing one silently uses the default LLM.</p>
+<p>Only global profiles are certain to be found at runtime, so a bound name that exists as a
+tenant, workspace or user profile is reported, not accepted.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ai_core.readiness.check_encryption_key" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_encryption_key</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Outcome</span></code>
+
+<a href="#msflib.ai_core.readiness.check_encryption_key" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Required only once a provider or vector-store profile holds an encrypted key.</p>
+<p>A seed that is set is not enough: a rotated or mistyped one makes every stored key fail to
+decrypt after a restart, so the stored ciphertexts are tried with the seed the cipher will use.</p>
+
+
+    </div>
+
+</div>
+
 
 
   </div>

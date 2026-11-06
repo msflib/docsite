@@ -1477,6 +1477,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-the-modules-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the modules check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#write-a-check" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3572,6 +3583,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-the-modules-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the modules check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#write-a-check" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3797,6 +3819,92 @@ declare</strong> (LangChain's PGVector tables, an extension's catalog) is inform
 <p>A pre-tenancy string <code>tenant_id</code> column is recognised, and the guidance points at
 <code>scripts/migrate_tenant_id_columns.py</code>, the one-time converter, rather than suggesting the
 database be recreated.</p>
+<h2 id="what-the-modules-check">What the modules check<a class="headerlink" href="#what-the-modules-check" title="Permanent link">&para;</a></h2>
+<p>A module's checks load when the application's settings compose that module, at the version the
+application pins. A check that does not apply (the graph backend is <code>none</code>, <code>--offline</code>, a module that is switched off)
+is reported as <code>SKIP</code>. A configured graph backend on a database that cannot run it (AGE on SQLite,
+say) is a <code>WARN</code>, not a skip: the deployment asked for something it cannot have. Setup guidance
+names the variable your settings layout reads (<code>AI_CORE__LLM_API_KEY</code> when the module is a nested
+settings object, <code>LLM_API_KEY</code> when its fields are mixed into the application's settings).</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Check id</th>
+<th>What it proves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ingestion</td>
+<td><code>ingestion.broker</code></td>
+<td>the broker answers and accepts the credentials (password masked)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ingestion.worker</code></td>
+<td>a worker consumes the configured queue</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ingestion.worker.settings</code></td>
+<td>the running worker has the same broker and acks setting as the API</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ingestion.jobs</code></td>
+<td>failed jobs, separated into <em>still failing</em> and <em>left over from a cause that is fixed</em> (older than the last success); jobs queued or processing for too long</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ingestion.dead_letters</code></td>
+<td>no job has exhausted its retries</td>
+</tr>
+<tr>
+<td>knowledge</td>
+<td><code>knowledge.age.extension</code> / <code>.usable</code> / <code>.graph</code></td>
+<td>AGE is installed, created in this database, usable by the application role, and the graph exists</td>
+</tr>
+<tr>
+<td></td>
+<td><code>knowledge.age.write</code></td>
+<td>a vertex can be written and read back (the transaction is rolled back)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>knowledge.pgvector</code></td>
+<td>the extension is created</td>
+</tr>
+<tr>
+<td></td>
+<td><code>knowledge.ontology</code></td>
+<td>every configured ontology pack resolves</td>
+</tr>
+<tr>
+<td>ai_core</td>
+<td><code>ai_core.settings</code></td>
+<td>provider, model and key are present</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ai_core.llm</code>, <code>ai_core.embeddings</code></td>
+<td>a real call succeeds (marked <code>paid</code>; <code>--offline</code> skips them); failures are classified as auth, model, quota or network, each with its own fix</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ai_core.task_profiles</code></td>
+<td>every task in <code>TASK_PROFILES</code> is bound to an active <strong>global</strong> provider profile (tenant, workspace and user profiles are only found for their own requests, so they are reported; the kind a profile serves is not checked, since the runtime asks for it per call)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ai_core.encryption_key</code></td>
+<td>set, and able to decrypt the keys stored in provider and vector-store profiles (checked only once a profile holds an encrypted key)</td>
+</tr>
+</tbody>
+</table>
+<p><code>knowledge.provision</code> is the remedy for the AGE and pgvector checks. It needs a PostgreSQL
+superuser connection in <code>READINESS_PG_SUPERUSER_DSN</code> (environment); without it the check prints
+the equivalent <code>psql</code> commands instead.</p>
 <h2 id="write-a-check">Write a check<a class="headerlink" href="#write-a-check" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># msflib/&lt;module&gt;/readiness.py  (or app/readiness.py for the application's own)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.readiness</span><span class="w"> </span><span class="kn">import</span> <span class="n">Outcome</span><span class="p">,</span> <span class="n">Registry</span><span class="p">,</span> <span class="n">RemedyResult</span><span class="p">,</span> <span class="n">Safety</span><span class="p">,</span> <span class="n">Step</span>
@@ -3835,6 +3943,12 @@ database be recreated.</p>
 <li><strong>Checks are read-only.</strong> A probe that mutates must run in a transaction that is rolled back.</li>
 <li><strong>Declare what you need</strong> with <code>requires</code>, so one root cause is reported once and its
   dependents are <code>BLOCKED</code>.</li>
+<li><strong>Reuse the shared helpers</strong> from <code>msflib.core.readiness</code> instead of writing your own:
+  <code>first_line(value, limit)</code> and <code>describe_error(exc)</code> for an error in a report (never
+  <code>str(exc).splitlines()[0]</code>, which raises for an exception with no message),
+  <code>build_unreadable("the jobs table", exc)</code> for a probe that could not read something,
+  <code>build_restart_steps(ctx)</code> for the restart guidance, <code>build_setting_step(ctx, name, value, namespace=...)</code> for a setting to change (it names the variable the host's layout reads), and <code>ctx.cached(key, factory)</code> for a probe
+  several checks share. Tests build their context with <code>msflib.core.readiness.testing.make_context</code>.</li>
 <li><strong>Use <code>ctx.get_secret(name, namespace="MODULE")</code></strong> for secrets (the namespace is the module's
   settings scope; omit it for a flat settings object). Anything a check reports (detail, steps, evidence,
   captured log lines, remedy reasons) is masked: URL passwords, every fetched secret, and the

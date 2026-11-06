@@ -3770,7 +3770,10 @@ filesystem, not in the caller's memory.</p>
 <h3 id="rdy-6-all-output-goes-through-masking">RDY-6 · All output goes through masking<a class="headerlink" href="#rdy-6-all-output-goes-through-masking" title="Permanent link">&para;</a></h3>
 <p>Fetch secrets with <code>ctx.get_secret</code>, and mask text and structured data with
 <code>msflib.core.pii</code> (<code>mask_text</code>, <code>mask_url</code>, <code>mask_value</code>, <code>SecretSet</code>,
-<code>mask_sensitive</code>), never with a copy of that logic. Mask <code>detail</code>, steps,
+<code>mask_sensitive</code>), never with a copy of that logic. Text that may echo a credential nobody
+fetched (an error stored from a raw exception) goes through <code>mask_credentials</code> as well, and a
+URL shown or compared through <code>strip_url_credentials</code>; a new masking rule belongs in <code>pii</code>, not
+in a module. Mask <code>detail</code>, steps,
 evidence, the log and the unattributed log. Nothing is printed to stdout in
 <code>--json</code> mode, which carries exactly one document: <code>print</code> and stderr output during a check or
 remedy is captured like logging (kept for <code>--verbose</code>, never a warning). A URL's password and its
@@ -3810,7 +3813,7 @@ check, never a missing one.</p>
 <p>Each check has a pass, a fail and a skip test. Timing tests wait on events, not
 sleeps. Run the suite in an environment that has the optional dependencies
 (Alembic), because tests that import them skip without it and hide failures.
-Every review finding gets a regression test that fails first (TST-6).</p>
+Every review finding gets a regression test that fails first (TST-6). Build the context with <code>msflib.core.readiness.testing.make_context</code> rather than a per-module copy.</p>
 <h2 id="vetting-a-readiness-pull-request">Vetting a readiness pull request<a class="headerlink" href="#vetting-a-readiness-pull-request" title="Permanent link">&para;</a></h2>
 <p>Before requesting review, walk the diff against this list. It is the set of
 questions the first pull request was asked, one by one.</p>

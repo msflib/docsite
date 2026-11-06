@@ -895,6 +895,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3671,6 +3682,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4029,6 +4051,9 @@
 </tbody>
 </table>
 <p>Everything is filtered to the caller's resolved tenant and workspace. Routes that act on one job or dead letter return 404 for rows outside it.</p>
+<h2 id="readiness-checks">Readiness checks<a class="headerlink" href="#readiness-checks" title="Permanent link">&para;</a></h2>
+<p><code>msflib.ingestion.readiness</code> is collected automatically when the host composes <code>IngestionSettings</code>. Its read-only checks cover the broker (<code>ingestion.broker</code>), a worker consuming <code>DEFAULT_QUEUE</code> (<code>ingestion.worker</code>) with the same settings as the API (<code>ingestion.worker.settings</code>), and the jobs themselves (<code>ingestion.jobs</code>, <code>ingestion.dead_letters</code>). A queued or processing job is called stuck after <code>QUEUED_STALE_SECONDS</code> and <code>PROCESSING_STALE_SECONDS</code>.</p>
+<p>Run them with <code>python -m msflib.core.readiness --suite app.readiness:suite</code>; see <a href="../../integration/readiness/">Readiness checks</a>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

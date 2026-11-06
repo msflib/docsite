@@ -984,6 +984,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3793,6 +3804,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4210,6 +4232,9 @@
 <p>From then on, every <code>ModelAction</code> create, update and delete on <code>FormSubmission</code> queues the right job in the same transaction as your write, while the app emitter is active: in requests (including FastAPI <code>BackgroundTasks</code>), or in your own code wrapped in <code>with use_app_emitter(app):</code>. Writes from workers, scripts and threads outside that block queue nothing; call <code>records.queue.enqueue_snapshot</code> there. Edits queue a <code>replace</code>, deletes and soft deletes queue a <code>delete</code>, which archives the record's facts. This snippet was not run (it needs your own model); the names come from <code>msflib.knowledge.records</code> and <code>msflib.ingestion.services.sync</code>. Without a <code>version=</code>, an edit made while a job for the row is running can be missed.</p>
 <h3 id="scope-privacy-and-limits-for-records">Scope, privacy and limits for records<a class="headerlink" href="#scope-privacy-and-limits-for-records" title="Permanent link">&para;</a></h3>
 <p>Sensitive keys (<code>password</code>, tokens, secrets, card numbers, <code>ssn</code>, <code>iban</code> and the like, matched case- and separator-insensitively at every depth) are stripped from payloads and metadata before storage and before the mapper sees them. File uploads in a payload are rejected; store files through <code>msflib.documents</code> and put the document's <code>source_key</code> in the payload. Inline payloads over <code>RECORD_MAX_PAYLOAD_BYTES</code> raise <code>RecordPayloadTooLargeError</code>. <code>scope</code> for <code>submit()</code> must come from your request dependencies, never from the request body.</p>
+<h2 id="readiness-checks">Readiness checks<a class="headerlink" href="#readiness-checks" title="Permanent link">&para;</a></h2>
+<p><code>msflib.knowledge.readiness</code> is collected automatically when the host composes <code>KnowledgeSettings</code>. It checks the Apache AGE extension, its usability, the graph and a rolled-back write (<code>knowledge.age.*</code>), pgvector when the AI settings ask for it (<code>knowledge.pgvector</code>) and the ontology packs (<code>knowledge.ontology</code>). The <code>knowledge.provision</code> remedy creates only the backends the settings ask for (AGE and its graph, pgvector) with a superuser DSN, and refuses a DSN that points at another server or database than the one being checked. The AGE checks run against <code>KNOWLEDGE.DATABASE_URL</code> when it is set (the application's database otherwise), and the pgvector check against <code>AI_CORE.VECTOR_STORE_URL</code> when the vector store has its own database.</p>
+<p>Run them with <code>python -m msflib.core.readiness --suite app.readiness:suite</code>; see <a href="../../integration/readiness/">Readiness checks</a>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

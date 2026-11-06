@@ -755,6 +755,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3615,6 +3626,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3969,6 +3991,9 @@
 <li><code>UnifiedLoaderRegistry</code> adds document loaders; see <code>modules/ai_core/msflib/ai_core/services/extraction/README.md</code>.</li>
 <li>The <code>ToolRegistry</code> protocol lets you supply your own tool sets, including MCP-backed ones.</li>
 </ul>
+<h2 id="readiness-checks">Readiness checks<a class="headerlink" href="#readiness-checks" title="Permanent link">&para;</a></h2>
+<p><code>msflib.ai_core.readiness</code> is collected automatically when the host composes <code>AICoreSettings</code>. It checks the LLM and embedding settings (<code>ai_core.settings</code>), makes one real call to each provider (<code>ai_core.llm</code>, <code>ai_core.embeddings</code>; both are <code>paid</code>, so <code>--offline</code> skips them), that every task bound in <code>TASK_PROFILES</code> is bound to an active global profile (<code>ai_core.task_profiles</code>; a tenant, workspace or user profile is only found for its own requests, so it is reported rather than accepted), and that the keys stored in provider and vector-store profiles can be encrypted with a fixed seed (<code>ai_core.encryption_key</code>).</p>
+<p>Run them with <code>python -m msflib.core.readiness --suite app.readiness:suite</code>; see <a href="../../integration/readiness/">Readiness checks</a>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

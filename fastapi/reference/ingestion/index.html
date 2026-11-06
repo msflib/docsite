@@ -3077,6 +3077,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.ingestion.readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.readiness.check_worker_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_worker_settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.readiness.check_jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.ingestion.reasons" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5127,6 +5166,45 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.readiness.check_worker_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_worker_settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.readiness.check_jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_jobs
+      
+    </span>
+  </a>
   
 </li>
         
@@ -7420,6 +7498,86 @@ manual retry) after the dead letter was written.</p>
     </div>
 
 </div>
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.readiness" class="doc doc-heading">
+            <code>msflib.ingestion.readiness</code>
+
+
+<a href="#msflib.ingestion.readiness" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Readiness checks for the ingestion capability: broker, worker and the state of the jobs.</p>
+<p>Collected automatically for any application whose settings compose <code>IngestionSettings</code>
+(see <code>msflib.core.readiness.discovery</code>).</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.readiness.check_worker_settings" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_worker_settings</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Outcome</span></code>
+
+<a href="#msflib.ingestion.readiness.check_worker_settings" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A worker started before a setting changed keeps the old value: the classic stale worker.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.readiness.check_jobs" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_jobs</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Outcome</span></code>
+
+<a href="#msflib.ingestion.readiness.check_jobs" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Failed jobs, split into 'still happening' and 'left over from a cause that is fixed'.</p>
+
+
+    </div>
+
+</div>
+
 
 
   </div>

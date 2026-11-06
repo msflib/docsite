@@ -4613,6 +4613,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.knowledge.readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.knowledge.readiness.check_age_write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_age_write
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.knowledge.records" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8329,6 +8357,34 @@
     <span class="md-ellipsis">
       
         QueryResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.knowledge.readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.knowledge.readiness.check_age_write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_age_write
       
     </span>
   </a>
@@ -14865,14 +14921,15 @@ request time.</p>
 
 
 <h3 id="msflib.knowledge.provisioning.provision_age_and_pgvector" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">provision_age_and_pgvector</span><span class="p">(</span><span class="n">superuser_dsn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">app_role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provision_pgvector</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">provision_age_and_pgvector</span><span class="p">(</span><span class="n">superuser_dsn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">app_role</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">graph_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">provision_pgvector</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">provision_age</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.knowledge.provisioning.provision_age_and_pgvector" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Idempotently provision AGE (and optionally pgvector) for <code>app_role</code>.</p>
+        <p>Idempotently provision AGE and pgvector, each only if asked for.</p>
+<p>AGE needs the <code>app_role</code> to grant to and the <code>graph_name</code> to create; pgvector needs neither.</p>
 <p><code>superuser_dsn</code> must authenticate as a Postgres superuser (or a role
 with <code>CREATEDB</code>/extension-owner privilege) pointed at the target
 database — the app's normal runtime DSN will not work here and should
@@ -15331,6 +15388,68 @@ exact names are unknown.</p>
 
 </div>
 
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.knowledge.readiness" class="doc doc-heading">
+            <code>msflib.knowledge.readiness</code>
+
+
+<a href="#msflib.knowledge.readiness" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Readiness checks for the knowledge capability: Apache AGE, pgvector and the ontology.</p>
+<p>Collected automatically for any application whose settings compose <code>KnowledgeSettings</code>.
+The checks are read-only; the one write probe runs inside a transaction that is rolled back.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.knowledge.readiness.check_age_write" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_age_write</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Outcome</span></code>
+
+<a href="#msflib.knowledge.readiness.check_age_write" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Creates and reads back a vertex inside a transaction that is always rolled back.</p>
+
+
+    </div>
+
+</div>
 
 
 
