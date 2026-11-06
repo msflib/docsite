@@ -560,6 +560,67 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#service-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create_account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#events" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -603,6 +664,17 @@
     <span class="md-ellipsis">
       
         Create an account from code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-the-service-functions-from-your-own-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Call the service functions from your own route
       
     </span>
   </a>
@@ -3795,6 +3867,67 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#service-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create_account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#events" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3838,6 +3971,17 @@
     <span class="md-ellipsis">
       
         Create an account from code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-the-service-functions-from-your-own-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Call the service functions from your own route
       
     </span>
   </a>
@@ -4051,7 +4195,7 @@
 <tr>
 <td><code>USERS_OPEN_REGISTRATION</code></td>
 <td><code>False</code></td>
-<td>When false, <code>POST /account/open</code> returns 403.</td>
+<td>When false, <code>POST /account/open</code> returns 403. Also enforced by <code>create_account(..., require_open_registration=True)</code>.</td>
 </tr>
 <tr>
 <td><code>OPEN_REGISTRATION_PATH</code></td>
@@ -4105,7 +4249,115 @@
 </code></pre></div>
 <p><code>AccountAction</code> adds <code>get_by_email</code>, <code>authenticate</code>, <code>ensure_unique_fields</code> (checks <code>email</code>, <code>phone</code> and <code>username</code> by default), and <code>create</code>, which hashes the password, lower-cases the email and, when a <code>profile_action</code> is configured and the data has a <code>profile</code>, creates the profile in the same transaction. Constructing it without <code>settings</code> still works but emits a <code>DeprecationWarning</code>.</p>
 <p><code>AccountAction.resolve_workspace_context</code>, <code>build_access_token_claims</code> and <code>decorate_access_token_payload</code> are stubs kept for compatibility and return empty values. The working versions are on <code>WorkspaceAction</code> in <a href="../workspaces/">workspaces</a>.</p>
-<p>The <code>msflib.account.services.account</code> module offers <code>create_account</code>, <code>update_account</code> and <code>get_account</code>, which the routers use; call them if you need the same event and email behaviour outside a route.</p>
+<h3 id="service-functions">Service functions<a class="headerlink" href="#service-functions" title="Permanent link">&para;</a></h3>
+<p>The <code>msflib.account.services.account</code> module offers <code>create_account</code>, <code>update_account</code> and <code>get_account</code>, which the routers use. Call them if you need the same event, email and validation behaviour outside a route (background jobs, CLI commands, custom routes, tests).</p>
+<div class="admonition warning">
+<p class="admonition-title">The security checks are opt-in</p>
+<p><code>require_open_registration</code> and <code>verify_current_password</code> both default to <code>False</code>. Calling a service function directly performs <strong>no</strong> open-registration or current-password check unless you pass the flag. The module's own routers pass them where appropriate (the open registration route and <code>PUT /account/me</code>); the admin routes do not. If you call these functions from a user-facing code path, pass the flag yourself.</p>
+</div>
+<h4 id="create_account"><code>create_account</code><a class="headerlink" href="#create_account" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">create_account</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">AccountCreateType</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="p">:</span> <span class="n">AccountAction</span><span class="p">,</span>
+    <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span>
+    <span class="n">email_template_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"new_account.html"</span><span class="p">,</span>
+    <span class="n">unique_fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">require_open_registration</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountType</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>email_template_file</code></td>
+<td><code>"new_account.html"</code></td>
+<td>Template for the welcome email.</td>
+</tr>
+<tr>
+<td><code>unique_fields</code></td>
+<td><code>None</code></td>
+<td>Fields checked for uniqueness. <code>None</code> uses the action's defaults (<code>email</code>, <code>phone</code>, <code>username</code>).</td>
+</tr>
+<tr>
+<td><code>require_open_registration</code></td>
+<td><code>False</code></td>
+<td>Keyword-only. When <code>True</code>, raises <code>403</code> (<code>Open account registration is forbidden on this server</code>) unless <code>ACCOUNT.USERS_OPEN_REGISTRATION</code> is enabled.</td>
+</tr>
+</tbody>
+</table>
+<p>With the default <code>False</code> there is no registration-policy check, which is right for trusted callers such as admin creation, seeding the first superuser, or internal jobs. Pass <code>True</code> for any public self-signup path so that the call fails closed when open registration is off.</p>
+<p>The function checks the registration policy (if requested), checks uniqueness, emits <code>account-pre-create</code>, checks uniqueness again (listeners may change unique fields), creates the account, emits <code>account-created-pre-email</code>, sends the welcome email when <code>CORE.EMAILS_ENABLED</code> is true and the account has an email, and finally emits <code>account-created</code>.</p>
+<h4 id="update_account"><code>update_account</code><a class="headerlink" href="#update_account" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">update_account</span><span class="p">(</span>
+    <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">AccountUpdateType</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="p">:</span> <span class="n">AccountAction</span><span class="p">,</span>
+    <span class="n">unique_fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">verify_current_password</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountType</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unique_fields</code></td>
+<td><code>None</code></td>
+<td>Fields checked for uniqueness. The account being updated is excluded from the check.</td>
+</tr>
+<tr>
+<td><code>verify_current_password</code></td>
+<td><code>False</code></td>
+<td>Keyword-only. When <code>True</code>, changing the password or email requires the caller's current password. The email check runs again after the <code>account-pre-update</code> listeners, so a listener cannot add an email change that skips it.</td>
+</tr>
+</tbody>
+</table>
+<p>With the default <code>False</code> there is no password check, which is right for admin updates and trusted internal callers. Pass <code>True</code> when an account updates <strong>itself</strong>. The check applies only when the update sets <code>new_password</code> or changes <code>email</code> to a different address; other changes need no password. Emails are compared after trimming and lowercasing, so resending the current address in a different case counts as unchanged. It then behaves as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current_password</code> missing</td>
+<td><code>422</code> (<code>Current password is required to change your password or email</code>)</td>
+</tr>
+<tr>
+<td><code>current_password</code> wrong</td>
+<td><code>400</code> (<code>Incorrect current password</code>)</td>
+</tr>
+<tr>
+<td><code>current_password</code> correct</td>
+<td>The update proceeds.</td>
+</tr>
+</tbody>
+</table>
+<p>The function loads the account, runs the password check (if requested), checks uniqueness, emits <code>account-pre-update</code>, rechecks the password if a listener introduced an email change, checks uniqueness again, saves the update, and emits <code>account-updated</code>.</p>
+<p><code>update_account</code> and <code>get_account</code> raise <code>404</code> when the account does not exist.</p>
+<h4 id="get_account"><code>get_account</code><a class="headerlink" href="#get_account" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">get_account</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">AccountAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountType</span>
+</code></pre></div>
+<p>Returns the account or raises <code>404</code>.</p>
+<h4 id="password-handling">Password handling<a class="headerlink" href="#password-handling" title="Permanent link">&para;</a></h4>
+<p>Plaintext passwords are kept away from event listeners; the event table below lists the payloads. The helpers behind this are <code>scrub_secrets(data)</code>, which redacts <code>current_password</code> and <code>new_password</code> on an update payload in place and marks them unset, and <code>redact_password(data)</code>, which returns a copy of a create payload with <code>password</code> redacted and leaves the original unchanged.</p>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
 <p>Names are in <code>msflib.account.eventbus.EventName</code>:</p>
 <table>
@@ -4168,6 +4420,33 @@
     <span class="p">)</span>
 </code></pre></div>
 <p><code>account_action.random(...)</code> builds a populated <code>AccountCreate</code> for tests and seed scripts.</p>
+<h3 id="call-the-service-functions-from-your-own-route">Call the service functions from your own route<a class="headerlink" href="#call-the-service-functions-from-your-own-route" title="Permanent link">&para;</a></h3>
+<p>Pass the opt-in flags when the call serves a user-facing path:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.services.account</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_account</span><span class="p">,</span> <span class="n">update_account</span>
+
+
+<span class="c1"># Public signup: fails with 403 unless ACCOUNT.USERS_OPEN_REGISTRATION is on.</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">create_account</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="p">,</span>
+    <span class="n">settings</span><span class="p">,</span>
+    <span class="n">require_open_registration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Self-service update: changing email or password needs the current password.</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">update_account</span><span class="p">(</span>
+    <span class="n">account_id</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">update_data</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="p">,</span>
+    <span class="n">verify_current_password</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Trusted callers (admin tools, seed scripts) can rely on the defaults,</span>
+<span class="c1"># which skip both checks.</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">create_account</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">account_action</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="use-a-custom-registration-schema">Use a custom registration schema<a class="headerlink" href="#use-a-custom-registration-schema" title="Permanent link">&para;</a></h3>
 <p>Pass <code>account_create_type=</code> to <code>account_router</code> and <code>account_admin_router</code> to validate request bodies against a subclass of <code>AccountCreate</code>. The route path and response model do not change.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span>
@@ -4201,7 +4480,23 @@
 <tbody>
 <tr>
 <td><code>POST /account/open</code> returns 403</td>
-<td><code>USERS_OPEN_REGISTRATION</code> is false.</td>
+<td><code>USERS_OPEN_REGISTRATION</code> is false. The same 403 comes from <code>create_account(..., require_open_registration=True)</code>.</td>
+</tr>
+<tr>
+<td>Your own signup route accepts registrations while <code>USERS_OPEN_REGISTRATION</code> is false</td>
+<td>You called <code>create_account</code> without <code>require_open_registration=True</code>. The check is opt-in.</td>
+</tr>
+<tr>
+<td>Your own self-update route changes email or password without asking for the current password</td>
+<td>You called <code>update_account</code> without <code>verify_current_password=True</code>. The check is opt-in.</td>
+</tr>
+<tr>
+<td>422 "Current password is required to change your password or email"</td>
+<td><code>verify_current_password=True</code> and the update sets <code>new_password</code> or <code>email</code> without <code>current_password</code>.</td>
+</tr>
+<tr>
+<td>400 "Incorrect current password"</td>
+<td><code>current_password</code> does not match the stored hash.</td>
 </tr>
 <tr>
 <td>422 "An account with this email already exists in the system"</td>
