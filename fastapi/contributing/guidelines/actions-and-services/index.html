@@ -3854,12 +3854,6 @@
   from a service or router.</li>
 <li>Services use an existing action instead of querying the session directly.</li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Known gap</p>
-<p><code>auth/router.py</code> sets <code>last_login_date</code> on login with <code>session.add()</code> and
-<code>session.commit()</code> directly. Don't copy it; it needs its own change to go
-through the account action.</p>
-</div>
 <h3 id="svc-2-actions-hold-only-database-concerns">SVC-2 · Actions hold only database concerns<a class="headerlink" href="#svc-2-actions-hold-only-database-concerns" title="Permanent link">&para;</a></h3>
 <p>Keep in the action: query construction (filters, ordering, joins) and write
 concurrency mechanics (nested transactions, <code>IntegrityError</code> fallbacks). Move

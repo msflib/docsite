@@ -4016,7 +4016,7 @@
 </tr>
 </tbody>
 </table>
-<p>The router takes optional hooks: <code>access_token_claims_decorator(account, context)</code> adds claims to the JWT, <code>access_token_decorator(payload, context)</code> rewrites the login response, <code>send_reset_pwd_email_override</code> replaces the recovery email sender, <code>access_token_response_type</code> replaces the <code>Token</code> response model, and <code>auth_payload_type</code> validates extra data a client sends to the Google callback.</p>
+<p>The router takes optional hooks: <code>access_token_claims_decorator(account, context)</code> adds claims to the JWT, <code>access_token_decorator(payload, context)</code> rewrites the login response, <code>send_reset_pwd_email_override</code> replaces the recovery email sender, <code>access_token_response_type</code> replaces the <code>Token</code> response model, <code>auth_payload_type</code> validates extra data a client sends to the Google callback, and <code>account_action</code> replaces the action the router uses to look up accounts and record logins and password resets (see <a href="../../integration/subclassing-actions/">Subclassing actions</a>). Because those writes go through the action, password resets fire the account's <code>update-pre-commit</code> and <code>update-post-commit</code> events. Logins fire those events only when the account model defines a <code>last_login_date</code> field (the update is skipped otherwise).</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Settings live in the <code>AUTH</code> namespace (<code>msflib.auth.config.AuthSettings</code>).</p>
 <table>
