@@ -825,6 +825,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../modules/realtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    realtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../modules/learning-structure/" class="md-nav__link">
         
   
@@ -1320,6 +1348,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSE and WebSockets
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1336,6 +1382,36 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-from-per-app-sse-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating from per-app SSE code
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2174,6 +2250,34 @@
     
   
     msflib.tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/core/realtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.realtime
   
 
     
@@ -3406,6 +3510,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-from-per-app-sse-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating from per-app SSE code
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3422,14 +3545,16 @@
 
 
 <h1 id="sse-and-websockets">SSE and WebSockets<a class="headerlink" href="#sse-and-websockets" title="Permanent link">&para;</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Planned page</p>
-<p>This page is a placeholder from the docs restructure (<a href="https://github.com/msflib/fastapi/issues/262">#262</a>).</p>
-</div>
-<p><strong>Migrate from:</strong></p>
+<p><code>msflib.realtime</code> is the canonical way to push backend events to clients over SSE or WebSocket. See the <strong><a href="../../modules/realtime/">realtime module page</a></strong> for wiring, configuration, authentication, the conversation bridge and troubleshooting.</p>
+<h2 id="migrating-from-per-app-sse-code">Migrating from per-app SSE code<a class="headerlink" href="#migrating-from-per-app-sse-code" title="Permanent link">&para;</a></h2>
+<p>If your app has its own <code>SystemEvents</code> class or a hand-rolled SSE endpoint, the issues it likely has (and that <code>msflib.realtime</code> fixes) are:</p>
 <ul>
-<li><code>PR #260 (msflib.realtime), once merged</code></li>
+<li>Events delivered newest-first because <code>list.pop()</code> is used instead of <code>list.pop(0)</code> or a deque</li>
+<li>Events split between two clients of the same workspace because new connections replace the stored generator</li>
+<li>Events emitted while no client was connected replayed to the next connection with no bound on backlog size</li>
+<li>Non-unique event ids that prevent correct resume after reconnect</li>
 </ul>
+<p>Replace your per-app code by following the <a href="../../modules/realtime/#wiring-into-a-host-app">wiring guide</a> and emitting events with <code>hub.emit(channel, event, data)</code>. Remove the old SSE endpoint and the <code>SystemEvents</code> class.</p>
 
 
 

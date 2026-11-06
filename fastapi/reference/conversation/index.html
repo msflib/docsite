@@ -825,6 +825,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../modules/realtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    realtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../modules/learning-structure/" class="md-nav__link">
         
   
@@ -2184,6 +2212,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../core/realtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    msflib.realtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../core/utils/" class="md-nav__link">
         
   
@@ -3197,6 +3253,73 @@
     <span class="md-ellipsis">
       
         register_memory_cleanup_listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        realtime
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="realtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.ConversationRealtimeBridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ConversationRealtimeBridge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ConversationRealtimeBridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.ConversationRealtimeBridge.attach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        attach
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.conversation_id_of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        conversation_id_of
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.conversation_authorizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        conversation_authorizer
       
     </span>
   </a>
@@ -6500,6 +6623,73 @@
     <span class="md-ellipsis">
       
         register_memory_cleanup_listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        realtime
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="realtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.ConversationRealtimeBridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ConversationRealtimeBridge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ConversationRealtimeBridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.ConversationRealtimeBridge.attach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        attach
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.conversation_id_of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        conversation_id_of
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.integrations.realtime.conversation_authorizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        conversation_authorizer
       
     </span>
   </a>
@@ -10157,6 +10347,173 @@ threaded through as <code>sub_namespace</code> instead (an opaque segment
 namespace it just purged. No-ops if <code>msflib.ai_core</code> isn't installed.
 Pass <code>app=</code> to bind to a specific app-scoped emitter instead of the
 process-global one.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.conversation.integrations.realtime" class="doc doc-heading">
+            <code>realtime</code>
+
+
+<a href="#msflib.conversation.integrations.realtime" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Realtime bridge -- pushes conversation events to connected clients (SSE / WebSocket).</p>
+<p>Direction of coupling: this module needs <code>msflib.realtime</code> (core) and is imported only by hosts
+that want live conversations; <code>msflib.conversation</code> itself never imports it.</p>
+<ul>
+<li>Every conversation domain event (message posted, member joined, reaction added...) is forwarded
+  to the channel <code>conversation:&lt;public_id&gt;</code>. Events are emitted after the transaction commits,
+  so a client never hears about something that was rolled back.</li>
+<li>The events are <strong>notifications, not content</strong>: they carry ids (<code>message_id</code>, <code>thread_id</code>,
+  <code>sender_*</code>), never message text. The client fetches the message through the normal
+  authenticated, access-checked HTTP surface -- a bug or a misconfigured channel can therefore not
+  leak a conversation's content, and large messages do not travel through the event store.</li>
+<li><code>conversation_authorizer</code> decides who may listen: exactly the participants that may read the
+  conversation (<code>AccessService</code>), evaluated when a stream or subscription starts.</li>
+</ul>
+<p>Wiring::</p>
+<div class="codehilite"><pre><span></span><code>bridge = ConversationRealtimeBridge(hub)
+bridge.attach(emitter)                        # once, at startup
+
+from msflib.realtime.router import router
+authorizer = route_authorizers({
+    CHANNEL_PREFIX: conversation_authorizer(session_factory=lambda: Session(engine)),
+})
+app.include_router(router(hub=hub, authenticators=[...], authorizer=authorizer))
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.conversation.integrations.realtime.ConversationRealtimeBridge" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">ConversationRealtimeBridge</span><span class="p">(</span><span class="n">hub</span><span class="p">:</span> <span class="n">RealtimeHub</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">events</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">EventName</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#msflib.conversation.integrations.realtime.ConversationRealtimeBridge" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Forwards conversation domain events to a <code>RealtimeHub</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.conversation.integrations.realtime.ConversationRealtimeBridge.attach" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">attach</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">Emitter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span></code>
+
+<a href="#msflib.conversation.integrations.realtime.ConversationRealtimeBridge.attach" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Start forwarding domain events from <code>target</code> to the hub. Returns a detach callable.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.conversation.integrations.realtime.conversation_id_of" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">conversation_id_of</span><span class="p">(</span><span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.conversation.integrations.realtime.conversation_id_of" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The conversation a channel belongs to, or <code>None</code> if it is not a conversation channel.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.conversation.integrations.realtime.conversation_authorizer" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">conversation_authorizer</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_factory</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">AbstractContextManager</span><span class="p">[</span><span class="n">Session</span><span class="p">]],</span> <span class="n">tenant_id_for</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Session</span><span class="p">,</span> <span class="n">StreamIdentity</span><span class="p">],</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Authorizer</span></code>
+
+<a href="#msflib.conversation.integrations.realtime.conversation_authorizer" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>May this principal listen to this <code>conversation:&lt;id&gt;</code> channel?</p>
+<p>Yes exactly when <code>AccessService.resolve_conversation</code> would let them read it: the same
+visibility and membership rules as the HTTP surface. <code>principal.id</code> is the account id, as for
+<code>get_participant</code> in <code>deps.py</code>; <code>tenant_id_for</code> defaults to the default tenant.</p>
 
 
     </div>
