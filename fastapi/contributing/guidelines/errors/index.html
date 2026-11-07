@@ -3893,9 +3893,6 @@ errors (<code>InvalidInputError</code> and subclasses, <code>NotFoundError</code
 and <code>ExternalServiceError</code> as retryable. Raise the class that matches, and the
 worker needs no special case.</p>
 <h2 id="known-gaps">Known gaps<a class="headerlink" href="#known-gaps" title="Permanent link">&para;</a></h2>
-<p>Not yet moved to core classes: <code>payments</code> defines its own <code>PaymentResponseError</code>
-and <code>PaymentConnectionError</code>, which could derive from <code>ExternalServiceError</code>.
-Tracked in <a href="https://github.com/msflib/fastapi/issues/266">#266</a>.</p>
 <p><code>modules/conversation/.../integrations/ai_bridge.py</code> builds FastAPI dependencies
 and raises <code>HTTPException</code> in them. They are dependencies in the ERR-1 sense but
 live outside a <code>deps.py</code>; they move there, or raise domain exceptions, when that
