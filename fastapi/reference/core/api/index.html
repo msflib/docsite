@@ -1942,6 +1942,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.api.register_exception_handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register_exception_handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.api.create_enhanced_router" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1991,6 +2002,45 @@
     <span class="md-ellipsis">
       
         get_keystore_factory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.api.errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.api.errors.status_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status_for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.api.errors.register_exception_handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register_exception_handlers
       
     </span>
   </a>
@@ -3352,6 +3402,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../contributing/guidelines/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors and exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../contributing/guidelines/api-boundary/" class="md-nav__link">
         
   
@@ -3701,6 +3779,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.api.register_exception_handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register_exception_handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.api.create_enhanced_router" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3750,6 +3839,45 @@
     <span class="md-ellipsis">
       
         get_keystore_factory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.api.errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.api.errors.status_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        status_for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.api.errors.register_exception_handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register_exception_handlers
       
     </span>
   </a>
@@ -3980,6 +4108,24 @@ transparently delegated to the underlying :class:<code>~fastapi.APIRouter</code>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="msflib.api.register_exception_handlers" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">register_exception_handlers</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.api.register_exception_handlers" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Answer any :class:<code>BaseServiceError</code> with its mapped status and a <code>detail</code> body.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="msflib.api.create_enhanced_router" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">create_enhanced_router</span><span class="p">(</span><span class="n">router</span><span class="p">:</span> <span class="n">APIRouter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EnhancedAPIRouter</span></code>
 
@@ -4191,6 +4337,84 @@ def my_router(get_session, create_type=MyCreate):
     <div class="doc doc-contents ">
 
         <p>Return a dependency that provides a keystore (Redis or in-memory).</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.api.errors" class="doc doc-heading">
+            <code>errors</code>
+
+
+<a href="#msflib.api.errors" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>Map domain exceptions to HTTP responses at the request layer.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.api.errors.status_for" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">status_for</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="n">BaseServiceError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#msflib.api.errors.status_for" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the status of the most specific mapped class; unmapped errors are 500.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.api.errors.register_exception_handlers" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">register_exception_handlers</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.api.errors.register_exception_handlers" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Answer any :class:<code>BaseServiceError</code> with its mapped status and a <code>detail</code> body.</p>
 
 
     </div>

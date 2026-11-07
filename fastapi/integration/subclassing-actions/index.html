@@ -3302,6 +3302,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../contributing/guidelines/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors and exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../contributing/guidelines/api-boundary/" class="md-nav__link">
         
   
@@ -3811,8 +3839,8 @@
 <p>Subclass, add methods, and override the write method when a rule must apply to every write. Keep the full signature, including <code>commit</code>, and pass everything through to <code>super()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConflictError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">select</span>
 
 
@@ -3835,12 +3863,12 @@
         <span class="n">account_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">update</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"account_id"</span><span class="p">)</span>
         <span class="n">count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">())</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Note</span><span class="o">.</span><span class="n">account_id</span> <span class="o">==</span> <span class="n">account_id</span><span class="p">))</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_per_account</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">409</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"Note limit reached"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ConflictError</span><span class="p">(</span><span class="s2">"Note limit reached"</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">,</span> <span class="n">decorator</span><span class="o">=</span><span class="n">decorator</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="n">commit</span>
         <span class="p">)</span>
 </code></pre></div>
-<p>Raising <code>HTTPException</code> in an action works because FastAPI converts it when the action runs inside a request. For code that also runs from scripts or workers, raise your own exception type and translate it in the router.</p>
+<p>Raise a domain exception such as <code>ConflictError</code> from <code>msflib.core.exceptions</code>, not <code>HTTPException</code>, so the action also works from scripts and workers. Call <code>register_exception_handlers(app)</code> from <code>msflib.api</code> once on your <code>FastAPI</code> app and it answers with the mapped status (409 here) and a <code>detail</code> body. See <a href="../../contributing/guidelines/errors/">Errors and exceptions</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Keep <code>commit</code> in overrides</p>
 <p><code>ModelAction.create_random</code> (used by tests and seeders) checks whether your <code>create</code> and <code>create_multi</code> accept <code>commit</code>. An override without it still works but emits a <code>DeprecationWarning</code>, and support for such overrides is slated for removal.</p>

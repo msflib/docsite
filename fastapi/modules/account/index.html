@@ -3457,6 +3457,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../contributing/guidelines/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors and exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../contributing/guidelines/api-boundary/" class="md-nav__link">
         
   
@@ -4289,7 +4317,7 @@
 <tr>
 <td><code>require_open_registration</code></td>
 <td><code>False</code></td>
-<td>Keyword-only. When <code>True</code>, raises <code>403</code> (<code>Open account registration is forbidden on this server</code>) unless <code>ACCOUNT.USERS_OPEN_REGISTRATION</code> is enabled.</td>
+<td>Keyword-only. When <code>True</code>, raises <code>PermissionDeniedError</code> (<code>Open account registration is forbidden on this server</code>; 403 over HTTP) unless <code>ACCOUNT.USERS_OPEN_REGISTRATION</code> is enabled.</td>
 </tr>
 </tbody>
 </table>
@@ -4338,11 +4366,11 @@
 <tbody>
 <tr>
 <td><code>current_password</code> missing</td>
-<td><code>422</code> (<code>Current password is required to change your password or email</code>)</td>
+<td><code>InvalidInputError</code> (<code>Current password is required to change your password or email</code>; 422)</td>
 </tr>
 <tr>
 <td><code>current_password</code> wrong</td>
-<td><code>400</code> (<code>Incorrect current password</code>)</td>
+<td><code>IncorrectPasswordError</code> (<code>Incorrect current password</code>; <code>PUT /account/me</code> answers 400)</td>
 </tr>
 <tr>
 <td><code>current_password</code> correct</td>
@@ -4351,11 +4379,11 @@
 </tbody>
 </table>
 <p>The function loads the account, runs the password check (if requested), checks uniqueness, emits <code>account-pre-update</code>, rechecks the password if a listener introduced an email change, checks uniqueness again, saves the update, and emits <code>account-updated</code>.</p>
-<p><code>update_account</code> and <code>get_account</code> raise <code>404</code> when the account does not exist.</p>
+<p><code>update_account</code> and <code>get_account</code> raise <code>NotFoundError</code> (404 over HTTP) when the account does not exist. The exceptions live in <code>msflib.core.exceptions</code>; call <code>register_exception_handlers(app)</code> from <code>msflib.api</code> so an app maps them to responses.</p>
 <h4 id="get_account"><code>get_account</code><a class="headerlink" href="#get_account" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="n">get_account</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">AccountAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountType</span>
 </code></pre></div>
-<p>Returns the account or raises <code>404</code>.</p>
+<p>Returns the account or raises <code>NotFoundError</code>.</p>
 <h4 id="password-handling">Password handling<a class="headerlink" href="#password-handling" title="Permanent link">&para;</a></h4>
 <p>Plaintext passwords are kept away from event listeners; the event table below lists the payloads. The helpers behind this are <code>scrub_secrets(data)</code>, which redacts <code>current_password</code> and <code>new_password</code> on an update payload in place and marks them unset, and <code>redact_password(data)</code>, which returns a copy of a create payload with <code>password</code> redacted and leaves the original unchanged.</p>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
