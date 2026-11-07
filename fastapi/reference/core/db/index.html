@@ -2527,10 +2527,93 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.db.transactions.OuterCommitQueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OuterCommitQueue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OuterCommitQueue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.OuterCommitQueue.add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.run_after_commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_after_commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.is_after_commit_pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_after_commit_pending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.open_after_commit_session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_after_commit_session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.row_snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        row_snapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.transactions.atomic" class="md-nav__link">
     <span class="md-ellipsis">
       
         atomic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.commit_and_refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commit_and_refresh
       
     </span>
   </a>
@@ -4597,10 +4680,93 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.db.transactions.OuterCommitQueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OuterCommitQueue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OuterCommitQueue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.OuterCommitQueue.add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.run_after_commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_after_commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.is_after_commit_pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_after_commit_pending
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.open_after_commit_session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_after_commit_session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.row_snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        row_snapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.transactions.atomic" class="md-nav__link">
     <span class="md-ellipsis">
       
         atomic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.db.transactions.commit_and_refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        commit_and_refresh
       
     </span>
   </a>
@@ -5998,7 +6164,66 @@ at (a parenthesis is at the depth outside it), and every quoted piece or comment
 
     <div class="doc doc-contents ">
 
-        <p>Transaction helpers shared by services that compose several writes.</p>
+        <p>Transaction helpers: <code>atomic</code>, <code>commit_and_refresh</code> and <code>run_after_commit</code>.</p>
+<p><code>atomic</code> runs a block in a savepoint and <code>commit_and_refresh</code> ends a unit of
+work. <code>run_after_commit</code> runs work only when a session's <em>outermost</em>
+transaction commits.</p>
+<p>SQLAlchemy fires the session <code>after_commit</code> event when a SAVEPOINT
+(<code>session.begin_nested()</code>) is released, not only on the real commit, and
+<code>after_rollback</code> when a savepoint rolls back. Hooks that treat either
+event as "the transaction is over" therefore run too early (work is exposed
+before the outer commit, which may still roll back) or discard too much (a
+savepoint rollback drops work queued outside that savepoint).</p>
+<p><code>run_after_commit</code> remembers the transaction each callback was queued in:</p>
+<ul>
+<li>a released savepoint keeps its callbacks pending;</li>
+<li>a rolled-back savepoint drops only the callbacks queued inside it;</li>
+<li>the outermost commit runs every remaining callback;</li>
+<li>the outermost rollback (or close without commit) drops them all.</li>
+</ul>
+<p>Callbacks queued on an idle session wait for the next transaction it begins,
+unless the session is closed first.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.db.transactions.OuterCommitQueue" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">OuterCommitQueue</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">on_commit</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">SaSession</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">])</span></code>
+
+<a href="#msflib.db.transactions.OuterCommitQueue" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p><code>on_commit(session, items)</code> runs from the outermost <code>after_commit</code>.</p>
+<p>It inherits that event's restrictions: no SQL may be emitted on the
+session, and nobody is left to catch its errors, so it should log
+rather than raise. Items queued from inside <code>on_commit</code> belong to
+the transaction that just finished and are discarded with it, rather
+than leaking into whatever unrelated transaction commits next.</p>
+
 
 
 
@@ -6023,6 +6248,115 @@ at (a parenthesis is at the depth outside it), and every quoted piece or comment
 <div class="doc doc-object doc-function">
 
 
+<h5 id="msflib.db.transactions.OuterCommitQueue.add" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">SaSession</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.db.transactions.OuterCommitQueue.add" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Queue <code>item</code> for the outermost commit of <code>session</code>'s current transaction.</p>
+<p>On an idle session the item waits for the next transaction it begins,
+unless the session is closed first.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.transactions.run_after_commit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">run_after_commit</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">SaSession</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">SaSession</span><span class="p">],</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.db.transactions.run_after_commit" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Run <code>callback(session)</code> once <code>session</code>'s outermost transaction commits.</p>
+<p>On an idle session the callback waits for the next transaction it begins,
+or is dropped if the session is closed first. It is also dropped if that
+transaction, or the savepoint it was queued in, rolls back, and when it is
+queued after the outermost commit (e.g. from another callback). Callbacks
+run from <code>after_commit</code>: they must not emit SQL on <code>session</code> (use
+<code>open_after_commit_session</code>), and their errors are logged rather than raised.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.transactions.is_after_commit_pending" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_after_commit_pending</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">SaSession</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">SaSession</span><span class="p">],</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.db.transactions.is_after_commit_pending" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether <code>callback</code> is still queued by <code>run_after_commit</code> on <code>session</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.transactions.open_after_commit_session" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">open_after_commit_session</span><span class="p">(</span><span class="n">committed</span><span class="p">:</span> <span class="n">SaSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Session</span></code>
+
+<a href="#msflib.db.transactions.open_after_commit_session" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A new session on <code>committed</code>'s bind, for SQL from an after-commit callback.</p>
+<p>Use as a context manager: <code>with open_after_commit_session(committed) as s:</code>.
+The session is closed when the block exits.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.transactions.row_snapshot" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">row_snapshot</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimpleNamespace</span></code>
+
+<a href="#msflib.db.transactions.row_snapshot" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>row</code>'s column values, readable after commit expires or detaches the ORM instance.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="msflib.db.transactions.atomic" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">atomic</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span></code>
 
@@ -6032,6 +6366,34 @@ at (a parenthesis is at the depth outside it), and every quoted piece or comment
     <div class="doc doc-contents ">
 
         <p>Run a block in a savepoint: it is rolled back as a unit if it raises.</p>
+<p>Also begins the explicit SQLite transaction that pysqlite needs for the
+savepoint to roll back (<code>begin_sqlite_transaction</code>); on other databases
+that is a no-op.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.transactions.commit_and_refresh" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">commit_and_refresh</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="n">rows</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.db.transactions.commit_and_refresh" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Commit the session's transaction, then reload <code>rows</code> so callers can return them.</p>
+<p>A service method calls this once, after all of its writes (SVC-4). Anything
+else pending on <code>session</code> is committed with it. Do not pass a row the
+unit of work deleted.</p>
+<p>Rows are reloaded in chunks of up to 500 per model type (one query per chunk),
+keeping large batches cheap. Every row must be persistent in <code>session</code> (a
+detached or foreign-session row raises <code>ValueError</code>); a model with a composite
+primary key is refreshed row by row.</p>
 
 
     </div>

@@ -509,6 +509,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#transactions-and-units-of-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions and units of work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#event-bus" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3893,6 +3904,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#transactions-and-units-of-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions and units of work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#event-bus" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4144,7 +4166,12 @@
 <tr>
 <td>Actions</td>
 <td><code>msflib.actions</code></td>
-<td><code>ModelAction</code>, <code>action</code>, write hooks, after-commit helpers</td>
+<td><code>ModelAction</code>, <code>action</code>, <code>emit_after_commit</code>, write hooks</td>
+</tr>
+<tr>
+<td>Transactions</td>
+<td><code>msflib.db.transactions</code></td>
+<td><code>atomic</code>, <code>commit_and_refresh</code>, <code>run_after_commit</code>, <code>open_after_commit_session</code>, <code>row_snapshot</code>, <code>is_after_commit_pending</code>, <code>OuterCommitQueue</code></td>
 </tr>
 <tr>
 <td>API helpers</td>
@@ -4457,7 +4484,33 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 <p><code>ModelAction[Model, CreateSchema, UpdateSchema]</code> is the CRUD layer: <code>get</code>, <code>get_by_all</code>, <code>get_multi_by_all</code>, <code>create</code>, <code>update</code>, <code>delete</code>, their <code>*_multi</code> and <code>*_by_expressions</code> variants, and <code>random</code> and <code>create_random</code> for test data. Actions take a <code>Session</code> as the first argument and commit by default; pass <code>commit=False</code> to take part in a larger transaction. Every write emits lifecycle events. See <a href="../../quick-start/actions-crud/">Actions and CRUD</a> and <a href="../../integration/subclassing-actions/">Subclassing actions</a>.</p>
 <h3 id="lifecycle-events-and-write-hooks">Lifecycle events and write hooks<a class="headerlink" href="#lifecycle-events-and-write-hooks" title="Permanent link">&para;</a></h3>
 <p>Each <code>ModelAction</code> write emits events named <code>&lt;model&gt;-&lt;op&gt;-pre-commit</code> (after flush, before commit, inside the transaction) and <code>&lt;model&gt;-&lt;op&gt;-post-commit</code> (once the outermost commit succeeds), where <code>&lt;model&gt;</code> is the lowercase class name and <code>&lt;op&gt;</code> is <code>create</code>, <code>update</code> or <code>delete</code>. A generic <code>model-&lt;op&gt;-...</code> event fires as well. Listeners receive the row and an options dict containing the <code>session</code>. Pre-commit listeners that raise abort the write; post-commit listeners are best-effort. Post-commit listeners get a plain snapshot of the row, not the live ORM object.</p>
-<p><code>on_model_write(model, callback, emitter=..., key=...)</code> is a shorter way to run <code>callback(session, row, operation)</code> inside the write's transaction, in a savepoint so a failing callback undoes only its own writes. <code>run_after_commit(session, callback)</code> and <code>emit_after_commit(session, name, ...)</code> run work only after the outermost commit, correctly across savepoints.</p>
+<p><code>on_model_write(model, callback, emitter=..., key=...)</code> is a shorter way to run <code>callback(session, row, operation)</code> inside the write's transaction, in a savepoint so a failing callback undoes only its own writes. <code>emit_after_commit(session, name, ...)</code> (from <code>msflib.actions</code>) and <code>run_after_commit(session, callback)</code> (from <code>msflib.db.transactions</code>) run work only after the outermost commit, correctly across savepoints.</p>
+<h3 id="transactions-and-units-of-work">Transactions and units of work<a class="headerlink" href="#transactions-and-units-of-work" title="Permanent link">&para;</a></h3>
+<p><code>msflib.db.transactions</code> provides the helpers for writing correct, composable units of work.</p>
+<p><strong><code>atomic(session)</code></strong> runs a block in a savepoint. If the block raises, only its own writes are rolled back; the outer transaction is unaffected. It also issues the explicit <code>BEGIN</code> that pysqlite requires for savepoints to work correctly on SQLite (a no-op on other databases).</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.transactions</span><span class="w"> </span><span class="kn">import</span> <span class="n">atomic</span>
+
+<span class="k">with</span> <span class="n">atomic</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">SideEffect</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>  <span class="c1"># rolled back alone if this block raises</span>
+</code></pre></div>
+<p><strong><code>commit_and_refresh(session, *rows)</code></strong> commits the session and reloads the given rows so the caller can safely return them (SQLAlchemy expires all attributes on commit). Pass every row you intend to return; rows are reloaded in chunks of up to 500 per model type to keep large batches cheap. Every row must already be persistent in the session — a transient, detached or foreign-session row raises <code>ValueError</code>. Do not pass a row the unit of work deleted.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.transactions</span><span class="w"> </span><span class="kn">import</span> <span class="n">commit_and_refresh</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_note</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="n">note_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">commit_and_refresh</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">note</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">note</span>
+</code></pre></div>
+<p><strong><code>run_after_commit(session, callback)</code></strong> queues <code>callback(session)</code> to run after the outermost transaction commits. The callback is dropped if the transaction (or the savepoint it was queued in) rolls back, and it fires only on the real commit — not on a savepoint release. Use <code>open_after_commit_session(committed_session)</code> as a context manager inside the callback to open a fresh session for any SQL the callback needs to run.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.transactions</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_after_commit_session</span><span class="p">,</span> <span class="n">run_after_commit</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">on_commit</span><span class="p">(</span><span class="n">committed</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">open_after_commit_session</span><span class="p">(</span><span class="n">committed</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">AuditLog</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+
+<span class="n">run_after_commit</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">on_commit</span><span class="p">)</span>
+</code></pre></div>
+<p><code>emit_after_commit(session, name, instance, payload)</code> (from <code>msflib.actions</code>) does the same for event-bus events and is built on <code>run_after_commit</code>.</p>
 <h3 id="event-bus">Event bus<a class="headerlink" href="#event-bus" title="Permanent link">&para;</a></h3>
 <p><code>bind_app_emitter(app)</code> gives each FastAPI app its own emitter and adds middleware that makes it the current emitter for each request. Register listeners with <code>@app_emitter.on("event-name")</code>; <code>get_app_emitter(app)</code> returns the same emitter later. The app emitter is active in request handlers, in <code>BackgroundTasks</code> run after the response, and in <code>call_later</code> or <code>create_task</code> work started from a request. In scripts, threads (a <code>threading.Thread</code> does not inherit it) and lifespan code, wrap the code in <code>with use_app_emitter(app):</code>. A worker process has no app: register its listeners on <code>AppEmitter(get_emitter())</code>. Listener functions take <code>(payload, options, logger=None)</code>. <code>emit_optional</code> is best-effort; <code>emit_required</code> raises when no listener handled the event. Modules that need event wiring expose a <code>register_event_hooks(..., emitter=app_emitter)</code> function; <code>HookRegistry</code> makes such registration idempotent. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h3 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
