@@ -3896,6 +3896,14 @@
 <td><code>release:no-propagate-dependents</code></td>
 <td>Do not add transitive dependents to the release plan.</td>
 </tr>
+<tr>
+<td><code>release:propagate-minor</code></td>
+<td>Bump transitive dependents at <strong>minor</strong> instead of patch. Use when the release contains breaking changes or significant new APIs that affect all dependents.</td>
+</tr>
+<tr>
+<td><code>release:propagate-major</code></td>
+<td>Bump transitive dependents at <strong>major</strong> instead of patch.</td>
+</tr>
 </tbody>
 </table>
 <p>A label has to exist in the repository before it can be added to a pull request. Only some release labels are defined, and the set changes as maintainers add them. List the current ones with:</p>
@@ -3918,7 +3926,13 @@
 <li>Apply every <code>auto_bump</code> change and push them in one commit.</li>
 <li>Create the new tags from that final commit, so every tag created in this run points at one commit SHA, then create GitHub Releases. A tag that already exists is skipped and keeps the commit it was created on.</li>
 </ol>
-<p>Dependents are included by default. If a release includes <code>core</code>, every module that depends on <code>core</code> (directly or transitively) is patch-bumped, has its pinned <code>rev</code> rewritten to the new tag, and is released after its upstream modules.</p>
+<p>Dependents are included by default. If a release includes <code>core</code>, every module that depends on <code>core</code> (directly or transitively) is bumped at the <strong>propagation level</strong> (patch by default; see labels table above), has its pinned <code>rev</code> rewritten to the new tag, and is released after its upstream modules.</p>
+<p><strong>Selective overrides.</strong> An explicit <code>release:&lt;module&gt;:&lt;bump&gt;</code> label on the same PR always takes precedence over the propagation level for that module — <code>append_dependent_modules</code> skips any module already in the plan. This lets you mix levels precisely:</p>
+<ul>
+<li><em>Most at patch, a few at minor</em>: add <code>release:&lt;module&gt;:minor</code> for the specific modules; the rest propagate at patch (the default).</li>
+<li><em>Most at minor (e.g. a cross-cutting breaking release), a few held at patch</em>: add <code>release:propagate-minor</code> for the bulk, then add <code>release:&lt;module&gt;:patch</code> for each module to hold back.</li>
+<li><em>Full manual control, no propagation</em>: add a <code>release:&lt;module&gt;:&lt;bump&gt;</code> label for every module and add <code>release:no-propagate-dependents</code> to disable propagation entirely.</li>
+</ul>
 <p>The bulk commit message and the release commits are marked <code>[skip ci]</code>, so they do not start the CI workflows again.</p>
 <h3 id="module-release-module-release-tagsyml">Module Release (<code>module-release-tags.yml</code>)<a class="headerlink" href="#module-release-module-release-tagsyml" title="Permanent link">&para;</a></h3>
 <p>A manual <code>workflow_dispatch</code> workflow (also callable as a reusable workflow) for releasing one module on demand. Inputs:</p>
@@ -3952,7 +3966,7 @@
 </tr>
 </tbody>
 </table>
-<p>It uses Poetry to bump the version, patch-bumps and retags dependent modules, commits with <code>chore(release): &lt;module&gt; &lt;bump&gt; to v&lt;version&gt; [skip ci]</code>, pushes to the target branch, then creates tags and GitHub Releases. The run aborts if the target branch moved after it started, except in recovery mode (below).</p>
+<p>It uses Poetry to bump the version, bumps and retags dependent modules at the same level as the root module (<code>bump: none</code> leaves dependents unmodified and only retags them), commits with <code>chore(release): &lt;module&gt; &lt;bump&gt; to v&lt;version&gt; [skip ci]</code>, pushes to the target branch, then creates tags and GitHub Releases. The run aborts if the target branch moved after it started, except in recovery mode (below).</p>
 <p><code>bump: none</code> is recovery mode. It recreates a missing tag or GitHub Release without changing the version again. If the branch moved since the run started, recovery mode switches to the latest remote head instead of aborting, so it can tag a newer commit than the one checked out when the run began. It still collects dependents so the release set stays consistent.</p>
 <h3 id="release-branch-guard-release-branch-guardyml">Release Branch Guard (<code>release-branch-guard.yml</code>)<a class="headerlink" href="#release-branch-guard-release-branch-guardyml" title="Permanent link">&para;</a></h3>
 <p>Runs on pull requests (opened, reopened, synchronized, edited) and calls <code>.github/scripts/validate_release_branches.py</code>. It fails when <code>dev</code> does not exist, when no stabilization branch matching <code>dev-&lt;major&gt;.&lt;minor&gt;.x</code> exists, or when the pull request's base branch does not exist.</p>
@@ -3984,7 +3998,7 @@ Notes for the core release only.
 <p>Rules:</p>
 <ul>
 <li>The <code>rev</code> is always a release tag in the form <code>&lt;dir&gt;-v&lt;version&gt;</code>. Never commit <code>rev = "dev"</code>. The release workflows run <code>release_checks.py ensure-no-dev-pins</code> and stop if they find one.</li>
-<li>When a release publishes a new version of a package, the release automation rewrites the <code>rev</code> in every dependent module and patch-bumps the dependent, then tags it after its upstream. You normally do not edit these pins by hand.</li>
+<li>When a release publishes a new version of a package, the release automation rewrites the <code>rev</code> in every dependent module and bumps the dependent at the propagation level (patch by default for merged-PR releases; the root module's bump level for manual releases), then tags it after its upstream. You normally do not edit these pins by hand.</li>
 <li>Local development ignores the pins. During the install, <code>scripts/install_modules.py</code> points them at the local packages and restores the files afterwards: a package installed in the same run is referenced by name, so pip resolves it to the editable directory it was given; any other local package is referenced as a local editable path. See <a href="../#development-environment">Contributing</a>.</li>
 </ul>
 <h2 id="release-commits">Release commits<a class="headerlink" href="#release-commits" title="Permanent link">&para;</a></h2>
