@@ -3308,6 +3308,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#dependencies-keep-httpexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies keep HTTPException
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3715,6 +3726,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#dependencies-keep-httpexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies keep HTTPException
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3843,13 +3865,18 @@ utilities raise; name new ones <code>&lt;Problem&gt;Error</code> (SDC-4).</p>
 <td>501</td>
 </tr>
 <tr>
+<td><code>ExternalServiceError</code></td>
+<td>an outside call or backend failed</td>
+<td>502</td>
+</tr>
+<tr>
 <td><code>ServiceUnavailableError</code></td>
 <td>a backing service is not configured or reachable</td>
 <td>503</td>
 </tr>
 <tr>
-<td><code>ExternalServiceError</code> (and any unmapped <code>BaseServiceError</code>)</td>
-<td>an outside call or backend failed</td>
+<td>any unmapped <code>BaseServiceError</code></td>
+<td>none of the above</td>
 <td>500</td>
 </tr>
 </tbody>
@@ -3893,20 +3920,17 @@ errors (<code>InvalidInputError</code> and subclasses, <code>NotFoundError</code
 and <code>ExternalServiceError</code> as retryable. Raise the class that matches, and the
 worker needs no special case.</p>
 <h2 id="known-gaps">Known gaps<a class="headerlink" href="#known-gaps" title="Permanent link">&para;</a></h2>
-<p><code>modules/conversation/.../integrations/ai_bridge.py</code> builds FastAPI dependencies
-and raises <code>HTTPException</code> in them. They are dependencies in the ERR-1 sense but
-live outside a <code>deps.py</code>; they move there, or raise domain exceptions, when that
-module is next reworked.</p>
 <p><code>core/errors.py</code> still imports <code>HTTPException</code> to classify failures raised by
 providers that predate ERR-1 (<code>is_terminal_ingestion_error</code>). It only inspects
 the exception and never raises one; the import goes once those providers raise
 domain exceptions.</p>
-<div class="admonition note">
-<p class="admonition-title">Open point</p>
-<p><code>deps.py</code> dependencies (401/403 guards, tenant resolution) still raise
-<code>HTTPException</code>, as ERR-1 allows. Whether they should move to the same
-handler is undecided.</p>
-</div>
+<h2 id="dependencies-keep-httpexception">Dependencies keep <code>HTTPException</code><a class="headerlink" href="#dependencies-keep-httpexception" title="Permanent link">&para;</a></h2>
+<p><code>deps.py</code> dependencies (401/403 guards, tenant and workspace resolution) keep
+raising <code>HTTPException</code>, as ERR-1 allows. They run only on the request path and
+choose their own status and headers, so they do not depend on the app handler.
+All of a module's dependencies live in <code>deps.py</code> and come back as one
+<code>DependencyNamespace</code> (API-2), including one that guards another module's router,
+such as <code>get_conversation_dependencies(...).require_conversation_access</code>.</p>
 
 
 

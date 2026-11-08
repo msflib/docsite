@@ -3222,17 +3222,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.conversation.integrations.ai_bridge.build_conversation_access_dependency" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        build_conversation_access_dependency
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.conversation.integrations.ai_bridge.add_agent_participant" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6620,17 +6609,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.conversation.integrations.ai_bridge.build_conversation_access_dependency" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        build_conversation_access_dependency
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.conversation.integrations.ai_bridge.add_agent_participant" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9914,7 +9892,7 @@ account/ai_core/workspaces/documents at module scope).</p>
 
 
 <h3 id="msflib.conversation.deps.get_conversation_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_conversation_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">member_action</span><span class="p">:</span> <span class="n">MemberAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message_action</span><span class="p">:</span> <span class="n">MessageAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">thread_action</span><span class="p">:</span> <span class="n">ThreadAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_conversation_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">member_action</span><span class="p">:</span> <span class="n">MemberAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message_action</span><span class="p">:</span> <span class="n">MessageAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">thread_action</span><span class="p">:</span> <span class="n">ThreadAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">ConversationSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.conversation.deps.get_conversation_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -9923,7 +9901,10 @@ account/ai_core/workspaces/documents at module scope).</p>
 
         <p>Build the conversation module's request-scoped dependency chain.</p>
 <p><code>get_current_tenant</code> is required; a site without tenancy passes the default
-<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>.</p>
+<code>get_current_tenant</code> from <code>msflib.tenancy.deps</code>. <code>require_conversation_access</code>
+guards routers the module does not own: it reads <code>conversation_id</code> and
+<code>sub_thread_id</code> from the JSON body (404 unknown, 403 cannot read or post)
+and lets a body without a <code>conversation_id</code> through.</p>
 
 
     </div>
@@ -10264,40 +10245,6 @@ never holds a DB connection idle.</p>
 <code>ScopeEnvelope</code> construction — resuming an agent becomes "posting in
 the same channel/thread" for free once a caller builds its envelope from
 this.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="msflib.conversation.integrations.ai_bridge.build_conversation_access_dependency" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_conversation_access_dependency</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">eligibility</span><span class="p">:</span> <span class="n">MemberEligibility</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">ConversationSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></code>
-
-<a href="#msflib.conversation.integrations.ai_bridge.build_conversation_access_dependency" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Build a FastAPI dependency that resolves + access-checks a request's
-<code>conversation_id</code> before the wrapped route runs. Reads the request body
-itself (<code>conversation_id</code>/<code>sub_thread_id</code>) via <code>Request.json()</code>
-rather than declaring a typed Pydantic body model, since this module has
-no ai_api <code>AskRequest</code> to import — it works with any JSON body shaped
-like one. Wire it in front of ai_api's agent router without either module
-importing the other::</p>
-<div class="codehilite"><pre><span></span><code>api_router.include_router(
-    create_ai_router(...),
-    dependencies=[Depends(build_conversation_access_dependency(...))],
-)
-</code></pre></div>
-
-<p>A request with no <code>conversation_id</code> in its body passes through
-untouched. <code>get_current_workspace</code> mirrors <code>deps.py</code>'s own dependency
-chain, since <code>AccessService.resolve_conversation</code> matches <code>workspace_id</code>
-exactly (<code>None</code> means the explicit workspace-less bucket).</p>
 
 
     </div>

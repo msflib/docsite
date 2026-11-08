@@ -3746,6 +3746,10 @@ resolution into a <code>deps.py</code> factory returning a <code>DependencyNames
 principal, participant, and access-checked context objects (frozen dataclasses
 of <code>row, conversation, membership</code>) resolved from path parameters. The router
 factory accepts <code>dependencies=</code> and injectable services as override points.
+Every FastAPI dependency a module defines lives in its <code>deps.py</code> and is exposed
+as a member of that namespace, including dependencies that guard another
+module's router (<code>conversation</code>'s <code>require_conversation_access</code>); neither
+<code>router.py</code> nor <code>integrations/</code> builds dependencies.
 Reference: <code>ai_api/deps.py</code>, <code>conversation/deps.py</code>.</p>
 <h3 id="api-3-no-anonymous-surface-on-protected-endpoints">API-3 · No anonymous surface on protected endpoints<a class="headerlink" href="#api-3-no-anonymous-surface-on-protected-endpoints" title="Permanent link">&para;</a></h3>
 <p>A router that serves protected endpoints takes <code>get_current_account</code> as a
