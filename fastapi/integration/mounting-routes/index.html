@@ -3907,7 +3907,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># as in Authentication, "Wire it up"</span>
 <span class="n">ws_user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># as in Authentication, "Workspaces"</span>
 

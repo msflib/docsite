@@ -4104,7 +4104,7 @@
         <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
     <span class="p">)</span>
 
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">workspaces_router</span><span class="p">(</span>
@@ -4145,8 +4145,8 @@
 </code></pre></div>
 <p><code>account_deps</code> and <code>user_deps</code> are the namespaces from <a href="../auth/#wiring-into-a-host-app">auth</a>.</p>
 <div class="admonition note">
-<p class="admonition-title">Custom default tenant slug</p>
-<p>Pass the same settings to <code>get_tenant_dependencies(..., settings=settings.scope("TENANCY"))</code> and to the workspaces router. Both then look up your <code>DEFAULT_TENANT_SLUG</code>; if one of them is built without settings it looks for <code>default</code>, and <code>POST /workspaces/</code> returns 500 "Default tenant has not been seeded".</p>
+<p class="admonition-title">Consistent tenant scope</p>
+<p>Pass the same <code>settings.scope("TENANCY")</code> to both <code>get_tenant_dependencies</code> and the workspaces router so both resolve the same <code>DEFAULT_TENANT_SLUG</code>. <code>tenancy_settings</code> is required on <code>get_tenant_dependencies</code>; omitting it raises <code>TypeError</code> at construction. Passing different scopes to each would cause the dependency to resolve a different tenant than the one used to create workspaces, returning 500 "Default tenant has not been seeded".</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>

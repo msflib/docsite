@@ -2874,17 +2874,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.tenancy.resolver.tenancy_settings_from" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        tenancy_settings_from
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.tenancy.resolver.resolve_default_tenant_id" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3903,17 +3892,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.tenancy.resolver.tenancy_settings_from" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        tenancy_settings_from
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.tenancy.resolver.resolve_default_tenant_id" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4180,7 +4158,7 @@ Pass the result to <code>msflib.scope.get_scope_dependencies</code>'s
 
 
 <h3 id="msflib.tenancy.deps.get_tenant_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.tenancy.deps.get_tenant_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4227,20 +4205,19 @@ phase's concern -- this factory is the seam that phase extends.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>settings</code>
+                <code>tenancy_settings</code>
             </td>
             <td>
-                  <code><span title="msflib.tenancy.config.TenancySettings">TenancySettings</span> | None</code>
+                  <code><span title="msflib.tenancy.config.TenancySettings">TenancySettings</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p><code>TenancySettings</code> instance to resolve against. Defaults to the
-shared process-wide instance (see <code>resolver._get_default_settings</code>)
-when omitted.</p>
+                <p>The app's <code>TENANCY</code> scope (<code>settings.scope("TENANCY")</code>), which holds
+the configured default tenant slug.</p>
               </div>
             </td>
             <td>
-                  <code>None</code>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -4264,7 +4241,7 @@ when omitted.</p>
               <div class="doc-md-description">
                 <p>the resolved <code>Tenant</code> row or raises <code>HTTPException</code> (500) if the
 default tenant hasn't been seeded yet, and <code>is_tenant_member</code>, the
-membership check bound to the same <code>settings</code> so the two always
+membership check bound to the same <code>tenancy_settings</code> so the two always
 agree on which tenant is the default.</p>
               </div>
             </td>
@@ -4326,7 +4303,7 @@ and to no other.</p>
 
 
 <h3 id="msflib.tenancy.membership.is_tenant_member" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">is_tenant_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">is_tenant_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.tenancy.membership.is_tenant_member" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4334,8 +4311,7 @@ and to no other.</p>
     <div class="doc doc-contents ">
 
         <p>Whether <code>scope_id</code> is the default tenant, which every account belongs to.</p>
-<p><code>settings</code> is the app's root settings or its <code>TENANCY</code> scope, as for
-<code>resolve_default_tenant_id</code>.</p>
+<p><code>tenancy_settings</code> is the app's <code>TENANCY</code> scope, which holds the default slug.</p>
 
 
     </div>
@@ -4446,26 +4422,8 @@ invalidates it.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="msflib.tenancy.resolver.tenancy_settings_from" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">tenancy_settings_from</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TenancySettings</span></code>
-
-<a href="#msflib.tenancy.resolver.tenancy_settings_from" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p><code>TENANCY</code> settings from app settings (root or already scoped); defaults when absent.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
 <h3 id="msflib.tenancy.resolver.resolve_default_tenant_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_action</span><span class="p">:</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">tenant_action</span><span class="p">:</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.tenancy.resolver.resolve_default_tenant_id" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4473,10 +4431,9 @@ invalidates it.</p>
     <div class="doc doc-contents ">
 
         <p>Resolve the real int id of the default tenant, creating it if missing.</p>
-<p>Idempotent and cached per slug for the process lifetime. <code>settings</code>
-accepts the app's root settings or its <code>TENANCY</code> scope; pass them
-whenever available, since the bare <code>TenancySettings()</code> used when
-omitted never reads the app's configured slug.</p>
+<p>Idempotent and cached per slug for the process lifetime. <code>tenancy_settings</code> is a
+<code>TenancySettings</code> instance (<code>settings.scope("TENANCY")</code>): it holds the
+configured default slug, which this function needs and nothing else.</p>
 <p>Callers frequently invoke this from inside their own <code>commit=False</code>
 unit of work (e.g. an upload flow that must roll back atomically on
 failure), so the first-ever creation of the tenant row is deliberately
@@ -4516,7 +4473,7 @@ that race raise rather than duplicate, but it does not retry.</p>
 
 
 <h3 id="msflib.tenancy.resolver.resolve_scoped_tenant_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_scoped_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">dim_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">TenancySettings</span> <span class="o">|</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">resolve_scoped_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">dim_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.tenancy.resolver.resolve_scoped_tenant_id" class="headerlink" title="Permanent link">&para;</a></h3>
 

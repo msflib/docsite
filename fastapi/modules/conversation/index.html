@@ -4041,15 +4041,17 @@
     <span class="n">HistoryService</span><span class="p">,</span>
     <span class="n">MessagingService</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
 <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>     <span class="c1"># seeds tenant 1</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">TenancySettings</span><span class="p">())</span>  <span class="c1"># seeds tenant 1</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 <span class="n">owner</span> <span class="o">=</span> <span class="n">Participant</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">MemberKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"u1"</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>

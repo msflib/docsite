@@ -4190,13 +4190,15 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.ir</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntitySpec</span><span class="p">,</span> <span class="n">KnowledgeFragment</span><span class="p">,</span> <span class="n">Provenance</span><span class="p">,</span> <span class="n">RelationSpec</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.queries</span><span class="w"> </span><span class="kn">import</span> <span class="n">FindEntity</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">KnowledgeSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">KnowledgeSettings</span><span class="p">,</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="k">pass</span>
 
 
@@ -4204,7 +4206,7 @@
 <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>     <span class="c1"># seeds tenant 1</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>  <span class="c1"># seeds tenant 1</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 <span class="n">knowledge</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span>
@@ -4247,13 +4249,15 @@
     <span class="n">make_knowledge_record_stage</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.resolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_default_tenant_id</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">KnowledgeSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">KnowledgeSettings</span><span class="p">,</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
     <span class="k">pass</span>
 
 
@@ -4263,7 +4267,7 @@
 <span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">resolve_default_tenant_id</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>     <span class="c1"># seeds tenant 1</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>  <span class="c1"># seeds tenant 1</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 <span class="n">knowledge</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span>
     <span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>

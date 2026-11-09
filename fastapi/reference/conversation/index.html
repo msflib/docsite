@@ -10396,7 +10396,10 @@ bridge.attach(emitter)                        # once, at startup
 
 from msflib.realtime.router import router
 authorizer = route_authorizers({
-    CHANNEL_PREFIX: conversation_authorizer(session_factory=lambda: Session(engine)),
+    CHANNEL_PREFIX: conversation_authorizer(
+        session_factory=lambda: Session(engine),
+        tenancy_settings=settings.scope("TENANCY"),
+    ),
 })
 app.include_router(router(hub=hub, authenticators=[...], authorizer=authorizer))
 </code></pre></div>
@@ -10506,7 +10509,7 @@ app.include_router(router(hub=hub, authenticators=[...], authorizer=authorizer))
 
 
 <h4 id="msflib.conversation.integrations.realtime.conversation_authorizer" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">conversation_authorizer</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_factory</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">AbstractContextManager</span><span class="p">[</span><span class="n">Session</span><span class="p">]],</span> <span class="n">tenant_id_for</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Session</span><span class="p">,</span> <span class="n">StreamIdentity</span><span class="p">],</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Authorizer</span></code>
+            <code class="highlight language-python"><span class="n">conversation_authorizer</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_factory</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">AbstractContextManager</span><span class="p">[</span><span class="n">Session</span><span class="p">]],</span> <span class="n">tenancy_settings</span><span class="p">:</span> <span class="n">TenancySettings</span><span class="p">,</span> <span class="n">tenant_id_for</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Session</span><span class="p">,</span> <span class="n">StreamIdentity</span><span class="p">],</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">access_service</span><span class="p">:</span> <span class="n">AccessService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_action</span><span class="p">:</span> <span class="n">ConversationAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Authorizer</span></code>
 
 <a href="#msflib.conversation.integrations.realtime.conversation_authorizer" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10516,7 +10519,8 @@ app.include_router(router(hub=hub, authenticators=[...], authorizer=authorizer))
         <p>May this principal listen to this <code>conversation:&lt;id&gt;</code> channel?</p>
 <p>Yes exactly when <code>AccessService.resolve_conversation</code> would let them read it: the same
 visibility and membership rules as the HTTP surface. <code>principal.id</code> is the account id, as for
-<code>get_participant</code> in <code>deps.py</code>; <code>tenant_id_for</code> defaults to the default tenant.</p>
+<code>get_participant</code> in <code>deps.py</code>; <code>tenant_id_for</code> defaults to the default tenant,
+resolved with <code>tenancy_settings</code> (the <code>TENANCY</code> scope of the app's settings).</p>
 
 
     </div>

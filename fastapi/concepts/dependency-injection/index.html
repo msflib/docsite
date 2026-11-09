@@ -3756,7 +3756,7 @@
 <tr>
 <td><code>get_tenant_dependencies</code></td>
 <td><code>msflib.tenancy.deps</code></td>
-<td><code>session_dep</code>, optional <code>settings</code></td>
+<td><code>session_dep</code>, <code>tenancy_settings</code></td>
 <td><code>get_current_tenant</code></td>
 </tr>
 <tr>
@@ -3790,7 +3790,7 @@
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">)</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
 <span class="n">scope_deps</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_active_account</span><span class="p">,</span>

@@ -4147,6 +4147,7 @@
 <span class="n">authorizer</span> <span class="o">=</span> <span class="n">route_authorizers</span><span class="p">({</span>
     <span class="n">CHANNEL_PREFIX</span><span class="p">:</span> <span class="n">conversation_authorizer</span><span class="p">(</span>
         <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">),</span>
+        <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">})</span>
 </code></pre></div>
