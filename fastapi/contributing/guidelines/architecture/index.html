@@ -3269,6 +3269,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCP-5 · Scope is a position; reach, tier and owner name rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scp-6-authorization-is-a-scope-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCP-6 · Authorization is a scope decision
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3950,6 +3972,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCP-5 · Scope is a position; reach, tier and owner name rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scp-6-authorization-is-a-scope-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCP-6 · Authorization is a scope decision
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4083,20 +4127,124 @@ membership. A router or guard that needs it takes <code>MembershipCheck</code> c
 owning module (<code>msflib.tenancy</code>, <code>msflib.workspaces</code>) and passed in by the host.
 It uses them for the caller (403) and for any account the request names (404).
 Don't fall back to a default tenant or to "any account" when a check is missing;
-a host that wants that passes <code>allow_any_member</code>. Parameter names and order:
-API-7.</p>
+a host that wants that passes <code>allow_any_member</code>. The same checks back
+<code>MembershipConstraint</code> and gate the tenant and workspace roles a role source
+returns (SCP-6). Never infer membership from the account's
+<code>current_workspace_id</code>; it is a preference, not a grant. Parameter names and
+order: API-7.</p>
 <h3 id="scp-4-compile-scope-once-through-the-modules-profile">SCP-4 · Compile scope once, through the module's profile<a class="headerlink" href="#scp-4-compile-scope-once-through-the-modules-profile" title="Permanent link">&para;</a></h3>
 <p>Register profiles in <code>scope_profiles.py</code> via <code>ProfileRegistry</code> with namespaced
 names (<code>"&lt;module&gt;.&lt;operation&gt;"</code>). Build the typed scope from the <code>ScopeEnvelope</code>
 with <code>ScopeFactory.build(envelope, ScopeType, operation=...)</code>, once, at the
-request boundary, and pass it unchanged to every call below. <code>TenantScope</code>
-(<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a module needing more
-dimensions subclasses it and does not redeclare the identity pair. Filter on the
+request boundary, and pass it unchanged to every call below. The one derived
+position is a guard's: a check below the workspace tier runs at the tenant's
+position (<code>msflib.guard.locate(tier)</code>, planned: SCP-6). Request dependencies
+come from <code>get_scope_dependencies</code>; <code>get_scope_ids</code> is deprecated, and new code
+doesn't call it. <code>TenantScope</code> (<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a
+module needing more dimensions subclasses it and does not redeclare the
+identity pair.
+Register the profile with <code>scope_type=</code> so it is checked against the dataclass at
+startup; the profile stays hand-written because one type can serve operations with
+different required dimensions. Filter on the
 typed object, never on raw <code>ScopeEnvelope.get_dim(...)</code> calls, and don't parse
 dimension strings by hand. The type shares fields, not match semantics; an
 equality or hierarchical match belongs to the action method.
 Reference: <code>knowledge/planner/scope_rewriter.py</code> with <code>contracts.KnowledgeScope</code>,
 and <code>ai_core/services/scope_metadata.py</code>.</p>
+<h3 id="scp-5-scope-is-a-position-reach-tier-and-owner-name-rows">SCP-5 · Scope is a position; reach, tier and owner name rows<a class="headerlink" href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" title="Permanent link">&para;</a></h3>
+<p>Each word has one meaning:</p>
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Meaning</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*Scope</code></td>
+<td>Position: where the request runs now. Server-decided, one value per request, the typed form of the <code>ScopeEnvelope</code>. Filters use it.</td>
+<td><code>TenantScope</code>, <code>ConversationScope</code></td>
+</tr>
+<tr>
+<td><code>*Reach</code></td>
+<td>Where a row or grant applies, or where something may act. Access is the request's scope falling inside a reach; the match stays in the action method.</td>
+<td><code>RoleAssignmentReach</code>, <code>AiResourceReach</code></td>
+</tr>
+<tr>
+<td><code>*Tier</code></td>
+<td>The kind of owner or reach (platform, tenant, workspace, user, global).</td>
+<td><code>RoleTier</code>, <code>ProviderTier</code></td>
+</tr>
+<tr>
+<td><code>*Owner</code></td>
+<td>Authorship only: who defined the row, not where it applies.</td>
+<td><code>RoleOwner</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Name a tier enum, column or parameter <code>*Tier</code> or <code>tier</code>, never <code>*Scope</code> or
+  <code>scope_type</code>. Parameters follow the type: <code>reach=RoleAssignmentReach()</code>, not
+  <code>scope=</code>.</li>
+<li><code>settings.scope("AI_CORE")</code> is a settings namespace, and the <code>scope_type=</code>
+  parameter of <code>ProfileRegistry.register</code> takes a scope dataclass; neither is a
+  tier.</li>
+</ul>
+<p>Principles for typed scopes:</p>
+<ol>
+<li>A scope encapsulates the dimensions that decide whether a principal may act, so
+   signatures don't grow a parameter per dimension.</li>
+<li>A typed scope exists so a <code>ScopeEnvelope</code> can filter without converting and
+   validating at every layer. Build one only where an int-typed column is
+   filtered or where a position is handed to an authorization protocol
+   (the planned <code>RoleSource</code>, <code>PermissionResolver</code> and a guard's <code>locate</code>:
+   SCP-6). Code that only produces strings (checkpoint keys, memory namespaces,
+   retrieval metadata) keeps the envelope; never round-trip envelope to typed
+   and back.</li>
+<li>Don't duplicate typed scopes: a different name with the same fields is a
+   duplicate. The one exception is deliberately decoupled modules (a soft
+   dependency such as <code>ai_api</code> and <code>conversation</code>), and the copy carries a comment
+   saying so.</li>
+<li>Orthogonal concerns get orthogonal types: where (<code>TenantScope</code> and subclasses),
+   who (<code>PrincipalContext</code>, or a single <code>account_id</code> scalar; one dimension stays a
+   scalar), and policy inputs (envelope attributes such as channel). Never put a
+   principal, role or channel inside a typed scope. The <code>ScopeEnvelope</code> does
+   carry the caller as <code>principal</code>, with the roles a <code>RoleSource</code> returns for the
+   request's position. A typed scope has a field if and only if code filters on
+   it.</li>
+<li>A global (platform-level) profile or row applies everywhere and needs no request
+   scope; creating one takes a reach, not a scope. A request scope always has a
+   tenant and fails closed.</li>
+</ol>
+<h3 id="scp-6-authorization-is-a-scope-decision">SCP-6 · Authorization is a scope decision<a class="headerlink" href="#scp-6-authorization-is-a-scope-decision" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Target design (msflib/fastapi#391, amendment A5)</p>
+<p>This rule describes where authorization is going. Not in code yet:
+<code>build_guard</code>, <code>locate</code>, <code>build_role_source</code>, <code>RoleSource</code> and
+<code>PermissionResolver</code> (planned, so don't import them), and
+<code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through the evaluator (only
+<code>ai_api</code> evaluates today). Write new authorization code to this shape.
+Remove this note when the guard PR lands.</p>
+</div>
+<ul>
+<li>A role is <code>RoleKey(tier, key)</code> (<code>msflib.guard.roles</code>): the account role <code>root</code>
+  is <code>platform:root</code>, any other account role is <code>tenant:&lt;role&gt;</code>, and a workspace
+  user type is <code>workspace:&lt;type&gt;</code>. A role counts at its own tier and every tier
+  below it.</li>
+<li>Every allow or deny goes through <code>ConstraintEvaluator</code> and is a
+  <code>ScopeDecision</code>, so denials are recorded the same way everywhere. Don't
+  compare a role attribute or ask a resolver inline in a route.</li>
+<li>Guard routes with <code>msflib.guard.build_guard</code>. It takes a <code>PermissionResolver</code>
+  (<code>msflib-authz</code>), role attributes mapped in <code>ROLE_REGISTRY</code>, or both.</li>
+<li><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> (<code>msflib-auth</code>) are the path for simple
+  apps; they decide through the evaluator too. Recommend authz role-permission
+  for enterprise and multi-tenant apps.</li>
+<li>A role source fills the principal's roles: <code>msflib.auth.roles.build_role_source</code>
+  for role attributes, and authz for assignments. Pass <code>is_tenant_member</code> in a
+  multi-tenant app, because an account has no tenant of its own.</li>
+</ul>
 
 
 

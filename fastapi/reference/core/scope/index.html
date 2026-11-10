@@ -4290,6 +4290,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.scope.typed.find_mismatches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_mismatches
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7861,6 +7872,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.scope.typed.find_mismatches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_mismatches
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8043,7 +8065,7 @@ scope_map = compiler.compile_scope_map(envelope, operation="retrieval.search")
 
 
 <h4 id="msflib.scope.ScopeCompiler.register_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.ScopeCompiler.register_profile" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -8051,6 +8073,8 @@ scope_map = compiler.compile_scope_map(envelope, operation="retrieval.search")
     <div class="doc doc-contents ">
 
         <p>Register (or replace) an operation profile by <em>name</em>.</p>
+<p><code>scope_type</code> is checked against the profile as in
+:meth:<code>ProfileRegistry.register</code>.</p>
 
 
     </div>
@@ -10275,7 +10299,7 @@ automatically loaded at construction time.</p>
 
 
 <h4 id="msflib.scope.ProfileRegistry.register" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.ProfileRegistry.register" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10329,6 +10353,25 @@ automatically loaded at construction time.</p>
                 <em>required</em>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>scope_type</code>
+            </td>
+            <td>
+                  <code><span title="type">type</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The typed scope dataclass built through this profile. When
+given, the profile must agree with its fields (see
+:func:<code>~msflib.scope.typed.find_mismatches</code>), so drift fails here
+and not on the first request.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -10359,7 +10402,7 @@ automatically loaded at construction time.</p>
             <td>
               <div class="doc-md-description">
                 <p>If <em>profile</em> declares overlapping required
-and required_nullable dimensions.</p>
+and required_nullable dimensions, or disagrees with <em>scope_type</em>.</p>
               </div>
             </td>
           </tr>
@@ -11214,7 +11257,7 @@ ordered scope shape to keep transformation costs low.</p>
 
 
 <h5 id="msflib.scope.compiler.ScopeCompiler.register_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.compiler.ScopeCompiler.register_profile" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -11222,6 +11265,8 @@ ordered scope shape to keep transformation costs low.</p>
     <div class="doc doc-contents ">
 
         <p>Register (or replace) an operation profile by <em>name</em>.</p>
+<p><code>scope_type</code> is checked against the profile as in
+:meth:<code>ProfileRegistry.register</code>.</p>
 
 
     </div>
@@ -14027,7 +14072,7 @@ automatically loaded at construction time.</p>
 
 
 <h5 id="msflib.scope.profiles.ProfileRegistry.register" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.profiles.ProfileRegistry.register" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -14081,6 +14126,25 @@ automatically loaded at construction time.</p>
                 <em>required</em>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>scope_type</code>
+            </td>
+            <td>
+                  <code><span title="type">type</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The typed scope dataclass built through this profile. When
+given, the profile must agree with its fields (see
+:func:<code>~msflib.scope.typed.find_mismatches</code>), so drift fails here
+and not on the first request.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -14111,7 +14175,7 @@ automatically loaded at construction time.</p>
             <td>
               <div class="doc-md-description">
                 <p>If <em>profile</em> declares overlapping required
-and required_nullable dimensions.</p>
+and required_nullable dimensions, or disagrees with <em>scope_type</em>.</p>
               </div>
             </td>
           </tr>
@@ -14663,6 +14727,30 @@ or a declared field has no value and no default.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.scope.typed.find_mismatches" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_mismatches</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
+<a href="#msflib.scope.typed.find_mismatches" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>List how <code>profile</code> disagrees with the dataclass <code>scope_type</code>.</p>
+<p>The profile is the policy view of a scope and the dataclass is the working
+view; both name which dimensions are required, required-nullable or optional.
+A field with no default must sit in the matching tier, a field with a default
+may sit in any tier except required_nullable when it is not nullable (an
+absent value reaches the parser as <code>None</code> and is rejected), and a dimension
+the profile requires must be a field.</p>
+
+
+    </div>
+
+</div>
 
 
 
