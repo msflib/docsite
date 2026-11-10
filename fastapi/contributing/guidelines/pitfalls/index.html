@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -3394,6 +3394,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../concurrency-and-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency and edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../review/" class="md-nav__link">
         
   
@@ -3402,6 +3458,34 @@
     
   
     Reviewing pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../review-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Review patterns
   
 
     
@@ -3521,10 +3605,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sqlite-savepoints-do-not-roll-back" class="md-nav__link">
+  <a href="#sqlite-savepoints-may-not-roll-back" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SQLite savepoints do not roll back
+        SQLite savepoints may not roll back
       
     </span>
   </a>
@@ -3591,6 +3675,61 @@
     <span class="md-ellipsis">
       
         HookRegistry.bind() does not register listeners
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-preflight-rejects-rev-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release preflight rejects rev = "dev"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-notes-runs-to-the-next-heading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ## Release Notes runs to the next heading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ruff-format-rewrites-markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ruff format rewrites Markdown
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editable-installs-point-at-one-checkout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editable installs point at one checkout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sed-i-on-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sed -i on macOS
       
     </span>
   </a>
@@ -3670,10 +3809,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sqlite-savepoints-do-not-roll-back" class="md-nav__link">
+  <a href="#sqlite-savepoints-may-not-roll-back" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SQLite savepoints do not roll back
+        SQLite savepoints may not roll back
       
     </span>
   </a>
@@ -3747,6 +3886,61 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#release-preflight-rejects-rev-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release preflight rejects rev = "dev"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-notes-runs-to-the-next-heading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ## Release Notes runs to the next heading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ruff-format-rewrites-markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ruff format rewrites Markdown
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editable-installs-point-at-one-checkout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editable installs point at one checkout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sed-i-on-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sed -i on macOS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#missing-package-tests-stop-covering-the-probe" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3784,10 +3978,12 @@ the first instantiation of a model, not at import or <code>create_all()</code>.<
 string that SQLAlchemy's class registry can't resolve.</p>
 <p><strong>Fix:</strong> follow MDL-9: no future import in that file, quoted forward
 references. <code>create_all()</code> passing does not prove the mapping works.</p>
-<h2 id="sqlite-savepoints-do-not-roll-back">SQLite savepoints do not roll back<a class="headerlink" href="#sqlite-savepoints-do-not-roll-back" title="Permanent link">&para;</a></h2>
+<h2 id="sqlite-savepoints-may-not-roll-back">SQLite savepoints may not roll back<a class="headerlink" href="#sqlite-savepoints-may-not-roll-back" title="Permanent link">&para;</a></h2>
 <p><strong>Symptom:</strong> after <code>session.begin_nested()</code> and a later <code>session.rollback()</code>,
 the row is still there.</p>
-<p><strong>Cause:</strong> pysqlite's own transaction handling commits the savepoint.</p>
+<p><strong>Cause:</strong> with pysqlite's default transaction handling, the driver commits the
+savepoint's work itself, so the engine needs the workaround below. It does not
+affect PostgreSQL.</p>
 <p><strong>Fix:</strong> wrap the engine with core's helper, which installs the workaround once
 (TST-2):</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
@@ -3829,6 +4025,37 @@ original class.</p>
 <p><strong>Cause:</strong> <code>bind()</code> only records the binding so it can be replaced later.</p>
 <p><strong>Fix:</strong> call <code>emitter.on(...)</code> (or use <code>@emitter.listen</code>) and then <code>bind()</code>.
 See <code>workspaces/eventbus/__init__.py</code>.</p>
+<h2 id="release-preflight-rejects-rev-dev">Release preflight rejects <code>rev = "dev"</code><a class="headerlink" href="#release-preflight-rejects-rev-dev" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> the post-merge release run stops at "Preflight guard against
+dev-pinned release refs".</p>
+<p><strong>Cause:</strong> any <code>pyproject.toml</code> that pins another module to <code>rev = "dev"</code>. A
+new module has no release tag yet, so its dependents cannot pin one.</p>
+<p><strong>Fix:</strong> pin the dependent to the tag the release will create
+(<code>&lt;module&gt;-v&lt;version&gt;</code>) in the same pull request, with the module's version
+declared in its own <code>pyproject.toml</code> (a new module is tagged at that version,
+not bumped by the label). See <a href="../../releases/#how-modules-pin-each-other">Releases</a>.</p>
+<h2 id="release-notes-runs-to-the-next-heading"><code>## Release Notes</code> runs to the next heading<a class="headerlink" href="#release-notes-runs-to-the-next-heading" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> the attribution line or other trailing text shows up in a module's
+release notes.</p>
+<p><strong>Cause:</strong> the notes parser reads from <code>## Release Notes</code> to the next <code>##</code>
+heading or the end of the body.</p>
+<p><strong>Fix:</strong> put another <code>##</code> section (for example <code>## Documentation</code>) after
+Release Notes, or keep nothing after it.</p>
+<h2 id="ruff-format-rewrites-markdown"><code>ruff format</code> rewrites Markdown<a class="headerlink" href="#ruff-format-rewrites-markdown" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> a docs-only or unrelated README diff appears after formatting.</p>
+<p><strong>Fix:</strong> AGT-11: format only the Python files you changed, and revert the rest.</p>
+<h2 id="editable-installs-point-at-one-checkout">Editable installs point at one checkout<a class="headerlink" href="#editable-installs-point-at-one-checkout" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> tests in a second worktree run the first worktree's code.</p>
+<p><strong>Cause:</strong> the editable install resolves <code>msflib</code> to the directory it was
+installed from.</p>
+<p><strong>Fix:</strong> run the suite with <code>PYTHONPATH</code> set to the worktree's <code>core/</code> and
+<code>modules/*/</code> directories, and confirm with
+<code>python -c "import msflib.&lt;module&gt; as m; print(m.__file__)"</code>.</p>
+<h2 id="sed-i-on-macos"><code>sed -i</code> on macOS<a class="headerlink" href="#sed-i-on-macos" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> <code>sed: 1: "file": invalid command code</code>.</p>
+<p><strong>Cause:</strong> BSD <code>sed -i</code> needs a backup suffix argument.</p>
+<p><strong>Fix:</strong> <code>sed -i '' ...</code> or <code>sed -i.bak ...</code> (then remove the backup), or edit
+with a script. Don't leave <code>.bak</code> files in the commit.</p>
 <h2 id="missing-package-tests-stop-covering-the-probe">Missing-package tests stop covering the probe<a class="headerlink" href="#missing-package-tests-stop-covering-the-probe" title="Permanent link">&para;</a></h2>
 <p><strong>Symptom:</strong> after moving to <code>is_importable</code>, a "package missing" test crashes
 during loading instead of skipping.</p>
@@ -3885,7 +4112,7 @@ during loading instead of skipping.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

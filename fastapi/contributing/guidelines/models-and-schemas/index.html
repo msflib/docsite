@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -3285,6 +3285,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mdl-11-server-decided-values-are-service-parameters-not-schema-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDL-11 · Server-decided values are service parameters, not schema fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mdl-12-validate-database-limits-at-the-request-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDL-12 · Validate database limits at the request boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3553,6 +3575,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../concurrency-and-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency and edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../review/" class="md-nav__link">
         
   
@@ -3561,6 +3639,34 @@
     
   
     Reviewing pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../review-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Review patterns
   
 
     
@@ -3781,6 +3887,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#mdl-11-server-decided-values-are-service-parameters-not-schema-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDL-11 · Server-decided values are service parameters, not schema fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mdl-12-validate-database-limits-at-the-request-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDL-12 · Validate database limits at the request boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3804,6 +3932,18 @@
 extends <code>SchemaBase</code>, never pydantic's bare <code>BaseModel</code>, including request
 fragments and response contracts with no table behind them. Enums extend
 <code>BaseEnum</code>. Settings classes extend <code>ModuleSettingsBase</code> instead.</p>
+<p>Subclass <code>ModelBase</code> only where the row's <code>id</code>, <code>created_at</code> and <code>updated_at</code>
+are part of the class:</p>
+<ul>
+<li>the table itself (<code>class Group(ModelBase, table=True)</code>), which also gives
+  <code>ModelAction</code> the lifecycle events it fires on create, update and delete;</li>
+<li>the module's <code>Read</code> schema (<code>class GroupRead(ModelBase)</code>), so responses expose
+  the same id and timestamps without redeclaring them;</li>
+<li>a reusable row base that adds shared columns, such as <code>AccountBase</code>,
+  <code>WorkspaceBase</code> and <code>NotificationBase</code>, which table and <code>Read</code> classes extend.</li>
+</ul>
+<p><code>Create</code>, <code>Update</code> and every other request or contract schema extend
+<code>SchemaBase</code>: the caller never supplies an id or a timestamp (MDL-3).</p>
 <p><code>SchemaBase</code> is a non-table <code>SQLModel</code>, so don't name a schema field
 <code>metadata</code>: SQLModel reserves it (see
 <a href="../pitfalls/#a-schema-field-named-metadata">Known pitfalls</a>).</p>
@@ -3831,6 +3971,8 @@ caller's fields.</p>
 or two genuinely request-only fields. Reference:
 <code>conversation/models/resource_link.py::ResourceLinkCreate</code>, used directly by the
 router.</p>
+<p>When a service needs values the server decides (owner, scope, actor), don't add
+them to <code>Create</code> (MDL-11).</p>
 <h3 id="mdl-5-one-read-per-entity-and-only-when-something-uses-it">MDL-5 · One <code>Read</code> per entity, and only when something uses it<a class="headerlink" href="#mdl-5-one-read-per-entity-and-only-when-something-uses-it" title="Permanent link">&para;</a></h3>
 <p>A single <code>XxxRead</code> per entity serves both internal code and the HTTP response.
 Build responses with <code>XxxRead.model_validate(row).model_copy(update={...})</code>,
@@ -3869,6 +4011,58 @@ attribute holds a live enum member or a plain string after a flush. Write
 <code>f"{row.kind}"</code>. Don't add <code>.value</code> or <code>hasattr(x, "value")</code> guards in new code.
 Compare a field against members of its own enum type, not another enum that
 happens to share values.</p>
+<h3 id="mdl-11-server-decided-values-are-service-parameters-not-schema-fields">MDL-11 · Server-decided values are service parameters, not schema fields<a class="headerlink" href="#mdl-11-server-decided-values-are-service-parameters-not-schema-fields" title="Permanent link">&para;</a></h3>
+<p>Owner, scope, actor and system flags are decided by the server, so they are not
+fields of a <code>Create</code> or <code>Update</code> schema (MDL-3) and there is no second "internal"
+schema that carries them. The service takes the client schema plus small value
+types and keyword arguments for these values, and writes them with
+<code>create(update={...})</code>: <code>grant(session, data=RoleAssignmentCreate(...),
+scope=RoleAssignmentScope(...), granted_by_account_id=...)</code>. A router builds the
+value types from the request context.</p>
+<p>Name a value type for what it describes (<code>RoleOwner</code>, <code>RoleAssignmentScope</code>), and
+give it a named default (<code>SHARED</code>, <code>UNSCOPED</code>) when the common case has none. An
+action takes only the client schema, so reaching a table with scope needs an
+explicit <code>update=</code>, which is easy to see in review (AUZ-6).</p>
+<h3 id="mdl-12-validate-database-limits-at-the-request-boundary">MDL-12 · Validate database limits at the request boundary<a class="headerlink" href="#mdl-12-validate-database-limits-at-the-request-boundary" title="Permanent link">&para;</a></h3>
+<p>Every column with a limit the database enforces has the same limit on the
+<code>Create</code>/<code>Update</code> field that feeds it: string length, a non-blank value, a
+positive id, an integer range. Write it as a pydantic constraint on the
+<code>SchemaBase</code> subclass (<code>Field(min_length=1, max_length=255)</code>, <code>gt=0</code>, a
+<code>field_validator</code> for a format), so FastAPI answers an invalid request with a
+422 that names the field, not a 500 from the database.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RoleCreate</span><span class="p">(</span><span class="n">SchemaBase</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>  <span class="c1"># the column is max_length=255</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Why:</strong> SQLite ignores string lengths, so an oversized value passes every test
+and fails only on PostgreSQL, with a <code>DataError</code> the client sees as an
+unexplained 500. A schema constraint gives the caller a useful message and keeps
+the failure out of the transaction.</p>
+<ul>
+<li>Declare a limit once and use it on both sides. An <code>Annotated</code> alias such as
+  <code>ResourceType = Annotated[str, NON_BLANK_TEXT, Field(max_length=64)]</code> gives the
+  table column <code>VARCHAR(64)</code> and makes the schema reject an oversized request, so
+  the two numbers cannot drift. Write the alias literally, because type checkers
+  do not accept a type built by a function call.</li>
+<li>Take integer ranges and ready-made types from <code>msflib.db.limits</code> (<code>RowId</code>,
+  <code>NON_BLANK_TEXT</code>, <code>resolve_integer_bounds</code>) instead of a per-module constant
+  such as <code>MAX_ROW_ID</code>. For a plain argument that has no schema, validate it with
+  <code>msflib.core.typing.coerce</code> against the same type.</li>
+<li>Match the column's <code>max_length</code>; when the column has none, don't invent a
+  limit.</li>
+<li>Test the boundary: the schema accepts a value of exactly the limit and
+  rejects one more.</li>
+<li>A service that takes plain arguments instead of a schema validates them with
+  the same rules and raises <code>ValueError</code> (EDG-2).</li>
+<li>Values the server decides aren't on the schema (MDL-3); validate them where
+  they are built.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Known gap</p>
+<p><code>msflib.db.limits</code> (<a href="https://github.com/msflib/fastapi/pull/328">#328</a>,
+tracked in <a href="https://github.com/msflib/fastapi/issues/327">#327</a>) is in core and
+authz uses its <code>INTEGER_MAX</code>. Ingestion still keeps its own <code>MAX_ROW_ID</code>.</p>
+</div>
 
 
 
@@ -3921,7 +4115,7 @@ happens to share values.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -3615,6 +3615,62 @@
   
   
     <li class="md-nav__item">
+      <a href="guidelines/concurrency-and-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency and edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guidelines/authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="guidelines/review/" class="md-nav__link">
         
   
@@ -3623,6 +3679,34 @@
     
   
     Reviewing pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guidelines/review-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Review patterns
   
 
     
@@ -4097,6 +4181,7 @@
 </tbody>
 </table>
 <p>Add the <code>ready-for-analysis</code> label when the pull request is ready, so the pytest and SonarQube jobs run.</p>
+<p>Workflows use the runner named by the <code>TASK_RUNNER</code> repository variable, so every run costs runner minutes. Each push to a pull request that targets <code>dev</code> starts the ruff, flake8, policy and release-branch workflows, the docs check when <code>docs/**</code>, <code>mkdocs.yml</code>, <code>requirements-docs.txt</code>, <code>scripts/gen_api_reference.py</code>, <code>core/**</code>, <code>modules/**</code> or its own workflow changes (it is path-filtered), and the <code>ready-for-analysis</code> label adds pytest and SonarQube. Keep pushes few and batched; for stacked pull requests push only the base branch (see AGT-9 and AGT-14 in the <a href="guidelines/agent-workflow/">agent guidelines</a>).</p>
 <h2 id="how-modules-are-structured">How modules are structured<a class="headerlink" href="#how-modules-are-structured" title="Permanent link">&para;</a></h2>
 <p>A module is a directory under <code>modules/</code> with this shape, shown for <code>auth</code>:</p>
 <div class="highlight"><pre><span></span><code>modules/auth/
@@ -4217,7 +4302,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

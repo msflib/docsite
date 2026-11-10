@@ -13,17 +13,17 @@
         <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/contributing/guidelines/review/">
       
       
-        <link rel="prev" href="../style-and-comments/">
+        <link rel="prev" href="../authorization/">
       
       
-        <link rel="next" href="../agent-workflow/">
+        <link rel="next" href="../review-patterns/">
       
       
         
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -3393,6 +3393,62 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../concurrency-and-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency and edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -3536,6 +3592,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../review-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Review patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -3746,8 +3830,15 @@ PR descriptions follow the org template (REV-7).</p>
   policy; no transaction composition in routers (ARC-3, SVC-1, SVC-2, SVC-5).</li>
 <li><strong>Transactions:</strong> no undocumented <code>commit</code> passthrough on services; events
   tied to uncommitted writes are deferred (SVC-4, SVC-10).</li>
+<li><strong>Concurrency and edges:</strong> every check-then-write is backed by a constraint
+  and survives a lost race; NULL, zero, blank, naive-time and unknown-enum
+  inputs are handled; no unbounded <code>IN</code> list; the Python 3.10 floor holds
+  (CNC-1–11, EDG-1–10).</li>
+<li><strong>Authorization:</strong> tier, owner and scope kept apart; one effective-assignment
+  rule; deny by default (AUZ-1–11).</li>
 <li><strong>Schemas:</strong> no server-derived fields on <code>Create</code>/<code>Update</code>; no duplicate DTOs
-  or unused <code>Read</code>s (MDL-3, MDL-4, MDL-5).</li>
+  or unused <code>Read</code>s (MDL-3, MDL-4, MDL-5); column limits mirrored on the schema
+  so an invalid request is a 422, not a 500 (MDL-12).</li>
 <li><strong>Scope:</strong> identity dimensions server-bound, request selectors authorized;
   typed scope objects; null workspace preserved; identity parameters required
   and ordered (SCP-2, SCP-3, SVC-3, API-7).</li>
@@ -3756,11 +3847,16 @@ PR descriptions follow the org template (REV-7).</p>
   vetting list in <a href="../readiness/">Readiness checks</a> (RDY-1–11).</li>
 <li><strong>Tests:</strong> behaviour change has tests; no live calls; regression test fails
   first; router tests share the module's client (TST-4, TST-6, TST-10).</li>
-<li><strong>Readability:</strong> names follow SDC-1–6; flags keyword-only (SDC-8).</li>
+<li><strong>Readability:</strong> names follow SDC-1–6; flags keyword-only (SDC-8); one
+  convention per kind of thing, no ad-hoc names (AGT-13).</li>
+<li><strong>Simplicity:</strong> no simpler way to do the same; nothing kept that the change
+  doesn't need (AGT-12).</li>
 <li><strong>Docs:</strong> module README and docs page updated (MOD-8).</li>
 <li><strong>Change policy:</strong> compatibility choice was confirmed; no speculative
   options; no unrelated changes (STY-4, STY-5, STY-6).</li>
 </ul>
+<p>See <a href="../review-patterns/">Review patterns</a> for the categories reviewers raise
+most and a self-review pass to run before opening the pull request (RVP-1).</p>
 <h3 id="rev-2-verify-every-automated-finding-against-the-code">REV-2 · Verify every automated finding against the code<a class="headerlink" href="#rev-2-verify-every-automated-finding-against-the-code" title="Permanent link">&para;</a></h3>
 <p>Automated reviewers (Copilot, Gemini, Qodo, the repository's AI review action)
 misattribute files and lines, and sometimes describe code that doesn't exist.
@@ -3865,7 +3961,7 @@ opening a PR from the command line, fetch it first:</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -3643,6 +3643,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../concurrency-and-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency and edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../review/" class="md-nav__link">
         
   
@@ -3651,6 +3707,34 @@
     
   
     Reviewing pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../review-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Review patterns
   
 
     
@@ -3993,6 +4077,18 @@
 concurrency mechanics (nested transactions, <code>IntegrityError</code> fallbacks). Move
 domain policy (retry backoff, state transitions) into a function in <code>services/</code>
 and pass the result to <code>update</code>/<code>create</code>.</p>
+<p>This includes building the <code>WHERE</code> clause. A service never composes SQLAlchemy
+expressions (<code>and_</code>, <code>or_</code>, <code>select</code>, column comparisons) or hands them back to
+the session. Give the action a method named for the question it answers
+(<code>get_for_account</code>, <code>get_for_principal</code>) and pass it plain values. When the
+filter needs a value that is itself a query (the ids of a user's groups), have
+the owning action expose it as a <code>Select</code> (<code>GroupMemberAction.build_group_subquery</code>)
+and pass that to the other action, so the query nests as a subquery instead of
+sending one bound parameter per id.</p>
+<p>New code follows this. The authz services still pass column comparisons to
+<code>get_by_expressions</code> and <code>get_multi_by_expressions</code> (<code>AccessService.revoke_resources</code>,
+<code>ResourceSharing.list_shares</code>, <code>RoleService._find_assignment</code> and
+<code>_get_role_by_identity</code>); move them behind a named action method when you touch them.</p>
 <p>Delete action methods that only reshape <code>**filters</code> into <code>get_by_all</code> or wrap
 <code>self.update</code> with a computed dict (<code>mark_done</code>); call the base method instead.
 Don't coerce types inside actions; shape the models and schemas so data
@@ -4011,7 +4107,12 @@ fine when only one dimension applies.</p>
 in one transaction, documented in the function's docstring. Before adding
 <code>commit=False</code> anywhere, grep for callers that pass it; an unused <code>commit</code>
 parameter should be removed.</p>
-<p>Documented exceptions to follow: <code>KnowledgeEngine.ingest</code> (<code>commit=False</code>
+<p>Documented exceptions to follow: the authz composition APIs
+<code>AccessService.grant</code> and <code>AccessService.revoke_resources</code>, and
+<code>ResourceSharing.share</code> and <code>ResourceSharing.revoke_all</code> (<code>commit=False</code> joins
+the drivelink create-with-initial-shares and delete flows to the node's own
+writes; the role and group services commit their own unit of work, see AUZ-7),
+<code>KnowledgeEngine.ingest</code> (<code>commit=False</code>
 joins a larger caller transaction, deferring its post-commit work) and
 <code>IngestionDispatchService.enqueue_and_dispatch_created</code> (<code>commit=False</code> with
 <code>dispatch_after_commit</code> for a caller that owns the outer transaction). Don't
@@ -4151,7 +4252,7 @@ Services and actions raise domain exceptions, never <code>HTTPException</code> (
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

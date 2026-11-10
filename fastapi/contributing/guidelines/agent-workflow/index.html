@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://msflib.github.io/docsite/fastapi/contributing/guidelines/agent-workflow/">
       
       
-        <link rel="prev" href="../review/">
+        <link rel="prev" href="../review-patterns/">
       
       
         <link rel="next" href="../pitfalls/">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -3396,6 +3396,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../concurrency-and-edge-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency and edge cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../review/" class="md-nav__link">
         
   
@@ -3404,6 +3460,34 @@
     
   
     Reviewing pull requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../review-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Review patterns
   
 
     
@@ -3565,6 +3649,72 @@
     <span class="md-ellipsis">
       
         AGT-8 · Stay in scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-9-stacked-pull-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-9 · Stacked pull requests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-10-the-maintainer-merges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-10 · The maintainer merges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-11-format-only-what-you-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-11 · Format only what you changed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-12-simplicity-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-12 · Simplicity gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-13-understandability-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-13 · Understandability gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-14-spend-runner-minutes-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-14 · Spend runner minutes deliberately
       
     </span>
   </a>
@@ -3737,6 +3887,72 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#agt-9-stacked-pull-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-9 · Stacked pull requests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-10-the-maintainer-merges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-10 · The maintainer merges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-11-format-only-what-you-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-11 · Format only what you changed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-12-simplicity-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-12 · Simplicity gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-13-understandability-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-13 · Understandability gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-14-spend-runner-minutes-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT-14 · Spend runner minutes deliberately
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3795,6 +4011,78 @@ actually touched; files it never changed can take <code>dev</code>'s side.</p>
 <h3 id="agt-8-stay-in-scope">AGT-8 · Stay in scope<a class="headerlink" href="#agt-8-stay-in-scope" title="Permanent link">&para;</a></h3>
 <p>Follow STY-6. When you notice an unrelated issue, report it instead of
 fixing it.</p>
+<h3 id="agt-9-stacked-pull-requests">AGT-9 · Stacked pull requests<a class="headerlink" href="#agt-9-stacked-pull-requests" title="Permanent link">&para;</a></h3>
+<p>When a change is split into a chain of pull requests (each based on the one
+below, the first on <code>dev</code>):</p>
+<ul>
+<li>Give each branch its own <code>git worktree</code>; a branch cannot be checked out twice.</li>
+<li>Merge each branch <strong>forward</strong> into the next (<code>phase1 → phase2 → …</code>) after any
+  change and run the suites at every step, locally. Resolve conflicts by taking
+  the newer shared code and re-applying the phase-specific change, not by
+  choosing a side wholesale.</li>
+<li><strong>Push only the base of the stack</strong>, the branch under review, unless the
+  maintainer asks for another one (AGT-14). The branches above it stay local and
+  current; they are pushed when their turn comes.</li>
+<li>After a push or fetch fails on the network, compare each local head with its
+  remote before assuming anything was published.</li>
+<li>Once a pull request below merges, the next must be retargeted to <code>dev</code>; that
+  is the maintainer's step.</li>
+</ul>
+<h3 id="agt-10-the-maintainer-merges">AGT-10 · The maintainer merges<a class="headerlink" href="#agt-10-the-maintainer-merges" title="Permanent link">&para;</a></h3>
+<p>Unless told otherwise, check CI and review comments, fix, push and reply, but do
+not merge, close or relabel for release. Merging triggers releases (see
+<a href="../../releases/">Releases</a>); a <code>release:dry-run</code> label turns the first merge
+into a plan-only run that cannot be repeated for that pull request.</p>
+<h3 id="agt-11-format-only-what-you-changed">AGT-11 · Format only what you changed<a class="headerlink" href="#agt-11-format-only-what-you-changed" title="Permanent link">&para;</a></h3>
+<p><code>ruff format</code> also rewrites Markdown. Run it on the Python files you touched,
+not on the repository or on docs, and revert accidental reformatting before
+committing. Don't run formatters over files outside your change (STY-6).</p>
+<h3 id="agt-12-simplicity-gate">AGT-12 · Simplicity gate<a class="headerlink" href="#agt-12-simplicity-gate" title="Permanent link">&para;</a></h3>
+<p>Before writing code, and again on the finished diff, ask:</p>
+<ol>
+<li>Is there a simpler way to do exactly this?</li>
+<li>What is left if the nice-to-haves go: extra parameters, options, types,
+   layers, helpers with one caller, schemas nothing uses, generality nobody
+   asked for?</li>
+</ol>
+<p>Take the simpler form unless it drops required behaviour, and say in the pull
+request what you left out and why (STY-5). Extra code is more for a reviewer to
+read and for the next change to break.</p>
+<h3 id="agt-13-understandability-gate">AGT-13 · Understandability gate<a class="headerlink" href="#agt-13-understandability-gate" title="Permanent link">&para;</a></h3>
+<p>A reader who knows nothing of the history should be able to say what each name,
+type and function is for from its name and its pattern (SDC-1–6). Before
+introducing a name:</p>
+<ul>
+<li>find the existing pattern for that kind of thing and follow it (AGT-1, SDC-5);</li>
+<li>if there is none, settle one convention and write it into these pages in the
+  same change, so the next name follows it instead of being free-form (REV-6).</li>
+</ul>
+<p>Two names for one role cost every future reader a lookup.</p>
+<h3 id="agt-14-spend-runner-minutes-deliberately">AGT-14 · Spend runner minutes deliberately<a class="headerlink" href="#agt-14-spend-runner-minutes-deliberately" title="Permanent link">&para;</a></h3>
+<p>Workflows use runner minutes, the lightweight ones too. Ruff, flake8 and the
+policy guard run on pushes to <code>dev</code> and on pull requests that target <code>dev</code>; the
+docs check runs for those pull requests only when its paths change (<code>docs/**</code>,
+<code>mkdocs.yml</code>, <code>requirements-docs.txt</code>, <code>scripts/gen_api_reference.py</code>, <code>core/**</code>,
+<code>modules/**</code> or the workflow file); the release-branch guard
+runs when a pull request is opened, reopened, edited or pushed to. A pull request
+that targets another branch (a stacked one) skips most of them. The heavy ones
+are gated: pytest and SonarQube by the <code>ready-for-analysis</code> label, so the label is
+the maintainer's to set (see
+<a href="../../#commit-and-pull-request-conventions">Commit and pull request conventions</a>);
+the AI review by its own <code>ai-review-ready</code> label on a pull request that targets
+<code>dev</code>, or by a <code>/ai-review</code> comment from an owner, member or collaborator, or by a
+manual dispatch.</p>
+<ul>
+<li>Batch fixes: address a round of review comments in one push, not one push per
+  comment. Run the full suites, ruff and <code>mkdocs build --strict</code> locally first.</li>
+<li>Push the base of a stack only (AGT-9). Do not push upper branches to keep them
+  "in sync", and do not push empty commits to re-trigger CI.</li>
+<li>Do not add or remove <code>ready-for-analysis</code> or <code>ai-review-ready</code>, do not comment
+  <code>/ai-review</code>, and do not re-run workflows, unless asked. The AI review calls a
+  paid LLM API, so it is the most expensive trigger.</li>
+<li>If workflows fail with <code>startup_failure</code> on every branch, it is not the code:
+  check runner configuration and quota (<code>vars.TASK_RUNNER</code>) before pushing more.</li>
+</ul>
 
 
 
@@ -3847,7 +4135,7 @@ fixing it.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
