@@ -3977,7 +3977,8 @@ real signature, and have to be edited together when it changes.</p>
 tables from every imported module). <code>drop_all</code> + <code>create_all</code> on a fresh engine
 per test takes <strong>7–35 s</strong> on CI and compounds with every test added.</p>
 <p><strong>Pattern A — module engine, fresh session per test (preferred for new tests)</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">inspect</span> <span class="k">as</span> <span class="n">sa_inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">"module"</span><span class="p">)</span>
@@ -3999,8 +4000,10 @@ per test takes <strong>7–35 s</strong> on CI and compounds with every test add
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">session</span><span class="p">(</span><span class="n">_engine</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">_engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">_existing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sa_inspect</span><span class="p">(</span><span class="n">_engine</span><span class="p">)</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">sorted_tables</span><span class="p">):</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">_existing</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">())</span>
         <span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">yield</span> <span class="n">s</span>
 </code></pre></div>
@@ -4008,6 +4011,11 @@ per test takes <strong>7–35 s</strong> on CI and compounds with every test add
 created once per module. The <code>reversed(sorted_tables)</code> deletes child rows
 before parents, which is required when FK enforcement is on (PostgreSQL) and
 harmless when it is off (SQLite default).</p>
+<p>The <code>sa_inspect</code> filter is required: xdist workers import test files from other
+modules, registering those modules' tables on the global <code>SQLModel.metadata</code>
+after this engine's <code>create_all</code> ran. Without the filter, the DELETE loop
+includes tables that do not exist in this engine (e.g. <code>vectorstoreprofile</code>
+from <code>knowledge</code>) and raises <code>OperationalError: no such table</code>.</p>
 <p><strong>Pattern B — session-scoped init with autouse truncation (testsite / host apps)</strong></p>
 <p>When the conftest seeds complex data via an initialiser (e.g. <code>init_db</code>), lift
 schema creation to <code>scope="session"</code> and truncate inside the per-test fixture:</p>
@@ -4049,6 +4057,10 @@ schema creation to <code>scope="session"</code> and truncate inside the per-test
 <tr>
 <td>Transaction rollback for isolation</td>
 <td>unreliable: pysqlite commits SAVEPOINTs unless <code>enable_savepoints</code> is active (see <a href="../pitfalls/#sqlite-savepoints-do-not-roll-back">Known pitfalls</a>)</td>
+</tr>
+<tr>
+<td><code>SQLModel.metadata.sorted_tables</code> without filtering</td>
+<td>xdist workers register other modules' tables on the global metadata after <code>create_all</code>; DELETE then fails with <code>no such table</code></td>
 </tr>
 </tbody>
 </table>
