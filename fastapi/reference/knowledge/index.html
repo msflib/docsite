@@ -10676,7 +10676,7 @@ then eventbus publication) is owned by the engine, not the compiler.</p>
 
 
 <h3 id="msflib.knowledge.contracts.KnowledgeScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">KnowledgeScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">KnowledgeScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -10686,6 +10686,12 @@ then eventbus publication) is owned by the engine, not the compiler.</p>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+
+  
+      dataclass
+   (msflib.scope.TenantScope)" href="../core/scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
 
 
 
@@ -10791,12 +10797,11 @@ ai_core IngestionPipeline's injected Embedder/Indexer).</p>
     <div class="doc doc-contents ">
 
         <p>Typed compiled-scope contract.</p>
-<p><code>ScopeCompiler</code> validates a <code>ScopeEnvelope</code> against a profile and projects
-it to string-typed sink formats; per its design, domain-typed projections
-belong to the consuming subsystem. <code>KnowledgeScope</code> is that projection for
-this module: built exactly once by the planner's scope rewriter (after profile
-validation), then passed through planner → projections → actions with certain,
-typed attribute access — no string-keyed mappings mid-path.</p>
+<p><code>KnowledgeScope</code> extends core's <code>TenantScope</code> with the knowledge selectors.
+It is built exactly once by the planner's scope rewriter through core's
+<code>ScopeFactory</code> (after profile validation), then passed through planner →
+projections → actions with certain, typed attribute access — no string-keyed
+mappings mid-path.</p>
 
 
 
@@ -10822,7 +10827,7 @@ typed attribute access — no string-keyed mappings mid-path.</p>
 
 
 <h4 id="msflib.knowledge.contracts.scope.KnowledgeScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">KnowledgeScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">KnowledgeScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -10832,6 +10837,12 @@ typed attribute access — no string-keyed mappings mid-path.</p>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+
+  
+      dataclass
+   (msflib.scope.TenantScope)" href="../core/scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
 
 
 
@@ -16864,7 +16875,7 @@ resubmission is a no-op; a changed one bumps <code>version</code>.</p>
 
 
 <h4 id="msflib.knowledge.records.stage.archive_record_source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">archive_record_source</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">KnowledgeEngine</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">archive_record_source</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">KnowledgeEngine</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">KnowledgeScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.knowledge.records.stage.archive_record_source" class="headerlink" title="Permanent link">&para;</a></h4>
 
