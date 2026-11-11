@@ -4159,7 +4159,7 @@
 <p class="admonition-title">Prefer the dependency factory in app code</p>
 <p>In request-handling code, the tenant id arrives through <code>get_current_tenant</code> (from <code>get_tenant_dependencies</code>). Call <code>resolve_default_tenant_id</code> only where there is no request context — startup seeding, background workers, migration scripts, and tests that build their own engine. For startup seeding specifically, prefer <code>TenantAction.ensure_default_tenant</code>, which is safer under concurrent first-time seeding.</p>
 </div>
-<p><code>resolve_default_tenant_id(session, *, tenancy_settings, create_if_missing=True)</code> returns the integer id of the default tenant. Behaviour worth knowing:</p>
+<p><code>resolve_default_tenant_id(session, *, tenancy_settings, create_if_missing=True)</code> returns the integer id of the default tenant. Use it where there is no request, such as a background job or a migration script. Behaviour worth knowing:</p>
 <ul>
 <li>Results are cached per process and per database, and only after the creating transaction commits. Other sessions never see an id for a row that is not yet visible to them.</li>
 <li>With <code>create_if_missing=False</code> it returns <code>None</code> for an unseeded tenant instead of inserting one. Use this on read-only paths.</li>

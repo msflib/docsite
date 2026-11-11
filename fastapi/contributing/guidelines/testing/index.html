@@ -3481,6 +3481,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tst-11-scope-the-engine-not-the-schema-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TST-11 · Scope the engine, not the schema rebuild
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3865,6 +3876,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tst-11-scope-the-engine-not-the-schema-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TST-11 · Scope the engine, not the schema rebuild
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3900,6 +3922,9 @@ pytest processes. Keep the complete failure output when reporting.</p>
 <li>A module with <code>tenant_id</code> foreign keys (MDL-6) also imports the tenant table
   explicitly, because <code>msflib.tenancy.models</code> deliberately doesn't re-export it:
   <code>from msflib.tenancy.models.tenant import Tenant  # noqa: F401</code>.</li>
+<li>When a module's tests are file-based SQLite (legacy) or when multiple test
+  files share a module conftest, follow TST-11 to avoid rebuilding the schema
+  per test.</li>
 </ul>
 <h3 id="tst-3-exercise-actions-and-services-with-realistic-data">TST-3 · Exercise actions and services with realistic data<a class="headerlink" href="#tst-3-exercise-actions-and-services-with-realistic-data" title="Permanent link">&para;</a></h3>
 <p>Fixtures provide action instances, service instances and <code>ScopeEnvelope</code>s, and
@@ -3947,6 +3972,96 @@ Reference: <code>drivelink/tests/conftest.py</code> (<code>make_app</code>, <cod
 <code>app_with_workspace</code>).</p>
 <p>Per-test or per-module app builders repeat the wiring, drift from the router's
 real signature, and have to be edited together when it changes.</p>
+<h3 id="tst-11-scope-the-engine-not-the-schema-rebuild">TST-11 · Scope the engine, not the schema rebuild<a class="headerlink" href="#tst-11-scope-the-engine-not-the-schema-rebuild" title="Permanent link">&para;</a></h3>
+<p><code>SQLModel.metadata</code> is global and registers the full monorepo schema (50+
+tables from every imported module). <code>drop_all</code> + <code>create_all</code> on a fresh engine
+per test takes <strong>7–35 s</strong> on CI and compounds with every test added.</p>
+<p><strong>Pattern A — module engine, fresh session per test (preferred for new tests)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.db.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_savepoints</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">"module"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_engine</span><span class="p">(</span><span class="n">tmp_path_factory</span><span class="p">):</span>
+    <span class="n">db_path</span> <span class="o">=</span> <span class="n">tmp_path_factory</span><span class="o">.</span><span class="n">mktemp</span><span class="p">(</span><span class="s2">"db"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"test.db"</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">enable_savepoints</span><span class="p">(</span>
+        <span class="n">create_engine</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"sqlite:///</span><span class="si">{</span><span class="n">db_path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+            <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">engine</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">session</span><span class="p">(</span><span class="n">_engine</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">_engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">sorted_tables</span><span class="p">):</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">())</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">s</span>
+</code></pre></div>
+<p>Each test gets a fresh <code>Session</code> (no identity-map bleed-through); schema is
+created once per module. The <code>reversed(sorted_tables)</code> deletes child rows
+before parents, which is required when FK enforcement is on (PostgreSQL) and
+harmless when it is off (SQLite default).</p>
+<p><strong>Pattern B — session-scoped init with autouse truncation (testsite / host apps)</strong></p>
+<p>When the conftest seeds complex data via an initialiser (e.g. <code>init_db</code>), lift
+schema creation to <code>scope="session"</code> and truncate inside the per-test fixture:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">"session"</span><span class="p">,</span> <span class="n">autouse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_init_schema</span><span class="p">():</span>
+    <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">drop_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">_dedup_indexes</span><span class="p">()</span>          <span class="c1"># see testsite conftest for the helper</span>
+    <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">session</span><span class="p">():</span>
+    <span class="n">reset_default_tenant_id_cache</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">sorted_tables</span><span class="p">):</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">())</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">init_db</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">create_tables</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># seeds only; create_all is a no-op</span>
+    <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">s</span>
+    <span class="n">reset_default_tenant_id_cache</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>What not to do</strong></p>
+<table>
+<thead>
+<tr>
+<th>Anti-pattern</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>drop_all</code> + <code>create_all</code> per test</td>
+<td>7–35 s × n_tests</td>
+</tr>
+<tr>
+<td><code>engine</code> fixture <code>scope="function"</code></td>
+<td>new DB file per test; same cost</td>
+</tr>
+<tr>
+<td>Transaction rollback for isolation</td>
+<td>unreliable: pysqlite commits SAVEPOINTs unless <code>enable_savepoints</code> is active (see <a href="../pitfalls/#sqlite-savepoints-do-not-roll-back">Known pitfalls</a>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When a test genuinely needs a clean schema</strong> (e.g. <code>test_workspace_table_collision.py</code>
+imports a model with <code>extend_existing=True</code> that mutates global metadata),
+run that module in a separate <code>pytest</code> process or use a dedicated
+session-scoped engine isolated from the shared one.</p>
+<p><strong>CI regression signal</strong></p>
+<p>The <code>msflib.utils.tests.setup_timing</code> plugin (loaded automatically via
+<code>tests-start.sh</code>) warns when two or more tests in the same file each have
+setup time above the threshold. A single slow setup per file is expected
+(the one-time schema creation); two or more signals that schema is being
+rebuilt per test.</p>
 
 
 

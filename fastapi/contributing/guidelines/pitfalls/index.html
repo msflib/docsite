@@ -3747,6 +3747,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#schema-rebuild-per-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema rebuild per test
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3951,6 +3962,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#schema-rebuild-per-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema rebuild per test
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4060,6 +4082,38 @@ with a script. Don't leave <code>.bak</code> files in the commit.</p>
 <p><strong>Symptom:</strong> after moving to <code>is_importable</code>, a "package missing" test crashes
 during loading instead of skipping.</p>
 <p><strong>Fix:</strong> TST-7: patch <code>is_importable</code> consistently with the faked import.</p>
+<h2 id="schema-rebuild-per-test">Schema rebuild per test<a class="headerlink" href="#schema-rebuild-per-test" title="Permanent link">&para;</a></h2>
+<p><strong>Symptom:</strong> tests that individually look fast are slow in aggregate. CI
+<code>--durations=20</code> output shows many tests from the same file each with 7–35 s
+of setup time.</p>
+<p><strong>Cause:</strong> <code>SQLModel.metadata</code> is global and contains the full monorepo schema
+(50+ tables from every imported module). An <code>engine</code> fixture with
+<code>scope="function"</code> calling <code>drop_all</code> + <code>create_all</code> rebuilds all of those
+tables for every test.</p>
+<p><strong>Fix:</strong> TST-11. Lift <code>create_all</code> to <code>scope="module"</code> or <code>scope="session"</code>,
+and use row-level <code>DELETE FROM</code> truncation for per-test isolation:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">"module"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_engine</span><span class="p">(</span><span class="n">tmp_path_factory</span><span class="p">):</span>
+    <span class="n">db_path</span> <span class="o">=</span> <span class="n">tmp_path_factory</span><span class="o">.</span><span class="n">mktemp</span><span class="p">(</span><span class="s2">"db"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"test.db"</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="sa">f</span><span class="s2">"sqlite:///</span><span class="si">{</span><span class="n">db_path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+    <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">engine</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">session</span><span class="p">(</span><span class="n">_engine</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">_engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">sorted_tables</span><span class="p">):</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">())</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">s</span>
+</code></pre></div>
+<p><strong>CI detection:</strong> the <code>msflib.utils.tests.setup_timing</code> plugin (loaded via
+<code>tests-start.sh</code>) emits a GitHub Actions warning annotation when two or more
+tests in the same file each have setup time above the threshold, flagging
+any regression to the schema-per-test pattern before it compounds.</p>
 
 
 

@@ -4091,7 +4091,7 @@
 <p>Run the whole flow with the wrapper script. It creates <code>tmp/</code> and <code>uploads/</code>, runs <code>core</code>, each module, then <code>testsite</code>, one pytest process per suite, and prints a combined coverage report:</p>
 <div class="highlight"><pre><span></span><code>./tests-start.sh
 </code></pre></div>
-<p>Pass extra pytest arguments through to every suite, for example <code>-x -q</code>. <code>scripts/test.sh</code> honors these environment variables: <code>PYTEST_XDIST_WORKERS</code> (off by default, for example <code>auto</code>), <code>PYTEST_XDIST_DIST</code>, <code>PYTEST_SERIAL_MODULES</code> and <code>PYTEST_DISABLE_XDIST</code>.</p>
+<p>Pass extra pytest arguments through to every suite, for example <code>-x -q</code>. <code>scripts/test.sh</code> honors these environment variables: <code>PYTEST_XDIST_WORKERS</code> (defaults to <code>auto</code>; set to <code>0</code> to disable xdist), <code>PYTEST_XDIST_DIST</code>, <code>PYTEST_SERIAL_MODULES</code> and <code>PYTEST_DISABLE_XDIST</code>.</p>
 <p>Run a single suite directly. Tests live under <code>msflib/&lt;module&gt;/tests</code> inside each module:</p>
 <div class="highlight"><pre><span></span><code>pytest<span class="w"> </span>core/msflib/tests
 </code></pre></div>
