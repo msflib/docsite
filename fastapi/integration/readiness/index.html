@@ -3869,6 +3869,10 @@ python<span class="w"> </span>-m<span class="w"> </span>msflib.core.readiness<sp
 <td>Skip checks that call a paid external service; the run then carries a <code>run.offline</code> warning naming them, so it is never a plain <code>READY</code></td>
 </tr>
 <tr>
+<td><code>--timeout SECONDS</code></td>
+<td>Cap every isolated check's timeout for this run at that many seconds. A check keeps its own shorter timeout (the flag lowers, never raises); a non-positive, non-numeric or non-finite value (<code>0</code>, <code>-3</code>, <code>soon</code>, <code>inf</code>, <code>nan</code>) is a usage error (exit 2). A check declared <code>isolated=False</code> has no timeout to lower (it runs in the calling process), so the cap does not apply to it</td>
+</tr>
+<tr>
 <td><code>--frontend-origin URL</code></td>
 <td>Also verify the origin against <code>BACKEND_CORS_ORIGINS</code></td>
 </tr>

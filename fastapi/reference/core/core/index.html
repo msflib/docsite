@@ -3010,6 +3010,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.core.readiness.context.Context.budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.readiness.context.Context.fork" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7222,6 +7233,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.core.readiness.context.Context.budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        budget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.readiness.context.Context.fork" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -11297,7 +11319,7 @@ rendered, needs a person.</p>
 
 
 <h5 id="msflib.core.readiness.context.Context" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">Context</span><span class="p">(</span><span class="n">suite</span><span class="p">:</span> <span class="n">Suite</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PROFILE_DEV</span><span class="p">,</span> <span class="n">offline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">facts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">isolation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'auto'</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">Context</span><span class="p">(</span><span class="n">suite</span><span class="p">:</span> <span class="n">Suite</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PROFILE_DEV</span><span class="p">,</span> <span class="n">offline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">facts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">isolation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'auto'</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#msflib.core.readiness.context.Context" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -11328,6 +11350,24 @@ rendered, needs a person.</p>
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="msflib.core.readiness.context.Context.budget" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">budget</span><span class="p">(</span><span class="n">check</span><span class="p">:</span> <span class="n">Check</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span></code>
+
+<a href="#msflib.core.readiness.context.Context.budget" class="headerlink" title="Permanent link">&para;</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Seconds the check may take: its own timeout, lowered (never raised) by <code>timeout</code>.</p>
+
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -12264,8 +12304,8 @@ without; when one is missing the check is skipped and the run warns that it was 
 or Python warnings; switch it off for a check whose library is known to be noisy.
 <code>isolated</code> runs the check in a worker process that is killed when <code>timeout</code> passes (the
 default, and what a check that opens a connection needs). A check that only reads settings may
-set <code>isolated=False</code>: it then runs in the calling process, with no timeout, and must not
-start threads.</p>
+set <code>isolated=False</code>: it then runs in the calling process, with no timeout (so a run's
+<code>--timeout</code> does not apply to it), and must not start threads.</p>
 
 
 
