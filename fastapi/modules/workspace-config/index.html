@@ -689,10 +689,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#scope-types-and-storage-keys" class="md-nav__link">
+  <a href="#tiers-and-storage-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scope types and storage keys
+        Tiers and storage keys
       
     </span>
   </a>
@@ -3901,10 +3901,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#scope-types-and-storage-keys" class="md-nav__link">
+  <a href="#tiers-and-storage-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scope types and storage keys
+        Tiers and storage keys
       
     </span>
   </a>
@@ -4078,7 +4078,8 @@
 <p><code>msflib/workspace_config/__init__.py</code> exports nothing. Import from <code>msflib.workspace_config.services</code>, <code>.models</code>, <code>.actions</code>, <code>.router</code>, <code>.config</code>.</p>
 <h2 id="wiring-into-a-host-app">Wiring into a host app<a class="headerlink" href="#wiring-into-a-host-app" title="Permanent link">&para;</a></h2>
 <p>The service needs no mounting: construct it and call it with a session.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantScope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigTier</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">config_service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
@@ -4137,12 +4138,12 @@
 </div>
 <p>The service itself is configured by the module settings objects you pass to it (for example <code>AICoreSettings</code>). See <a href="#key-concepts">Key concepts</a>.</p>
 <h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
-<h3 id="scope-types-and-storage-keys">Scope types and storage keys<a class="headerlink" href="#scope-types-and-storage-keys" title="Permanent link">&para;</a></h3>
-<p>Each row of <code>ScopedConfigEntry</code> holds one namespace of values for one scope:</p>
+<h3 id="tiers-and-storage-keys">Tiers and storage keys<a class="headerlink" href="#tiers-and-storage-keys" title="Permanent link">&para;</a></h3>
+<p>Each row of <code>ScopedConfigEntry</code> holds one namespace of values for one tier:</p>
 <table>
 <thead>
 <tr>
-<th><code>ConfigScopeType</code></th>
+<th><code>ConfigTier</code></th>
 <th>Required ids</th>
 <th>Meaning</th>
 </tr>
@@ -4165,9 +4166,9 @@
 </tr>
 </tbody>
 </table>
-<p>The service raises <code>ValueError</code> if a required id is missing. Every entry has a unique <code>storage_key</code> built from the scope type, the upper-cased namespace, and the tenant, workspace and account ids in that order, with <code>-</code> for an absent id, for example <code>workspace:DEMO:-:2:-</code> and <code>user:DEMO:-:2:1</code>. The three ids are encoded as parallel dimensions in the key, and an absent one is encoded as an explicit empty slot. It is not a wildcard. Namespaces are normalised to upper case, so <code>demo</code> and <code>DEMO</code> are the same entry.</p>
+<p>The service raises <code>ValueError</code> if a required id is missing. Every entry has a unique <code>storage_key</code> built from the tier, the upper-cased namespace, and the tenant, workspace and account ids in that order, with <code>-</code> for an absent id, for example <code>workspace:DEMO:-:2:-</code> and <code>user:DEMO:-:2:1</code>. The three ids are encoded as parallel dimensions in the key, and an absent one is encoded as an explicit empty slot. It is not a wildcard. Namespaces are normalised to upper case, so <code>demo</code> and <code>DEMO</code> are the same entry.</p>
 <h3 id="resolution-order">Resolution order<a class="headerlink" href="#resolution-order" title="Permanent link">&para;</a></h3>
-<p><code>resolve_module_settings(session, module_settings, tenant_id=, workspace_id=, account_id=, request_override=)</code> returns a new settings object of the same class. Later layers win:</p>
+<p><code>resolve_module_settings(session, module_settings, scope=, account_id=, request_override=)</code> returns a new settings object of the same class. Later layers win:</p>
 <ol>
 <li>The defaults on the <code>module_settings</code> instance you pass.</li>
 <li>The tenant entry for the module's <code>namespace</code>.</li>
@@ -4178,7 +4179,7 @@
 <p>A tier is skipped if its ids are not given (the user tier needs both <code>workspace_id</code> and <code>account_id</code>).</p>
 <p>If the settings class defines <code>request_override_allowlist</code> (a <code>set[str]</code> class variable), request overrides may only touch those keys; anything else raises <code>ValueError("Unsupported request override keys: ...")</code>. Use it to keep secrets out of reach of per-request overrides. Without an allowlist, every key is accepted.</p>
 <h3 id="reading-and-writing-values">Reading and writing values<a class="headerlink" href="#reading-and-writing-values" title="Permanent link">&para;</a></h3>
-<p><code>ScopedConfigService</code> methods all take a session, a <code>ConfigScopeType</code>, a namespace and the ids for that scope:</p>
+<p><code>ScopedConfigService</code> methods all take a session, a <code>ConfigTier</code>, a namespace, the request's <code>scope=</code> (a <code>msflib.scope.TenantScope</code>) and, for the user tier, <code>account_id=</code>:</p>
 <table>
 <thead>
 <tr>
@@ -4216,7 +4217,8 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSettingsBase</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantScope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigTier</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 
@@ -4228,42 +4230,28 @@
 
 
 <span class="n">svc</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="n">svc</span><span class="o">.</span><span class="n">put_namespace_values</span><span class="p">(</span>
-        <span class="n">s</span><span class="p">,</span>
-        <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span>
-        <span class="s2">"demo"</span><span class="p">,</span>
-        <span class="p">{</span><span class="s2">"LIMIT"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">:</span> <span class="s2">"tenant"</span><span class="p">},</span>
-        <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"LIMIT"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">:</span> <span class="s2">"tenant"</span><span class="p">},</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span>
     <span class="p">)</span>
+    <span class="n">svc</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">,</span> <span class="s2">"workspace"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
     <span class="n">svc</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">,</span> <span class="s2">"workspace"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span>
-    <span class="p">)</span>
-    <span class="n">svc</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
-        <span class="n">s</span><span class="p">,</span>
-        <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-        <span class="s2">"demo"</span><span class="p">,</span>
-        <span class="s2">"LIMIT"</span><span class="p">,</span>
-        <span class="mi">5</span><span class="p">,</span>
-        <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-        <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="s2">"LIMIT"</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span>
     <span class="p">)</span>
 
     <span class="n">for_ada</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">DemoSettings</span><span class="p">(),</span> <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">DemoSettings</span><span class="p">(),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span>
     <span class="p">)</span>
     <span class="p">(</span><span class="n">for_ada</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">,</span> <span class="n">for_ada</span><span class="o">.</span><span class="n">MODE</span><span class="p">)</span>  <span class="c1"># (5, "workspace")</span>
 
-    <span class="n">for_workspace</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">DemoSettings</span><span class="p">(),</span> <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span>
-    <span class="p">)</span>
+    <span class="n">for_workspace</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">DemoSettings</span><span class="p">(),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
     <span class="p">(</span><span class="n">for_workspace</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">,</span> <span class="n">for_workspace</span><span class="o">.</span><span class="n">MODE</span><span class="p">)</span>  <span class="c1"># (20, "workspace")</span>
 
     <span class="n">per_request</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
         <span class="n">s</span><span class="p">,</span>
         <span class="n">DemoSettings</span><span class="p">(),</span>
-        <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-        <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span>
         <span class="n">account_id</span><span class="o">=</span><span class="n">ada</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
         <span class="n">request_override</span><span class="o">=</span><span class="p">{</span><span class="s2">"LIMIT"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
     <span class="p">)</span>
@@ -4275,7 +4263,7 @@
 <h3 id="resolve-settings-inside-a-request">Resolve settings inside a request<a class="headerlink" href="#resolve-settings-inside-a-request" title="Permanent link">&para;</a></h3>
 <p>Combine the service with the scope dependencies so the ids come from the authenticated caller:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_member_account_dependency</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantScope</span><span class="p">,</span> <span class="n">get_member_account_dependency</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
@@ -4300,18 +4288,15 @@
     <span class="n">resolved</span> <span class="o">=</span> <span class="n">config_service</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
         <span class="n">DemoSettings</span><span class="p">(),</span>
-        <span class="n">tenant_id</span><span class="o">=</span><span class="n">workspace</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span>
-        <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">scope</span><span class="o">=</span><span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">workspace</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">workspace</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
         <span class="n">account_id</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">"limit"</span><span class="p">:</span> <span class="n">resolved</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">}</span>
 </code></pre></div>
 <h3 id="delete-a-value">Delete a value<a class="headerlink" href="#delete-a-value" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="n">svc</span><span class="o">.</span><span class="n">delete_value</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-    <span class="n">svc</span><span class="o">.</span><span class="n">get_namespace_values</span><span class="p">(</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">acme</span><span class="o">.</span><span class="n">id</span>
-    <span class="p">)</span>  <span class="c1"># {}</span>
+    <span class="n">svc</span><span class="o">.</span><span class="n">delete_value</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="s2">"MODE"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
+    <span class="n">svc</span><span class="o">.</span><span class="n">get_namespace_values</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"demo"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>  <span class="c1"># {}</span>
 </code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

@@ -3905,62 +3905,55 @@
 <p>There is no separate workspace parameter. Callers fold workspace values into <code>tenant_config</code> first (workspace wins over tenant). <code>merge_config_layers</code> is the underlying function if you need all four layers separately.</p>
 <h2 id="resolving-from-stored-values">Resolving from stored values<a class="headerlink" href="#resolving-from-stored-values" title="Permanent link">&para;</a></h2>
 <p><code>ScopedConfigService</code> from <code>msflib.workspace_config.services</code> stores one JSON mapping per namespace per scope, and resolves a module's settings from them.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigScopeType</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantScope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigTier</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_config.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopedConfigService</span>
 
 <span class="n">service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
 
+<span class="n">scope</span> <span class="o">=</span> <span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
 <span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MODEL"</span><span class="p">,</span> <span class="s2">"tenant-model"</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MODEL"</span><span class="p">,</span> <span class="s2">"tenant-model"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span>
 <span class="p">)</span>
 <span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MAX_TOKENS"</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MAX_TOKENS"</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span>
 <span class="p">)</span>
 <span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span>
-    <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-    <span class="s2">"CHAT"</span><span class="p">,</span>
-    <span class="s2">"MAX_TOKENS"</span><span class="p">,</span>
-    <span class="mi">5000</span><span class="p">,</span>
-    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigTier</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MAX_TOKENS"</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span>
 <span class="p">)</span>
 
 <span class="n">resolved</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span>
-    <span class="n">ChatSettings</span><span class="p">(),</span>
-    <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">ChatSettings</span><span class="p">(),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">resolved</span><span class="o">.</span><span class="n">MAX_TOKENS</span><span class="p">,</span> <span class="n">resolved</span><span class="o">.</span><span class="n">MODEL</span><span class="p">)</span>  <span class="c1"># 5000 tenant-model</span>
 </code></pre></div>
 <p>The ids 1, 10 and 25 are examples; on PostgreSQL these rows must exist in the tenant, workspace and account tables, because the stored rows have foreign keys to them.</p>
-<p>Which ids each scope needs:</p>
+<p>Which ids each tier needs:</p>
 <table>
 <thead>
 <tr>
-<th>Scope</th>
+<th>Tier</th>
 <th>Required ids</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>tenant</code></td>
-<td><code>tenant_id</code></td>
+<td><code>scope.tenant_id</code></td>
 </tr>
 <tr>
 <td><code>workspace</code></td>
-<td><code>workspace_id</code></td>
+<td><code>scope.workspace_id</code></td>
 </tr>
 <tr>
 <td><code>user</code></td>
-<td><code>workspace_id</code> and <code>account_id</code></td>
+<td><code>scope.workspace_id</code> and <code>account_id</code></td>
 </tr>
 </tbody>
 </table>
-<p>A user-tier row belongs to a user inside a workspace. A tier is skipped when its ids are not supplied, so a call without <code>account_id</code> resolves tenant and workspace only.</p>
-<p>Rows are stored with a key of the form <code>scope_type:NAMESPACE:tenant:workspace:account</code>, with <code>-</code> for an empty position (for example <code>tenant:CHAT:1:-:-</code>). The <code>ScopedConfigEntry</code> table has foreign keys to the tenant, workspace and account tables, so those modules' models must be imported before you create the table.</p>
+<p>Every call takes the request's <code>scope</code> (a <code>msflib.scope.TenantScope</code>) and, for the user tier, the <code>account_id</code>. Each tier reads only the ids it needs from the scope: a tenant row ignores the workspace, and the workspace and user rows ignore the tenant, so the stored keys do not change with the scope that addressed them. A user-tier row belongs to a user inside a workspace. <code>resolve_module_settings</code> skips the workspace and user tiers when <code>scope.workspace_id</code> is <code>None</code>, and the user tier when <code>account_id</code> is not supplied.</p>
+<p>Rows are stored with a key of the form <code>tier:NAMESPACE:tenant:workspace:account</code>, with <code>-</code> for an empty position (for example <code>tenant:CHAT:1:-:-</code>). The <code>ScopedConfigEntry</code> table has foreign keys to the tenant, workspace and account tables, so those modules' models must be imported before you create the table.</p>
 <h2 id="request-overrides">Request overrides<a class="headerlink" href="#request-overrides" title="Permanent link">&para;</a></h2>
 <p>A request override is a last, per-call layer. It comes in two accepted shapes, which <code>normalize_request_override</code> flattens:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="s2">"MAX_TOKENS"</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
