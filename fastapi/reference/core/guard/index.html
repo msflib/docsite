@@ -2195,21 +2195,38 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.roles.RoleTier" class="md-nav__link">
+  <a href="#msflib.guard.roles.qualify_account_role" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RoleTier
+        qualify_account_role
       
     </span>
   </a>
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
-  <a href="#msflib.guard.roles.RoleKey" class="md-nav__link">
+  <a href="#msflib.guard.scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RoleKey
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.build_check_scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_check_scope
       
     </span>
   </a>
@@ -3916,21 +3933,38 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.roles.RoleTier" class="md-nav__link">
+  <a href="#msflib.guard.roles.qualify_account_role" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RoleTier
+        qualify_account_role
       
     </span>
   </a>
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
-  <a href="#msflib.guard.roles.RoleKey" class="md-nav__link">
+  <a href="#msflib.guard.scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RoleKey
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.build_check_scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_check_scope
       
     </span>
   </a>
@@ -4277,7 +4311,7 @@ ROLE_REGISTRY.register(
 
     <div class="doc doc-contents ">
 
-        <p>Role vocabulary shared by the permission guards and the role guards.</p>
+        <p>The tier an account's role attribute grants.</p>
 
 
 
@@ -4298,47 +4332,24 @@ ROLE_REGISTRY.register(
 
 
 
-<div class="doc doc-object doc-class">
+
+<div class="doc doc-object doc-function">
 
 
+<h4 id="msflib.guard.roles.qualify_account_role" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">qualify_account_role</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleKey</span> <span class="o">|</span> <span class="kc">None</span></code>
 
-<h4 id="msflib.guard.roles.RoleTier" class="doc doc-heading">
-            <code>RoleTier</code>
-
-
-<a href="#msflib.guard.roles.RoleTier" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.guard.roles.qualify_account_role" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="msflib.models.BaseEnum">BaseEnum</span></code></p>
+
+        <p>The role an account's role attribute grants: <code>root</code> is platform, any other tenant.</p>
 
 
+    </div>
 
-        <p>Scope tier a role grants authority at.</p>
-<p>A guard's tier says where the caller must hold the role: anywhere
-(<code>platform</code>), in the request's tenant, or in the request's workspace.</p>
-
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
+</div>
 
 
 
@@ -4348,25 +4359,19 @@ ROLE_REGISTRY.register(
 
 </div>
 
-<div class="doc doc-object doc-class">
+<div class="doc doc-object doc-module">
 
 
 
-<h4 id="msflib.guard.roles.RoleKey" class="doc doc-heading">
-            <code>RoleKey</code>
+<h3 id="msflib.guard.scope" class="doc doc-heading">
+            <code>scope</code>
 
 
-<a href="#msflib.guard.roles.RoleKey" class="headerlink" title="Permanent link">&para;</a></h4>
-
+<a href="#msflib.guard.scope" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="typing.NamedTuple">NamedTuple</span></code></p>
 
-
-
-        <p>A role key qualified by its tier: <code>admin</code> differs per tier.</p>
-
+        <p>The scope a guard's check runs in: the request's scope, narrowed to the guard's tier.</p>
 
 
 
@@ -4388,14 +4393,25 @@ ROLE_REGISTRY.register(
 
 
 
+<div class="doc doc-object doc-function">
 
 
-  </div>
+<h4 id="msflib.guard.scope.build_check_scope" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_check_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TenantScope</span></code>
+
+<a href="#msflib.guard.scope.build_check_scope" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The <code>TenantScope</code> a check at <code>tier</code> runs in: below the workspace tier, tenant level.</p>
+<p>An unknown tier raises <code>ValueError</code>. A request without a tenant, or a workspace
+check without a workspace, raises <code>ScopeValidationError</code>.</p>
+
 
     </div>
 
 </div>
-
 
 
 
