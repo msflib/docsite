@@ -3971,7 +3971,7 @@ caller's fields.</p>
 or two genuinely request-only fields. Reference:
 <code>conversation/models/resource_link.py::ResourceLinkCreate</code>, used directly by the
 router.</p>
-<p>When a service needs values the server decides (owner, scope, actor), don't add
+<p>When a service needs values the server decides (owner, reach, actor), don't add
 them to <code>Create</code> (MDL-11).</p>
 <h3 id="mdl-5-one-read-per-entity-and-only-when-something-uses-it">MDL-5 · One <code>Read</code> per entity, and only when something uses it<a class="headerlink" href="#mdl-5-one-read-per-entity-and-only-when-something-uses-it" title="Permanent link">&para;</a></h3>
 <p>A single <code>XxxRead</code> per entity serves both internal code and the HTTP response.
@@ -4017,10 +4017,10 @@ fields of a <code>Create</code> or <code>Update</code> schema (MDL-3) and there 
 schema that carries them. The service takes the client schema plus small value
 types and keyword arguments for these values, and writes them with
 <code>create(update={...})</code>: <code>grant(session, data=RoleAssignmentCreate(...),
-scope=RoleAssignmentScope(...), granted_by_account_id=...)</code>. A router builds the
+reach=RoleAssignmentReach(...), granted_by_account_id=...)</code>. A router builds the
 value types from the request context.</p>
-<p>Name a value type for what it describes (<code>RoleOwner</code>, <code>RoleAssignmentScope</code>), and
-give it a named default (<code>SHARED</code>, <code>UNSCOPED</code>) when the common case has none. An
+<p>Name a value type for what it describes (<code>RoleOwner</code>, <code>RoleAssignmentReach</code>), and
+give it a named default (<code>SHARED</code>, <code>PLATFORM_REACH</code>) when the common case has none. An
 action takes only the client schema, so reaching a table with scope needs an
 explicit <code>update=</code>, which is easy to see in review (AUZ-6).</p>
 <h3 id="mdl-12-validate-database-limits-at-the-request-boundary">MDL-12 · Validate database limits at the request boundary<a class="headerlink" href="#mdl-12-validate-database-limits-at-the-request-boundary" title="Permanent link">&para;</a></h3>

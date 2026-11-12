@@ -4863,18 +4863,18 @@ this router calls -- declared locally so this module never imports
 
 
 <h3 id="msflib.ai_api.scope.build_request_envelope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_request_envelope</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
+            <code class="highlight language-python"><span class="n">build_request_envelope</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
 
 <a href="#msflib.ai_api.scope.build_request_envelope" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Build a per-request ScopeEnvelope from the authenticated account context.</p>
-<p>tenant_id is caller-supplied (the endpoint boundary's already-resolved
-real tenant id -- see <code>ai_api.deps.get_ai_api_scope_dependencies</code>) and
-never derived from account: accounts can belong to multiple tenants.
-account.id is the individual user identity and goes into PrincipalContext only.</p>
+        <p>Layer the request's caller, channel and selectors onto the identity <code>base</code>.</p>
+<p><code>base</code> carries the server-decided tenant and workspace (see
+<code>msflib.scope.get_scope_dependencies</code>). The account is the individual user identity and
+goes into PrincipalContext only; the channel is a policy input, so it is an attribute.
+<code>conversation_id</code> and <code>sub_thread_id</code> are selectors from the validated request body.</p>
 
 
     </div>

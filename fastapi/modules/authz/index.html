@@ -689,10 +689,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#assignment-scope" class="md-nav__link">
+  <a href="#assignment-reach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Assignment scope
+        Assignment reach
       
     </span>
   </a>
@@ -4191,10 +4191,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#assignment-scope" class="md-nav__link">
+  <a href="#assignment-reach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Assignment scope
+        Assignment reach
       
     </span>
   </a>
@@ -4424,7 +4424,7 @@
 <li><em>Which roles does this account hold here?</em> (<code>RoleService.get_role_keys_for</code>, the <code>require_role</code> guard)</li>
 </ul>
 <p>It sits beside the simple role attributes (<code>Account.role</code>, <code>User.type</code>) that <a href="../auth/">auth</a> guards compare, rather than replacing them. Apps pick either way, or both; see <a href="#two-ways-to-guard-a-route">Two ways to guard a route</a> and <a href="#legacy-roles">Legacy roles</a>. <code>msflib-auth</code> does not depend on this module.</p>
-<p>The terms <em>tier</em>, <em>owner</em> and <em>assignment scope</em> are easy to confuse because they all mention tenants and workspaces. Read <a href="#three-questions-about-a-role">Three questions about a role</a> before the rest.</p>
+<p>The terms <em>tier</em>, <em>owner</em> and <em>assignment reach</em> are easy to confuse because they all mention tenants and workspaces. Read <a href="#three-questions-about-a-role">Three questions about a role</a> before the rest.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">msflib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"https://github.com/msflib/fastapi.git"</span><span class="p">,</span><span class="w"> </span><span class="n">subdirectory</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core"</span><span class="p">,</span><span class="w"> </span><span class="n">rev</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"core-v0.2.2"</span><span class="w"> </span><span class="p">}</span>
@@ -4589,7 +4589,7 @@
 <li>the key is not registered in this process (a warning is logged, so a typo never grants). A bundled key that is no longer registered counts for nothing either, so every process that checks permissions, including workers and CLIs, must import the modules that register the keys;</li>
 <li>no account can be identified, or a wired <code>get_current_tenant</code> returns no tenant;</li>
 <li>the workspace belongs to another tenant, or a workspace guard has no workspace in the request;</li>
-<li>the matching assignment is expired, or its scope does not fit its role's tier.</li>
+<li>the matching assignment is expired, or its reach does not fit its role's tier.</li>
 </ul>
 <p>Prefer <code>require_permission</code> for new code: a permission names <em>what</em> may be done, and does not depend on what the roles happen to be called. Use <a href="#require_role"><code>require_role</code></a> when the route is about holding a role.</p>
 <p>To check a permission outside a route, for example inside a service, call <code>RoleService.has_permission</code> with the account, tenant and (for workspace permissions) workspace (see <a href="#how-a-permission-is-resolved">How a permission is resolved</a>).</p>
@@ -4649,7 +4649,7 @@
 <tr>
 <td>Granularity</td>
 <td>a role name, exact match</td>
-<td>tier, owner and scope; permissions bundled into roles</td>
+<td>tier, owner and reach; permissions bundled into roles</td>
 </tr>
 <tr>
 <td>Changed at runtime</td>
@@ -4685,15 +4685,15 @@
 </tr>
 <tr>
 <td><strong>Where does this one grant apply?</strong></td>
-<td>the assignment's <strong>scope</strong></td>
+<td>the assignment's <strong>reach</strong></td>
 <td><code>RoleAssignment.tenant_id</code>, <code>RoleAssignment.workspace_id</code></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition warning">
-<p class="admonition-title"><code>Role.tenant_id</code> is the owner, not the scope</p>
+<p class="admonition-title"><code>Role.tenant_id</code> is the owner, not the reach</p>
 <p>The <code>tenant_id</code> and <code>workspace_id</code> columns on <code>Role</code> say where the role is <em>defined</em>. They never say where the role applies. A role's authority is decided by its tier together with each assignment's own <code>tenant_id</code> and <code>workspace_id</code>. The columns on the two tables share names, but they are different facts.</p>
-<p>The columns are deliberately not named <code>owner_tenant_id</code> / <code>owner_workspace_id</code>: the longer name adds noise without removing the need to read this section. Whenever you see <code>role_tenant_id</code> / <code>role_workspace_id</code> in the code (for example in <code>validation.py</code>), it is the owner; <code>assignment_tenant_id</code> / <code>assignment_workspace_id</code> is the scope of a grant.</p>
+<p>The columns are deliberately not named <code>owner_tenant_id</code> / <code>owner_workspace_id</code>: the longer name adds noise without removing the need to read this section. Whenever you see <code>role_tenant_id</code> / <code>role_workspace_id</code> in the code (for example in <code>validation.py</code>), it is the owner; <code>assignment_tenant_id</code> / <code>assignment_workspace_id</code> is the reach of a grant.</p>
 </div>
 <h4 id="tier">Tier<a class="headerlink" href="#tier" title="Permanent link">&para;</a></h4>
 <p>The tier fixes what <em>shape</em> of scope an assignment must have, and how far the role reaches.</p>
@@ -4763,12 +4763,12 @@
 </table>
 <p>The seeded <code>owner</code>, <code>admin</code>, <code>member</code> and <code>guest</code> workspace roles are shared (NULL, NULL): one definition, assigned per workspace, with every assignment naming its own tenant and workspace. The seeded tenant roles (<code>admin</code>, <code>user</code>) are owned by the default tenant.</p>
 <p>A <em>tier</em> and an <em>owner</em> are independent. A workspace-tier role can be shared, owned by a tenant (a per-tenant template) or owned by one workspace. A platform-tier role must have no owner. A tenant-tier role cannot be owned by a workspace.</p>
-<h4 id="assignment-scope">Assignment scope<a class="headerlink" href="#assignment-scope" title="Permanent link">&para;</a></h4>
+<h4 id="assignment-reach">Assignment reach<a class="headerlink" href="#assignment-reach" title="Permanent link">&para;</a></h4>
 <p><code>RoleAssignment.tenant_id</code> / <code>workspace_id</code> say where <em>this grant</em> applies, for example "Ada is an <code>admin</code> in tenant 5", or "Grace is a <code>member</code> of workspace 12 in tenant 5". Which ids are required follows from the tier (above), and the ids must lie inside the role's owner (above).</p>
 <h4 id="valid-and-invalid-combinations">Valid and invalid combinations<a class="headerlink" href="#valid-and-invalid-combinations" title="Permanent link">&para;</a></h4>
 <p>An assignment is <strong>effective</strong>, meaning it can grant authority, only if all three of the following hold. This single rule is <code>is_effective_assignment</code> in <code>validation.py</code>; every resolution path uses it.</p>
 <ol>
-<li><strong>Its scope has the shape its role's tier requires</strong> (the table under <a href="#tier">Tier</a>).</li>
+<li><strong>Its reach has the shape its role's tier requires</strong> (the table under <a href="#tier">Tier</a>).</li>
 <li><strong>It lies inside the role's owner.</strong> For each of tenant and workspace: if the role has an owner there, the assignment must name exactly that id; if the role has none, any id is fine.</li>
 <li><strong>It has not expired</strong> (<code>expires_at</code> is NULL or in the future).</li>
 </ol>
@@ -4876,14 +4876,14 @@
 </table>
 <p><code>RoleService.grant</code> rejects an invalid assignment with <code>ValueError</code>. Resolution <em>also</em> ignores one, so a row that was written some other way (a raw action, a data migration, a bug) still grants nothing. The database enforces what it can without joining tables:</p>
 <ul>
-<li><code>ck_role_tier_scope</code> on <code>role</code>: platform roles have no owner; tenant roles have no workspace owner; a workspace owner implies a tenant owner.</li>
-<li><code>ck_role_assignment_scope</code> on <code>role_assignment</code>: a <code>workspace_id</code> requires a <code>tenant_id</code>.</li>
+<li><code>ck_role_tier_owner</code> on <code>role</code>: platform roles have no owner; tenant roles have no workspace owner; a workspace owner implies a tenant owner.</li>
+<li><code>ck_role_assignment_reach</code> on <code>role_assignment</code>: a <code>workspace_id</code> requires a <code>tenant_id</code>.</li>
 <li><code>ck_role_assignment_source</code> on <code>role_assignment</code>: <code>source</code> is <code>runtime</code> or <code>legacy_backfill</code>.</li>
-<li><code>ck_role_scope_ids_positive</code> and <code>ck_role_assignment_ids_positive</code>: scope ids, when set, are positive. The unique identity indexes treat NULL scope columns as equal by coalescing them to <code>-1</code>, so a real id must never equal the sentinel; <code>RoleService</code> also rejects non-positive ids with <code>ValueError</code>.</li>
+<li><code>ck_role_owner_ids_positive</code> and <code>ck_role_assignment_ids_positive</code>: scope ids, when set, are positive. The unique identity indexes treat NULL scope columns as equal by coalescing them to <code>-1</code>, so a real id must never equal the sentinel; <code>RoleService</code> also rejects non-positive ids with <code>ValueError</code>.</li>
 </ul>
 <p>The tier-versus-assignment rule (step 1) and the owner rule (step 2) compare columns on two tables, which a CHECK constraint cannot do. They are enforced by the service on write and by resolution on read.</p>
 <h3 id="how-a-permission-is-resolved">How a permission is resolved<a class="headerlink" href="#how-a-permission-is-resolved" title="Permanent link">&para;</a></h3>
-<p><code>RoleService.has_permission(session, account_id=..., tenant_id=..., workspace_id=None, permission_key=...)</code> loads the account's effective assignments for that scope, including those made to a <a href="#groups">group</a> the account belongs to, and then applies the reach of each tier:</p>
+<p><code>RoleService.has_permission(session, account_id=..., scope=TenantScope(tenant_id=..., workspace_id=None), permission_key=...)</code> loads the account's effective assignments for that scope, including those made to a <a href="#groups">group</a> the account belongs to, and then applies the reach of each tier:</p>
 <ul>
 <li><strong>platform</strong>: always applies.</li>
 <li><strong>tenant</strong>: applies when the assignment's tenant is the request's tenant, and either the request is tenant-level (no workspace) or the permission was registered with <code>tenant_cascade=True</code>.</li>
@@ -4891,13 +4891,13 @@
 </ul>
 <p>The permission is granted when any matching role bundles the key (or a <code>prefix.*</code> key covering it). <code>platform_only=True</code> considers platform-tier roles only.</p>
 <h3 id="role-keys">Role keys<a class="headerlink" href="#role-keys" title="Permanent link">&para;</a></h3>
-<p><code>get_role_keys_for(session, principal_kind=..., principal_id=..., tenant_id=None, workspace_id=None)</code> returns the keys of the roles in effect at a scope, as <code>RoleKey(tier, key)</code> values. The tier is part of the value because the same string can exist at several tiers: the seeded <code>admin</code> is a tenant role and a workspace role. Without the tier, a workspace <code>admin</code> could be mistaken for a tenant <code>admin</code>.</p>
+<p><code>get_role_keys_for(session, principal_kind=..., principal_id=..., scope=TenantScope(...))</code> returns the keys of the roles in effect at a scope, as <code>RoleKey(tier, key)</code> values. The tier is part of the value because the same string can exist at several tiers: the seeded <code>admin</code> is a tenant role and a workspace role. Without the tier, a workspace <code>admin</code> could be mistaken for a tenant <code>admin</code>.</p>
 <ul>
 <li>Platform roles are always included.</li>
-<li>Tenant roles are included for <code>tenant_id</code>.</li>
+<li>Tenant roles are included for <code>scope.tenant_id</code>.</li>
 <li>Workspace roles are included for exactly <code>(tenant_id, workspace_id)</code>.</li>
-<li>With <code>tenant_id=None</code>, only platform roles are returned.</li>
 </ul>
+<p>The scope is core's <code>TenantScope</code>, which <code>require_permission</code> and <code>require_role</code> build once from the request; <code>workspace_id=None</code> is a check at tenant level. The tenant is required: there is no tenant-less check, so a platform role is found at any tenant.</p>
 <h3 id="legacy-roles">Legacy roles<a class="headerlink" href="#legacy-roles" title="Permanent link">&para;</a></h3>
 <p><code>Account.role</code> (<code>root</code>, <code>admin</code>, <code>user</code>) and <code>User.type</code> (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>) are read by the <code>auth</code> guards. The authz guards ignore them: only assignments and their bundled permissions count.</p>
 <p>To move a route from <code>RoleCheck</code> to <code>require_role</code> without losing access, mirror the attributes into assignments first with the backfills (see <a href="#seeding">Seeding</a>). They write <code>legacy_backfill</code> assignments; a runtime grant is a separate row. The two sources are independent afterwards: revoking an assignment does not change the attribute, and editing the attribute does not change assignments until the backfill runs again.</p>
@@ -4905,9 +4905,9 @@
 <h3 id="writing-roles">Writing roles<a class="headerlink" href="#writing-roles" title="Permanent link">&para;</a></h3>
 <p>Write through <code>RoleService</code>; the actions are plain data access.</p>
 <ul>
-<li><code>create_role</code>, <code>ensure_role</code> (get-or-create), <code>add_permissions</code>, <code>grant</code>, <code>ensure_assignment</code> (get-or-grant), <code>revoke</code>. The values the server decides are separate parameters, not schema fields: <code>owner=RoleOwner(...)</code> (default <code>SHARED</code>), <code>is_system</code> and <code>created_by_account_id</code> for a role; <code>scope=RoleAssignmentScope(...)</code> (default <code>UNSCOPED</code>) and <code>granted_by_account_id</code> for an assignment. Renewing an expired grant keeps its original grantor unless a new one is passed. The <code>ensure_*</code> methods are safe to repeat and to run from several processes at once: a caller that loses a creation race gets the winner's row.</li>
+<li><code>create_role</code>, <code>ensure_role</code> (get-or-create), <code>add_permissions</code>, <code>grant</code>, <code>ensure_assignment</code> (get-or-grant), <code>revoke</code>. The values the server decides are separate parameters, not schema fields: <code>owner=RoleOwner(...)</code> (default <code>SHARED</code>), <code>is_system</code> and <code>created_by_account_id</code> for a role; <code>reach=RoleAssignmentReach(...)</code> (default <code>PLATFORM_REACH</code>) and <code>granted_by_account_id</code> for an assignment. Renewing an expired grant keeps its original grantor unless a new one is passed. The <code>ensure_*</code> methods are safe to repeat and to run from several processes at once: a caller that loses a creation race gets the winner's row.</li>
 <li>Each public method is one closed unit of work: its writes run in savepoints and it commits once at the end, so a failure leaves nothing half-written. The batch methods (<code>ensure_roles</code>, <code>bundle_permissions</code>, <code>sync_legacy_assignments</code>, used by the seeders) commit once for the whole batch. Events fire on that commit. Because the commit is the session's, any other pending work in the same session is committed with it.</li>
-<li><code>grant</code> validates the assignment (tier shape, owner scope, <code>expires_at</code> in the future) and rejects an existing one with <code>AssignmentExistsError</code>; <code>create_role</code> raises <code>RoleExistsError</code> for a duplicate. Both are <code>ValueError</code> subclasses, and they are raised the same way when a concurrent writer wins the race, so callers handle one error rather than a raw <code>IntegrityError</code>.</li>
+<li><code>grant</code> validates the assignment (tier shape, owner, <code>expires_at</code> in the future) and rejects an existing one with <code>AssignmentExistsError</code>; <code>create_role</code> raises <code>RoleExistsError</code> for a duplicate. Both are <code>ValueError</code> subclasses, and they are raised the same way when a concurrent writer wins the race, so callers handle one error rather than a raw <code>IntegrityError</code>.</li>
 <li>Granting over an <strong>expired</strong> runtime assignment renews it (new <code>expires_at</code>; the original granter is kept unless <code>granted_by_account_id</code> is given) instead of failing, so an expired grant never blocks re-granting. A mirrored legacy assignment of the same role is a separate row and is left alone.</li>
 <li><code>key</code>, <code>name</code> and <code>principal_id</code> are trimmed, must not be blank, and keys and principal ids are limited to 255 characters; scope ids must be positive.</li>
 <li>Events: see <a href="#events">Events</a>.</li>
@@ -4937,19 +4937,18 @@
 </tbody>
 </table>
 <p>A group belongs to a tenant and to a workspace, or to the workspace-agnostic bucket of that tenant when its <code>workspace_id</code> is <code>None</code> (a real scope of its own, not "unscoped"). <code>GroupService</code> adds and removes members. Each call is one unit of work, like <code>RoleService</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupMemberCreate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupService</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupService</span>
 
 <span class="n">service</span> <span class="o">=</span> <span class="n">GroupService</span><span class="p">()</span>
 <span class="n">service</span><span class="o">.</span><span class="n">add_member</span><span class="p">(</span>
     <span class="n">session</span><span class="p">,</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">GroupMemberCreate</span><span class="p">(</span><span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
     <span class="n">group_id</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">added_by_account_id</span><span class="o">=</span><span class="n">current_account</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">service</span><span class="o">.</span><span class="n">remove_member</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">removed_by_account_id</span><span class="o">=</span><span class="n">current_account</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
-<p><code>group_id</code> and the acting account come from the request, so they are service parameters, not fields of <code>GroupMemberCreate</code>. For a <code>personal</code> group the acting account must be the owner, otherwise <code>ValueError</code>. Adding an account that is already a member raises <code>GroupMemberExistsError</code>, also when two requests race. <code>GroupCreate</code> likewise has no <code>tenant_id</code>, <code>workspace_id</code> or <code>owner_account_id</code>; pass them with <code>create(update={...})</code>.</p>
+<p><code>group_id</code>, the member's <code>account_id</code> and the acting account are service parameters, not a request body: the member is named by the route's path, as for removal, and the action takes an empty <code>SchemaBase</code> as its create data. For a <code>personal</code> group the acting account must be the owner, otherwise <code>ValueError</code>. Adding an account that is already a member raises <code>GroupMemberExistsError</code>, also when two requests race. <code>GroupCreate</code> likewise has no <code>tenant_id</code>, <code>workspace_id</code> or <code>owner_account_id</code>; pass them with <code>create(update={...})</code>.</p>
 <h4 id="group-router">Group router<a class="headerlink" href="#group-router" title="Permanent link">&para;</a></h4>
 <p><code>msflib.authz.router.router(...)</code> mounts group and membership endpoints under <code>prefix</code> (default <code>/sharing</code>). The host supplies the dependencies by keyword and the router assumes nothing for it:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">authz_router</span>
@@ -4987,7 +4986,7 @@
 <td>any account sees the workspace's <code>workspace</code> groups and its own <code>personal</code> ones; another account's personal group is a 404</td>
 </tr>
 <tr>
-<td><code>PATCH</code> / <code>DELETE /groups/{id}</code>, <code>POST /groups/{id}/members</code>, <code>DELETE /groups/{id}/members/{account_id}</code></td>
+<td><code>PATCH</code> / <code>DELETE /groups/{id}</code>, <code>POST /groups/{id}/members/{account_id}</code>, <code>DELETE /groups/{id}/members/{account_id}</code></td>
 <td>the owner of a <code>personal</code> group; <code>authz.manage_groups</code> for a <code>workspace</code> group (403 without it)</td>
 </tr>
 </tbody>
@@ -5137,7 +5136,8 @@
 <h3 id="grant-a-workspace-role-and-check-it">Grant a workspace role and check it<a class="headerlink" href="#grant-a-workspace-role-and-check-it" title="Permanent link">&para;</a></h3>
 <p>A shared <code>editor</code> template (tier <code>workspace</code>, no owner), granted to account 42 in workspace 7 of the default tenant:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">PERMISSION_REGISTRY</span><span class="p">,</span> <span class="n">PrincipalKind</span><span class="p">,</span> <span class="n">RoleService</span><span class="p">,</span> <span class="n">RoleTier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleAssignmentScope</span><span class="p">,</span> <span class="n">RoleAssignmentCreate</span><span class="p">,</span> <span class="n">RoleCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleAssignmentReach</span><span class="p">,</span> <span class="n">RoleAssignmentCreate</span><span class="p">,</span> <span class="n">RoleCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantScope</span>
 
 <span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"docs.publish"</span><span class="p">)</span>
 <span class="n">service</span> <span class="o">=</span> <span class="n">RoleService</span><span class="p">()</span>
@@ -5151,31 +5151,29 @@
     <span class="n">data</span><span class="o">=</span><span class="n">RoleAssignmentCreate</span><span class="p">(</span>
         <span class="n">role_id</span><span class="o">=</span><span class="n">editor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">principal_kind</span><span class="o">=</span><span class="n">PrincipalKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">principal_id</span><span class="o">=</span><span class="s2">"42"</span>
     <span class="p">),</span>
-    <span class="n">scope</span><span class="o">=</span><span class="n">RoleAssignmentScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+    <span class="n">reach</span><span class="o">=</span><span class="n">RoleAssignmentReach</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">service</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
     <span class="n">session</span><span class="p">,</span>
     <span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-    <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span>
-    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+    <span class="n">scope</span><span class="o">=</span><span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
     <span class="n">permission_key</span><span class="o">=</span><span class="s2">"docs.publish"</span><span class="p">,</span>
 <span class="p">)</span>  <span class="c1"># True</span>
 <span class="n">service</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
     <span class="n">session</span><span class="p">,</span>
     <span class="n">account_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-    <span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span>
-    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">scope</span><span class="o">=</span><span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
     <span class="n">permission_key</span><span class="o">=</span><span class="s2">"docs.publish"</span><span class="p">,</span>
 <span class="p">)</span>  <span class="c1"># False: workspace roles do not reach other workspaces</span>
 </code></pre></div>
-<p><code>RoleCreate</code> and <code>RoleAssignmentCreate</code> hold only what a client may send. The values the server decides are separate parameters: <code>owner=RoleOwner(...)</code> (default <code>SHARED</code>) for a role, <code>scope=RoleAssignmentScope(...)</code> (default <code>UNSCOPED</code>) for an assignment, and <code>granted_by_account_id</code> / <code>created_by_account_id</code> for the actor. Build them in the endpoint from the request context; never read them from the body.</p>
+<p><code>RoleCreate</code> and <code>RoleAssignmentCreate</code> hold only what a client may send. The values the server decides are separate parameters: <code>owner=RoleOwner(...)</code> (default <code>SHARED</code>) for a role, <code>reach=RoleAssignmentReach(...)</code> (default <code>PLATFORM_REACH</code>) for an assignment, and <code>granted_by_account_id</code> / <code>created_by_account_id</code> for the actor. Build them in the endpoint from the request context; never read them from the body.</p>
 <p>Granting the same role without <code>workspace_id</code> raises <code>ValueError</code> ("tier=workspace requires both tenant_id and workspace_id set"), because a workspace-tier role needs a workspace.</p>
 <h3 id="guard-a-route-with-a-permission">Guard a route with a permission<a class="headerlink" href="#guard-a-route-with-a-permission" title="Permanent link">&para;</a></h3>
 <p>A document-publishing feature, end to end. The module owns the key; the host app seeds and grants.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">PERMISSION_REGISTRY</span><span class="p">,</span> <span class="n">PrincipalKind</span><span class="p">,</span> <span class="n">RoleService</span><span class="p">,</span> <span class="n">RoleTier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleAssignmentScope</span><span class="p">,</span> <span class="n">RoleAssignmentCreate</span><span class="p">,</span> <span class="n">RoleCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleAssignmentReach</span><span class="p">,</span> <span class="n">RoleAssignmentCreate</span><span class="p">,</span> <span class="n">RoleCreate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz.seed</span><span class="w"> </span><span class="kn">import</span> <span class="n">seed_role_permissions</span><span class="p">,</span> <span class="n">seed_system_roles</span>
 
 <span class="c1"># 1. The feature registers its key at import time (not in a function).</span>
@@ -5200,7 +5198,7 @@
     <span class="n">data</span><span class="o">=</span><span class="n">RoleAssignmentCreate</span><span class="p">(</span>
         <span class="n">role_id</span><span class="o">=</span><span class="n">editor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">principal_kind</span><span class="o">=</span><span class="n">PrincipalKind</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">principal_id</span><span class="o">=</span><span class="s2">"42"</span>
     <span class="p">),</span>
-    <span class="n">scope</span><span class="o">=</span><span class="n">RoleAssignmentScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+    <span class="n">reach</span><span class="o">=</span><span class="n">RoleAssignmentReach</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
 <span class="p">)</span>
 
 
@@ -5242,7 +5240,7 @@
 </tr>
 </tbody>
 </table>
-<p>The same key also reads naturally in code: <code>service.has_permission(session, account_id=42, tenant_id=tenant_id, workspace_id=7, permission_key="docs.publish")</code> returns <code>True</code> for the first row.</p>
+<p>The same key also reads naturally in code: <code>service.has_permission(session, account_id=42, scope=TenantScope(tenant_id=tenant_id, workspace_id=7), permission_key="docs.publish")</code> returns <code>True</code> for the first row.</p>
 <p>For a tenant-wide action, register the key with <code>tenant_cascade=True</code> if tenant admins should reach it in every workspace, and guard with <code>tier="tenant"</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">PERMISSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"docs.audit"</span><span class="p">,</span> <span class="n">tenant_cascade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -5256,7 +5254,7 @@
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>A role is assigned but grants nothing.</strong> The assignment is not effective. Check, in order, that its <code>tenant_id</code> / <code>workspace_id</code> match the role's tier (platform: none; tenant: tenant only; workspace: both), that they lie inside the role's owner, and that <code>expires_at</code> has not passed. Rows written through a raw action are not validated, and resolution silently ignores a bad one.</li>
-<li><strong><code>ValueError</code> from <code>grant</code>.</strong> The message names the rule that failed: tier shape, owner scope, a missing role, an <code>expires_at</code> that is not in the future, or an existing unexpired assignment (<code>AssignmentExistsError</code>).</li>
+<li><strong><code>ValueError</code> from <code>grant</code>.</strong> The message names the rule that failed: tier shape, owner, a missing role, an <code>expires_at</code> that is not in the future, or an existing unexpired assignment (<code>AssignmentExistsError</code>).</li>
 <li><strong>Two processes seeded at once.</strong> Seeding and the backfills use <code>ensure_role</code> / <code>ensure_assignment</code>, so concurrent startups converge on the same rows instead of failing on the unique index.</li>
 <li><strong>A workspace <code>admin</code> does not pass <code>require_role(RoleKey(RoleTier.tenant, "admin"))</code>.</strong> Intended. The tier is part of the key; ask for the workspace-tier key, or use <code>require_permission</code>.</li>
 <li><strong>A tenant admin cannot act in a workspace.</strong> Tenant roles reach workspaces only for permissions registered with <code>tenant_cascade=True</code>. Otherwise grant a workspace-tier role in that workspace.</li>

@@ -3937,15 +3937,27 @@
 <h2 id="5-versioned-prompts">5. Versioned prompts<a class="headerlink" href="#5-versioned-prompts" title="Permanent link">&para;</a></h2>
 <p><code>PromptRegistryService</code> stores prompt versions in the database and resolves the active one by scope, in the order user, then workspace, then global.</p>
 <p>The examples below assume <code>session</code> is an open SQLModel <code>Session</code> from your host app (for instance the one injected by your <code>get_session</code> dependency), and that the <code>ai_prompt_version</code> table exists. Import <code>msflib.tenancy.models.tenant</code> before <code>SQLModel.metadata.create_all</code> (or your migrations), because ai-core's provider and vector-store profile tables reference <code>tenant</code>; see the known issue on the <a href="../../modules/ai-core/#wiring-into-a-host-app">module page</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.prompt_registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRegistryService</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptVersionCreate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.services.prompt_registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRegistryService</span>
 
 <span class="n">prompts</span> <span class="o">=</span> <span class="n">PromptRegistryService</span><span class="p">()</span>
 
 <span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"You are a helpful assistant."</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">PromptVersionCreate</span><span class="p">(</span>
+        <span class="n">prompt_key</span><span class="o">=</span><span class="s2">"support.system"</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="s2">"v1"</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="s2">"You are a helpful assistant."</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v2"</span><span class="p">,</span> <span class="s2">"You are concise."</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">PromptVersionCreate</span><span class="p">(</span>
+        <span class="n">prompt_key</span><span class="o">=</span><span class="s2">"support.system"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">"v2"</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">"You are concise."</span>
+    <span class="p">),</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">prompts</span><span class="o">.</span><span class="n">get_active_version</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>

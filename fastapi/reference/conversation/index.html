@@ -3781,6 +3781,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.conversation.scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.scope.build_scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.conversation.scope_profiles" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7252,6 +7280,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.conversation.scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.conversation.scope.build_scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.conversation.scope_profiles" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8762,7 +8818,7 @@ would leak memberships between them.</p>
 
 
 <h4 id="msflib.conversation.actions.ThreadAction.get_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">thread_public_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ConversationThread</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">get_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">thread_public_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ConversationThread</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.conversation.actions.ThreadAction.get_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -8981,7 +9037,7 @@ parameter, so it can't disagree with the message.</p>
 
 
 <h4 id="msflib.conversation.actions.MessageAction.get_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Message</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">get_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Message</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
 
 <a href="#msflib.conversation.actions.MessageAction.get_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -9555,7 +9611,7 @@ matching <code>workspace_id</code>'s existing (already-int) convention.</p>
 
 
 <h3 id="msflib.conversation.contracts.ConversationScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">ConversationScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">ConversationScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -9565,6 +9621,12 @@ matching <code>workspace_id</code>'s existing (already-int) convention.</p>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+
+  
+      dataclass
+   (msflib.scope.TenantScope)" href="../core/scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
 
 
 
@@ -9773,10 +9835,11 @@ matching <code>workspace_id</code>'s existing (already-int) convention.</p>
         <p>Typed compiled-scope contract for the conversation module.</p>
 <p>Mirrors <code>msflib.knowledge.contracts.KnowledgeScope</code>: <code>ScopeCompiler</code>
 validates a <code>ScopeEnvelope</code> against a profile and projects it to
-string-typed sink formats; <code>ConversationScope</code> is the domain-typed
-projection consumers of <em>this</em> module use — built once (by a canonical
-per-module compiling helper, guidelines §8), then passed typed through
-services -&gt; actions with certain, non-defensive attribute access.</p>
+string-typed sink formats; <code>ConversationScope</code> extends core's <code>TenantScope</code>
+and is the domain-typed projection consumers of <em>this</em> module use — built once
+from the envelope through <code>ScopeFactory</code> (<code>conversation.scope.build_scope</code>),
+then passed typed through services -&gt; actions with certain, non-defensive
+attribute access.</p>
 
 
 
@@ -9802,7 +9865,7 @@ services -&gt; actions with certain, non-defensive attribute access.</p>
 
 
 <h4 id="msflib.conversation.contracts.scope.ConversationScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">ConversationScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">ConversationScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -9812,6 +9875,12 @@ services -&gt; actions with certain, non-defensive attribute access.</p>
 
 
     <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+
+  
+      dataclass
+   (msflib.scope.TenantScope)" href="../core/scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
 
 
 
@@ -10397,7 +10466,7 @@ write conversation state under a guessed tenant.</p>
 
 
 <h4 id="msflib.conversation.integrations.ai_bridge.cleanup_ai_core_memories" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">cleanup_ai_core_memories</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">memory_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">cleanup_ai_core_memories</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">memory_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.conversation.integrations.ai_bridge.cleanup_ai_core_memories" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10412,6 +10481,9 @@ doesn't outlive the transcript it was extracted from. No-ops (returns
 <code>conversation_id</code> dimension of its own, so conversation identity is
 threaded through as <code>sub_namespace</code> instead (an opaque segment
 <code>scoped_namespace</code> appends after <code>memory_type</code>).</p>
+<p>Only the tenant and workspace of <code>scope</code> are used: a purge clears the conversation's
+memories for every caller, and a request envelope's selectors (conversation, sub-thread)
+are not memory dimensions.</p>
 
 
     </div>
@@ -12296,6 +12368,69 @@ override seam (<code>dependencies=</code> here mirrors <code>workspaces.router</
 
 
 
+<h2 id="msflib.conversation.scope" class="doc doc-heading">
+            <code>msflib.conversation.scope</code>
+
+
+<a href="#msflib.conversation.scope" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Build the typed <code>ConversationScope</code> from a request's <code>ScopeEnvelope</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.conversation.scope.build_scope" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConversationScope</span></code>
+
+<a href="#msflib.conversation.scope.build_scope" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compile <code>envelope</code> through the conversation <code>operation</code> profile.</p>
+<p><code>conversation_id</code> and <code>sub_thread_id</code> are selectors from the validated request;
+they are layered on the envelope's server-decided identity, never read from it. Raises
+<code>ScopeError</code> for an envelope the profile rejects, such as one without a tenant.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
 <h2 id="msflib.conversation.scope_profiles" class="doc doc-heading">
             <code>msflib.conversation.scope_profiles</code>
 
@@ -12441,7 +12576,7 @@ conversation resolved this way (§5.3).</p>
 
 
 <h4 id="msflib.conversation.services.AccessService.resolve_message" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_message</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Message</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">resolve_message</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Message</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.conversation.services.AccessService.resolve_message" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -12462,7 +12597,7 @@ conversation is.</p>
 
 
 <h4 id="msflib.conversation.services.AccessService.resolve_thread" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_thread</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">thread_public_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ConversationThread</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">resolve_thread</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">thread_public_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ConversationThread</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.conversation.services.AccessService.resolve_thread" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -13442,7 +13577,7 @@ conversation resolved this way (§5.3).</p>
 
 
 <h5 id="msflib.conversation.services.access.AccessService.resolve_message" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_message</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Message</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">resolve_message</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Message</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.conversation.services.access.AccessService.resolve_message" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -13463,7 +13598,7 @@ conversation is.</p>
 
 
 <h5 id="msflib.conversation.services.access.AccessService.resolve_thread" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_thread</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">thread_public_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ConversationThread</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">resolve_thread</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">thread_public_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">participant</span><span class="p">:</span> <span class="n">Participant</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ConversationThread</span><span class="p">,</span> <span class="n">Conversation</span><span class="p">,</span> <span class="n">ConversationMember</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
 
 <a href="#msflib.conversation.services.access.AccessService.resolve_thread" class="headerlink" title="Permanent link">&para;</a></h5>
 
