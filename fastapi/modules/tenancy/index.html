@@ -4094,7 +4094,9 @@
     <span class="n">tenant_action</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">tenancy_settings</span><span class="p">)</span>
 
 <span class="c1"># At app construction:</span>
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">tenancy_settings</span><span class="p">)</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">tenancy_settings</span>
+<span class="p">)</span>
 <span class="n">get_current_tenant</span> <span class="o">=</span> <span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span>
 <span class="n">is_tenant_member</span> <span class="o">=</span> <span class="n">tenant_deps</span><span class="o">.</span><span class="n">is_tenant_member</span>  <span class="c1"># same settings as get_current_tenant</span>
 </code></pre></div>
@@ -4182,7 +4184,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
-<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
+    <span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span>
+<span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 
 
@@ -4193,7 +4197,9 @@
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">TenancySettings</span><span class="p">()</span>
 <span class="n">tenant_action</span> <span class="o">=</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span>
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span>
+<span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 

@@ -3987,10 +3987,17 @@
 <p>Create the actions with your classes and pass them to the router and the dependencies. Your composed <code>Settings</code> class needs <code>WorkspaceSettings</code> and <code>TenancySettings</code> (from <code>msflib.workspaces.config</code> and <code>msflib.tenancy.config</code>) among its bases.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">UserCreate</span><span class="p">,</span>
+    <span class="n">UserUpdate</span><span class="p">,</span>
+    <span class="n">WorkspaceCreate</span><span class="p">,</span>
+    <span class="n">WorkspaceUpdate</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">create_workspace_router</span>
 
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">wa</span> <span class="o">=</span> <span class="n">WorkspaceAction</span><span class="p">[</span><span class="n">Workspace</span><span class="p">,</span> <span class="n">WorkspaceCreate</span><span class="p">,</span> <span class="n">WorkspaceUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">ua</span> <span class="o">=</span> <span class="n">UserAction</span><span class="p">[</span><span class="n">WorkspaceMember</span><span class="p">,</span> <span class="n">UserCreate</span><span class="p">,</span> <span class="n">UserUpdate</span><span class="p">]()</span>
 
@@ -4015,7 +4022,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
 
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
 <p>Setting the new column when you create a workspace in code (outside a request, such as a migration script) goes through the <code>update</code> argument, which overlays values on the payload:</p>
@@ -4024,10 +4033,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>
 
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">tenant</span> <span class="o">=</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+    <span class="n">tenant</span> <span class="o">=</span> <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">workspace</span> <span class="o">=</span> <span class="n">wa</span><span class="o">.</span><span class="n">create_with_owner</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="n">WorkspaceCreate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Acme"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Acme Inc"</span><span class="p">,</span> <span class="n">owner_id</span><span class="o">=</span><span class="n">owner</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">WorkspaceCreate</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"Acme"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Acme Inc"</span><span class="p">,</span> <span class="n">owner_id</span><span class="o">=</span><span class="n">owner</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">"open"</span>
+        <span class="p">),</span>
         <span class="n">owner</span><span class="o">=</span><span class="n">owner</span><span class="p">,</span>
         <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
         <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"region"</span><span class="p">:</span> <span class="s2">"eu"</span><span class="p">},</span>

@@ -3884,7 +3884,10 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.documents.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentsSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionSettings</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span><span class="n">DocumentsSettings</span><span class="p">,</span> <span class="n">IngestionSettings</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AppSettings</span><span class="p">(</span>
+    <span class="n">DocumentsSettings</span><span class="p">,</span> <span class="n">IngestionSettings</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
+<span class="p">):</span>
     <span class="k">pass</span>
 </code></pre></div>
 <p><strong>2. Router.</strong> <code>router</code> in <code>msflib.documents.router</code> takes keyword-only arguments.</p>
@@ -3898,8 +3901,9 @@
     <span class="n">documents_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># may resolve to None</span>
-        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>   <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>  <span class="c1"># may resolve to None</span>
+        <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
         <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/documents"</span><span class="p">,</span>
@@ -4068,14 +4072,18 @@
 
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/documents/1"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"status"</span><span class="p">]</span>       <span class="c1"># "queued"</span>
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/documents/1/download"</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>       <span class="c1"># b"hello world"</span>
-<span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/documents/1/promote"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>        <span class="c1"># conversation_id now None, a second job queued</span>
-<span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/documents/ingestion/status"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>  <span class="c1"># {'module': 'documents', 'workspace_id': None, 'records': {'queued': 1}}</span>
-<span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/documents/1"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"status"</span><span class="p">]</span>    <span class="c1"># job status, "queued"; the record is now "deleted"</span>
+<span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/documents/1/promote"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>  <span class="c1"># conversation_id: None, second job queued</span>
+<span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/documents/ingestion/status"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>  <span class="c1"># {'module': 'documents',</span>
+                                             <span class="c1"># 'workspace_id': None, 'records': {'queued': 1}}</span>
+<span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/documents/1"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"status"</span><span class="p">]</span>  <span class="c1"># "queued"; record is now "deleted"</span>
 </code></pre></div>
 <p>The <code>status</code> in the delete response is the job's status. The record itself is <code>deleted</code>.</p>
 <p>Ingest drivelink files automatically. With <code>register_event_hooks</code> registered as above, uploading a file through the drivelink router creates a document record and a job, and trashing it marks the record deleted and queues a <code>delete</code> job. This ran with the same mock task:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># after drivelink upload of a.txt to a folder</span>
-<span class="p">[(</span><span class="n">r</span><span class="o">.</span><span class="n">source_key</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">source_type</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">DocumentRecord</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+<span class="p">[</span>
+    <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">source_key</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">source_type</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">DocumentRecord</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="p">]</span>
 <span class="c1"># [('drivelink:2', 'drivelink', 'queued')]</span>
 
 <span class="c1"># after DELETE /drivelink/nodes/2 (soft delete)</span>

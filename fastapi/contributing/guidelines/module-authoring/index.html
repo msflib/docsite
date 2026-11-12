@@ -3917,12 +3917,12 @@ inside <code>msflib/&lt;name&gt;/</code> is organised.</p>
   services/           # business logic (SVC-*)
   eventbus/           # EventName enum + typed event contracts (MOD-5)
   contracts/          # Protocols and type aliases for cross-module structural typing
-  deps.py             # all FastAPI dependencies, as one DependencyNamespace (API-2), if needed
+  deps.py             # FastAPI dependencies as a DependencyNamespace (API-2), if needed
   membership.py       # is_&lt;scope&gt;_member, if the module owns a membership model (MOD-9)
   router.py           # only if the module exposes HTTP endpoints
   scope_profiles.py   # if the module registers scope profiles (SCP-4)
   integrations/       # optional integrations with other modules (DEP-2)
-  readiness.py        # `registry` of readiness checks, found by msflib.core.readiness (RDY-10)
+  readiness.py        # `registry` of readiness checks (RDY-10)
   tests/
   &lt;special&gt;/          # registries, compilers, planners, parsers, adapters (MOD-4)
 </code></pre></div>
@@ -3960,11 +3960,11 @@ least three times within one file may become a private function in that file.</p
 <ul>
 <li><code>eventbus/events.py</code> holds <code>EventName(BaseEnum)</code>, typed <code>EventOptions</code>
   contracts and an <code>EVENT_CONTRACTS</code> map.</li>
-<li>Emit with <code>msflib.eventbus.emitter.emit_optional(EventName.X, subject, options)</code>.</li>
+<li>Emit with <code>msflib.eventbus.emitter.emit_silent(EventName.X, subject, options)</code>.</li>
 <li>Don't re-emit what <code>ModelAction</code> lifecycle events already cover. Module
   events are for domain moments (<code>knowledge-fragment-ingested</code>,
   <code>account-created-pre-email</code>).</li>
-<li>Events tied to an uncommitted write use <code>emit_after_commit</code> (SVC-10).</li>
+<li>Events tied to an uncommitted write use <code>emit_deferred</code> (SVC-10).</li>
 </ul>
 <h3 id="mod-6-settings-are-scoped">MOD-6 · Settings are scoped<a class="headerlink" href="#mod-6-settings-are-scoped" title="Permanent link">&para;</a></h3>
 <p><code>config.py</code> defines <code>&lt;Name&gt;Settings(ModuleSettingsBase)</code> with a <code>ClassVar</code>

@@ -1975,10 +1975,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.actions.emit_after_commit" class="md-nav__link">
+  <a href="#msflib.actions.emit_deferred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        emit_after_commit
+        emit_deferred
       
     </span>
   </a>
@@ -2031,10 +2031,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.actions.base.emit_after_commit" class="md-nav__link">
+  <a href="#msflib.actions.base.emit_deferred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        emit_after_commit
+        emit_deferred
       
     </span>
   </a>
@@ -4041,10 +4041,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.actions.emit_after_commit" class="md-nav__link">
+  <a href="#msflib.actions.emit_deferred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        emit_after_commit
+        emit_deferred
       
     </span>
   </a>
@@ -4097,10 +4097,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.actions.base.emit_after_commit" class="md-nav__link">
+  <a href="#msflib.actions.base.emit_deferred" class="md-nav__link">
     <span class="md-ellipsis">
       
-        emit_after_commit
+        emit_deferred
       
     </span>
   </a>
@@ -4532,15 +4532,15 @@ and caches instances by type tuple.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="msflib.actions.emit_after_commit" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">emit_after_commit</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<h3 id="msflib.actions.emit_deferred" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">emit_deferred</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
-<a href="#msflib.actions.emit_after_commit" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#msflib.actions.emit_deferred" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Queue <code>emitter.emit_optional(event_name, instance, payload)</code> for the outermost commit.</p>
+        <p>Queue <code>emitter.emit_silent(event_name, instance, options)</code> for the outermost commit.</p>
 <p>Use this whenever an event must not be observable before the data it
 describes is actually durable — in particular when the caller may have
 passed <code>commit=False</code> and owns an outer transaction that could still
@@ -4550,8 +4550,11 @@ yet, or that never lands at all.</p>
 <p>Queued with <code>run_after_commit</code>, like <code>ModelAction</code> lifecycle events: a rollback
 discards the queued event (a savepoint rollback only discards events
 queued inside that savepoint), releasing a savepoint does not fire it,
-and the outermost commit drains it exactly once via <code>emit_optional</code>
+and the outermost commit drains it exactly once via <code>emit_silent</code>
 (best-effort: listener errors are logged, not raised).</p>
+<p>Do not place a <code>Session</code> in <em>options</em>: the session is closed by the time
+deferred listeners run.  Listeners that need DB access should capture a
+<code>session_factory</code> at hook-registration time and open their own session.</p>
 
 
     </div>
@@ -4695,15 +4698,15 @@ public create/update/delete and bulk deletes.  Closure-table trees use
 <div class="doc doc-object doc-function">
 
 
-<h4 id="msflib.actions.base.emit_after_commit" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">emit_after_commit</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<h4 id="msflib.actions.base.emit_deferred" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">emit_deferred</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">event_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
-<a href="#msflib.actions.base.emit_after_commit" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.actions.base.emit_deferred" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Queue <code>emitter.emit_optional(event_name, instance, payload)</code> for the outermost commit.</p>
+        <p>Queue <code>emitter.emit_silent(event_name, instance, options)</code> for the outermost commit.</p>
 <p>Use this whenever an event must not be observable before the data it
 describes is actually durable — in particular when the caller may have
 passed <code>commit=False</code> and owns an outer transaction that could still
@@ -4713,8 +4716,11 @@ yet, or that never lands at all.</p>
 <p>Queued with <code>run_after_commit</code>, like <code>ModelAction</code> lifecycle events: a rollback
 discards the queued event (a savepoint rollback only discards events
 queued inside that savepoint), releasing a savepoint does not fire it,
-and the outermost commit drains it exactly once via <code>emit_optional</code>
+and the outermost commit drains it exactly once via <code>emit_silent</code>
 (best-effort: listener errors are logged, not raised).</p>
+<p>Do not place a <code>Session</code> in <em>options</em>: the session is closed by the time
+deferred listeners run.  Listeners that need DB access should capture a
+<code>session_factory</code> at hook-registration time and open their own session.</p>
 
 
     </div>

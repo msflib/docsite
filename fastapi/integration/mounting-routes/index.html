@@ -3978,7 +3978,9 @@
     <span class="c1"># the other arguments, as in the full example above</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/people"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">accounts</span><span class="o">.</span><span class="n">routes</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">accounts</span><span class="o">.</span><span class="n">routes</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="s2">"/people/verify-availability"</span><span class="p">]</span>
+<span class="n">accounts</span><span class="o">.</span><span class="n">routes</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">accounts</span><span class="o">.</span><span class="n">routes</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="s2">"/people/verify-availability"</span>
+<span class="p">]</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">accounts</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v2"</span><span class="p">)</span>
 </code></pre></div>
 <p><code>POST /api/v2/people/verify-availability</code> is then a <code>404</code>. This depends on the router's internals, not on a documented option, so keep a test that checks the route list, and prefer wrapping a dependency when what you want is to restrict a route rather than remove it.</p>
@@ -3991,7 +3993,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span><span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># as in Authentication, "Wire it up"</span>
 <span class="n">ws_user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># as in Authentication, "Workspaces"</span>
 

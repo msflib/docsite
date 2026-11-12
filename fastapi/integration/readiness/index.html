@@ -4116,7 +4116,7 @@ the equivalent <code>psql</code> commands instead.</p>
     <span class="s2">"knowledge.age.usable"</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">"AGE is usable by the application role"</span><span class="p">,</span>
     <span class="n">group</span><span class="o">=</span><span class="s2">"database"</span><span class="p">,</span>
-    <span class="n">requires</span><span class="o">=</span><span class="p">(</span><span class="s2">"db.reachable"</span><span class="p">,),</span>                      <span class="c1"># BLOCKED, not FAIL, if that failed</span>
+    <span class="n">requires</span><span class="o">=</span><span class="p">(</span><span class="s2">"db.reachable"</span><span class="p">,),</span>  <span class="c1"># BLOCKED, not FAIL, if that failed</span>
     <span class="n">when</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s2">"GRAPH_BACKEND"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"age"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">age_usable</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
@@ -4131,9 +4131,15 @@ the equivalent <code>psql</code> commands instead.</p>
     <span class="k">return</span> <span class="n">Outcome</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
 
 
-<span class="nd">@registry</span><span class="o">.</span><span class="n">remedy</span><span class="p">(</span><span class="s2">"knowledge.provision"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"create the AGE extension and grants"</span><span class="p">,</span>
-                 <span class="n">fixes</span><span class="o">=</span><span class="p">(</span><span class="s2">"knowledge.age.usable"</span><span class="p">,),</span> <span class="n">safety</span><span class="o">=</span><span class="n">Safety</span><span class="o">.</span><span class="n">SAFE</span><span class="p">,</span>
-                 <span class="n">ready</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ctx</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">"SUPERUSER_DSN"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"needs a superuser DSN"</span><span class="p">)</span>
+<span class="nd">@registry</span><span class="o">.</span><span class="n">remedy</span><span class="p">(</span>
+    <span class="s2">"knowledge.provision"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"create the AGE extension and grants"</span><span class="p">,</span>
+    <span class="n">fixes</span><span class="o">=</span><span class="p">(</span><span class="s2">"knowledge.age.usable"</span><span class="p">,),</span>
+    <span class="n">safety</span><span class="o">=</span><span class="n">Safety</span><span class="o">.</span><span class="n">SAFE</span><span class="p">,</span>
+    <span class="n">ready</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ctx</span><span class="p">:</span> <span class="p">(</span>
+        <span class="kc">None</span> <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">"SUPERUSER_DSN"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"needs a superuser DSN"</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">provision</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
     <span class="o">...</span>
     <span class="k">return</span> <span class="n">RemedyResult</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="s2">"provisioned"</span><span class="p">)</span>

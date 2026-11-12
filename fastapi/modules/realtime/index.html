@@ -4044,16 +4044,19 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.realtime.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">realtime_router</span>
 
 <span class="n">_rt</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"REALTIME"</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
-<span class="n">_signer</span> <span class="o">=</span> <span class="n">TicketSigner</span><span class="p">(</span><span class="n">secret</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">,</span> <span class="n">ttl_seconds</span><span class="o">=</span><span class="n">_rt</span><span class="o">.</span><span class="n">ticket_ttl_seconds</span><span class="p">)</span>
+<span class="n">_signer</span> <span class="o">=</span> <span class="n">TicketSigner</span><span class="p">(</span>
+    <span class="n">secret</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">,</span> <span class="n">ttl_seconds</span><span class="o">=</span><span class="n">_rt</span><span class="o">.</span><span class="n">ticket_ttl_seconds</span>
+<span class="p">)</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">realtime_router</span><span class="p">(</span>
         <span class="n">hub</span><span class="o">=</span><span class="n">hub</span><span class="p">,</span>
         <span class="n">authenticators</span><span class="o">=</span><span class="p">[</span>
-            <span class="n">bearer_authenticator</span><span class="p">(</span><span class="n">resolve_token</span><span class="p">),</span>   <span class="c1"># see §Authentication below</span>
+            <span class="n">bearer_authenticator</span><span class="p">(</span><span class="n">resolve_token</span><span class="p">),</span>  <span class="c1"># see §Authentication below</span>
         <span class="p">],</span>
         <span class="n">authorizer</span><span class="o">=</span><span class="n">route_authorizers</span><span class="p">({</span><span class="s2">"workspace:"</span><span class="p">:</span> <span class="n">workspace_authorizer</span><span class="p">}),</span>
-        <span class="n">signer</span><span class="o">=</span><span class="n">_signer</span><span class="p">,</span>   <span class="c1"># enables POST /tickets; also adds ticket auth to stream endpoints</span>
+        <span class="c1"># enables POST /tickets; also adds ticket auth to stream endpoints</span>
+        <span class="n">signer</span><span class="o">=</span><span class="n">_signer</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">_rt</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1/realtime"</span><span class="p">,</span>
@@ -4118,7 +4121,8 @@
 <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
 
 <span class="c1">// 2. Open the stream using the ticket (no Authorization header needed)</span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">EventSource</span><span class="p">(</span><span class="sb">`/api/v1/realtime/stream?channel=workspace:7&amp;ticket=</span><span class="si">${</span><span class="nx">ticket</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`/api/v1/realtime/stream?channel=workspace:7&amp;ticket=</span><span class="si">${</span><span class="nx">ticket</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">EventSource</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
 <span class="nx">es</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"report-ready"</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">)));</span>
 </code></pre></div>
 <p>Tickets are stateless, signed, grant exactly the channels they name, and expire (default 60 s). Authorization is evaluated when the stream or subscription starts, not while it is open.</p>

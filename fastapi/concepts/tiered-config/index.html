@@ -3910,10 +3910,20 @@
 
 <span class="n">service</span> <span class="o">=</span> <span class="n">ScopedConfigService</span><span class="p">()</span>
 
-<span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MODEL"</span><span class="p">,</span> <span class="s2">"tenant-model"</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MAX_TOKENS"</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MAX_TOKENS"</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MODEL"</span><span class="p">,</span> <span class="s2">"tenant-model"</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"CHAT"</span><span class="p">,</span> <span class="s2">"MAX_TOKENS"</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+<span class="n">service</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span>
+    <span class="n">ConfigScopeType</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+    <span class="s2">"CHAT"</span><span class="p">,</span>
+    <span class="s2">"MAX_TOKENS"</span><span class="p">,</span>
+    <span class="mi">5000</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">account_id</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">resolved</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">resolve_module_settings</span><span class="p">(</span>

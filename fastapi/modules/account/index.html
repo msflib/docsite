@@ -4231,7 +4231,9 @@
 
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
+    <span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span>
+<span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="n">keystore</span> <span class="o">=</span> <span class="n">MapStore</span><span class="p">()</span>
 
@@ -4379,7 +4381,12 @@
 <h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h3>
 <p><code>AccountAction</code> and <code>ProfileAction</code> are generic <code>ModelAction</code> subclasses; parameterise them with your model and schema types:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span><span class="p">,</span> <span class="n">ProfileAction</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">,</span> <span class="n">ProfileCreate</span><span class="p">,</span> <span class="n">ProfileUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AccountCreate</span><span class="p">,</span>
+    <span class="n">AccountUpdate</span><span class="p">,</span>
+    <span class="n">ProfileCreate</span><span class="p">,</span>
+    <span class="n">ProfileUpdate</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">profile_action</span> <span class="o">=</span> <span class="n">ProfileAction</span><span class="p">[</span><span class="n">Profile</span><span class="p">,</span> <span class="n">ProfileCreate</span><span class="p">,</span> <span class="n">ProfileUpdate</span><span class="p">]()</span>
 <span class="n">account_action</span> <span class="o">=</span> <span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">](</span>
@@ -4493,7 +4500,8 @@
 <p>The function loads the account, runs the password check (if requested), checks uniqueness, emits <code>account-pre-update</code>, rechecks the password if a listener introduced an email change, checks uniqueness again, saves the update, and emits <code>account-updated</code>.</p>
 <p><code>update_account</code> and <code>get_account</code> raise <code>NotFoundError</code> (404 over HTTP) when the account does not exist. The exceptions live in <code>msflib.core.exceptions</code>; call <code>register_exception_handlers(app)</code> from <code>msflib.api</code> so an app maps them to responses.</p>
 <h4 id="get_account"><code>get_account</code><a class="headerlink" href="#get_account" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><span class="n">get_account</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">account_action</span><span class="p">:</span> <span class="n">AccountAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountType</span>
+<div class="highlight"><pre><span></span><code><span class="n">get_account</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+    <span class="n">account_action</span><span class="p">:</span> <span class="n">AccountAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccountType</span>
 </code></pre></div>
 <p>Returns the account or raises <code>NotFoundError</code>.</p>
 <h4 id="password-handling">Password handling<a class="headerlink" href="#password-handling" title="Permanent link">&para;</a></h4>
@@ -4538,7 +4546,11 @@
 
 <span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
     <span class="s2">"/api/v1/account/open"</span><span class="p">,</span>
-    <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"email"</span><span class="p">:</span> <span class="s2">"Ada@Example.com"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"s3cret-pass"</span><span class="p">,</span> <span class="s2">"profile"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"first_name"</span><span class="p">:</span> <span class="s2">"Ada"</span><span class="p">}},</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"Ada@Example.com"</span><span class="p">,</span>
+        <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"s3cret-pass"</span><span class="p">,</span>
+        <span class="s2">"profile"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"first_name"</span><span class="p">:</span> <span class="s2">"Ada"</span><span class="p">},</span>
+    <span class="p">},</span>
 <span class="p">)</span>
 <span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span>
 <span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"email"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ada@example.com"</span>
@@ -4556,7 +4568,9 @@
 <div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">account</span> <span class="o">=</span> <span class="n">account_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="n">AccountCreate</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">"ops@example.com"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">"s3cret-pass"</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">"admin"</span><span class="p">),</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">AccountCreate</span><span class="p">(</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">"ops@example.com"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">"s3cret-pass"</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">"admin"</span>
+        <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div>
 <p><code>account_action.random(...)</code> builds a populated <code>AccountCreate</code> for tests and seed scripts.</p>

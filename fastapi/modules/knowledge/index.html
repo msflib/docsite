@@ -4135,7 +4135,9 @@
     <span class="n">register_knowledge_extraction_pipeline</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">register_knowledge_extraction_pipeline</span><span class="p">(</span><span class="n">stage</span><span class="o">=</span><span class="n">make_knowledge_extraction_stage</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="n">knowledge</span><span class="p">))</span>
+<span class="n">register_knowledge_extraction_pipeline</span><span class="p">(</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">make_knowledge_extraction_stage</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="n">knowledge</span><span class="p">)</span>
+<span class="p">)</span>
 </code></pre></div>
 <p>The hooks enqueue <code>knowledge_extraction</code> jobs. Hooks on the web app's emitter fire for events emitted inside a request (or under <code>with use_app_emitter(app):</code>) but not for an emit outside a request, which is where the worker emits <code>documents.ingestion.completed</code>; <code>AppEmitter(get_emitter())</code> registered at worker start does receive it, from any thread. The stage reads the document through its source adapter, extracts a fragment (with a registered content extractor if one claims the bytes, otherwise with the LLM), and ingests it, superseding facts from earlier versions of the same source. If the source is gone or the record is deleted it archives the source's facts instead.</p>
 <p>The stage is built on <code>ingestion_subject_stage</code> (see <a href="../ingestion/#key-concepts">ingestion</a>), like <code>knowledge_record</code>. Reading and extraction run before the per-subject lock, so an LLM call does not hold it. After taking the lock the stage reads the record and its source again, and retries the job if either changed while it was extracting. A failed extraction is retried the same way if either changed. When <code>EXTRACTION_QUEUE_ENABLED</code> is false the hooks enqueue nothing and raise no error.</p>
@@ -4146,12 +4148,18 @@
 <h3 id="structured-records">Structured records<a class="headerlink" href="#structured-records" title="Permanent link">&para;</a></h3>
 <p>Forms, JSON payloads and your own table rows go through the <code>knowledge_record</code> pipeline kind. Register it in the worker and build the service in the web process:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># worker process</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.records</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_knowledge_record_stage</span><span class="p">,</span> <span class="n">register_knowledge_record_pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.records</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_knowledge_record_stage</span><span class="p">,</span>
+    <span class="n">register_knowledge_record_pipeline</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">register_knowledge_record_pipeline</span><span class="p">(</span>
-    <span class="n">stage</span><span class="o">=</span><span class="n">make_knowledge_record_stage</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="n">knowledge</span><span class="p">,</span> <span class="n">ontology</span><span class="o">=</span><span class="n">knowledge_deps</span><span class="o">.</span><span class="n">ontology</span><span class="p">)</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">make_knowledge_record_stage</span><span class="p">(</span>
+        <span class="n">engine</span><span class="o">=</span><span class="n">knowledge</span><span class="p">,</span> <span class="n">ontology</span><span class="o">=</span><span class="n">knowledge_deps</span><span class="o">.</span><span class="n">ontology</span>
+    <span class="p">)</span>
 <span class="p">)</span>
-<span class="n">register_my_record_sources_and_mappers</span><span class="p">()</span>    <span class="c1"># sources and mappers must exist in BOTH processes</span>
+<span class="c1"># sources and mappers must exist in BOTH processes</span>
+<span class="n">register_my_record_sources_and_mappers</span><span class="p">()</span>
 
 <span class="c1"># web process</span>
 <span class="n">records</span> <span class="o">=</span> <span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_record_ingestion_service</span><span class="p">()</span>
@@ -4162,7 +4170,9 @@
 <p><code>KnowledgeToolRegistry(engine)</code> exposes one tool per supported query type and satisfies ai-core's <code>ToolRegistry</code> protocol. With <a href="../ai-api/">ai-api</a>, pass <code>get_knowledge_engine=knowledge_deps.get_knowledge_engine</code> to the router, or build the registry list yourself with <code>resolve_knowledge_tool_registries</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.integrations.ai_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_knowledge_tool_registries</span>
 
-<span class="n">get_tool_registries</span> <span class="o">=</span> <span class="n">resolve_knowledge_tool_registries</span><span class="p">(</span><span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_knowledge_engine</span><span class="p">)</span>
+<span class="n">get_tool_registries</span> <span class="o">=</span> <span class="n">resolve_knowledge_tool_registries</span><span class="p">(</span>
+    <span class="n">knowledge_deps</span><span class="o">.</span><span class="n">get_knowledge_engine</span>
+<span class="p">)</span>
 </code></pre></div>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>Settings live in the <code>KNOWLEDGE</code> namespace. With a nested <code>KNOWLEDGE</code> settings object, use <code>KNOWLEDGE__GRAPH_BACKEND</code> style variables. These flat aliases also work: <code>KNOWLEDGE_GRAPH_BACKEND</code>, <code>KNOWLEDGE_GRAPH_NAME</code>, <code>KNOWLEDGE_DATABASE_URL</code>, <code>KNOWLEDGE_EXTRACTION_QUEUE_ENABLED</code>, <code>KNOWLEDGE_RECORD_QUEUE_ENABLED</code> and <code>KNOWLEDGE_RECORD_MAX_PAYLOAD_BYTES</code>. When you mix <code>KnowledgeSettings</code> into your settings class, the field names (<code>GRAPH_BACKEND</code>, ...) are top-level.</p>
@@ -4286,11 +4296,15 @@
     <span class="k">pass</span>
 
 
-<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>                      <span class="c1"># CORE.USE_SQLITE defaults to true</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>  <span class="c1"># CORE.USE_SQLITE defaults to true</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
+    <span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span>
+<span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>  <span class="c1"># seeds tenant 1</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># seeds tenant 1</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 <span class="n">knowledge</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span>
@@ -4302,16 +4316,18 @@
     <span class="n">provenance</span><span class="o">=</span><span class="n">Provenance</span><span class="p">(</span><span class="n">source_id</span><span class="o">=</span><span class="s2">"doc-42"</span><span class="p">,</span> <span class="n">source_type</span><span class="o">=</span><span class="s2">"text"</span><span class="p">,</span> <span class="n">extracted_by</span><span class="o">=</span><span class="s2">"llm"</span><span class="p">),</span>
     <span class="n">entities</span><span class="o">=</span><span class="p">[</span>
         <span class="n">EntitySpec</span><span class="p">(</span><span class="n">local_id</span><span class="o">=</span><span class="s2">"e1"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Pump P-101"</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
-        <span class="n">EntitySpec</span><span class="p">(</span><span class="n">local_id</span><span class="o">=</span><span class="s2">"e2"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Separator V-201"</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
+        <span class="n">EntitySpec</span><span class="p">(</span>
+            <span class="n">local_id</span><span class="o">=</span><span class="s2">"e2"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Separator V-201"</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.9</span>
+        <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">relations</span><span class="o">=</span><span class="p">[</span><span class="n">RelationSpec</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">"e1"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"RELATED_TO"</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">"e2"</span><span class="p">)],</span>
 <span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">knowledge</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">uid_map</span><span class="p">))</span>                                  <span class="c1"># ['e1', 'e2']</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">uid_map</span><span class="p">))</span>  <span class="c1"># ['e1', 'e2']</span>
 <span class="n">found</span> <span class="o">=</span> <span class="n">knowledge</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">FindEntity</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Pump P-101"</span><span class="p">),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>                  <span class="c1"># ['Pump P-101']</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>  <span class="c1"># ['Pump P-101']</span>
 </code></pre></div>
 <p><code>result.uid_map</code> maps each fragment-local id to the stored uid. A caller with a different <code>ScopeEnvelope</code> (another tenant or workspace) gets no items from the same query.</p>
 <h3 id="submit-a-structured-record-inline">Submit a structured record inline<a class="headerlink" href="#submit-a-structured-record-inline" title="Permanent link">&para;</a></h3>
@@ -4324,7 +4340,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeDispatchTask</span><span class="p">,</span> <span class="n">start_stage_context</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">KnowledgeSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.ir</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntitySpec</span><span class="p">,</span> <span class="n">KnowledgeFragment</span><span class="p">,</span> <span class="n">ObservationSpec</span><span class="p">,</span> <span class="n">RelationSpec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.ir</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EntitySpec</span><span class="p">,</span>
+    <span class="n">KnowledgeFragment</span><span class="p">,</span>
+    <span class="n">ObservationSpec</span><span class="p">,</span>
+    <span class="n">RelationSpec</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.queries</span><span class="w"> </span><span class="kn">import</span> <span class="n">FindEntity</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.records</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">KnowledgeRecordService</span><span class="p">,</span>
@@ -4347,11 +4368,15 @@
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
 <span class="n">engine</span> <span class="o">=</span> <span class="n">enable_savepoints</span><span class="p">(</span>
-    <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+    <span class="n">create_engine</span><span class="p">(</span>
+        <span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span>
+    <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>  <span class="c1"># seeds tenant 1</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># seeds tenant 1</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 <span class="n">knowledge</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span>
     <span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
@@ -4360,14 +4385,20 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">intake_form</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="n">submission_id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"external_id"</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">subject_id</span><span class="p">)</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="n">EntitySpec</span><span class="p">(</span><span class="n">local_id</span><span class="o">=</span><span class="s2">"form"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Document"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Intake form </span><span class="si">{</span><span class="n">submission_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">company</span> <span class="o">=</span> <span class="n">EntitySpec</span><span class="p">(</span><span class="n">local_id</span><span class="o">=</span><span class="s2">"company"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">payload</span><span class="p">[</span><span class="s2">"company"</span><span class="p">])</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">EntitySpec</span><span class="p">(</span>
+        <span class="n">local_id</span><span class="o">=</span><span class="s2">"form"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Document"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Intake form </span><span class="si">{</span><span class="n">submission_id</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+    <span class="n">company</span> <span class="o">=</span> <span class="n">EntitySpec</span><span class="p">(</span>
+        <span class="n">local_id</span><span class="o">=</span><span class="s2">"company"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">payload</span><span class="p">[</span><span class="s2">"company"</span><span class="p">]</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">KnowledgeFragment</span><span class="p">(</span>
         <span class="n">provenance</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">provenance</span><span class="p">,</span>
         <span class="n">entities</span><span class="o">=</span><span class="p">[</span><span class="n">form</span><span class="p">,</span> <span class="n">company</span><span class="p">],</span>
         <span class="n">relations</span><span class="o">=</span><span class="p">[</span><span class="n">RelationSpec</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">"form"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"MENTIONS"</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">"company"</span><span class="p">)],</span>
         <span class="n">observations</span><span class="o">=</span><span class="p">[</span>
-            <span class="n">ObservationSpec</span><span class="p">(</span><span class="n">entity_refs</span><span class="o">=</span><span class="p">[</span><span class="s2">"form"</span><span class="p">,</span> <span class="s2">"company"</span><span class="p">],</span> <span class="n">properties</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">payload</span><span class="p">))</span>
+            <span class="n">ObservationSpec</span><span class="p">(</span>
+                <span class="n">entity_refs</span><span class="o">=</span><span class="p">[</span><span class="s2">"form"</span><span class="p">,</span> <span class="s2">"company"</span><span class="p">],</span> <span class="n">properties</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="p">],</span>
     <span class="p">)</span>
 
@@ -4393,12 +4424,12 @@
         <span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">job</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">dispatched</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">pipeline_kind</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>                       <span class="c1"># knowledge_record create</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">pipeline_kind</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>  <span class="c1"># knowledge_record create</span>
 
-    <span class="n">stage</span><span class="p">(</span><span class="n">start_stage_context</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">settings</span><span class="p">))</span>         <span class="c1"># a worker would do this</span>
+    <span class="n">stage</span><span class="p">(</span><span class="n">start_stage_context</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">settings</span><span class="p">))</span>  <span class="c1"># a worker would do this</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="n">found</span> <span class="o">=</span> <span class="n">knowledge</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">FindEntity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="s2">"Concept"</span><span class="p">),</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>              <span class="c1"># ['Acme Corp']</span>
+    <span class="nb">print</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>  <span class="c1"># ['Acme Corp']</span>
 </code></pre></div>
 <p>In a real app, <code>KnowledgeRecordService</code> comes from <code>get_record_ingestion_service()</code>, the dispatch handle is <code>build_dispatch_task(settings)</code>, and the stage runs in the Celery worker. <code>submit</code> only stores the filtered payload (here <code>password</code> is never stored, and <code>fields=</code> keeps only the listed keys) and queues a pointer; the job is dispatched after your transaction commits.</p>
 <p>Notes for mappers: name each record's root entity uniquely (entities merge by scope, type and lowercase name), put answers that can change on an observation (observations from a record are replaced on reprocessing, entity properties are merged and never shrink), and use types your ontology knows. <code>records.preview(session, record, settings=..., compiler=...)</code> runs a mapper without persisting anything.</p>

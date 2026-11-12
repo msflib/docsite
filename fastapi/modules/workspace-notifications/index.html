@@ -4054,7 +4054,9 @@
     <span class="n">UserNotificationAction</span><span class="p">,</span>
     <span class="n">WorkspaceNotificationAction</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.services.notification</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispatch_user_notifications</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspace_notifications.services.notification</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dispatch_user_notifications</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">notification</span> <span class="o">=</span> <span class="n">dispatch_user_notifications</span><span class="p">(</span>
     <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
@@ -4064,10 +4066,10 @@
     <span class="p">),</span>
     <span class="n">n_type</span><span class="o">=</span><span class="n">NotificationType</span><span class="o">.</span><span class="n">admin</span><span class="p">,</span>
     <span class="n">workspace</span><span class="o">=</span><span class="n">workspace</span><span class="p">,</span>
-    <span class="n">receivers</span><span class="o">=</span><span class="p">[</span><span class="n">member_user</span><span class="p">],</span>   <span class="c1"># workspace User rows</span>
-    <span class="n">sender</span><span class="o">=</span><span class="n">admin_user</span><span class="p">,</span>         <span class="c1"># workspace User row</span>
+    <span class="n">receivers</span><span class="o">=</span><span class="p">[</span><span class="n">member_user</span><span class="p">],</span>  <span class="c1"># workspace User rows</span>
+    <span class="n">sender</span><span class="o">=</span><span class="n">admin_user</span><span class="p">,</span>  <span class="c1"># workspace User row</span>
 <span class="p">)</span>
-<span class="n">notification</span><span class="o">.</span><span class="n">scope</span>             <span class="c1"># "workspace"</span>
+<span class="n">notification</span><span class="o">.</span><span class="n">scope</span>  <span class="c1"># "workspace"</span>
 
 <span class="n">WorkspaceNotificationAction</span><span class="p">()</span><span class="o">.</span><span class="n">get_notifications</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">workspace</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="n">UserNotificationAction</span><span class="p">()</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">receiver_id</span><span class="o">=</span><span class="n">member_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>

@@ -3878,7 +3878,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TaskCreate</span><span class="p">,</span> <span class="n">TaskRead</span><span class="p">,</span> <span class="n">TaskUpdate</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">task_router</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="p">,</span> <span class="n">create_type</span><span class="o">=</span><span class="n">TaskCreate</span><span class="p">,</span> <span class="n">update_type</span><span class="o">=</span><span class="n">TaskUpdate</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">task_router</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="p">,</span> <span class="n">create_type</span><span class="o">=</span><span class="n">TaskCreate</span><span class="p">,</span> <span class="n">update_type</span><span class="o">=</span><span class="n">TaskUpdate</span>
+<span class="p">):</span>
     <span class="n">api_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">"/tasks"</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"tasks"</span><span class="p">])</span>
     <span class="n">router</span> <span class="o">=</span> <span class="n">create_enhanced_router</span><span class="p">(</span><span class="n">api_router</span><span class="p">)</span>
 
@@ -3889,7 +3891,9 @@
         <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
         <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">task_action</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">owner</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">task_action</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span>
+            <span class="n">session</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">owner</span>
+        <span class="p">)</span>
 
     <span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
         <span class="s2">"/"</span><span class="p">,</span>
@@ -3963,7 +3967,9 @@
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
 
-<span class="n">router</span> <span class="o">=</span> <span class="n">task_router</span><span class="p">(</span><span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="o">=</span><span class="n">get_owner</span><span class="p">,</span> <span class="n">create_type</span><span class="o">=</span><span class="n">StrictTaskCreate</span><span class="p">)</span>
+<span class="n">router</span> <span class="o">=</span> <span class="n">task_router</span><span class="p">(</span>
+    <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="o">=</span><span class="n">get_owner</span><span class="p">,</span> <span class="n">create_type</span><span class="o">=</span><span class="n">StrictTaskCreate</span>
+<span class="p">)</span>
 </code></pre></div>
 <p>A <code>POST</code> with <code>{"title": "ab"}</code> now returns 422 and <code>{"title": "abc"}</code> returns 201. The action receives the validated object as <code>data</code> exactly as before. <a href="../../integration/overriding-models/">Overriding models</a> covers the wider pattern.</p>
 <h2 id="mount-it">Mount it<a class="headerlink" href="#mount-it" title="Permanent link">&para;</a></h2>

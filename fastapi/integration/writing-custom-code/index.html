@@ -3868,7 +3868,9 @@
     <span class="n">MAX_NOTES_PER_ACCOUNT</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">NotesSettings</span><span class="p">,</span> <span class="n">AccountSettings</span><span class="p">,</span> <span class="n">AuthSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span>
+    <span class="n">NotesSettings</span><span class="p">,</span> <span class="n">AccountSettings</span><span class="p">,</span> <span class="n">AuthSettings</span><span class="p">,</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
+<span class="p">):</span>
     <span class="n">SECRET_KEY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"change-me"</span>
     <span class="n">SQLITE_DATABASE_URI</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sqlite://"</span>
     <span class="n">USERS_OPEN_REGISTRATION</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
@@ -3932,7 +3934,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span><span class="p">,</span> <span class="n">ProfileAction</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">,</span> <span class="n">ProfileCreate</span><span class="p">,</span> <span class="n">ProfileUpdate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AccountCreate</span><span class="p">,</span>
+    <span class="n">AccountUpdate</span><span class="p">,</span>
+    <span class="n">ProfileCreate</span><span class="p">,</span>
+    <span class="n">ProfileUpdate</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConflictError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">select</span>
@@ -3945,7 +3952,9 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_per_account</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_per_account</span> <span class="o">=</span> <span class="n">max_per_account</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">list_for_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Note</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_for_account</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Note</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_multi_by_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="n">account_id</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
@@ -3958,7 +3967,9 @@
         <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Note</span><span class="p">:</span>
         <span class="n">account_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">update</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"account_id"</span><span class="p">)</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">())</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Note</span><span class="o">.</span><span class="n">account_id</span> <span class="o">==</span> <span class="n">account_id</span><span class="p">))</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span>
+            <span class="n">select</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">())</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Note</span><span class="o">.</span><span class="n">account_id</span> <span class="o">==</span> <span class="n">account_id</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_per_account</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ConflictError</span><span class="p">(</span><span class="s2">"Note limit reached"</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
@@ -3967,7 +3978,9 @@
 
 
 <span class="n">pa</span> <span class="o">=</span> <span class="n">ProfileAction</span><span class="p">[</span><span class="n">Profile</span><span class="p">,</span> <span class="n">ProfileCreate</span><span class="p">,</span> <span class="n">ProfileUpdate</span><span class="p">]()</span>
-<span class="n">aa</span> <span class="o">=</span> <span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">](</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">profile_action</span><span class="o">=</span><span class="n">pa</span><span class="p">)</span>
+<span class="n">aa</span> <span class="o">=</span> <span class="n">AccountAction</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">AccountCreate</span><span class="p">,</span> <span class="n">AccountUpdate</span><span class="p">](</span>
+    <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">profile_action</span><span class="o">=</span><span class="n">pa</span>
+<span class="p">)</span>
 <span class="n">na</span> <span class="o">=</span> <span class="n">NoteAction</span><span class="p">(</span><span class="n">max_per_account</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"NOTES"</span><span class="p">)</span><span class="o">.</span><span class="n">MAX_NOTES_PER_ACCOUNT</span><span class="p">)</span>
 </code></pre></div>
 <p><code>pa</code> and <code>aa</code> are the account module's actions bound to your table classes. They are passed to the account router below.</p>
@@ -4050,7 +4063,9 @@
 
 
 <span class="nd">@router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/</span><span class="si">{note_id}</span><span class="s2">"</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">delete_note</span><span class="p">(</span><span class="n">note</span><span class="p">:</span> <span class="n">Note</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_own_note</span><span class="p">),</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_note</span><span class="p">(</span>
+    <span class="n">note</span><span class="p">:</span> <span class="n">Note</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_own_note</span><span class="p">),</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
+<span class="p">):</span>
     <span class="n">na</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
 <p><code>update={"account_id": ...}</code> on <code>create</code> overlays values onto the payload before the row is built, and <code>update</code> on <code>update</code> does the same for changes. This is the supported way to set owner and scope fields that the client must not control.</p>
@@ -4112,7 +4127,9 @@
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/accounts/open"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"email"</span><span class="p">:</span> <span class="s2">"a@example.com"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"pw"</span><span class="p">})</span>
 
-<span class="n">login</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/login"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="s2">"a@example.com"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"pw"</span><span class="p">})</span>
+<span class="n">login</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"/api/v1/login"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span> <span class="s2">"a@example.com"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"pw"</span><span class="p">}</span>
+<span class="p">)</span>
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="n">login</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">'access_token'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
 
 <span class="n">created</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/notes/"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="s2">"First"</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>

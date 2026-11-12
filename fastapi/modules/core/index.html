@@ -4306,7 +4306,7 @@
 <tr>
 <td>Actions</td>
 <td><code>msflib.actions</code></td>
-<td><code>ModelAction</code>, <code>action</code>, <code>emit_after_commit</code>, write hooks</td>
+<td><code>ModelAction</code>, <code>action</code>, <code>emit_deferred</code>, write hooks</td>
 </tr>
 <tr>
 <td>Transactions</td>
@@ -4326,7 +4326,7 @@
 <tr>
 <td>Event bus</td>
 <td><code>msflib.eventbus</code></td>
-<td>App-scoped emitters, <code>on</code>, <code>HookRegistry</code>, <code>emit_optional</code> and <code>emit_required</code></td>
+<td>App-scoped emitters, <code>on</code>, <code>HookRegistry</code>, <code>emit_silent</code>, <code>emit_required</code>, <code>lifecycle_context</code>, <code>get_context</code></td>
 </tr>
 <tr>
 <td>Batch operations</td>
@@ -4425,12 +4425,16 @@ CORE__SECRET_KEY=change-me
 <span class="p">)</span>
 <span class="n">get_session</span> <span class="o">=</span> <span class="n">get_session_factory</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py (excerpt; `lifespan`, `get_owner`, `task_router` and the `FastAPI` import are from the Quick Start)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py (excerpt; `lifespan`, `get_owner`,</span>
+<span class="c1">#     `task_router` and the `FastAPI` import are from the Quick Start)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">bind_app_emitter</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">PROJECT_NAME</span><span class="p">,</span> <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
 <span class="n">app_emitter</span> <span class="o">=</span> <span class="n">bind_app_emitter</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">task_router</span><span class="p">(</span><span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="o">=</span><span class="n">get_owner</span><span class="p">),</span> <span class="n">prefix</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">API_V1_STR</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">task_router</span><span class="p">(</span><span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">get_owner</span><span class="o">=</span><span class="n">get_owner</span><span class="p">),</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">API_V1_STR</span><span class="p">,</span>
+<span class="p">)</span>
 </code></pre></div>
 <p>Module routers follow the same pattern as <code>task_router</code> in the Quick Start: they are factories that take your session and identity dependencies and return an <code>APIRouter</code>. See <a href="../../integration/mounting-routes/">Mounting routes</a>.</p>
 <div class="admonition warning">
@@ -4453,7 +4457,7 @@ CORE__SECRET_KEY=change-me
 
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
-<span class="n">settings</span><span class="o">.</span><span class="n">PROJECT_NAME</span>                          <span class="c1"># also settings.scope("CORE").PROJECT_NAME</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">PROJECT_NAME</span>  <span class="c1"># also settings.scope("CORE").PROJECT_NAME</span>
 <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span><span class="o">.</span><span class="n">ENABLE_GOOGLE_OAUTH</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>PROJECT_NAME=Tasks
@@ -4465,10 +4469,12 @@ ENABLE_GOOGLE_OAUTH=true
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">compose_settings_model</span>
 
-<span class="n">Settings</span> <span class="o">=</span> <span class="n">compose_settings_model</span><span class="p">(</span><span class="s2">"Settings"</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="p">[</span><span class="n">CoreSettings</span><span class="p">,</span> <span class="n">AuthSettings</span><span class="p">])</span>
+<span class="n">Settings</span> <span class="o">=</span> <span class="n">compose_settings_model</span><span class="p">(</span>
+    <span class="s2">"Settings"</span><span class="p">,</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="p">[</span><span class="n">CoreSettings</span><span class="p">,</span> <span class="n">AuthSettings</span><span class="p">]</span>
+<span class="p">)</span>
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
-<span class="n">settings</span><span class="o">.</span><span class="n">CORE</span><span class="o">.</span><span class="n">PROJECT_NAME</span>                     <span class="c1"># also settings.scope("CORE").PROJECT_NAME</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">CORE</span><span class="o">.</span><span class="n">PROJECT_NAME</span>  <span class="c1"># also settings.scope("CORE").PROJECT_NAME</span>
 <span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"AUTH"</span><span class="p">)</span><span class="o">.</span><span class="n">ENABLE_GOOGLE_OAUTH</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>CORE__PROJECT_NAME=Tasks
@@ -4623,8 +4629,8 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 <h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h3>
 <p><code>ModelAction[Model, CreateSchema, UpdateSchema]</code> is the CRUD layer: <code>get</code>, <code>get_by_all</code>, <code>get_multi_by_all</code>, <code>create</code>, <code>update</code>, <code>delete</code>, their <code>*_multi</code> and <code>*_by_expressions</code> variants, and <code>random</code> and <code>create_random</code> for test data. Actions take a <code>Session</code> as the first argument and commit by default; pass <code>commit=False</code> to take part in a larger transaction. Every write emits lifecycle events. See <a href="../../quick-start/actions-crud/">Actions and CRUD</a> and <a href="../../integration/subclassing-actions/">Subclassing actions</a>.</p>
 <h3 id="lifecycle-events-and-write-hooks">Lifecycle events and write hooks<a class="headerlink" href="#lifecycle-events-and-write-hooks" title="Permanent link">&para;</a></h3>
-<p>Each <code>ModelAction</code> write emits events named <code>&lt;model&gt;-&lt;op&gt;-pre-commit</code> (after flush, before commit, inside the transaction) and <code>&lt;model&gt;-&lt;op&gt;-post-commit</code> (once the outermost commit succeeds), where <code>&lt;model&gt;</code> is the lowercase class name and <code>&lt;op&gt;</code> is <code>create</code>, <code>update</code> or <code>delete</code>. A generic <code>model-&lt;op&gt;-...</code> event fires as well. Listeners receive the row and an options dict containing the <code>session</code>. Pre-commit listeners that raise abort the write; post-commit listeners are best-effort. Post-commit listeners get a plain snapshot of the row, not the live ORM object.</p>
-<p><code>on_model_write(model, callback, emitter=..., key=...)</code> is a shorter way to run <code>callback(session, row, operation)</code> inside the write's transaction, in a savepoint so a failing callback undoes only its own writes. <code>emit_after_commit(session, name, ...)</code> (from <code>msflib.actions</code>) and <code>run_after_commit(session, callback)</code> (from <code>msflib.db.transactions</code>) run work only after the outermost commit, correctly across savepoints.</p>
+<p>Each <code>ModelAction</code> write emits events named <code>&lt;model&gt;-&lt;op&gt;-pre-commit</code> (after flush, before commit, inside the transaction) and <code>&lt;model&gt;-&lt;op&gt;-post-commit</code> (once the outermost commit succeeds), where <code>&lt;model&gt;</code> is the lowercase class name and <code>&lt;op&gt;</code> is <code>create</code>, <code>update</code> or <code>delete</code>. A generic <code>model-&lt;op&gt;-...</code> event fires as well. Pre-commit listeners receive the row and an options dict containing the <code>session</code>; they abort the write if they raise. Post-commit listeners receive the row and an empty options dict (<code>{}</code>): the session is no longer available after commit, so do not store a <code>Session</code> in deferred options. Post-commit listeners are best-effort and receive a plain snapshot of the row, not the live ORM object.</p>
+<p><code>on_model_write(model, callback, emitter=..., key=...)</code> is a shorter way to run <code>callback(session, row, operation)</code> inside the write's transaction, in a savepoint so a failing callback undoes only its own writes. <code>emit_deferred(session, name, ...)</code> (from <code>msflib.actions</code>) and <code>run_after_commit(session, callback)</code> (from <code>msflib.db.transactions</code>) run work only after the outermost commit, correctly across savepoints.</p>
 <h3 id="transactions-and-units-of-work">Transactions and units of work<a class="headerlink" href="#transactions-and-units-of-work" title="Permanent link">&para;</a></h3>
 <p><code>msflib.db.transactions</code> provides the helpers for writing correct, composable units of work.</p>
 <p><strong><code>atomic(session)</code></strong> runs a block in a savepoint. If the block raises, only its own writes are rolled back; the outer transaction is unaffected. It also issues the explicit <code>BEGIN</code> that pysqlite requires for savepoints to work correctly on SQLite (a no-op on other databases).</p>
@@ -4650,9 +4656,9 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 
 <span class="n">run_after_commit</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">on_commit</span><span class="p">)</span>
 </code></pre></div>
-<p><code>emit_after_commit(session, name, instance, payload)</code> (from <code>msflib.actions</code>) does the same for event-bus events and is built on <code>run_after_commit</code>.</p>
+<p><code>emit_deferred(session, name, instance, options)</code> (from <code>msflib.actions</code>) does the same for event-bus events and is built on <code>run_after_commit</code>. Do not put a <code>Session</code> in <code>options</code>; the session is closed by the time deferred listeners run.</p>
 <h3 id="event-bus">Event bus<a class="headerlink" href="#event-bus" title="Permanent link">&para;</a></h3>
-<p><code>bind_app_emitter(app)</code> gives each FastAPI app its own emitter and adds middleware that makes it the current emitter for each request. Register listeners with <code>@app_emitter.on("event-name")</code>; <code>get_app_emitter(app)</code> returns the same emitter later. The app emitter is active in request handlers, in <code>BackgroundTasks</code> run after the response, and in <code>call_later</code> or <code>create_task</code> work started from a request. In scripts, threads (a <code>threading.Thread</code> does not inherit it) and lifespan code, wrap the code in <code>with use_app_emitter(app):</code>. A worker process has no app: register its listeners on <code>AppEmitter(get_emitter())</code>. Listener functions take <code>(payload, options, logger=None)</code>. <code>emit_optional</code> is best-effort; <code>emit_required</code> raises when no listener handled the event. Modules that need event wiring expose a <code>register_event_hooks(..., emitter=app_emitter)</code> function; <code>HookRegistry</code> makes such registration idempotent. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
+<p><code>bind_app_emitter(app)</code> gives each FastAPI app its own emitter and adds middleware that makes it the current emitter for each request. Register listeners with <code>@app_emitter.on("event-name")</code>; <code>get_app_emitter(app)</code> returns the same emitter later. The app emitter is active in request handlers, in <code>BackgroundTasks</code> run after the response, and in <code>call_later</code> or <code>create_task</code> work started from a request. In scripts, threads (a <code>threading.Thread</code> does not inherit it) and lifespan code, wrap the code in <code>with use_app_emitter(app):</code>. A worker process has no app: register its listeners on <code>AppEmitter(get_emitter())</code>. Listener functions take <code>(payload, options, logger=None)</code>. <code>emit_silent</code> is best-effort (errors logged, not raised); <code>emit_required</code> raises when no listener handled the event. Modules that need event wiring expose a <code>register_event_hooks(..., emitter=app_emitter)</code> function; <code>HookRegistry</code> makes such registration idempotent. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h3 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
 <p><code>ScopeEnvelope</code> is an immutable description of whose data an operation touches: dimensions such as <code>tenant_id</code>, <code>workspace_id</code> and <code>account_id</code>, plus an optional principal. <code>ScopeCompiler</code> turns an envelope into a canonical string, segments or mapping for use in cache keys, vector-store filters and similar. <code>get_scope_dependencies(...)</code> takes your identity dependencies (<code>get_current_tenant</code> and <code>get_current_account</code> are required, <code>get_current_workspace</code> is optional; <code>msflib.tenancy.deps</code> supplies a tenant dependency with a default-tenant fallback) and returns a <code>DependencyNamespace</code> of request-scoped dependencies: <code>get_account_scope</code>, <code>get_workspace_scope</code> (when a workspace tier exists) and <code>get_tenant_scope</code>. Which callables to pass is set out in the docstring of <code>get_scope_dependencies</code>. <code>ScopeFactory.build(envelope, ScopeType, operation=...)</code> turns an envelope into a typed scope: <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) or a module's subclass of it. It parses ids, keeps explicit nulls and rejects a profile that requires a dimension the class does not hold. <code>MembershipCheck</code> is the protocol for the tenant and workspace membership callbacks that routers take; <code>allow_any_member</code> is the explicit opt-out. <code>get_scope_ids(...)</code> returns <code>account_id</code>, <code>tenant_id</code> and <code>workspace_id</code> dependencies that yield plain ids and fail closed. <code>get_member_account_dependency(...)</code> wraps a <code>MembershipCheck</code> into a dependency that yields the account only when it belongs to the request's workspace (404 with no workspace or a workspace of another tenant, 403 for a non-member). See <a href="../../concepts/scopes-tenancy-workspaces/">Scopes, tenancy and workspaces</a>.</p>
 <h3 id="policy">Policy<a class="headerlink" href="#policy" title="Permanent link">&para;</a></h3>

@@ -2969,6 +2969,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.workspaces.eventbus.WorkspaceJoinContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorkspaceJoinContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.workspaces.eventbus.reset_event_hooks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2987,6 +2998,34 @@
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.eventbus.context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        context
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.eventbus.context.WorkspaceJoinContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorkspaceJoinContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -4204,6 +4243,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.workspaces.eventbus.WorkspaceJoinContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorkspaceJoinContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.workspaces.eventbus.reset_event_hooks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4222,6 +4272,34 @@
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.eventbus.context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        context
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.workspaces.eventbus.context.WorkspaceJoinContext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorkspaceJoinContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -4875,6 +4953,63 @@ can wrap or replace one dependency and inject the namespace back into
 
 
 
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.workspaces.eventbus.WorkspaceJoinContext" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">WorkspaceJoinContext</span><span class="p">(</span><span class="n">membership_type</span><span class="p">:</span> <span class="n">UserType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.workspaces.eventbus.WorkspaceJoinContext" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Caller-supplied context for the workspace membership bootstrap hook.</p>
+<p>Pass an instance into <code>lifecycle_context(...)</code> before creating an account
+to override the membership type the hook assigns to the new member::</p>
+<div class="codehilite"><pre><span></span><code>from msflib.eventbus import lifecycle_context
+from msflib.workspaces.eventbus.context import WorkspaceJoinContext
+
+with lifecycle_context(WorkspaceJoinContext(membership_type=UserType.admin)):
+    account_action.create(session, data=data)
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -5001,6 +5136,103 @@ same default tenant row.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.workspaces.eventbus.context" class="doc doc-heading">
+            <code>context</code>
+
+
+<a href="#msflib.workspaces.eventbus.context" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.workspaces.eventbus.context.WorkspaceJoinContext" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">WorkspaceJoinContext</span><span class="p">(</span><span class="n">membership_type</span><span class="p">:</span> <span class="n">UserType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.workspaces.eventbus.context.WorkspaceJoinContext" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Caller-supplied context for the workspace membership bootstrap hook.</p>
+<p>Pass an instance into <code>lifecycle_context(...)</code> before creating an account
+to override the membership type the hook assigns to the new member::</p>
+<div class="codehilite"><pre><span></span><code>from msflib.eventbus import lifecycle_context
+from msflib.workspaces.eventbus.context import WorkspaceJoinContext
+
+with lifecycle_context(WorkspaceJoinContext(membership_type=UserType.admin)):
+    account_action.create(session, data=data)
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
   </div>

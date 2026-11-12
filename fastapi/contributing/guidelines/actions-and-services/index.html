@@ -3359,6 +3359,67 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#svc-11-pass-caller-intent-to-hooks-with-lifecycle_context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SVC-11 · Pass caller intent to hooks with lifecycle_context
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SVC-11 · Pass caller intent to hooks with lifecycle_context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-not-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not parameters?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3377,10 +3438,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#svc-11-put-each-check-in-the-layer-that-owns-it" class="md-nav__link">
+  <a href="#svc-12-put-each-check-in-the-layer-that-owns-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SVC-11 · Put each check in the layer that owns it
+        SVC-12 · Put each check in the layer that owns it
       
     </span>
   </a>
@@ -4001,6 +4062,67 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#svc-11-pass-caller-intent-to-hooks-with-lifecycle_context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SVC-11 · Pass caller intent to hooks with lifecycle_context
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SVC-11 · Pass caller intent to hooks with lifecycle_context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-not-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not parameters?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4019,10 +4141,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#svc-11-put-each-check-in-the-layer-that-owns-it" class="md-nav__link">
+  <a href="#svc-12-put-each-check-in-the-layer-that-owns-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SVC-11 · Put each check in the layer that owns it
+        SVC-12 · Put each check in the layer that owns it
       
     </span>
   </a>
@@ -4166,13 +4288,85 @@ starting.</p>
 <h2 id="events-and-transactions">Events and transactions<a class="headerlink" href="#events-and-transactions" title="Permanent link">&para;</a></h2>
 <h3 id="svc-10-defer-events-until-commit">SVC-10 · Defer events until commit<a class="headerlink" href="#svc-10-defer-events-until-commit" title="Permanent link">&para;</a></h3>
 <p>When a write uses <code>commit=False</code>, emit its event with
-<code>msflib.actions.emit_after_commit(session, event, instance, payload)</code> so
+<code>msflib.actions.emit_deferred(session, event, instance, options)</code> so
 listeners never see uncommitted state. Don't hand-roll paired
 <code>sqlalchemy.event.listen(..., once=True)</code> callbacks.</p>
-<p>Listeners receive <code>(instance, payload)</code>, not a session. Payloads carry public
-ids and scope values so listeners can act without re-querying.</p>
+<p>Listeners receive <code>(instance, options)</code>. Do <strong>not</strong> put a <code>Session</code> in
+<code>options</code>: the session is closed by the time deferred listeners run. Payloads
+carry public ids and scope values so listeners can act without re-querying.
+Listeners that need to write to the database should capture a <code>session_factory</code>
+at hook-registration time (in <code>register_event_hooks</code>) and open their own session.</p>
+<h3 id="svc-11-pass-caller-intent-to-hooks-with-lifecycle_context">SVC-11 · Pass caller intent to hooks with <code>lifecycle_context</code><a class="headerlink" href="#svc-11-pass-caller-intent-to-hooks-with-lifecycle_context" title="Permanent link">&para;</a></h3>
+<p>When a caller needs to influence what a lifecycle hook does, use
+<code>msflib.eventbus.lifecycle_context</code> — do <strong>not</strong> thread extra parameters
+through action or service signatures.</p>
+<h4 id="why-not-parameters">Why not parameters?<a class="headerlink" href="#why-not-parameters" title="Permanent link">&para;</a></h4>
+<p>An <code>event_options: dict</code> on <code>AccountAction.create</code> leaks the hook's internal
+contract into every caller, couples the action to hook implementations it
+doesn't own, and breaks composability (two layers fighting over the same dict).</p>
+<h4 id="the-pattern">The pattern<a class="headerlink" href="#the-pattern" title="Permanent link">&para;</a></h4>
+<p><strong>1. Define a typed context dataclass in <code>eventbus/context.py</code> for your module:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># msflib/workspaces/eventbus/context.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserType</span>
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WorkspaceJoinContext</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Caller-supplied context for the workspace membership bootstrap hook."""</span>
+    <span class="n">membership_type</span><span class="p">:</span> <span class="n">UserType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<p><strong>2. Read it in the hook with <code>get_context</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.context</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkspaceJoinContext</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_on_account_pre_commit</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">join_ctx</span> <span class="o">=</span> <span class="n">get_context</span><span class="p">(</span><span class="n">WorkspaceJoinContext</span><span class="p">)</span>
+    <span class="n">user_action</span><span class="o">.</span><span class="n">create_membership</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>
+        <span class="n">membership_type</span><span class="o">=</span><span class="n">join_ctx</span><span class="o">.</span><span class="n">membership_type</span> <span class="k">if</span> <span class="n">join_ctx</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p><strong>3. Push context from the call site:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">lifecycle_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.eventbus.context</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkspaceJoinContext</span>
+
+<span class="k">with</span> <span class="n">lifecycle_context</span><span class="p">(</span><span class="n">WorkspaceJoinContext</span><span class="p">(</span><span class="n">membership_type</span><span class="o">=</span><span class="n">UserType</span><span class="o">.</span><span class="n">admin</span><span class="p">)):</span>
+    <span class="n">account_action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Context is scoped to the <code>with</code> block: it is restored when the block exits,
+  even if an exception is raised. Nesting is safe — inner blocks add to, not
+  replace, outer context.</li>
+<li><code>lifecycle_context</code> and <code>get_context</code> are <code>ContextVar</code>-backed: they are
+  per-async-task / per-thread with no shared mutable state.</li>
+<li><strong>Don't</strong> use <code>options.get("some_key")</code> in a hook for caller-supplied intent;
+  that is a sign the value should come through <code>lifecycle_context</code> instead.</li>
+<li>The boundary is provenance: <code>options</code> carries data the <strong>publisher</strong> provides at
+  emit time (scope values, model ids, typed <code>EventOptions</code> subclasses); <code>lifecycle_context</code>
+  carries intent the <strong>caller</strong> sets before triggering the action. <code>"session"</code> is
+  publisher-provided — available in pre-commit hooks because the action puts it there —
+  but absent in deferred post-commit hooks by design (see SVC-10).</li>
+<li><strong><code>ScopeEnvelope</code></strong> is the standard <code>lifecycle_context</code> payload for scope dimensions
+  (tenant, workspace) when a caller needs to steer a hook that otherwise can't know
+  which scope to act on:</li>
+</ul>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope.envelope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">lifecycle_context</span>
+
+<span class="k">with</span> <span class="n">lifecycle_context</span><span class="p">(</span><span class="n">ScopeEnvelope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="n">tid</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="n">wid</span><span class="p">)):</span>
+    <span class="n">action</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+- <strong>Don't</strong> use <code>lifecycle_context</code> to pass data the hook can derive from the
+  model itself (e.g. <code>account.role</code>). Use it only when the hook genuinely
+  cannot know the caller's intent without being told.</p>
+<h4 id="naming">Naming<a class="headerlink" href="#naming" title="Permanent link">&para;</a></h4>
+<p>Name the context dataclass after the caller-side intent, not the hook's
+implementation detail: <code>WorkspaceJoinContext</code>, not <code>MembershipTypeContext</code>.
+Put it in <code>eventbus/context.py</code> inside the module that owns the hook.</p>
 <h2 id="where-checks-live">Where checks live<a class="headerlink" href="#where-checks-live" title="Permanent link">&para;</a></h2>
-<h3 id="svc-11-put-each-check-in-the-layer-that-owns-it">SVC-11 · Put each check in the layer that owns it<a class="headerlink" href="#svc-11-put-each-check-in-the-layer-that-owns-it" title="Permanent link">&para;</a></h3>
+<h3 id="svc-12-put-each-check-in-the-layer-that-owns-it">SVC-12 · Put each check in the layer that owns it<a class="headerlink" href="#svc-12-put-each-check-in-the-layer-that-owns-it" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>

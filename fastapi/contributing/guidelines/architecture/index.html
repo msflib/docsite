@@ -4088,7 +4088,7 @@ model is. Reference: <code>modules/conversation/msflib/conversation/models/</cod
 <p>When several modules need the same helper or workaround, put it in <code>core</code> and
 use it everywhere instead of adding a module-local copy. Examples:
 <code>BaseEnum.__str__</code>/<code>__format__</code> (fixed in core rather than per-module
-<code>.value</code> guards), <code>msflib.core.import_tools</code>, <code>msflib.actions.emit_after_commit</code>,
+<code>.value</code> guards), <code>msflib.core.import_tools</code>, <code>msflib.actions.emit_deferred</code>,
 <code>msflib.db.batching.select_in</code> (an <code>IN</code> over an id list of unknown length).</p>
 <p><strong>Why:</strong> local workarounds multiply. Four modules had independently written the
 same enum-formatting guard before it was fixed once in core.</p>

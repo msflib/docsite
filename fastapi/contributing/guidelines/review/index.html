@@ -3877,7 +3877,7 @@ Rejecting a finding needs the evidence (code or design reference), not just
 <h3 id="rev-4-fix-the-pattern-not-just-the-instance">REV-4 · Fix the pattern, not just the instance<a class="headerlink" href="#rev-4-fix-the-pattern-not-just-the-instance" title="Permanent link">&para;</a></h3>
 <p>When the same finding recurs across files, look for a shared primitive in
 <code>core</code> instead of patching each place (ARC-6). Example: repeated
-commit/event race findings led to <code>emit_after_commit</code>.</p>
+commit/event race findings led to <code>emit_deferred</code>.</p>
 <h3 id="rev-5-fix-commits">REV-5 · Fix commits<a class="headerlink" href="#rev-5-fix-commits" title="Permanent link">&para;</a></h3>
 <p>Address review feedback in focused commits whose message names what was fixed
 and, where useful, the rule ID. The code itself carries no review narration
@@ -3890,7 +3890,8 @@ pull request.</p>
 organisation template from the <code>msflib/.github</code> repository
 (<code>.github/PULL_REQUEST_TEMPLATE.md</code>). GitHub pre-fills it in the browser; when
 opening a PR from the command line, fetch it first:</p>
-<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>api<span class="w"> </span>repos/msflib/.github/contents/.github/PULL_REQUEST_TEMPLATE.md<span class="w"> </span>--jq<span class="w"> </span>.content<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>api<span class="w"> </span>repos/msflib/.github/contents/.github/PULL_REQUEST_TEMPLATE.md<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--jq<span class="w"> </span>.content<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
 </code></pre></div>
 <ul>
 <li>Keep every section and every checklist item, in order. Summary leads with

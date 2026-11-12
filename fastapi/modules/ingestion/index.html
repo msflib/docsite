@@ -3975,11 +3975,12 @@
     <span class="n">create_ingestion_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-        <span class="n">mutation_role_check</span><span class="o">=</span><span class="n">require_admin</span><span class="p">,</span>   <span class="c1"># any FastAPI dependency; see below</span>
+        <span class="n">mutation_role_check</span><span class="o">=</span><span class="n">require_admin</span><span class="p">,</span>  <span class="c1"># any FastAPI dependency; see below</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
         <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
-        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>   <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ingestion"</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -4082,7 +4083,7 @@
 <p><strong><code>IngestionSubjectQueue</code>.</strong> The producer side of a kind: <code>queue.enqueue(...)</code> takes explicit values, and <code>queue.enqueue_snapshot(...)</code> takes an <code>IngestionSubjectSnapshot</code> and works out <code>create</code>, <code>replace</code> or <code>delete</code>, including a first <code>delete</code> under the old scope when a subject moved. Both take the same per-subject lock as the stage, so an edit made while a job runs waits for it and then queues its own job instead of deduplicating into the running one. Dispatch to Celery is deferred until the caller's transaction commits, so a rollback queues nothing. Pass <code>enabled=</code> from the module's settings flag; a disabled queue raises <code>QueueDisabledError</code>. Pass <code>lock=False</code> for a queue whose enqueues must not wait for a running job. An enqueue can then deduplicate into that job, so its stage has to notice changes made while it runs and retry; <code>text_document</code> in <a href="../documents/">documents</a> works this way. Subclass only to override <code>check_subject</code>.</p>
 <p><strong><code>sync_model_to_queue</code>.</strong> <code>msflib.ingestion.services.sync.sync_model_to_queue(Model, queue, subject_type=..., snapshot=..., emitter=...)</code> enqueues a job on every <code>ModelAction</code> create, update and delete of a model, in the same transaction as the write. Writes that bypass <code>ModelAction</code> (raw <code>session.add</code>, bulk SQL) fire nothing; call <code>queue.enqueue_snapshot</code> yourself after those. <code>reset_model_sync(emitter=..., pipeline_kind=..., subject_type=...)</code> removes the hook.</p>
 <p><strong>Errors.</strong> Raise <code>RetryableStageError</code> for transient failures and <code>TerminalStageError</code> for bad input. Raise <code>SupersededStageError</code> when a stage finds its work is moot. A plain exception is classified for you by <code>classify_stage_error</code>. Inside <code>ingestion_subject_stage</code>, an error whose text is identical to the previous attempt's is also treated as terminal. <code>QueueDisabledError</code> and <code>UnregisteredSubjectTypeError</code> are raised at enqueue time.</p>
-<p><strong>Events.</strong> <code>StageContext.emit_after_success(name, instance, payload)</code> queues an event that fires after the whole job commits. Use it instead of <code>msflib.actions.emit_after_commit</code> inside a stage, because SQLAlchemy forbids further SQL on the session from an <code>after_commit</code> handler. Event listeners must be registered in the worker process, since that is where the event fires, and on the emitter active there. In the worker entrypoint, register them on the process default emitter: hooks that take an <code>emitter=</code> argument can be given <code>AppEmitter(get_emitter())</code> (from <code>msflib.eventbus</code>). Listeners bound to the web app's <code>AppEmitter</code> are never called from a real worker; in eager mode they fire only when the task runs inside a request. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
+<p><strong>Events.</strong> <code>StageContext.emit_after_success(name, instance, payload)</code> queues an event that fires after the whole job commits. Use it instead of <code>msflib.actions.emit_deferred</code> inside a stage, because SQLAlchemy forbids further SQL on the session from an <code>after_commit</code> handler. Event listeners must be registered in the worker process, since that is where the event fires, and on the emitter active there. In the worker entrypoint, register them on the process default emitter: hooks that take an <code>emitter=</code> argument can be given <code>AppEmitter(get_emitter())</code> (from <code>msflib.eventbus</code>). Listeners bound to the web app's <code>AppEmitter</code> are never called from a real worker; in eager mode they fire only when the task runs inside a request. See <a href="../../concepts/event-bus/">Event bus</a>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="a-pipeline-kind-for-your-own-table">A pipeline kind for your own table<a class="headerlink" href="#a-pipeline-kind-for-your-own-table" title="Permanent link">&para;</a></h3>
 <p>This registers a <code>note_index</code> kind, queues jobs from a snapshot, and runs the stage directly with the test helpers. It runs as written against in-memory SQLite. SQLite does not enforce the <code>tenant_id</code> foreign key, so the example seeds tenant 1 explicitly to behave the same on Postgres.</p>
@@ -4099,7 +4100,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenancySettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401  (registers the tenant table)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.models.tenant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tenant</span>  <span class="c1"># noqa: F401  (registers tenant table)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
@@ -4112,7 +4113,7 @@
     <span class="n">deleted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>                    <span class="c1"># StageContext -&gt; subject, or None when it is gone</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>  <span class="c1"># StageContext -&gt; subject, or None when it is gone</span>
     <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Note</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">subject_id</span><span class="p">))</span>
 
 
@@ -4129,11 +4130,11 @@
 <span class="n">indexed</span> <span class="o">=</span> <span class="p">[]</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>                 <span class="c1"># runs locked, inside a savepoint</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>  <span class="c1"># runs locked, inside a savepoint</span>
     <span class="n">indexed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>                 <span class="c1"># subject is gone, or the job is a delete</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>  <span class="c1"># subject is gone, or the job is a delete</span>
     <span class="n">indexed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"removed </span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">subject_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
@@ -4141,7 +4142,11 @@
 <span class="n">registry</span><span class="o">.</span><span class="n">register_kind</span><span class="p">(</span>
     <span class="s2">"note_index"</span><span class="p">,</span>
     <span class="n">ingestion_subject_stage</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">"note_index"</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="n">load</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"note_index"</span><span class="p">,</span>
+        <span class="n">load</span><span class="o">=</span><span class="n">load</span><span class="p">,</span>
+        <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span>
+        <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">description</span><span class="o">=</span><span class="s2">"Index notes"</span><span class="p">,</span>
 <span class="p">)</span>
@@ -4152,15 +4157,19 @@
 
 
 <span class="n">engine</span> <span class="o">=</span> <span class="n">enable_savepoints</span><span class="p">(</span>
-    <span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span><span class="p">)</span>
+    <span class="n">create_engine</span><span class="p">(</span>
+        <span class="s2">"sqlite://"</span><span class="p">,</span> <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="s2">"check_same_thread"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">poolclass</span><span class="o">=</span><span class="n">StaticPool</span>
+    <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 
-<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>      <span class="c1"># seeds tenant 1, which Note.tenant_id points at</span>
-    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">Settings</span><span class="p">()</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">))</span>
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>  <span class="c1"># seeds tenant 1, which Note.tenant_id points at</span>
+    <span class="n">TenantAction</span><span class="p">[</span><span class="n">Tenant</span><span class="p">,</span> <span class="n">TenantCreate</span><span class="p">,</span> <span class="n">TenantUpdate</span><span class="p">]()</span><span class="o">.</span><span class="n">ensure_default_tenant</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">Settings</span><span class="p">()</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
-<span class="n">task</span> <span class="o">=</span> <span class="n">FakeDispatchTask</span><span class="p">()</span>             <span class="c1"># records job ids instead of calling Celery</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">FakeDispatchTask</span><span class="p">()</span>  <span class="c1"># records job ids instead of calling Celery</span>
 <span class="n">queue</span> <span class="o">=</span> <span class="n">IngestionSubjectQueue</span><span class="p">(</span>
     <span class="n">dispatch</span><span class="o">=</span><span class="n">IngestionDispatchService</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">),</span> <span class="n">pipeline_kind</span><span class="o">=</span><span class="s2">"note_index"</span>
 <span class="p">)</span>
@@ -4178,7 +4187,7 @@
 
     <span class="n">context</span> <span class="o">=</span> <span class="n">start_stage_context</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">jobs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Settings</span><span class="p">())</span>
     <span class="n">registry</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="s2">"note_index"</span><span class="p">)</span><span class="o">.</span><span class="n">stages</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">context</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">indexed</span><span class="p">)</span>                    <span class="c1"># ['hello']</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">indexed</span><span class="p">)</span>  <span class="c1"># ['hello']</span>
 
     <span class="n">note</span><span class="o">.</span><span class="n">deleted</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
@@ -4186,7 +4195,7 @@
     <span class="n">jobs</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">enqueue_snapshot</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span> <span class="n">subject_type</span><span class="o">=</span><span class="s2">"note"</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">note_snapshot</span><span class="p">(</span><span class="n">note</span><span class="p">),</span> <span class="n">commit</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
-    <span class="nb">print</span><span class="p">([</span><span class="n">job</span><span class="o">.</span><span class="n">reason</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">])</span>   <span class="c1"># ['delete']</span>
+    <span class="nb">print</span><span class="p">([</span><span class="n">job</span><span class="o">.</span><span class="n">reason</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">])</span>  <span class="c1"># ['delete']</span>
 </code></pre></div>
 <p><code>FakeDispatchTask</code> and <code>start_stage_context</code> come from <code>msflib.ingestion.testing</code>. <code>start_stage_context</code> starts an attempt the way the Celery task does and returns the <code>StageContext</code> a stage receives, so a stage can be unit-tested without a broker.</p>
 <p>In the real app, register the same kind in the worker entrypoint (and in the producer process if you mount the management router), and replace <code>FakeDispatchTask</code> with <code>build_dispatch_task(settings)</code>. To enqueue on every write to <code>Note</code> instead of calling <code>enqueue_snapshot</code> by hand:</p>

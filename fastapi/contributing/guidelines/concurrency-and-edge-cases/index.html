@@ -4257,7 +4257,7 @@ savepoint can commit outside the caller's transaction (#243; pitfalls).</p>
 the method's commit contract: it must not leave a lock or an open transaction
 the caller believes is closed.</p>
 <h3 id="cnc-8-after-commit-work-outlives-the-call-that-scheduled-it">CNC-8 · After-commit work outlives the call that scheduled it<a class="headerlink" href="#cnc-8-after-commit-work-outlives-the-call-that-scheduled-it" title="Permanent link">&para;</a></h3>
-<p><code>emit_after_commit</code> fires on the outermost commit. Do not hand listeners a
+<p><code>emit_deferred</code> fires on the outermost commit. Do not hand listeners a
 session that the scheduling code closes on return, and do not assume async
 listeners finish before the request does (#244).</p>
 <h3 id="cnc-9-process-wide-caches-hold-committed-values-only">CNC-9 · Process-wide caches hold committed values only<a class="headerlink" href="#cnc-9-process-wide-caches-hold-committed-values-only" title="Permanent link">&para;</a></h3>

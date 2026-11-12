@@ -3991,8 +3991,9 @@
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
         <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
-        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>   <span class="c1"># may resolve to None</span>
-        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>   <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>  <span class="c1"># may resolve to None</span>
+        <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
         <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
     <span class="p">),</span>
@@ -4165,7 +4166,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">similarity_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">Document</span><span class="p">(</span>
-                <span class="n">page_content</span><span class="o">=</span><span class="s2">"Pump P-101 feeds separator V-201."</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"source_id"</span><span class="p">:</span> <span class="s2">"doc-42"</span><span class="p">}</span>
+                <span class="n">page_content</span><span class="o">=</span><span class="s2">"Pump P-101 feeds separator V-201."</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"source_id"</span><span class="p">:</span> <span class="s2">"doc-42"</span><span class="p">},</span>
             <span class="p">)</span>
         <span class="p">]</span>
 
@@ -4175,7 +4177,9 @@
     <span class="n">create_ai_router</span><span class="p">(</span>
         <span class="n">settings</span><span class="o">=</span><span class="n">Settings</span><span class="p">(),</span>
         <span class="n">get_session</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">get_current_account</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">"user"</span><span class="p">,</span> <span class="n">current_workspace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">"user"</span><span class="p">,</span> <span class="n">current_workspace_id</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
         <span class="n">get_current_tenant</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
         <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
         <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">allow_any_member</span><span class="p">,</span>
@@ -4189,17 +4193,19 @@
 <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 <span class="n">hits</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/ai/search"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"query"</span><span class="p">:</span> <span class="s2">"pump"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hits</span><span class="p">[</span><span class="s2">"count"</span><span class="p">],</span> <span class="n">hits</span><span class="p">[</span><span class="s2">"hits"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"page_content"</span><span class="p">])</span>   <span class="c1"># 1 Pump P-101 feeds separator V-201.</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">hits</span><span class="p">[</span><span class="s2">"count"</span><span class="p">],</span> <span class="n">hits</span><span class="p">[</span><span class="s2">"hits"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"page_content"</span><span class="p">]</span>
+<span class="p">)</span>  <span class="c1"># 1 Pump P-101 feeds separator V-201.</span>
 
 <span class="n">native</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/ai/ask"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"question"</span><span class="p">:</span> <span class="s2">"What feeds V-201?"</span><span class="p">})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">native</span><span class="p">[</span><span class="s2">"answer"</span><span class="p">])</span>                                  <span class="c1"># P-101 feeds V-201.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">native</span><span class="p">[</span><span class="s2">"answer"</span><span class="p">])</span>  <span class="c1"># P-101 feeds V-201.</span>
 
 <span class="n">openai</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
     <span class="s2">"/api/v1/ai/ask"</span><span class="p">,</span>
     <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"question"</span><span class="p">:</span> <span class="s2">"What feeds V-201?"</span><span class="p">},</span>
     <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"X-AI-Protocol"</span><span class="p">:</span> <span class="s2">"openai"</span><span class="p">},</span>
 <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">openai</span><span class="p">[</span><span class="s2">"output"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"content"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"text"</span><span class="p">])</span>        <span class="c1"># P-101 feeds V-201.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">openai</span><span class="p">[</span><span class="s2">"output"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"content"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"text"</span><span class="p">])</span>  <span class="c1"># P-101 feeds V-201.</span>
 </code></pre></div>
 <h3 id="your-own-agent">Your own agent<a class="headerlink" href="#your-own-agent" title="Permanent link">&para;</a></h3>
 <p>Inject any LangChain <code>Runnable</code>. Here a trivial one stands in for a real agent; the router calls it with <code>{"messages": [...], "k": ..., ...}</code> and returns whatever it produces:</p>
@@ -4214,7 +4220,8 @@
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
     <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
-    <span class="n">get_injected_agent</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">echo_agent</span><span class="p">,</span>      <span class="c1"># zero-arg: used as is, no tools or context</span>
+    <span class="c1"># zero-arg: used as is, no tools or context</span>
+    <span class="n">get_injected_agent</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">echo_agent</span><span class="p">,</span>
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -4223,7 +4230,9 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ai_bridge</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
 
-<span class="n">knowledge_deps</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">))</span>
+<span class="n">knowledge_deps</span> <span class="o">=</span> <span class="n">get_knowledge_dependencies</span><span class="p">(</span>
+    <span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">create_ai_router</span><span class="p">(</span>
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>

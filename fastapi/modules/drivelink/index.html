@@ -3930,8 +3930,9 @@
         <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
         <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>  <span class="c1"># may resolve to None</span>
-        <span class="n">is_tenant_member</span><span class="o">=</span><span class="n">is_tenant_member</span><span class="p">,</span>         <span class="c1"># from msflib.tenancy, or allow_any_member</span>
-        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>   <span class="c1"># from msflib.workspaces, or allow_any_member</span>
+        <span class="c1"># from msflib.tenancy / msflib.workspaces, or allow_any_member</span>
+        <span class="n">is_tenant_member</span><span class="o">=</span><span class="n">is_tenant_member</span><span class="p">,</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="s2">"/drivelink"</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -4161,14 +4162,23 @@
 <span class="n">settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">(</span><span class="n">STORAGE_PATH</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(),</span> <span class="n">QUOTA_MAX_BYTES</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">)</span>
 <span class="c1"># ... create engine, tables and an `account`, then:</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">router</span><span class="p">(</span><span class="n">get_session</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span> <span class="n">get_current_account</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">account</span><span class="p">,</span>
-                          <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-                          <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
-                          <span class="n">is_tenant_member</span><span class="o">=</span><span class="n">allow_any_member</span><span class="p">,</span>
-                          <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">allow_any_member</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"/drivelink"</span><span class="p">))</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+    <span class="n">router</span><span class="p">(</span>
+        <span class="n">get_session</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span>
+        <span class="n">get_current_account</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">account</span><span class="p">,</span>
+        <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+        <span class="n">get_current_tenant</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
+        <span class="n">is_tenant_member</span><span class="o">=</span><span class="n">allow_any_member</span><span class="p">,</span>
+        <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">allow_any_member</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"/drivelink"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
-<span class="n">folder</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/drivelink/nodes/folders"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"parent_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Reports"</span><span class="p">})</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"/drivelink/nodes/folders"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"parent_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Reports"</span><span class="p">}</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 <span class="c1"># folder["path"] == "/Reports", folder["kind"] == "folder"</span>
 
 <span class="n">up</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">folder</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">/files"</span><span class="p">,</span>
@@ -4178,8 +4188,10 @@
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">node</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">/download?redirect=false"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 <span class="c1"># {"url": "/uploads/drivelink/files-1/&lt;uuid&gt;-q1.txt", "expires_in": 3600}</span>
 
-<span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/drivelink/nodes/folders"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"parent_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Reports"</span><span class="p">})</span><span class="o">.</span><span class="n">status_code</span>  <span class="c1"># 409</span>
-<span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">node</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># {"deleted": True, "permanent": False}</span>
+<span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/drivelink/nodes/folders"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"parent_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Reports"</span><span class="p">})</span><span class="o">.</span><span class="n">status_code</span>  <span class="c1"># 409</span>
+<span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">node</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># {"deleted": True,</span>
+    <span class="s2">"permanent"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
 <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/trash?parent_id=</span><span class="si">{</span><span class="n">folder</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>   <span class="c1"># the trashed q1.txt</span>
 <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/drivelink/nodes/</span><span class="si">{</span><span class="n">node</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">/restore"</span><span class="p">)</span>    <span class="c1"># 200</span>
 </code></pre></div>

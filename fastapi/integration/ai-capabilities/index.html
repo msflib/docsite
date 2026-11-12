@@ -3878,7 +3878,10 @@
 <span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">ingest</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">"format"</span><span class="p">:</span> <span class="s2">"markdown"</span><span class="p">,</span>
-        <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"# Refunds</span><span class="se">\n\n</span><span class="s2">Refunds take 5 days.</span><span class="se">\n\n</span><span class="s2">## Exceptions</span><span class="se">\n\n</span><span class="s2">Gift cards are final sale."</span><span class="p">,</span>
+        <span class="s2">"content"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">"# Refunds</span><span class="se">\n\n</span><span class="s2">Refunds take 5 days.</span><span class="se">\n\n</span><span class="s2">"</span>
+            <span class="s2">"## Exceptions</span><span class="se">\n\n</span><span class="s2">Gift cards are final sale."</span>
+        <span class="p">),</span>
         <span class="s2">"source_id"</span><span class="p">:</span> <span class="s2">"faq-1"</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">)</span>
@@ -3918,7 +3921,9 @@
 <span class="p">)</span>
 
 <span class="n">scope</span> <span class="o">=</span> <span class="n">build_context_scope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
-<span class="n">hits</span> <span class="o">=</span> <span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">"How long do refunds take?"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">hits</span> <span class="o">=</span> <span class="n">similarity_search_scoped</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">"How long do refunds take?"</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
 </code></pre></div>
 <p>Points to know:</p>
 <ul>
@@ -3936,7 +3941,9 @@
 
 <span class="n">prompts</span> <span class="o">=</span> <span class="n">PromptRegistryService</span><span class="p">()</span>
 
-<span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"You are a helpful assistant."</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"You are a helpful assistant."</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">prompts</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
     <span class="n">session</span><span class="p">,</span> <span class="s2">"support.system"</span><span class="p">,</span> <span class="s2">"v2"</span><span class="p">,</span> <span class="s2">"You are concise."</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">set_active</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
