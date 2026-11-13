@@ -4945,7 +4945,7 @@ and is only cleared when clear_private=True is explicitly requested.</p>
 
 
 <h4 id="msflib.documents.actions.DocumentRecordAction.get_multi_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_multi_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">DocumentScope</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">DocumentRecordStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_deleted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DocumentRecord</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">get_multi_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">DocumentScope</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">DocumentRecordStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_deleted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DocumentRecord</span><span class="p">]</span></code>
 
 <a href="#msflib.documents.actions.DocumentRecordAction.get_multi_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5106,7 +5106,7 @@ doesn't surface documents the account already deleted.</p>
 
 
 <h3 id="msflib.documents.contracts.DocumentScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">DocumentScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">DocumentScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -5125,8 +5125,9 @@ doesn't surface documents the account already deleted.</p>
 
 
 
-        <p>The caller's tenant, workspace and account, plus the optional conversation filters.</p>
-<p><code>workspace_id=None</code> is the workspace-less bucket, not "any workspace".</p>
+        <p>The caller's tenant and workspace, plus the optional conversation filters.</p>
+<p><code>workspace_id=None</code> is the workspace-less bucket, not "any workspace". The
+caller's account is a separate <code>account_id</code> argument, not part of the scope.</p>
 
 
 
@@ -5872,7 +5873,7 @@ restarting.</p>
 
 
 <h3 id="msflib.documents.services.enqueue_reindex_for_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_reindex_for_scope</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">statuses</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DocumentRecordStatus</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">indexed</span><span class="p">,</span> <span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">failed</span><span class="p">),</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReindexReport</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_reindex_for_scope</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">,</span> <span class="n">statuses</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DocumentRecordStatus</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">indexed</span><span class="p">,</span> <span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">failed</span><span class="p">),</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReindexReport</span></code>
 
 <a href="#msflib.documents.services.enqueue_reindex_for_scope" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -5900,7 +5901,7 @@ resolution.</p>
 
 
 <h3 id="msflib.documents.services.purge_scope_from_backend" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">purge_scope_from_backend</span><span class="p">(</span><span class="n">old_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">purge_scope_from_backend</span><span class="p">(</span><span class="n">old_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.documents.services.purge_scope_from_backend" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -5908,6 +5909,8 @@ resolution.</p>
     <div class="doc doc-contents ">
 
         <p>Delete a scope's documents from an explicitly identified old backend.</p>
+<p>The vector metadata holds strings, so this takes the envelope as it came off
+the request.</p>
 <p><code>old_store</code> must be resolved by the caller (e.g. via
 <code>VectorStoreRegistryService</code> against the <em>previous</em> <code>VectorStoreProfile</code>
 id) -- this never guesses "the previous config" itself, since a wrong
@@ -6093,7 +6096,7 @@ pipeline_kind.</p>
 
     <div class="doc doc-contents ">
 
-        <p>The job's <code>DocumentRecord</code>; terminal if it is missing or in another scope.</p>
+        <p>The job's <code>DocumentRecord</code>; terminal if it is missing or placed elsewhere.</p>
 
 
     </div>
@@ -6276,7 +6279,7 @@ restarting.</p>
 
 
 <h4 id="msflib.documents.services.reindex.enqueue_reindex_for_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_reindex_for_scope</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">statuses</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DocumentRecordStatus</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">indexed</span><span class="p">,</span> <span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">failed</span><span class="p">),</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReindexReport</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_reindex_for_scope</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">IngestionSubjectQueue</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">,</span> <span class="n">statuses</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DocumentRecordStatus</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">indexed</span><span class="p">,</span> <span class="n">DocumentRecordStatus</span><span class="o">.</span><span class="n">failed</span><span class="p">),</span> <span class="n">record_action</span><span class="p">:</span> <span class="n">DocumentRecordAction</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReindexReport</span></code>
 
 <a href="#msflib.documents.services.reindex.enqueue_reindex_for_scope" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6304,7 +6307,7 @@ resolution.</p>
 
 
 <h4 id="msflib.documents.services.reindex.purge_scope_from_backend" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">purge_scope_from_backend</span><span class="p">(</span><span class="n">old_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">purge_scope_from_backend</span><span class="p">(</span><span class="n">old_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.documents.services.reindex.purge_scope_from_backend" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6312,6 +6315,8 @@ resolution.</p>
     <div class="doc doc-contents ">
 
         <p>Delete a scope's documents from an explicitly identified old backend.</p>
+<p>The vector metadata holds strings, so this takes the envelope as it came off
+the request.</p>
 <p><code>old_store</code> must be resolved by the caller (e.g. via
 <code>VectorStoreRegistryService</code> against the <em>previous</em> <code>VectorStoreProfile</code>
 id) -- this never guesses "the previous config" itself, since a wrong

@@ -3250,6 +3250,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.ingestion.scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.scope.in_scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        in_scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.scope_profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope_profiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.ingestion.services" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5460,6 +5499,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#msflib.ingestion.scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ingestion.scope.in_scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        in_scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msflib.ingestion.scope_profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        scope_profiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#msflib.ingestion.services" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6043,7 +6121,7 @@
 
 
 <h4 id="msflib.ingestion.actions.IngestionJobAction.dedupe_key_for" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">dedupe_key_for</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">dedupe_key_for</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
@@ -6054,7 +6132,7 @@
 
     <div class="doc doc-contents ">
 
-        <p>Compute the dedupe key for a (subject, pipeline_kind, target_version, reason, scope).</p>
+        <p>Compute the dedupe key for a (subject, pipeline_kind, target_version, reason, placement).</p>
 <p>Also used to restore <code>dedupe_key</code> when requeuing a terminally-failed
 job: <code>failure_update</code> clears it on terminal failure, so without
 recomputing it here a manual retry would leave the one-job-per-
@@ -6069,7 +6147,7 @@ subject invariant unenforced until the job resolves again.</p>
 
 
 <h4 id="msflib.ingestion.actions.IngestionJobAction.enqueue_unique" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_unique</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_unique</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
 
 <a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6090,7 +6168,7 @@ concern, not domain policy.</p>
 
 
 <h4 id="msflib.ingestion.actions.IngestionJobAction.enqueue_unique_created" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_unique_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_unique_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
 
 <a href="#msflib.ingestion.actions.IngestionJobAction.enqueue_unique_created" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6126,7 +6204,7 @@ concern, not domain policy.</p>
 
 
 <h4 id="msflib.ingestion.actions.IngestionJobAction.count_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">count_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">IngestionJobStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">UnsetType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">count_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">IngestionJobStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.ingestion.actions.IngestionJobAction.count_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -6144,14 +6222,14 @@ concern, not domain policy.</p>
 
 
 <h4 id="msflib.ingestion.actions.IngestionJobAction.status_and_subject_type_counts" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">status_and_subject_type_counts</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">UnsetType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">IngestionJobStatus</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span></code>
+            <code class="highlight language-python"><span class="n">status_and_subject_type_counts</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">IngestionJobStatus</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span></code>
 
 <a href="#msflib.ingestion.actions.IngestionJobAction.status_and_subject_type_counts" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Row counts grouped by status and by subject_type, for the same tenant/workspace scope.</p>
+        <p>Row counts grouped by status and by subject_type, for the same scope.</p>
 
 
     </div>
@@ -6208,7 +6286,7 @@ concern, not domain policy.</p>
 
 
 <h4 id="msflib.ingestion.actions.IngestionDeadLetterAction.count_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">count_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">UnsetType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">UNSET</span><span class="p">,</span> <span class="n">include_resolved</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">count_scoped</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_resolved</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.ingestion.actions.IngestionDeadLetterAction.count_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -7949,6 +8027,107 @@ on <code>/jobs/trigger</code> before enqueueing. Defaults to
 
 
 
+<h2 id="msflib.ingestion.scope" class="doc doc-heading">
+            <code>msflib.ingestion.scope</code>
+
+
+<a href="#msflib.ingestion.scope" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Whether a request's scope reaches the bucket a job or dead letter lives in.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.ingestion.scope.in_scope" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">in_scope</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">PlacedRow</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.ingestion.scope.in_scope" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether <code>row</code>'s placement is in <code>scope</code>'s tenant and workspace bucket.</p>
+<p>Compares the fields, so a <code>TenantScope</code> subclass matches like the base shape.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="msflib.ingestion.scope_profiles" class="doc doc-heading">
+            <code>msflib.ingestion.scope_profiles</code>
+
+
+<a href="#msflib.ingestion.scope_profiles" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
 <h2 id="msflib.ingestion.services" class="doc doc-heading">
             <code>msflib.ingestion.services</code>
 
@@ -8015,7 +8194,7 @@ on <code>/jobs/trigger</code> before enqueueing. Defaults to
 
 
 <h4 id="msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_and_dispatch</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_and_dispatch</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
 
 <a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -8033,7 +8212,7 @@ on <code>/jobs/trigger</code> before enqueueing. Defaults to
 
 
 <h4 id="msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch_created" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_and_dispatch_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_and_dispatch_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
 
 <a href="#msflib.ingestion.services.IngestionDispatchService.enqueue_and_dispatch_created" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -8336,7 +8515,7 @@ polling the DB to notice.</p>
 
 
 <h5 id="msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_and_dispatch</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_and_dispatch</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
 
 <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -8354,7 +8533,7 @@ polling the DB to notice.</p>
 
 
 <h5 id="msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch_created" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue_and_dispatch_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">enqueue_and_dispatch_created</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dispatch_after_commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IngestionJob</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span></code>
 
 <a href="#msflib.ingestion.services.dispatch.IngestionDispatchService.enqueue_and_dispatch_created" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -8771,14 +8950,14 @@ the hook.</p>
 
 
 <h5 id="msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enqueue</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="n">IngestionReason</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">IngestionReason</span><span class="o">.</span><span class="n">create</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
+            <code class="highlight language-python"><span class="n">enqueue</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">subject_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="n">IngestionReason</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">IngestionReason</span><span class="o">.</span><span class="n">create</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestionJob</span></code>
 
 <a href="#msflib.ingestion.services.queue.IngestionSubjectQueue.enqueue" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>Queue one job; <code>tenant_id</code>/<code>workspace_id</code> must be the subject's own scope.</p>
+        <p>Queue one job; <code>placement</code> must be where the subject lives.</p>
 <p>Takes the subject's lock first, so a job that is running for it finishes
 (or stands down) before this dedupes against it.</p>
 
@@ -8802,7 +8981,7 @@ the hook.</p>
 <p>With no <code>reason</code>: a live subject is <code>create</code> (no earlier job) or
 <code>replace</code>; a gone one is <code>delete</code>, or nothing if it was never
 queued. A subject that moved tenant/workspace first gets a <code>delete</code>
-under the previous job's scope.</p>
+under the previous job's placement.</p>
 
 
     </div>
