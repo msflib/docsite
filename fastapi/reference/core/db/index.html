@@ -2344,6 +2344,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.db.reset.ensure_not_production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensure_not_production
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.reset.ensure_reset_supported" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4637,6 +4648,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.db.reset.ensure_not_production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensure_not_production
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.db.reset.ensure_reset_supported" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5091,7 +5113,8 @@ if __name__ == "__main__":
 
 <p><code>python -m app.initial_data</code> migrates the database (see :func:<code>~msflib.db.migrations.migrate</code>)
 and seeds it; it is safe to run on every start and never drops data. <code>--reset</code> drops everything
-first and is refused when <code>environment</code> is <code>production</code> or <code>prod</code>; on any non-local
+first and runs only when <code>environment</code> is <code>development</code> or <code>test</code> (or an alias of one);
+it is refused for <code>staging</code>, <code>production</code>, an unset or an unknown value. On any non-local
 database it also needs <code>--yes</code> or an interactive confirmation (typing <code>RESET</code>; the seed CLI's
 classifier decides which databases count as non-local).
 <code>--check</code> only reports what would be done (state, pending revisions, drift) and changes nothing;
@@ -5888,7 +5911,7 @@ like any other.</p>
 
 
 
-        <p>A destructive operation was attempted with <code>ENVIRONMENT</code> set to production (or prod).</p>
+        <p>A destructive operation was attempted outside a development or test environment.</p>
 
 
 
@@ -5902,6 +5925,26 @@ like any other.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.db.reset.ensure_not_production" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ensure_not_production</span><span class="p">(</span><span class="n">environment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.db.reset.ensure_not_production" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Raise :class:<code>ProductionGuardError</code> unless <code>environment</code> is development or test.</p>
+<p>An allowlist: staging, production, and any value that is not an environment name (a typo, an
+unset value) are all refused, so a name nobody anticipated cannot reach a destructive path.</p>
+
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -5936,7 +5979,7 @@ CASCADE and SQLite runs with enforcement switched off.</p>
     <div class="doc doc-contents ">
 
         <p>Drop everything and rebuild the schema with :func:<code>migrate</code> (same <code>use_alembic</code> choice).</p>
-<p>Raises :class:<code>ProductionGuardError</code> when <code>environment</code> is <code>production</code> or <code>prod</code> (pass
+<p>Raises :class:<code>ProductionGuardError</code> unless <code>environment</code> is development or test (pass
 <code>settings.ENVIRONMENT</code>). This is for tests and local development only.</p>
 
 
