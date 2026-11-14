@@ -1,1 +1,0 @@
-import{d as s,e as t,o as a,b as o,t as c,f as r}from"./index-DVs0cwap.js";const _={class:"doc-readout"},d={class:"doc-readout__title"},l={class:"doc-readout__value"},u=s({__name:"DocReadout",props:{label:{}},setup(n){return(e,p)=>(a(),t("div",_,[o("p",d,c(e.label),1),o("p",l,[r(e.$slots,"default")])]))}});export{u as _};

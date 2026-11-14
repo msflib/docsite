@@ -1,0 +1,1 @@
+import{i as a,g as r,q as s,p as i}from"./index-C1Uhczpo.js";const e=Symbol("msf-modal-reopen-token");function u(n){const o=r(0);return s(n,t=>{t&&(o.value+=1)}),i(e,o),o}function c(){return a(e,void 0)}export{u as p,c as u};
