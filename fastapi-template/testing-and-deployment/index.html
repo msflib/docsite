@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -479,6 +479,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Readiness check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add the suite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-it-on-every-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it on every deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixing-with-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixing with --fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-your-own-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add your own checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#worker" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -584,6 +645,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#readiness-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Readiness check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add the suite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-it-on-every-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it on every deploy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixing-with-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixing with --fix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-your-own-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add your own checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#worker" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -650,6 +772,73 @@
 <li>The image runs only the web process. It does not run <code>prestart.sh</code>; run it as a separate step or override the command to call it first.</li>
 </ul>
 <p><code>./build-container.sh &lt;tag&gt; &lt;registry&gt;</code> builds the image, logs in to the registry and pushes it as <code>&lt;registry&gt;/&lt;tag&gt;:latest</code>.</p>
+<h2 id="readiness-check">Readiness check<a class="headerlink" href="#readiness-check" title="Permanent link">&para;</a></h2>
+<p>A container can be up and still unable to do its job: the database is at an old revision, <code>SECRET_KEY</code> was never set, the Redis password is wrong. MSFLib's readiness engine answers one question before you send traffic to a deployment: which requirements are met, which are not, and what to do about each. It is read-only unless you pass <code>--fix</code>. The checks and options are described in <a href="https://msflib.github.io/docsite/fastapi/integration/readiness/">Readiness checks</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Needs a newer core</p>
+<p><code>msflib.core.readiness</code> is not in <code>core-v0.2.1</code>, the version <code>pyproject.toml</code> pins today. Move the <code>msflib</code> pin (and the module pins, which depend on it) to the release that ships it before you add the steps below.</p>
+</div>
+<h3 id="add-the-suite">Add the suite<a class="headerlink" href="#add-the-suite" title="Permanent link">&para;</a></h3>
+<p>Create <code>app/readiness.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.readiness</span><span class="w"> </span><span class="kn">import</span> <span class="n">Suite</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.db.session</span><span class="w"> </span><span class="kn">import</span> <span class="n">engine</span>
+
+<span class="n">suite</span> <span class="o">=</span> <span class="n">Suite</span><span class="o">.</span><span class="n">from_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"my-app"</span><span class="p">)</span>
+</code></pre></div>
+<p><code>Suite.from_settings</code> collects core's own checks (settings, database, storage) plus the checks of every MSFLib module whose settings class <code>AppSettings</code> inherits. When you add <code>msflib-ingestion</code>, <code>msflib-knowledge</code> or <code>msflib-ai-core</code> to <code>AppSettings</code>, their checks (broker and worker, graph and vector extensions, provider calls) join the run without further wiring. The schema-at-head and drift checks run only when you pass <code>migration=</code> (an <code>msflib.db.migrations.MigrationConfig</code>); the example above omits it, so it does <strong>not</strong> verify migrations. The template has no <code>MigrationConfig</code> on this branch, so add one before relying on that check. Use <code>unmanaged_tables=[...]</code> for tables your models do not own.</p>
+<h3 id="run-it-on-every-deploy">Run it on every deploy<a class="headerlink" href="#run-it-on-every-deploy" title="Permanent link">&para;</a></h3>
+<p>Run it after <code>prestart.sh</code> (which waits for the database, migrates and creates first data) and before the new version takes traffic, with the production profile:</p>
+<div class="admonition note">
+<p class="admonition-title"><code>prestart.sh</code> on this branch</p>
+<p><code>prestart.sh</code> runs <code>python ./app/initial_data.py</code>, which uses relative imports and fails when run by path. Run it as <code>python -m app.initial_data</code> (or use the version of <code>prestart.sh</code> that does) before the readiness step; otherwise the step never starts.</p>
+</div>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>msflib.core.readiness<span class="w"> </span>--suite<span class="w"> </span>app.readiness:suite<span class="w"> </span>--profile<span class="w"> </span>prod
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Exit code</th>
+<th>Meaning</th>
+<th>Deploy step</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>ready</td>
+<td>continue</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td>ready, with warnings</td>
+<td>continue, and read the warnings</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>not ready</td>
+<td>stop and fix; the report lists root causes first, then the steps in order</td>
+</tr>
+</tbody>
+</table>
+<p>Guidelines:</p>
+<ul>
+<li><strong>Run it where the app runs.</strong> Use the same image, environment variables and network as the web process (for example <code>docker run --rm --env-file ... &lt;image&gt; python -m msflib.core.readiness ...</code>). A check run from a laptop proves nothing about the server's Redis or database.</li>
+<li><strong>Use <code>--profile prod</code> in production.</strong> Some checks only matter there: <code>ENVIRONMENT</code>, an explicit <code>SECRET_KEY</code>, and SQLite being unacceptable.</li>
+<li><strong>Treat <code>1</code> as a failed deploy and <code>10</code> as a decision.</strong> Do not turn warnings into a pass by ignoring the exit code; a skipped check (<code>--offline</code>, a missing engine) is itself reported as a warning so a partial run is never a plain <code>READY</code>.</li>
+<li><strong>Keep a time limit.</strong> Every check has its own timeout. <code>--timeout SECONDS</code> lowers it for the whole run (it never raises one), which keeps a pipeline step from waiting on a hung dependency.</li>
+<li><strong>Use <code>--json</code> in automation.</strong> It prints one versioned document (<code>verdict</code>, <code>exit_code</code>, <code>findings[]</code>, <code>plan[]</code>) to archive with the deploy.</li>
+<li><strong>Use <code>--offline</code> for pipelines without access to paid providers.</strong> It skips the checks that call an external service.</li>
+<li><strong>On macOS, add <code>--isolation process</code></strong> to get the same containment as on Linux (a timed-out check is killed). The default there is a thread.</li>
+<li><strong>Read the output as data.</strong> Provider keys and URL passwords are masked in everything it prints, but do not paste a report into a public channel without looking at it first.</li>
+</ul>
+<h3 id="fixing-with-fix">Fixing with <code>--fix</code><a class="headerlink" href="#fixing-with-fix" title="Permanent link">&para;</a></h3>
+<p><code>--fix</code> shows what each safe remedy will change, asks, applies it and re-checks. <code>--yes</code> skips the question but not the preview, and <code>--dry-run</code> only shows the plan. It only applies remedies that are idempotent and never delete anything: <code>core.migrate</code> is offered only when the pending migrations are recognisably additive, so a migration that drops or rewrites data is left to you. Run it by hand, not as an unattended pipeline step, and review the plan first. <code>--fix --json</code> needs <code>--yes</code> or <code>--dry-run</code>, because nothing can ask.</p>
+<p>The template's <code>.env-test</code> sets <code>INITIAL_DATA_RESET_DB=True</code>; that variable is separate from readiness, but it is the reason to check your production environment first (see <a href="#docker">Docker</a>).</p>
+<p>The knowledge module's extension provisioning needs a PostgreSQL superuser connection in <code>READINESS_PG_SUPERUSER_DSN</code>; without it the check prints the equivalent <code>psql</code> commands for you to run.</p>
+<h3 id="add-your-own-checks">Add your own checks<a class="headerlink" href="#add-your-own-checks" title="Permanent link">&para;</a></h3>
+<p>Application checks live in <code>app/readiness.py</code> next to the suite: create a <code>Registry("app")</code>, add checks with <code>@registry.check(...)</code>, and pass it as <code>extra=[registry]</code> to <code>Suite.from_settings</code>. A check must be read-only, declare what it needs with <code>requires=</code>, and return an <code>Outcome</code> with the steps that fix a failure. The rules, helpers and a worked example are in <a href="https://msflib.github.io/docsite/fastapi/integration/readiness/#write-a-check">Write a check</a>.</p>
 <h2 id="worker">Worker<a class="headerlink" href="#worker" title="Permanent link">&para;</a></h2>
 <p><code>app/worker.py</code> defines a Celery app named <code>app.worker</code> with the default queue <code>main-queue</code> and one example task. <code>worker-start.sh</code> waits for the database and starts a worker on that queue. Without <code>REDIS_HOST</code> the broker is <code>memory://</code>, which only works inside one process, so a separate worker needs Redis. For how MSFLib runs long jobs and which pieces use the worker, see <a href="https://msflib.github.io/docsite/fastapi/integration/long-running-jobs-ingestion/">Long-running jobs and ingestion</a>.</p>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
@@ -707,10 +896,10 @@ mkdocs<span class="w"> </span>serve
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
