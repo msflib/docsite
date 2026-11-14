@@ -3270,10 +3270,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" class="md-nav__link">
+  <a href="#scp-5-scope-placement-and-reach-tiers-and-facets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SCP-5 · Scope is a position; reach, tier and owner name rows
+        SCP-5 · Scope, placement and reach; tiers and facets
       
     </span>
   </a>
@@ -3973,10 +3973,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" class="md-nav__link">
+  <a href="#scp-5-scope-placement-and-reach-tiers-and-facets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SCP-5 · Scope is a position; reach, tier and owner name rows
+        SCP-5 · Scope, placement and reach; tiers and facets
       
     </span>
   </a>
@@ -4137,8 +4137,8 @@ order: API-7.</p>
 names (<code>"&lt;module&gt;.&lt;operation&gt;"</code>). Build the typed scope from the <code>ScopeEnvelope</code>
 with <code>ScopeFactory.build(envelope, ScopeType, operation=...)</code>, once, at the
 request boundary, and pass it unchanged to every call below. The one derived
-position is a guard's: a check below the workspace tier runs at the tenant's
-position (<code>msflib.guard.locate(tier)</code>, planned: SCP-6). Request dependencies
+scope is a guard's: a check below the workspace tier runs at the tenant's
+scope (<code>msflib.guard.build_check_scope(envelope, tier=)</code>, planned: SCP-6). Request dependencies
 come from <code>get_scope_dependencies</code>; <code>get_scope_ids</code> is deprecated, and new code
 doesn't call it. <code>TenantScope</code> (<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a
 module needing more dimensions subclasses it and does not redeclare the
@@ -4157,12 +4157,24 @@ every profile and every <code>DimensionRegistry</code>, which puts <code>is_vali
 id dimension's <code>validators</code>; a custom validator only adds checks. A module does not repeat that check.
 Reference: <code>knowledge/planner/scope_rewriter.py</code> with <code>contracts.KnowledgeScope</code>,
 and <code>ai_core/services/scope_metadata.py</code>.</p>
-<h3 id="scp-5-scope-is-a-position-reach-tier-and-owner-name-rows">SCP-5 · Scope is a position; reach, tier and owner name rows<a class="headerlink" href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" title="Permanent link">&para;</a></h3>
+<h3 id="scp-5-scope-placement-and-reach-tiers-and-facets">SCP-5 · Scope, placement and reach; tiers and facets<a class="headerlink" href="#scp-5-scope-placement-and-reach-tiers-and-facets" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Target design (msflib/fastapi#403)</p>
+<p>The vocabulary and naming rules apply now. These parts are planned, not yet in
+code: the shared per-facet filter helper, module <code>*Placement</code> types, and
+reach filtering in search. The existing filters were written before this rule and
+differ from one another: knowledge <code>scoped_statement</code>, documents
+<code>list_for_scope</code>, and ai_core retrieval metadata. #403 brings them in line.
+Also planned: the <code>ScopeEnvelope</code> holding the typed scope as <code>envelope.scope</code>,
+the <code>get_*_envelope</code> dependency names and the <code>DimensionCompiler</code> (#411, ADR
+0009 A7), and the placement reader that replaces <code>RowScope</code> (#403).</p>
+</div>
 <p>Each word has one meaning:</p>
 <table>
 <thead>
 <tr>
 <th>Word</th>
+<th>Belongs to</th>
 <th>Meaning</th>
 <th>Examples</th>
 </tr>
@@ -4170,72 +4182,244 @@ and <code>ai_core/services/scope_metadata.py</code>.</p>
 <tbody>
 <tr>
 <td><code>*Scope</code></td>
-<td>Position: where the request runs now. Server-decided, one value per request, the typed form of the <code>ScopeEnvelope</code>. Filters use it.</td>
+<td>a request</td>
+<td>Where the request is now. Server-decided, one value per request, held by the request's <code>ScopeEnvelope</code> as <code>envelope.scope</code>.</td>
 <td><code>TenantScope</code>, <code>ConversationScope</code></td>
 </tr>
 <tr>
+<td><code>*Placement</code></td>
+<td>a resource</td>
+<td>Where the resource lives. Set on write; changed only by promotion or a move.</td>
+<td><code>KnowledgePlacement</code> (planned)</td>
+</tr>
+<tr>
 <td><code>*Reach</code></td>
-<td>Where a row or grant applies, or where something may act. Access is the request's scope falling inside a reach; the match stays in the action method.</td>
-<td><code>RoleAssignmentReach</code>, <code>AIResourceReach</code></td>
+<td>a grant</td>
+<td>Where the grant lets its holder act. A caller's reach is the union of the reach of their grants.</td>
+<td><code>RoleAssignmentReach</code>, <code>AIResourceReach</code>, a <code>ResourceAccess</code> row</td>
 </tr>
 <tr>
 <td><code>*Tier</code></td>
-<td>The kind of owner or reach (platform, tenant, workspace, user).</td>
-<td><code>RoleTier</code>, <code>ProviderTier</code></td>
+<td>the tenancy chain</td>
+<td>A level of platform → tenant → workspace.</td>
+<td><code>RoleTier</code></td>
 </tr>
 <tr>
 <td><code>*Owner</code></td>
+<td>a row</td>
 <td>Authorship only: who defined the row, not where it applies.</td>
 <td><code>RoleOwner</code></td>
 </tr>
 </tbody>
 </table>
+<p>To tell a resource from a grant: if you <strong>use</strong> it (a file, document, message,
+knowledge row, checkpoint), it is a resource and has a placement. If it <strong>tells
+you what you may use</strong> (a membership, share, role assignment, provider profile,
+config entry), it is a grant and has a reach. Sharing a file creates a grant
+with a reach; the file itself keeps its placement.</p>
+<p>A grant has a <strong>holder</strong>, a <strong>reach</strong> (where), a <strong>level</strong> (what) and a
+<strong>lifetime</strong> (expiry and revocation). Only live grants count towards reach. For
+stored grants on resources, authz owns all four:
+- holder: <code>PrincipalKind</code> (user, group; share link planned in #367). A share
+  link is held by whoever presents its token, so the caller is anonymous and
+  has no <code>account_id</code>.
+- reach and level: a <code>ResourceAccess</code> row with an <code>AccessLevel</code>.
+- lifetime: <code>AccessService.revoke</code>, and <code>LinkService</code> for links (planned in
+  #367).</p>
+<p>Each comes from one source, and only that one:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Created from</th>
+<th>Never from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a <code>ScopeEnvelope</code> and its scope</td>
+<td>a request, at its boundary</td>
+<td>a row or a job</td>
+</tr>
+<tr>
+<td>a placement</td>
+<td>a resource row (<code>TenantPlacement.of(row)</code>), or the scope a new row is written in</td>
+<td>a grant</td>
+</tr>
+<tr>
+<td>a reach</td>
+<td>a grant row</td>
+<td>a resource row</td>
+</tr>
+</tbody>
+</table>
+<p>A worker or an event handler has no request, so it has no envelope: it reads the
+placement of the row it acts for. <code>RowScope</code> and the knowledge write path
+predate this rule and build an envelope from a row; #403 replaces them.</p>
+<p>Don't add core types for stored grants, or module types that duplicate
+authz's. A module may still define its own <code>*Reach</code> for reach it derives
+itself, such as <code>KnowledgeReach</code> from memberships (planned in #403) or
+<code>AIResourceReach</code> for provider profiles.</p>
 <ul>
 <li>Name a tier enum, column or parameter <code>*Tier</code> or <code>tier</code>, never <code>*Scope</code> or
-  <code>scope_type</code>. Parameters follow the type: <code>reach=RoleAssignmentReach()</code>, not
-  <code>scope=</code>.</li>
+  <code>scope_type</code>. Parameters follow the type: <code>reach=RoleAssignmentReach()</code>,
+  <code>placement=...</code>, not <code>scope=</code>.</li>
+<li><code>scope</code> names only the typed scope, which is <code>envelope.scope</code>, and a
+  <code>ScopeEnvelope</code> is named <code>envelope</code>, in variables, parameters and
+  dependencies, whether or not the code holds both. A dependency or builder is
+  named for what it returns: <code>get_scope</code> and <code>build_scope(envelope)</code> return a
+  typed scope; <code>get_account_envelope</code> and <code>build_context_envelope</code> return an
+  envelope. Until #411 lands those two are still <code>get_account_scope</code> and
+  <code>build_context_scope</code>; don't copy those names. Don't use another word for
+  either, such as <code>position</code>.</li>
+<li><code>ConfigTier</code> (workspace_config) and <code>ProviderTier</code> (ai_core) also have a
+  <code>user</code> level. That level is the account facet, not a tier: the tiers in those
+  enums follow this rule, and #403 separates the account facet from them.</li>
 <li><code>settings.scope("AI_CORE")</code> is a settings namespace, and the <code>scope_type=</code>
-  parameter of <code>ProfileRegistry.register</code> takes a scope dataclass; neither is a
+  parameter of <code>ProfileRegistry.register</code> takes a scope dataclass. Neither is a
   tier.</li>
+</ul>
+<p><strong>Tiers and facets.</strong> A scope dimension is either a tier or a facet.</p>
+<ul>
+<li><strong>Tier dimensions</strong> (<code>tenant_id</code>, <code>workspace_id</code>) form the only hierarchy.
+  Roles and tiered grants apply downward along it: a tenant admin acts in every
+  workspace of the tenant, and a platform provider profile applies to every
+  tenant, with resolution falling back upward. In a filter, a tier dimension is
+  an exact partition, and <code>None</code> is a bucket (SCP-2).</li>
+<li><strong>Facet dimensions</strong> are every other dimension: <code>project_id</code>,
+  <code>conversation_id</code>, <code>sub_thread_id</code>, <code>drivelink_id</code>, and <code>account_id</code> as
+  ownership. A facet is an independent filter, not a level below the workspace.
+  Account is a facet, not a tier.</li>
+<li>A facet may have a parent (<code>sub_thread</code> → <code>conversation</code>). The module's scope
+  builder enforces it, and bindings close upward:<ul>
+<li>Binding a child binds its parents, using the child's own server-side row.
+  A request that names a mismatched parent is rejected (SCP-3).</li>
+<li>A placement stores its parents' ids as well.</li>
+<li>Promotion clears a facet together with its descendants.</li>
+</ul>
+</li>
+<li>A resource tree (drivelink folders) is neither a tier nor a facet. A grant on
+  a node also applies to that node's descendants. A <code>none</code> grant excludes a
+  subtree from a wider grant. Authz resolves the grants nearest-ancestor-wins,
+  so the nearest grant to a resource decides, including a <code>none</code>. Resolve tree
+  reach through authz <code>ResourceSharing</code> (<code>filter_readable</code>, <code>resolve_levels</code>,
+  <code>list_shared</code>, and <code>filter_readable_for_link</code> for an anonymous link caller,
+  planned in #367); don't reimplement it.</li>
+</ul>
+<p><strong>Access rule.</strong> A resource is visible when its tier partition equals the
+scope's and every facet chain passes. A chain (<code>sub_thread</code> → <code>conversation</code> →
+<code>project</code>) is checked once, at the deepest facet the resource is placed on; its
+parents aren't checked again, because reach to a child covers the rows its
+parents hold for it. A chain where the resource is placed on no facet passes.
+The checked facet passes when:</p>
+<table>
+<thead>
+<tr>
+<th>Scope on the checked facet</th>
+<th>Resource placement on it</th>
+<th>Passes when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bound to <code>x</code></td>
+<td><code>x</code></td>
+<td><code>x</code> is in reach (checked at the boundary, API-7)</td>
+</tr>
+<tr>
+<td>unbound</td>
+<td>any <code>y</code></td>
+<td><code>y</code> is in reach</td>
+</tr>
+</tbody>
+</table>
+<p><code>NULL</code> never reaches this table. A resource with <code>NULL</code> on a facet is checked at
+the nearest parent it is placed on, or passes the chain when it has none. So a
+workspace-general resource stays visible from a conversation scope and from a
+workspace search, and a resource at <code>(project P, conversation NULL)</code> is visible
+in any conversation of P.</p>
+<p>Independent chains combine with AND by default; a module may declare OR between
+its own chains, never within one. Opening a conversation binds it, so sibling
+conversations stay out. Searching from a workspace leaves it unbound, so every
+reachable conversation is included and no other.</p>
+<ul>
+<li>Search, whether SQL, vector or graph, applies reach inside the store query and
+  never filters afterwards. A graph edge is returned only when both of its
+  endpoints pass.</li>
+<li>Reach comes from two kinds of grant. Derived grants are memberships, read
+  through injected callables. A bound facet needs only a yes or no for its id
+  (<code>MembershipCheck</code>, SCP-3). An unbound facet needs the ids the caller belongs
+  to, from an injected membership listing that the owning module supplies
+  (planned in #403), so the query filters by a known set and never by
+  everything. Stored grants are authz
+  rows: shares and share links through <code>ResourceSharing</code>, role assignments
+  through <code>RoleService</code>. Both feed the same reach. A revoked grant must stop
+  matching immediately, so reach from stored grants isn't cached across
+  requests.</li>
+<li>The match belongs to the action method (SCP-4). The scope, placement and
+  reach types carry values, not rules. Action methods use one shared helper
+  for the per-facet predicate, so modules don't diverge.</li>
+<li>Before adding a type or Protocol for scope, placement or reach, check
+  <code>msflib.scope</code>, <code>msflib.guard</code> and authz. A new one is justified only if all
+  three hold:<ul>
+<li>two or more modules need it;</li>
+<li>mixing it up is a correctness or security bug;</li>
+<li>nothing already owns it.</li>
+</ul>
+</li>
 </ul>
 <p>Principles for typed scopes:</p>
 <ol>
 <li>A scope encapsulates the dimensions that decide whether a principal may act, so
    signatures don't grow a parameter per dimension.</li>
-<li>A typed scope exists so a <code>ScopeEnvelope</code> can filter without converting and
-   validating at every layer. Build one only where an int-typed column is
-   filtered or where a position is handed to an authorization protocol
-   (the planned <code>RoleSource</code>, <code>PermissionResolver</code> and a guard's <code>locate</code>:
-   SCP-6). Code that only produces strings (checkpoint keys, memory namespaces,
-   retrieval metadata) keeps the envelope; never round-trip envelope to typed
-   and back.</li>
-<li>Don't duplicate typed scopes: a different name with the same fields is a
-   duplicate. The one exception is deliberately decoupled modules (a soft
-   dependency such as <code>ai_api</code> and <code>conversation</code>), and the copy carries a comment
-   saying so.</li>
-<li>Orthogonal concerns get orthogonal types: where (<code>TenantScope</code> and subclasses),
-   who (<code>PrincipalContext</code>, or a single <code>account_id</code> scalar; one dimension stays a
-   scalar), and policy inputs (envelope attributes such as channel). Never put a
-   principal, role or channel inside a typed scope. The <code>ScopeEnvelope</code> does
-   carry the caller as <code>principal</code>, with the roles a <code>RoleSource</code> returns for the
-   request's position. A typed scope has a field if and only if code filters on
-   it.</li>
-<li>A global (platform-level) profile or row applies everywhere and needs no request
+<li>
+<p>A typed scope exists so that code can filter without converting and
+   validating values at every layer. The <code>ScopeEnvelope</code> holds it as
+   <code>envelope.scope</code> and is built once, at the request boundary, from typed
+   values (#411). Use the scope:</p>
+<ul>
+<li>where an int-typed column is filtered;</li>
+<li>where it is handed to an authorization protocol (<code>RoleSource</code>,
+  <code>PermissionResolver</code>, a guard's <code>build_check_scope</code>: SCP-6).</li>
+</ul>
+<p>Strings (checkpoint keys, memory namespaces, retrieval metadata, row keys)
+are encoded from the typed values by one compiler, whether they describe a
+scope, a placement or a reach (<code>DimensionCompiler</code>, planned in #411). Never
+convert typed values to strings and back. Until #411 lands, code that only
+produces strings takes the envelope.
+3. Don't duplicate typed scopes: a different name with the same fields is a
+   duplicate. One exception is deliberately decoupled modules (a soft dependency
+   such as <code>ai_api</code> and <code>conversation</code>); the copy carries a comment saying so.
+   A placement or reach with the same fields as a scope is not a duplicate,
+   because it is a different concept (SCP-1).
+4. Orthogonal concerns get orthogonal types:
+- where: <code>TenantScope</code> and its subclasses;
+- who: <code>PrincipalContext</code>, or a single <code>account_id</code> scalar (one dimension
+  stays a scalar);
+- policy inputs: envelope attributes such as channel.</p>
+<p>Never put a principal, role or channel inside a typed scope. The
+<code>ScopeEnvelope</code> does carry the caller as <code>principal</code>, with the roles a
+<code>RoleSource</code> returns for the request's scope; a check asks the principal
+who is calling. A typed scope has a field if and only if code filters or
+keys on it: <code>account_id</code> is a scope dimension where rows or keys are
+separated per account (<code>AccountScope</code>, #411), not as a way to say who calls.
+5. A global (platform-level) profile or row applies everywhere and needs no request
    scope; creating one takes a reach, not a scope. A request scope always has a
-   tenant and fails closed.</li>
+   tenant and fails closed.</p>
+</li>
 </ol>
 <h3 id="scp-6-authorization-is-a-scope-decision">SCP-6 · Authorization is a scope decision<a class="headerlink" href="#scp-6-authorization-is-a-scope-decision" title="Permanent link">&para;</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Target design (msflib/fastapi#391, amendment A5)</p>
 <p>This rule describes where authorization is going. Not in code yet:
-<code>build_guard</code>, <code>locate</code>, <code>build_role_source</code>, <code>RoleSource</code> and
+<code>build_guard</code>, <code>build_check_scope</code>, <code>build_role_source</code>, <code>RoleSource</code> and
 <code>PermissionResolver</code> (planned, so don't import them), and
 <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through the evaluator (only
 <code>ai_api</code> evaluates today). Write new authorization code to this shape.
 Remove this note when the guard PR lands.</p>
 </div>
 <ul>
-<li>A role is <code>RoleKey(tier, key)</code> (<code>msflib.guard.roles</code>): the account role <code>root</code>
+<li>A role is <code>RoleKey(tier, key)</code> (<code>msflib.scope.roles</code>): the account role <code>root</code>
   is <code>platform:root</code>, any other account role is <code>tenant:&lt;role&gt;</code>, and a workspace
   user type is <code>workspace:&lt;type&gt;</code>. A role counts at its own tier and every tier
   below it.</li>
