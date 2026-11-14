@@ -4149,6 +4149,12 @@ different required dimensions. Filter on the
 typed object, never on raw <code>ScopeEnvelope.get_dim(...)</code> calls, and don't parse
 dimension strings by hand. The type shares fields, not match semantics; an
 equality or hierarchical match belongs to the action method.
+The built-in id dimensions (<code>tenant_id</code>, <code>workspace_id</code>, <code>account_id</code>,
+<code>private_to_account_id</code>) accept only a row id, a decimal integer from 1 to
+<code>INTEGER_MAX</code> with no leading zeros, so the compiler rejects <code>"0"</code>, <code>"01"</code>, <code>"abc"</code>
+or an out-of-range id for
+every profile and every <code>DimensionRegistry</code>, which puts <code>is_valid_row_id</code> first in each
+id dimension's <code>validators</code>; a custom validator only adds checks. A module does not repeat that check.
 Reference: <code>knowledge/planner/scope_rewriter.py</code> with <code>contracts.KnowledgeScope</code>,
 and <code>ai_core/services/scope_metadata.py</code>.</p>
 <h3 id="scp-5-scope-is-a-position-reach-tier-and-owner-name-rows">SCP-5 · Scope is a position; reach, tier and owner name rows<a class="headerlink" href="#scp-5-scope-is-a-position-reach-tier-and-owner-name-rows" title="Permanent link">&para;</a></h3>
