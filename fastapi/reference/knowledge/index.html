@@ -9892,10 +9892,10 @@ composes through <code>compose_tools()</code> into <code>build_langchain_agent()
 <p>Scope is never accepted at construction and never model-supplied: each tool
 reads the current invocation's scope from the live LangGraph runtime context
 (<code>langgraph.runtime.get_runtime()</code>), set per-request via
-<code>agent.invoke(..., context=SomeContext(scope=...))</code>. This is what actually
+<code>agent.invoke(..., context=SomeContext(envelope=...))</code>. This is what actually
 lets a single registry, built once like any other <code>ToolRegistry</code>, serve
 every request with the correct caller's scope — no per-request rebuilding,
-no per-scope cache. If the runtime context has no <code>scope</code>, tools refuse to
+no per-scope cache. If the runtime context has no <code>envelope</code>, tools refuse to
 run rather than query unscoped. Tool name, description, and schema derive
 from each query dataclass.</p>
 
@@ -10799,7 +10799,7 @@ ai_core IngestionPipeline's injected Embedder/Indexer).</p>
         <p>Typed compiled-scope contract.</p>
 <p><code>KnowledgeScope</code> extends core's <code>TenantScope</code> with the knowledge selectors.
 It is built exactly once by the planner's scope rewriter through core's
-<code>ScopeFactory</code> (after profile validation), then passed through planner →
+<code>ScopeEnvelope.extend</code> (with profile validation), then passed through planner →
 projections → actions with certain, typed attribute access — no string-keyed
 mappings mid-path.</p>
 
@@ -11232,7 +11232,7 @@ remains for callers with no request/job context to route through.</p>
 
 
 <h4 id="msflib.knowledge.integrations.ai_core.resolve_registry_extractor" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_registry_extractor</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge.extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Extractor</span></code>
+            <code class="highlight language-python"><span class="n">resolve_registry_extractor</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge.extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Extractor</span></code>
 
 <a href="#msflib.knowledge.integrations.ai_core.resolve_registry_extractor" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -11248,10 +11248,8 @@ candidates (see <code>ProviderRegistryService.build_llm_with_failover</code>). W
 no profile is registered for the scope, resolution falls back to the same
 static config <code>resolve_default_extractor</code> uses, so this is a strict
 superset — safe to use wherever a DB <code>session</code> is available.</p>
-<p><code>scope</code> is taken as-is (built once by the caller, e.g. the worker's
-<code>_build_scope</code>) and passed straight through to the registry rather than
-decomposed and rebuilt here — scope is constructed in exactly one place
-per call chain so it stays easy to track/instrument end to end.</p>
+<p><code>envelope</code> is the caller's (the worker's <code>_build_envelope</code>, say) and goes to the
+registry unchanged, so it is built in one place per call chain.</p>
 
 
     </div>
@@ -11401,7 +11399,7 @@ their parser directly. Imports nothing from <code>msflib.documents</code>.</p>
 
 
 <h4 id="msflib.knowledge.integrations.extraction_common.default_llm_parser" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">default_llm_parser</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ontology</span><span class="p">:</span> <span class="n">OntologyRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMExtractionParser</span></code>
+            <code class="highlight language-python"><span class="n">default_llm_parser</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ontology</span><span class="p">:</span> <span class="n">OntologyRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMExtractionParser</span></code>
 
 <a href="#msflib.knowledge.integrations.extraction_common.default_llm_parser" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -13456,7 +13454,7 @@ itself.</p>
 
 
 <h3 id="msflib.knowledge.planner.compile_query_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">compile_query_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
+            <code class="highlight language-python"><span class="n">compile_query_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
 
 <a href="#msflib.knowledge.planner.compile_query_scope" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -13474,7 +13472,7 @@ itself.</p>
 
 
 <h3 id="msflib.knowledge.planner.compile_write_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">compile_write_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
+            <code class="highlight language-python"><span class="n">compile_write_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
 
 <a href="#msflib.knowledge.planner.compile_write_scope" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -13705,7 +13703,7 @@ filter, pgvector metadata filter); none implements authorization itself.</p>
 
 
 <h4 id="msflib.knowledge.planner.scope_rewriter.compile_query_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">compile_query_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
+            <code class="highlight language-python"><span class="n">compile_query_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
 
 <a href="#msflib.knowledge.planner.scope_rewriter.compile_query_scope" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -13723,7 +13721,7 @@ filter, pgvector metadata filter); none implements authorization itself.</p>
 
 
 <h4 id="msflib.knowledge.planner.scope_rewriter.compile_write_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">compile_write_scope</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
+            <code class="highlight language-python"><span class="n">compile_write_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KnowledgeScope</span></code>
 
 <a href="#msflib.knowledge.planner.scope_rewriter.compile_write_scope" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -17211,7 +17209,7 @@ must raise the version; after <code>remove</code> the record must load as <code>
 
 
 <h4 id="msflib.knowledge.services.KnowledgeEngine.ingest" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ingest</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="n">KnowledgeFragment</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">supersede_source</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestResult</span></code>
+            <code class="highlight language-python"><span class="n">ingest</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="n">KnowledgeFragment</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">supersede_source</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestResult</span></code>
 
 <a href="#msflib.knowledge.services.KnowledgeEngine.ingest" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -17240,7 +17238,7 @@ fragment's own facts are persisted.</p>
 
 
 <h4 id="msflib.knowledge.services.KnowledgeEngine.archive_source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">archive_source</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">include_subscopes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveResult</span></code>
+            <code class="highlight language-python"><span class="n">archive_source</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">include_subscopes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveResult</span></code>
 
 <a href="#msflib.knowledge.services.KnowledgeEngine.archive_source" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -17455,7 +17453,7 @@ fragment-level eventbus events.</p>
 
 
 <h5 id="msflib.knowledge.services.engine.KnowledgeEngine.ingest" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ingest</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="n">KnowledgeFragment</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">supersede_source</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestResult</span></code>
+            <code class="highlight language-python"><span class="n">ingest</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="n">KnowledgeFragment</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">supersede_source</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IngestResult</span></code>
 
 <a href="#msflib.knowledge.services.engine.KnowledgeEngine.ingest" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -17484,7 +17482,7 @@ fragment's own facts are persisted.</p>
 
 
 <h5 id="msflib.knowledge.services.engine.KnowledgeEngine.archive_source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">archive_source</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">include_subscopes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveResult</span></code>
+            <code class="highlight language-python"><span class="n">archive_source</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">include_subscopes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveResult</span></code>
 
 <a href="#msflib.knowledge.services.engine.KnowledgeEngine.archive_source" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -17570,7 +17568,7 @@ future re-ranking or multi-hop variant) without touching the engine.</p>
 
 
 <h4 id="msflib.knowledge.services.hybrid_retrieval.hybrid_retrieve" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">hybrid_retrieve</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">KnowledgeEngine</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">seed_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">expand_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">relation_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'both'</span><span class="p">,</span> <span class="n">entity_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_drafts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryResult</span></code>
+            <code class="highlight language-python"><span class="n">hybrid_retrieve</span><span class="p">(</span><span class="n">engine</span><span class="p">:</span> <span class="n">KnowledgeEngine</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">seed_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">expand_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">relation_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'both'</span><span class="p">,</span> <span class="n">entity_types</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_drafts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryResult</span></code>
 
 <a href="#msflib.knowledge.services.hybrid_retrieval.hybrid_retrieve" class="headerlink" title="Permanent link">&para;</a></h4>
 

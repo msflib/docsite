@@ -9582,7 +9582,7 @@ between.</p>
 ScopeEnvelope is left to :func:<code>msflib.scope.get_scope_dependencies</code> —
 scope creation is included here, since every vector store service
 dependency needs one to resolve tiered settings anyway. Endpoints pull
-<code>get_scope</code>/<code>get_manage_scope</code> directly rather than rebuilding a
+<code>get_envelope</code>/<code>get_manage_envelope</code> directly rather than rebuilding a
 ScopeEnvelope from <code>workspace</code>/<code>account</code> themselves.</p>
 
 
@@ -9602,10 +9602,10 @@ ScopeEnvelope from <code>workspace</code>/<code>account</code> themselves.</p>
             <td>
               <div class="doc-md-description">
                 <ul>
-<li><code>get_scope</code> — ScopeEnvelope for the caller's tenant/workspace/
+<li><code>get_envelope</code> — ScopeEnvelope for the caller's tenant/workspace/
   account tiers: for member-facing reads and writes where
   user-scoped rows participate.</li>
-<li><code>get_manage_scope</code> — tenant/workspace only, no account tier: for
+<li><code>get_manage_envelope</code> — tenant/workspace only, no account tier: for
   the /manage listing, which only surfaces workspace-scoped rows (an
   account_id there would fetch user-scoped rows only to discard
   them).</li>
@@ -11106,14 +11106,14 @@ per-workspace or per-user <code>TASK_PROFILES</code> bindings take effect.</p>
 
 
 <h4 id="msflib.ai_core.services.ProviderRegistryService.create_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create_profile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AIProviderProfileCreate</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIProviderProfile</span></code>
+            <code class="highlight language-python"><span class="n">create_profile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AIProviderProfileCreate</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIProviderProfile</span></code>
 
 <a href="#msflib.ai_core.services.ProviderRegistryService.create_profile" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Create a profile; <code>scope</code> is the caller's envelope; a platform one needs none.</p>
+        <p>Create a profile; <code>envelope</code> is the caller's, and a platform profile needs none.</p>
 
 
     </div>
@@ -11240,7 +11240,7 @@ present.</p>
 
 
 <h4 id="msflib.ai_core.services.checkpoint_policy.CheckpointScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">CheckpointScope</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">CheckpointScope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -11254,7 +11254,7 @@ present.</p>
 
 
         <p>Thin scope wrapper that validates and produces LangGraph checkpoint keys.</p>
-<p>All key serialization is delegated to :class:<code>~msflib.scope.ScopeCompiler</code>.
+<p>All key serialization is delegated to :class:<code>~msflib.scope.DimensionCompiler</code>.
 The envelope must carry at minimum <code>tenant_id</code>. <code>sub_thread_id</code> is optional
 and scopes the checkpoint key to a sub-thread within a conversation.</p>
 
@@ -11283,7 +11283,7 @@ and scopes the checkpoint key to a sub-thread within a conversation.</p>
 
 
 <h5 id="msflib.ai_core.services.checkpoint_policy.CheckpointScope.from_envelope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">from_envelope</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckpointScope</span></code>
+            <code class="highlight language-python"><span class="n">from_envelope</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckpointScope</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -11294,7 +11294,7 @@ and scopes the checkpoint key to a sub-thread within a conversation.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Validate <em>scope</em> against the checkpoint profile and return a new instance.</p>
+        <p>Validate <em>envelope</em> against the checkpoint profile and return a new instance.</p>
 
 
     </div>
@@ -12654,7 +12654,7 @@ future caller) share one implementation instead of drifting.</p>
 
 
 <h4 id="msflib.ai_core.services.memory_store_policy.MemoryStoreScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">MemoryStoreScope</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">MemoryStoreScope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -12697,7 +12697,7 @@ and is supplied at namespace-construction time via :meth:<code>scoped_namespace<
 
 
 <h5 id="msflib.ai_core.services.memory_store_policy.MemoryStoreScope.from_envelope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">from_envelope</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MemoryStoreScope</span></code>
+            <code class="highlight language-python"><span class="n">from_envelope</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MemoryStoreScope</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -12708,7 +12708,7 @@ and is supplied at namespace-construction time via :meth:<code>scoped_namespace<
 
     <div class="doc doc-contents ">
 
-        <p>Validate <em>scope</em> against the memory profile and return a new instance.</p>
+        <p>Validate <em>envelope</em> against the memory profile and return a new instance.</p>
 
 
     </div>
@@ -13327,14 +13327,14 @@ per-workspace or per-user <code>TASK_PROFILES</code> bindings take effect.</p>
 
 
 <h5 id="msflib.ai_core.services.provider_registry.ProviderRegistryService.create_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create_profile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AIProviderProfileCreate</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIProviderProfile</span></code>
+            <code class="highlight language-python"><span class="n">create_profile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">AIProviderProfileCreate</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIProviderProfile</span></code>
 
 <a href="#msflib.ai_core.services.provider_registry.ProviderRegistryService.create_profile" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>Create a profile; <code>scope</code> is the caller's envelope; a platform one needs none.</p>
+        <p>Create a profile; <code>envelope</code> is the caller's, and a platform profile needs none.</p>
 
 
     </div>
@@ -13401,7 +13401,7 @@ per-workspace or per-user <code>TASK_PROFILES</code> bindings take effect.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Build the caller's position from its <code>ScopeEnvelope</code>.</p>
+        <p>The caller's scope: the scope its <code>ScopeEnvelope</code> holds, checked for a tenant.</p>
 <p>The tenant is a resolved real id (a <code>get_current_tenant</code>-backed dependency fills it at
 the endpoint boundary) and is never defaulted here. Raises :exc:<code>ValueError</code> for an
 envelope the <code>aicore.caller</code> profile rejects, such as one without a tenant.</p>
@@ -13422,9 +13422,7 @@ envelope the <code>aicore.caller</code> profile rejects, such as one without a t
 
     <div class="doc doc-contents ">
 
-        <p>The account making the request: the <code>account_id</code> dimension, else the principal.</p>
-<p>ai_api's per-request envelope carries the account on <code>PrincipalContext</code> and not as a
-dimension. It is a scalar next to the position because it is who asks, not where.</p>
+        <p>The account making the request: the envelope's principal, when it has one.</p>
 
 
     </div>
@@ -13486,7 +13484,7 @@ user tier, the account) of the caller.</p>
 <p><code>reach</code> carries only the dimensions relevant to <code>tier</code> (see
 :func:<code>build_reach</code>); they are merged with the two profile-specific
 dimensions (name, tier) that aren't part of the ambient scope.
-Serialization is delegated to :class:<code>~msflib.scope.ScopeCompiler</code> via the
+Serialization is delegated to :class:<code>~msflib.scope.DimensionCompiler</code> via the
 <code>aicore.provider</code> profile. Raises :exc:<code>ValueError</code> (mapped to 422 by the
 router) when a value cannot be serialized, e.g. a name containing the
 <code>/</code> delimiter or equal to the <code>-</code> null sentinel.</p>
@@ -13579,7 +13577,7 @@ value cannot be serialized.</p>
 
 
 <h4 id="msflib.ai_core.services.scope_metadata.compile_retrieval_scope_metadata" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">compile_retrieval_scope_metadata</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">compile_retrieval_scope_metadata</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_core.services.scope_metadata.compile_retrieval_scope_metadata" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -13785,14 +13783,14 @@ separate code path — both go through the same <code>list_tools(context=)</code
 
 
 <h5 id="msflib.ai_core.services.vector_store_registry.VectorStoreRegistryService.create_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create_profile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">VectorStoreProfileCreate</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VectorStoreProfile</span></code>
+            <code class="highlight language-python"><span class="n">create_profile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">VectorStoreProfileCreate</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VectorStoreProfile</span></code>
 
 <a href="#msflib.ai_core.services.vector_store_registry.VectorStoreRegistryService.create_profile" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>Create a profile; <code>scope</code> is the caller's envelope, not needed for a platform one.</p>
+        <p>Create a profile; <code>envelope</code> is the caller's, and a platform profile needs none.</p>
 
 
     </div>
@@ -13803,7 +13801,7 @@ separate code path — both go through the same <code>list_tools(context=)</code
 
 
 <h5 id="msflib.ai_core.services.vector_store_registry.VectorStoreRegistryService.resolve_embeddings" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_embeddings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+            <code class="highlight language-python"><span class="n">resolve_embeddings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
 
 <a href="#msflib.ai_core.services.vector_store_registry.VectorStoreRegistryService.resolve_embeddings" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -14027,10 +14025,10 @@ app has configured (the same one <code>ai_api</code>'s <code>/search</code> endp
 <code>similarity_search_scoped</code>).</p>
 <p>Like <code>msflib.knowledge</code>'s <code>KnowledgeToolRegistry</code> (see that module's
 docstring), this tool never accepts scope/tenant identity at construction:
-each call reads the live invocation's scope from the LangGraph runtime
+each call reads the live invocation's envelope from the LangGraph runtime
 context (<code>langgraph.runtime.get_runtime()</code>), set per-request via
 <code>agent.invoke(..., context=...)</code>, and fails closed if that context or its
-<code>scope</code> is absent.</p>
+<code>envelope</code> is absent.</p>
 <p>The vector store itself is <em>not</em> re-resolved per call by default — it's
 bound once at construction time (see <code>vector_store</code> below), since a single
 static backend is the common case. A caller wanting per-request backend
@@ -14381,7 +14379,7 @@ LangGraph (e.g. ai_api's agent router) can override it per invocation via
 
 
 <h3 id="msflib.ai_core.vector_store.build_retrieval_filters" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_retrieval_filters</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build_retrieval_filters</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_core.vector_store.build_retrieval_filters" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -14423,7 +14421,7 @@ from a scoped <code>VectorStoreProfile</code> instead of static settings.</p>
 
 
 <h3 id="msflib.ai_core.vector_store.similarity_search_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">vector_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">vector_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_core.vector_store.similarity_search_scoped" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -14560,7 +14558,7 @@ from a scoped <code>VectorStoreProfile</code> instead of static settings.</p>
 
 
 <h4 id="msflib.ai_core.vector_store.factory.build_retrieval_filters" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_retrieval_filters</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build_retrieval_filters</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_core.vector_store.factory.build_retrieval_filters" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -14580,7 +14578,7 @@ then merges document/source metadata.</p>
 
 
 <h4 id="msflib.ai_core.vector_store.factory.similarity_search_scoped" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">vector_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">similarity_search_scoped</span><span class="p">(</span><span class="n">vector_store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">document_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_core.vector_store.factory.similarity_search_scoped" class="headerlink" title="Permanent link">&para;</a></h4>
 

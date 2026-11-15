@@ -9833,11 +9833,11 @@ matching <code>workspace_id</code>'s existing (already-int) convention.</p>
     <div class="doc doc-contents ">
 
         <p>Typed compiled-scope contract for the conversation module.</p>
-<p>Mirrors <code>msflib.knowledge.contracts.KnowledgeScope</code>: <code>ScopeCompiler</code>
+<p>Mirrors <code>msflib.knowledge.contracts.KnowledgeScope</code>: <code>DimensionCompiler</code>
 validates a <code>ScopeEnvelope</code> against a profile and projects it to
 string-typed sink formats; <code>ConversationScope</code> extends core's <code>TenantScope</code>
 and is the domain-typed projection consumers of <em>this</em> module use — built once
-from the envelope through <code>ScopeFactory</code> (<code>conversation.scope.build_scope</code>),
+from the envelope with <code>ScopeEnvelope.extend</code> (<code>conversation.scope.build_scope</code>),
 then passed typed through services -&gt; actions with certain, non-defensive
 attribute access.</p>
 
@@ -10466,7 +10466,7 @@ write conversation state under a guessed tenant.</p>
 
 
 <h4 id="msflib.conversation.integrations.ai_bridge.cleanup_ai_core_memories" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">cleanup_ai_core_memories</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">memory_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">cleanup_ai_core_memories</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">memory_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.conversation.integrations.ai_bridge.cleanup_ai_core_memories" class="headerlink" title="Permanent link">&para;</a></h4>
 

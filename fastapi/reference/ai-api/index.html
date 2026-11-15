@@ -2565,6 +2565,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.ai_api.scope.RequestScope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RequestScope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ai_api.scope.build_request_envelope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4086,6 +4097,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.ai_api.scope.RequestScope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RequestScope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ai_api.scope.build_request_envelope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4297,13 +4319,13 @@
 <code>invoke</code>/<code>astream</code> call (see <code>router/agent.py</code>), never checkpointed —
 unlike graph <code>state</code>, <code>context</code> is documented by LangGraph as "static
 context for the graph run" and is never persisted/rehydrated across turns,
-which is exactly the property authorization-boundary data like <code>scope</code>
+which is exactly the property authorization-boundary data like the <code>envelope</code>
 needs: it must come from the live request, never resurface from a stored
 checkpoint.</p>
 <p>Tool registries that need per-request identity (e.g. msflib.knowledge's
 <code>KnowledgeToolRegistry</code>) read it via <code>langgraph.runtime.get_runtime()</code>
 inside their own tool bodies — they don't import this module directly, they
-just expect <code>context.scope</code> to exist by convention, the same way they
+just expect <code>context.envelope</code> to exist by convention, the same way they
 already avoid a hard dependency on ai_core's orchestration layer.</p>
 <p><code>vector_store_resolver</code>, when set, is a zero-arg callable ai_core's
 <code>rag_search</code> tool calls per-invocation instead of the vector store it was
@@ -4470,7 +4492,7 @@ row.</p>
             <td>
               <div class="doc-md-description">
                 <ul>
-<li><code>get_search_scope</code> / <code>get_ask_scope</code> — the caller's
+<li><code>get_search_envelope</code> / <code>get_ask_envelope</code> — the caller's
   ScopeEnvelope for /search and /ask-shaped operations respectively,
   including the <code>aiapi.retrieval.search</code> / <code>aiapi.ask</code> constraint
   evaluation (403 on violation). Each declares its request body model
@@ -4858,12 +4880,67 @@ this router calls -- declared locally so this module never imports
 
 
 
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.ai_api.scope.RequestScope" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">RequestScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.ai_api.scope.RequestScope" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+
+  
+      dataclass
+   (msflib.scope.TenantScope)" href="../core/scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
+
+
+
+        <p>Where an AI request is: its tenant and workspace, and the conversation it selects.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 <div class="doc doc-object doc-function">
 
 
 <h3 id="msflib.ai_api.scope.build_request_envelope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_request_envelope</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
+            <code class="highlight language-python"><span class="n">build_request_envelope</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">RequestScope</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_api.scope.build_request_envelope" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4998,7 +5075,7 @@ goes into PrincipalContext only; the channel is a policy input, so it is an attr
 
 
 <h4 id="msflib.ai_api.services.rag.resolve_scoped_vector_store" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_scoped_vector_store</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">ai_settings</span><span class="p">:</span> <span class="n">AICoreSettings</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopedSearchable</span></code>
+            <code class="highlight language-python"><span class="n">resolve_scoped_vector_store</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">ai_settings</span><span class="p">:</span> <span class="n">AICoreSettings</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopedSearchable</span></code>
 
 <a href="#msflib.ai_api.services.rag.resolve_scoped_vector_store" class="headerlink" title="Permanent link">&para;</a></h4>
 

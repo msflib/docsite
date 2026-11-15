@@ -4225,7 +4225,7 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/ai"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>With a mounted app, <code>GET /api/v1/ai/agent/status</code> reports <code>agent_source: "injected"</code>, and <code>POST /api/v1/ai/agent/ask</code> with <code>{"question": "hi"}</code> returns <code>{"echo": "hi"}</code>. This was run against a SQLite-backed app with a seeded default tenant. To receive the tools and the scope-bearing runtime context, write <code>get_injected_agent=lambda tools: build_my_agent(tools)</code> (one positional parameter) and build the agent with <code>context_schema=AgentRuntimeContext</code> from <code>msflib.ai_api.agent_runtime</code>.</p>
+<p>With a mounted app, <code>GET /api/v1/ai/agent/status</code> reports <code>agent_source: "injected"</code>, and <code>POST /api/v1/ai/agent/ask</code> with <code>{"question": "hi"}</code> returns <code>{"echo": "hi"}</code>. This was run against a SQLite-backed app with a seeded default tenant. To receive the tools and the runtime context that holds the envelope, write <code>get_injected_agent=lambda tools: build_my_agent(tools)</code> (one positional parameter) and build the agent with <code>context_schema=AgentRuntimeContext</code> from <code>msflib.ai_api.agent_runtime</code>.</p>
 <h3 id="giving-the-agent-knowledge-tools-and-a-transcript">Giving the agent knowledge tools and a transcript<a class="headerlink" href="#giving-the-agent-knowledge-tools-and-a-transcript" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.conversation.integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">ai_bridge</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.knowledge.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_knowledge_dependencies</span>
@@ -4295,7 +4295,7 @@
 <td>The search returned nothing in this caller's scope. Check that documents were ingested under the same tenant and workspace.</td>
 </tr>
 <tr>
-<td>Knowledge tools raise "require <code>scope</code> on the agent's runtime context"</td>
+<td>Knowledge tools raise "require <code>envelope</code> on the agent's runtime context"</td>
 <td>A custom injected agent was built without <code>context_schema=AgentRuntimeContext</code>.</td>
 </tr>
 <tr>

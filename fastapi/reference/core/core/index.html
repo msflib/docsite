@@ -4025,6 +4025,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.core.records.scope.RecordScope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecordScope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.records.scope.RowScope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4461,6 +4472,17 @@
     <span class="md-ellipsis">
       
         validate_public_http_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.core.validators.is_valid_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_valid_row_id
       
     </span>
   </a>
@@ -8276,6 +8298,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.core.records.scope.RecordScope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecordScope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.records.scope.RowScope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8712,6 +8745,17 @@
     <span class="md-ellipsis">
       
         validate_public_http_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.core.validators.is_valid_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_valid_row_id
       
     </span>
   </a>
@@ -13841,6 +13885,63 @@ there silently.</p>
 
 
 
+<h5 id="msflib.core.records.scope.RecordScope" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">RecordScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#msflib.core.records.scope.RecordScope" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+
+  
+      dataclass
+   (msflib.scope.TenantScope)" href="../scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
+
+
+
+        <p>The scope an operation on a row runs in, read from the row's placement.</p>
+<p>A row has a placement, not a scope (SCP-5); this is the scope a job acting for
+that row works in: the row's tenant and workspace, and its narrower dimensions.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
 <h5 id="msflib.core.records.scope.RowScope" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">RowScope</span><span class="p">(</span><span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span></code>
 
@@ -15139,6 +15240,27 @@ is the early, one-shot check -- it doesn't itself close the
 DNS-rebinding TOCTOU window described on <code>resolve_public_ips</code>; a
 caller that opens the connection itself should re-validate at connect
 time instead of relying on this alone.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.core.validators.is_valid_row_id" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_valid_row_id</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.core.validators.is_valid_row_id" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether <code>value</code> is an id a database row can have, or <code>None</code>.</p>
+<p>An <code>int</code> from 1 to <code>INTEGER_MAX</code> passes, and so does its decimal string
+written without leading zeros (one row, one spelling). <code>None</code> passes: whether
+a value may be null is the caller's rule, not the id's. <code>bool</code> does not pass.</p>
 
 
     </div>
