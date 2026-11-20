@@ -4144,7 +4144,7 @@ module's own scope with
 it with <code>DimensionCompiler.validate_profile(envelope, operation)</code> where an
 operation requires dimensions, and pass it unchanged to every call below. The one derived
 scope is a guard's: a check below the workspace tier runs at the tenant's
-scope (<code>msflib.guard.build_check_scope(envelope, tier=)</code>, planned: SCP-6). Request dependencies
+scope (<code>msflib.guard.narrow_envelope(envelope, tier=)</code>, SCP-6). Request dependencies
 come from <code>get_scope_dependencies</code>; <code>get_scope_ids</code> is deprecated, and new code
 doesn't call it. <code>TenantScope</code> (<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a
 module needing more dimensions subclasses it and does not redeclare the
@@ -4397,7 +4397,7 @@ reachable conversation is included and no other.</p>
 <ul>
 <li>where an int-typed column is filtered;</li>
 <li>where it is handed to an authorization protocol (<code>RoleSource</code>,
-  <code>PermissionResolver</code>, a guard's <code>build_check_scope</code>: SCP-6).</li>
+  <code>PermissionResolver</code>, a guard's <code>narrow_envelope</code>: SCP-6).</li>
 </ul>
 <p>Strings (checkpoint keys, memory namespaces, retrieval metadata, row keys)
 are encoded from the typed values by one compiler, whether they describe a
@@ -4427,12 +4427,11 @@ separated per account (<code>AccountScope</code>), not as a way to say who calls
 <h3 id="scp-6-authorization-is-a-scope-decision">SCP-6 · Authorization is a scope decision<a class="headerlink" href="#scp-6-authorization-is-a-scope-decision" title="Permanent link">&para;</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Target design (msflib/fastapi#391, amendment A5)</p>
-<p>This rule describes where authorization is going. Not in code yet:
-<code>build_guard</code>, <code>build_check_scope</code>, <code>build_role_source</code>, <code>RoleSource</code> and
-<code>PermissionResolver</code> (planned, so don't import them), and
-<code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through the evaluator (only
-<code>ai_api</code> evaluates today). Write new authorization code to this shape.
-Remove this note when the guard PR lands.</p>
+<p>This rule describes where authorization is going. <code>build_guard</code>,
+<code>narrow_envelope</code>, <code>RoleSource</code> and <code>PermissionResolver</code> are in code. Not yet:
+<code>build_role_source</code>, and <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through
+the evaluator (msflib/fastapi#397). Write new authorization code to this shape.
+Remove this note when #397 lands.</p>
 </div>
 <ul>
 <li>A role is <code>RoleKey(tier, key)</code> (<code>msflib.scope.roles</code>): the account role <code>root</code>

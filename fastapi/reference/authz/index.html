@@ -9563,7 +9563,7 @@ the router never picks a default tenant for the app. Wire the tenant from
 <code>msflib.tenancy</code> if the app wants its default-tenant behaviour. A site without
 workspaces passes <code>msflib.scope.no_workspace</code>.</p>
 <p><code>is_tenant_member</code> and <code>is_workspace_member</code> are membership checks
-(<code>msflib.scope.MembershipCheck</code>: <code>(session, *, account_id, scope_id) -&gt; bool</code>) supplied
+(<code>msflib.scope.MembershipCheck</code>: <code>(session, *, account_id, container_id) -&gt; bool</code>) supplied
 by the owning modules. They are required, because authz cannot read the account tables and
 assumes nothing about them; pass <code>allow_any_member</code> to accept every account. They validate
 the caller (403) and the account a request adds to a group (404 "Account not found.").

@@ -2088,22 +2088,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.combine" class="md-nav__link">
+  <a href="#msflib.guard.deps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        combine
+        deps
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="combine">
+    <nav class="md-nav" aria-label="deps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.combine.PermissionGuard" class="md-nav__link">
+  <a href="#msflib.guard.deps.Guard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PermissionGuard
+        Guard
       
     </span>
   </a>
@@ -2111,21 +2111,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.combine.combine_guards" class="md-nav__link">
+  <a href="#msflib.guard.deps.build_guard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        combine_guards
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.guard.combine.any_of" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        any_of
+        build_guard
       
     </span>
   </a>
@@ -2223,10 +2212,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.scope.build_check_scope" class="md-nav__link">
+  <a href="#msflib.guard.scope.CheckScopeConstraint" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build_check_scope
+        CheckScopeConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.narrow_envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        narrow_envelope
       
     </span>
   </a>
@@ -3826,22 +3826,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.combine" class="md-nav__link">
+  <a href="#msflib.guard.deps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        combine
+        deps
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="combine">
+    <nav class="md-nav" aria-label="deps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.combine.PermissionGuard" class="md-nav__link">
+  <a href="#msflib.guard.deps.Guard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PermissionGuard
+        Guard
       
     </span>
   </a>
@@ -3849,21 +3849,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.combine.combine_guards" class="md-nav__link">
+  <a href="#msflib.guard.deps.build_guard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        combine_guards
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#msflib.guard.combine.any_of" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        any_of
+        build_guard
       
     </span>
   </a>
@@ -3961,10 +3950,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.scope.build_check_scope" class="md-nav__link">
+  <a href="#msflib.guard.scope.CheckScopeConstraint" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build_check_scope
+        CheckScopeConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.narrow_envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        narrow_envelope
       
     </span>
   </a>
@@ -4014,16 +4014,27 @@
 
     <div class="doc doc-contents first">
 
-        <p>Guard call shape shared by module routers, authz and auth.</p>
-<p>A module router takes a <code>permission_guard</code>, a <code>role_guard</code>, or both, and builds its
-routes with <code>combine_guards</code>::</p>
-<div class="codehilite"><pre><span></span><code>guard = combine_guards(permission_guard=permission_guard, role_guard=role_guard)
+        <p>Route guards: who may call a route, decided by the scope evaluator.</p>
+<p>A host builds one guard from its sources and a router guards its routes with it::</p>
+<div class="codehilite"><pre><span></span><code>scope_deps = get_scope_dependencies(...)
+guard = build_guard(
+    get_envelope=scope_deps.get_account_envelope,
+    get_session=get_session,
+    resolver=role_service,        # msflib-authz assignments, or
+    role_registry=ROLE_REGISTRY,  # roles mapped per permission key,
+    role_source=roles,            # read from the caller's role attributes, or both
+)
 
 @router.get("", dependencies=[Depends(guard("notifications.manage", tier=RoleTier.tenant))])
 def list_items(): ...
 </code></pre></div>
 
-<p><code>ROLE_REGISTRY</code> holds the roles a role-attribute host maps each permission key to.</p>
+<p><code>ROLE_REGISTRY</code> holds the roles that satisfy each permission key; a
+<code>msflib.scope.RoleSource</code> says which roles the caller holds. A guard decides the
+route's permission or role; it checks no membership. Membership is a grant too, checked
+by the request's envelope dependency after the envelope is built (SCP-7): for workspace
+guards, build <code>scope_deps</code> with
+<code>get_current_account=get_member_account_dependency(...)</code>, as authz does.</p>
 
 
 
@@ -4050,15 +4061,15 @@ def list_items(): ...
 
 
 
-<h3 id="msflib.guard.combine" class="doc doc-heading">
-            <code>combine</code>
+<h3 id="msflib.guard.deps" class="doc doc-heading">
+            <code>deps</code>
 
 
-<a href="#msflib.guard.combine" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#msflib.guard.deps" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents ">
 
-        <p>The guard call shape modules depend on, and how two guards combine.</p>
+        <p>The route guard: one dependency per permission key, decided by the scope evaluator.</p>
 
 
 
@@ -4083,11 +4094,11 @@ def list_items(): ...
 
 
 
-<h4 id="msflib.guard.combine.PermissionGuard" class="doc doc-heading">
-            <code>PermissionGuard</code>
+<h4 id="msflib.guard.deps.Guard" class="doc doc-heading">
+            <code>Guard</code>
 
 
-<a href="#msflib.guard.combine.PermissionGuard" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.guard.deps.Guard" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -4096,11 +4107,7 @@ def list_items(): ...
 
 
 
-        <p>Builds the FastAPI dependency that guards a route for a permission key.</p>
-<p><code>authz.require_permission</code> has this shape and reads role assignments;
-the role guard in <code>msflib-auth</code> has it too and reads role attributes.
-The dependency returns a truthy value when the caller is allowed and raises 403
-when not; a falsy return counts as a denial.</p>
+        <p>Builds the dependency guarding a route: <code>Depends(guard("things.manage", tier=...))</code>.</p>
 
 
 
@@ -4135,40 +4142,27 @@ when not; a falsy return counts as a denial.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="msflib.guard.combine.combine_guards" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">combine_guards</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">permission_guard</span><span class="p">:</span> <span class="n">PermissionGuard</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_guard</span><span class="p">:</span> <span class="n">PermissionGuard</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PermissionGuard</span></code>
+<h4 id="msflib.guard.deps.build_guard" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_guard</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'enforce'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Guard</span></code>
 
-<a href="#msflib.guard.combine.combine_guards" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>The guard a router builds its routes from.</p>
-<p>With one guard given, that guard. With both, a route passes when either
-allows it. With neither, <code>ValueError</code>: a router must not come up unguarded.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="msflib.guard.combine.any_of" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">any_of</span><span class="p">(</span><span class="o">*</span><span class="n">guards</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span></code>
-
-<a href="#msflib.guard.combine.any_of" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.guard.deps.build_guard" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>One dependency that passes when any guard passes and raises 403 when none does.</p>
-<p>A guard counts as denying when it raises 403 itself or returns a falsy value. Any
-other error, including a 403 or 401 from the guard's own sub-dependencies (the
-caller is not authenticated, or not a member of the workspace), propagates.
-FastAPI resolves every guard, so a guard that errors fails the request even when
-another guard allows it.</p>
+        <p>Return the <code>Guard</code> for routes whose caller comes from <code>get_envelope</code>.</p>
+<p>A route passes when <code>resolver</code> grants the key at <code>tier</code>, or when <code>role_source</code>
+says the caller holds a role <code>role_registry</code> lists for the key at or above
+<code>tier</code>. Each check asks a source only when it runs. The guard decides the
+route's permission or role; it checks no membership. Membership is a grant too,
+checked by the request's envelope dependency after the envelope is built (SCP-7):
+for workspace guards, <code>get_envelope</code> resolves the account through
+<code>msflib.scope.get_member_account_dependency</code>. A denial is a recorded
+scope decision answered with 403; under <code>shadow</code> the route still runs. A guard
+is <code>enforce</code> or <code>shadow</code>: <code>log-only</code> would let every request through. Raises
+<code>ValueError</code> for any other <code>enforcement</code>, without a source, when
+<code>role_registry</code> and <code>role_source</code> don't come together, or when no registered
+role can pass.</p>
 
 
     </div>
@@ -4392,21 +4386,69 @@ ROLE_REGISTRY.register(
 
 
 
+<div class="doc doc-object doc-class">
 
-<div class="doc doc-object doc-function">
 
 
-<h4 id="msflib.guard.scope.build_check_scope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_check_scope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TenantScope</span></code>
+<h4 id="msflib.guard.scope.CheckScopeConstraint" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">CheckScopeConstraint</span><span class="p">(</span><span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span></code>
 
-<a href="#msflib.guard.scope.build_check_scope" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.guard.scope.CheckScopeConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>The <code>TenantScope</code> a check at <code>tier</code> runs in: below the workspace tier, tenant level.</p>
-<p>An unknown tier raises <code>ValueError</code>. A request without a tenant, or a workspace
-check without a workspace, raises <code>ScopeValidationError</code>.</p>
+
+
+        <p>Denies a check without a tenant, or a workspace check without a workspace.</p>
+<p>Both are <code>scope_invalid</code>. The guard runs it before its sources, so no grant or
+role passes where there is no tenant, or no workspace to hold a workspace role.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.guard.scope.narrow_envelope" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">narrow_envelope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">TenantScope</span><span class="p">]</span></code>
+
+<a href="#msflib.guard.scope.narrow_envelope" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>envelope</code> with its scope narrowed to where a check at <code>tier</code> runs.</p>
+<p>Below the workspace tier that is tenant level. A workspace check keeps the
+request's workspace, which may be <code>None</code>; <code>CheckScopeConstraint</code> denies that.
+An unknown tier raises <code>ValueError</code>.</p>
 
 
     </div>

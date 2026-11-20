@@ -2698,6 +2698,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.scope.AnyConstraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AnyConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.scope.ChannelConstraint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2796,6 +2807,17 @@
     <span class="md-ellipsis">
       
         RoleConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.scope.RoleSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleSource
       
     </span>
   </a>
@@ -4135,6 +4157,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.scope.policy.RoleSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleSource
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.scope.policy.RoleConstraint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4161,6 +4194,17 @@
     <span class="md-ellipsis">
       
         PermissionConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.scope.policy.AnyConstraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AnyConstraint
       
     </span>
   </a>
@@ -6557,6 +6601,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.scope.AnyConstraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AnyConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.scope.ChannelConstraint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6655,6 +6710,17 @@
     <span class="md-ellipsis">
       
         RoleConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.scope.RoleSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleSource
       
     </span>
   </a>
@@ -7994,6 +8060,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.scope.policy.RoleSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleSource
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.scope.policy.RoleConstraint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8020,6 +8097,17 @@
     <span class="md-ellipsis">
       
         PermissionConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.scope.policy.AnyConstraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AnyConstraint
       
     </span>
   </a>
@@ -9237,7 +9325,7 @@ compiling to a sink-specific format.</p>
 
 
 
-        <p>Tells whether <code>account_id</code> belongs to the scope identified by <code>scope_id</code>.</p>
+        <p>Whether <code>account_id</code> belongs to the container with row id <code>container_id</code>.</p>
 
 
 
@@ -10249,6 +10337,52 @@ with <code>"&lt;redacted&gt;"</code> when <code>registry</code> is provided.</p>
 
 
 
+<h3 id="msflib.scope.AnyConstraint" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">AnyConstraint</span><span class="p">(</span><span class="n">constraints</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ScopeConstraint</span><span class="p">])</span></code>
+
+<a href="#msflib.scope.AnyConstraint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Allows when any of <code>constraints</code> allows; denies with every child's reason otherwise.</p>
+<p>The guard uses it to accept either a permission assignment or a registered role.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
 <h3 id="msflib.scope.ChannelConstraint" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">ChannelConstraint</span><span class="p">(</span><span class="n">required_channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">deny_without_channel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
 
@@ -10260,8 +10394,7 @@ with <code>"&lt;redacted&gt;"</code> when <code>registry</code> is provided.</p>
 
 
         <p>Validates that the request channel matches the required channel.</p>
-<p>Channel is read from <code>scope.attributes['channel']</code> first and falls back to
-<code>context['current_channel']</code> when absent.</p>
+<p>The channel is <code>envelope.attributes['channel']</code>.</p>
 
 
 
@@ -10410,7 +10543,7 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
 
 
 <h4 id="msflib.scope.ConstraintEvaluator.evaluate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
 
 <a href="#msflib.scope.ConstraintEvaluator.evaluate" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10418,6 +10551,7 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
     <div class="doc doc-contents ">
 
         <p>Run all constraints in order; return first deny or final allow.</p>
+<p><code>session</code> is passed to each constraint, for those that read rows.</p>
 <p>Side-effects:
 - Stores decisions in :attr:<code>last_decisions</code> for audit.
 - Logs violations at WARNING level.
@@ -10449,7 +10583,7 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
 
 
 <h3 id="msflib.scope.DimensionMatchConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">DimensionMatchConstraint</span><span class="p">(</span><span class="n">required_match</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">DimensionMatchConstraint</span><span class="p">(</span><span class="n">expected</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.DimensionMatchConstraint" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -10458,18 +10592,12 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
 
 
 
-        <p>Checks that dimension values in the scope match those in <em>context</em>.</p>
-<p>Pass <code>required_match</code> as a mapping of <code>{canonical_dim_key: context_key}</code>.
-If the context key is present and the scope has that dimension, the values
-must match exactly.  Missing context keys are skipped (not treated as deny).</p>
-<p>Example::</p>
-<div class="codehilite"><pre><span></span><code>constraint = DimensionMatchConstraint(
-    required_match={"tenant_id": "current_tenant_id"},
-)
+        <p>Checks that the scope's dimensions hold the <code>expected</code> values.</p>
+<p><code>expected</code> maps a dimension name to the value its string view must hold
+(<code>None</code> for a null dimension). A dimension the scope type has no field for
+denies (<code>dimension_missing</code>)::</p>
+<div class="codehilite"><pre><span></span><code>constraint = DimensionMatchConstraint({"channel": "web"})
 </code></pre></div>
-
-<p>If <code>scope.get_dim("tenant_id") != context["current_tenant_id"]</code>, the
-constraint returns a deny decision.</p>
 
 
 
@@ -10505,7 +10633,7 @@ constraint returns a deny decision.</p>
 
 
 <h3 id="msflib.scope.MembershipConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">MembershipConstraint</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">fail_open</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">MembershipConstraint</span><span class="p">(</span><span class="n">check</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">fail_open</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.MembershipConstraint" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -10514,15 +10642,15 @@ constraint returns a deny decision.</p>
 
 
 
-        <p>Stub: validates that the principal is a member of the scoped workspace.</p>
-<p>Production implementations should inject a membership service or DB session
-via the <em>context</em> dict (key: <code>membership_service</code>). The service is called with
-the principal's <code>account_id</code> and the scope's <code>workspace_id</code>, both ints.</p>
-<p>By default (fail_open=False), missing or misconfigured services fail closed
-(deny) for security. Set fail_open=True to allow in shadow/log-only modes
-when the service is unavailable (e.g., for testing or during deployment).</p>
-<p>If no principal is attached and the scope targets a concrete workspace,
-this constraint denies by default to avoid unauthenticated bypasses.</p>
+        <p>Allows a caller that <code>check</code> accepts as a member of the scoped workspace.</p>
+<p><code>check</code> is a :class:<code>~msflib.scope.MembershipCheck</code> (<code>msflib.workspaces</code>
+supplies one). It runs with the <code>session</code> for the envelope's principal in
+the workspace of <code>envelope.scope</code>. A scope without a workspace is the
+workspace-less bucket and passes. Without a principal it denies, unless
+<code>deny_without_principal</code> is <code>False</code>. A check that is async, or whose
+signature doesn't match or can't be read, raises <code>TypeError</code> here; one that
+raises when called denies, unless <code>fail_open</code> is <code>True</code>. Evaluated without
+a <code>session</code> it denies (<code>no_session</code>).</p>
 
 
 
@@ -10558,7 +10686,7 @@ this constraint denies by default to avoid unauthenticated bypasses.</p>
 
 
 <h3 id="msflib.scope.PermissionConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">PermissionConstraint</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span><span class="p">,</span> <span class="n">build_scope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ScopeEnvelope</span><span class="p">],</span> <span class="n">TenantScope</span><span class="p">])</span></code>
+              <code class="highlight language-python"><span class="n">PermissionConstraint</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.PermissionConstraint" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -10567,10 +10695,10 @@ this constraint denies by default to avoid unauthenticated bypasses.</p>
 
 
 
-        <p>Allows a principal that holds the permission <code>key</code> at <code>tier</code>.</p>
-<p><code>build_scope</code> turns the envelope into the <code>TenantScope</code> the check runs in, and
-<code>resolver</code> answers it with the <code>session</code> the evaluation context carries. An
-envelope <code>build_scope</code> rejects (<code>ScopeError</code>) is denied.</p>
+        <p>Allows a caller that holds the permission <code>key</code> at <code>tier</code>.</p>
+<p><code>resolver</code> answers for the envelope's principal at <code>envelope.scope</code>, with the
+<code>session</code>. Without a principal it denies (<code>no_principal</code>), and evaluated
+without a <code>session</code> it denies (<code>no_session</code>).</p>
 
 
 
@@ -10654,7 +10782,7 @@ envelope <code>build_scope</code> rejects (<code>ScopeError</code>) is denied.</
 
 
 <h3 id="msflib.scope.RoleConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">RoleConstraint</span><span class="p">(</span><span class="n">required</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">RoleConstraint</span><span class="p">(</span><span class="n">required</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.RoleConstraint" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -10663,9 +10791,62 @@ envelope <code>build_scope</code> rejects (<code>ScopeError</code>) is denied.</
 
 
 
-        <p>Allows a principal that holds any of <code>required</code> (each a tier-qualified <code>RoleKey</code>).</p>
-<p>Reads <code>scope.principal.roles</code>. Without a principal it denies, unless
+        <p>Allows a caller that holds any of <code>required</code> (each a tier-qualified <code>RoleKey</code>).</p>
+<p>With <code>role_source</code>, the roles are those it returns for the envelope's
+principal at <code>envelope.scope</code>, read with the <code>session</code>; evaluated without a
+<code>session</code> it denies (<code>no_session</code>). Without it, the roles are
+<code>envelope.principal.roles</code>. Without a principal it denies, unless
 <code>deny_without_principal</code> is <code>False</code> (service-to-service calls).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="msflib.scope.RoleSource" class="doc doc-heading">
+            <code>RoleSource</code>
+
+
+<a href="#msflib.scope.RoleSource" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>The roles <code>account_id</code> holds at <code>scope</code>.</p>
+<p>Platform and tenant roles always count; workspace roles count when <code>scope</code> has a
+workspace. <code>msflib-auth</code> reads role attributes, <code>msflib-authz</code> reads assignments.</p>
 
 
 
@@ -10742,14 +10923,14 @@ shared across requests.</p>
 
 
 <h4 id="msflib.scope.ScopeConstraint.evaluate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
 
 <a href="#msflib.scope.ScopeConstraint.evaluate" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Evaluate the constraint against <em>envelope</em> and <em>context</em>.</p>
+        <p>Evaluate the constraint against <em>envelope</em>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -10776,7 +10957,9 @@ shared across requests.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The immutable scope envelope for the current operation.</p>
+                <p>The request's envelope. A constraint reads where the
+request is from <code>envelope.scope</code>, who is calling from
+<code>envelope.principal</code> and policy inputs from <code>envelope.attributes</code>.</p>
               </div>
             </td>
             <td>
@@ -10785,19 +10968,18 @@ shared across requests.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>context</code>
+                <code>session</code>
             </td>
             <td>
-                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+                  <code><span title="sqlmodel.Session">Session</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Runtime lookup context (e.g. DB session, service clients,
-     request headers).  Constraints must not mutate it.</p>
+                <p>The database session, for a constraint that reads rows.</p>
               </div>
             </td>
             <td>
-                <em>required</em>
+                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -11924,6 +12106,9 @@ resolve, and a router or guard that needs membership takes
     <div class="doc doc-contents ">
 
         <p>Return dependencies that yield the caller's ids as plain ints.</p>
+<p>.. deprecated:: 0.3.0
+    Use <code>get_scope_dependencies</code> and read the typed scope from <code>envelope.scope</code>.
+    Removed in 0.4.0.</p>
 <p>One dependency per callable passed, so a router declares <code>tenant_id: int =
 Depends(ids.tenant_id)</code> instead of unpacking <code>tenant.id</code> in each endpoint. Each
 resolver is required to identify the caller: no account is answered with 401 and no
@@ -11990,7 +12175,7 @@ absence is an explicit choice. <code>None</code> is the workspace-less bucket, n
 
 
 <h3 id="msflib.scope.allow_any_member" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">allow_any_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">allow_any_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">container_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.scope.allow_any_member" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -12741,6 +12926,9 @@ enumerated. A request with no workspace passes.</p>
     <div class="doc doc-contents ">
 
         <p>Return dependencies that yield the caller's ids as plain ints.</p>
+<p>.. deprecated:: 0.3.0
+    Use <code>get_scope_dependencies</code> and read the typed scope from <code>envelope.scope</code>.
+    Removed in 0.4.0.</p>
 <p>One dependency per callable passed, so a router declares <code>tenant_id: int =
 Depends(ids.tenant_id)</code> instead of unpacking <code>tenant.id</code> in each endpoint. Each
 resolver is required to identify the caller: no account is answered with 401 and no
@@ -13245,7 +13433,7 @@ it, such as a router that validates the caller and the accounts a request names.
 
 
 
-        <p>Tells whether <code>account_id</code> belongs to the scope identified by <code>scope_id</code>.</p>
+        <p>Whether <code>account_id</code> belongs to the container with row id <code>container_id</code>.</p>
 
 
 
@@ -13281,7 +13469,7 @@ it, such as a router that validates the caller and the accounts a request names.
 
 
 <h4 id="msflib.scope.membership.allow_any_member" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">allow_any_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+            <code class="highlight language-python"><span class="n">allow_any_member</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">container_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
 <a href="#msflib.scope.membership.allow_any_member" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -14760,14 +14948,14 @@ shared across requests.</p>
 
 
 <h5 id="msflib.scope.policy.ScopeConstraint.evaluate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
 
 <a href="#msflib.scope.policy.ScopeConstraint.evaluate" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>Evaluate the constraint against <em>envelope</em> and <em>context</em>.</p>
+        <p>Evaluate the constraint against <em>envelope</em>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -14794,7 +14982,9 @@ shared across requests.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The immutable scope envelope for the current operation.</p>
+                <p>The request's envelope. A constraint reads where the
+request is from <code>envelope.scope</code>, who is calling from
+<code>envelope.principal</code> and policy inputs from <code>envelope.attributes</code>.</p>
               </div>
             </td>
             <td>
@@ -14803,19 +14993,18 @@ shared across requests.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>context</code>
+                <code>session</code>
             </td>
             <td>
-                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+                  <code><span title="sqlmodel.Session">Session</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Runtime lookup context (e.g. DB session, service clients,
-     request headers).  Constraints must not mutate it.</p>
+                <p>The database session, for a constraint that reads rows.</p>
               </div>
             </td>
             <td>
-                <em>required</em>
+                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -14866,7 +15055,7 @@ shared across requests.</p>
 
 
 <h4 id="msflib.scope.policy.DimensionMatchConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">DimensionMatchConstraint</span><span class="p">(</span><span class="n">required_match</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">DimensionMatchConstraint</span><span class="p">(</span><span class="n">expected</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">constraint_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.policy.DimensionMatchConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -14875,18 +15064,12 @@ shared across requests.</p>
 
 
 
-        <p>Checks that dimension values in the scope match those in <em>context</em>.</p>
-<p>Pass <code>required_match</code> as a mapping of <code>{canonical_dim_key: context_key}</code>.
-If the context key is present and the scope has that dimension, the values
-must match exactly.  Missing context keys are skipped (not treated as deny).</p>
-<p>Example::</p>
-<div class="codehilite"><pre><span></span><code>constraint = DimensionMatchConstraint(
-    required_match={"tenant_id": "current_tenant_id"},
-)
+        <p>Checks that the scope's dimensions hold the <code>expected</code> values.</p>
+<p><code>expected</code> maps a dimension name to the value its string view must hold
+(<code>None</code> for a null dimension). A dimension the scope type has no field for
+denies (<code>dimension_missing</code>)::</p>
+<div class="codehilite"><pre><span></span><code>constraint = DimensionMatchConstraint({"channel": "web"})
 </code></pre></div>
-
-<p>If <code>scope.get_dim("tenant_id") != context["current_tenant_id"]</code>, the
-constraint returns a deny decision.</p>
 
 
 
@@ -14922,7 +15105,7 @@ constraint returns a deny decision.</p>
 
 
 <h4 id="msflib.scope.policy.MembershipConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">MembershipConstraint</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">fail_open</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">MembershipConstraint</span><span class="p">(</span><span class="n">check</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">fail_open</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.policy.MembershipConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -14931,15 +15114,65 @@ constraint returns a deny decision.</p>
 
 
 
-        <p>Stub: validates that the principal is a member of the scoped workspace.</p>
-<p>Production implementations should inject a membership service or DB session
-via the <em>context</em> dict (key: <code>membership_service</code>). The service is called with
-the principal's <code>account_id</code> and the scope's <code>workspace_id</code>, both ints.</p>
-<p>By default (fail_open=False), missing or misconfigured services fail closed
-(deny) for security. Set fail_open=True to allow in shadow/log-only modes
-when the service is unavailable (e.g., for testing or during deployment).</p>
-<p>If no principal is attached and the scope targets a concrete workspace,
-this constraint denies by default to avoid unauthenticated bypasses.</p>
+        <p>Allows a caller that <code>check</code> accepts as a member of the scoped workspace.</p>
+<p><code>check</code> is a :class:<code>~msflib.scope.MembershipCheck</code> (<code>msflib.workspaces</code>
+supplies one). It runs with the <code>session</code> for the envelope's principal in
+the workspace of <code>envelope.scope</code>. A scope without a workspace is the
+workspace-less bucket and passes. Without a principal it denies, unless
+<code>deny_without_principal</code> is <code>False</code>. A check that is async, or whose
+signature doesn't match or can't be read, raises <code>TypeError</code> here; one that
+raises when called denies, unless <code>fail_open</code> is <code>True</code>. Evaluated without
+a <code>session</code> it denies (<code>no_session</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.scope.policy.RoleSource" class="doc doc-heading">
+            <code>RoleSource</code>
+
+
+<a href="#msflib.scope.policy.RoleSource" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>The roles <code>account_id</code> holds at <code>scope</code>.</p>
+<p>Platform and tenant roles always count; workspace roles count when <code>scope</code> has a
+workspace. <code>msflib-auth</code> reads role attributes, <code>msflib-authz</code> reads assignments.</p>
 
 
 
@@ -14975,7 +15208,7 @@ this constraint denies by default to avoid unauthenticated bypasses.</p>
 
 
 <h4 id="msflib.scope.policy.RoleConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">RoleConstraint</span><span class="p">(</span><span class="n">required</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">RoleConstraint</span><span class="p">(</span><span class="n">required</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deny_without_principal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.policy.RoleConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -14984,8 +15217,11 @@ this constraint denies by default to avoid unauthenticated bypasses.</p>
 
 
 
-        <p>Allows a principal that holds any of <code>required</code> (each a tier-qualified <code>RoleKey</code>).</p>
-<p>Reads <code>scope.principal.roles</code>. Without a principal it denies, unless
+        <p>Allows a caller that holds any of <code>required</code> (each a tier-qualified <code>RoleKey</code>).</p>
+<p>With <code>role_source</code>, the roles are those it returns for the envelope's
+principal at <code>envelope.scope</code>, read with the <code>session</code>; evaluated without a
+<code>session</code> it denies (<code>no_session</code>). Without it, the roles are
+<code>envelope.principal.roles</code>. Without a principal it denies, unless
 <code>deny_without_principal</code> is <code>False</code> (service-to-service calls).</p>
 
 
@@ -15070,7 +15306,7 @@ this constraint denies by default to avoid unauthenticated bypasses.</p>
 
 
 <h4 id="msflib.scope.policy.PermissionConstraint" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">PermissionConstraint</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span><span class="p">,</span> <span class="n">build_scope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ScopeEnvelope</span><span class="p">],</span> <span class="n">TenantScope</span><span class="p">])</span></code>
+              <code class="highlight language-python"><span class="n">PermissionConstraint</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span><span class="p">)</span></code>
 
 <a href="#msflib.scope.policy.PermissionConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -15079,10 +15315,56 @@ this constraint denies by default to avoid unauthenticated bypasses.</p>
 
 
 
-        <p>Allows a principal that holds the permission <code>key</code> at <code>tier</code>.</p>
-<p><code>build_scope</code> turns the envelope into the <code>TenantScope</code> the check runs in, and
-<code>resolver</code> answers it with the <code>session</code> the evaluation context carries. An
-envelope <code>build_scope</code> rejects (<code>ScopeError</code>) is denied.</p>
+        <p>Allows a caller that holds the permission <code>key</code> at <code>tier</code>.</p>
+<p><code>resolver</code> answers for the envelope's principal at <code>envelope.scope</code>, with the
+<code>session</code>. Without a principal it denies (<code>no_principal</code>), and evaluated
+without a <code>session</code> it denies (<code>no_session</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.scope.policy.AnyConstraint" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">AnyConstraint</span><span class="p">(</span><span class="n">constraints</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ScopeConstraint</span><span class="p">])</span></code>
+
+<a href="#msflib.scope.policy.AnyConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Allows when any of <code>constraints</code> allows; denies with every child's reason otherwise.</p>
+<p>The guard uses it to accept either a permission assignment or a registered role.</p>
 
 
 
@@ -15128,8 +15410,7 @@ envelope <code>build_scope</code> rejects (<code>ScopeError</code>) is denied.</
 
 
         <p>Validates that the request channel matches the required channel.</p>
-<p>Channel is read from <code>scope.attributes['channel']</code> first and falls back to
-<code>context['current_channel']</code> when absent.</p>
+<p>The channel is <code>envelope.attributes['channel']</code>.</p>
 
 
 
@@ -15278,7 +15559,7 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
 
 
 <h5 id="msflib.scope.policy.ConstraintEvaluator.evaluate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeDecision</span></code>
 
 <a href="#msflib.scope.policy.ConstraintEvaluator.evaluate" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -15286,6 +15567,7 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
     <div class="doc doc-contents ">
 
         <p>Run all constraints in order; return first deny or final allow.</p>
+<p><code>session</code> is passed to each constraint, for those that read rows.</p>
 <p>Side-effects:
 - Stores decisions in :attr:<code>last_decisions</code> for audit.
 - Logs violations at WARNING level.

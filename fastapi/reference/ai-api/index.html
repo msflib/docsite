@@ -2662,6 +2662,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="scope_evaluator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluate_scope_constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -4194,6 +4211,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="scope_evaluator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluate_scope_constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -4473,7 +4507,9 @@ workspaces). <code>get_current_tenant</code>
 is resolved once at the endpoint boundary, the same way
 <code>documents.router()</code>/<code>ingestion.router()</code> resolve it (see
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
-row.</p>
+row. Workspace membership is not checked here: guard the routes with
+<code>msflib.scope.get_member_account_dependency</code>, as <code>create_llm_router</code> and
+<code>create_agent_router</code> do.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -5153,6 +5189,26 @@ workspace-level <code>VECTOR_STORE_BACKEND</code> override is honored too.</p>
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">evaluate_scope_constraints</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Check <code>envelope</code> against <code>operation</code>'s profile.</p>
+<p>Workspace membership is not checked here: the routers check it once per request
+with <code>get_member_account_dependency</code> before this runs.</p>
+
+
+    </div>
+
+</div>
 
 
 

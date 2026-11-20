@@ -3983,7 +3983,7 @@ usage snippets, boundaries, status) and its page under <code>docs/modules/</code
 <a href="../../writing-docs/">Writing docs</a>.</p>
 <h3 id="mod-9-the-module-that-owns-a-membership-model-exports-its-check">MOD-9 · The module that owns a membership model exports its check<a class="headerlink" href="#mod-9-the-module-that-owns-a-membership-model-exports-its-check" title="Permanent link">&para;</a></h3>
 <p><code>msflib.workspaces</code> exports <code>is_workspace_member</code> and <code>msflib.tenancy</code> exports
-<code>is_tenant_member</code>, each a <code>MembershipCheck</code> (<code>(session, *, account_id, scope_id)
+<code>is_tenant_member</code>, each a <code>MembershipCheck</code> (<code>(session, *, account_id, container_id)
 -&gt; bool</code>) in <code>membership.py</code>. Other modules never query another module's
 membership tables; their routers and guards take the check as a parameter
 (API-7). A new module that introduces a membership model adds its own check in
