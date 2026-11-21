@@ -521,6 +521,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#roles-for-the-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles for the guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#workspace-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3946,6 +3957,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#roles-for-the-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles for the guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#workspace-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4110,16 +4132,21 @@
 <p>Build the dependency namespaces once at startup, then mount the router.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span><span class="p">,</span> <span class="n">get_user_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathParameterResolver</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
 
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
     <span class="n">oauth_token_url</span><span class="o">=</span><span class="s2">"/api/v1/auth/login"</span><span class="p">,</span>
     <span class="n">secret_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Only needed when your app has workspaces.</span>
@@ -4300,7 +4327,7 @@
 </tr>
 <tr>
 <td><code>RoleCheck(roles)</code></td>
-<td>A callable class for <code>dependencies=[Depends(RoleCheck([...]))]</code>. Passes only when the account's role attribute is in <code>roles</code>; otherwise 403. It does not check the account's status; add <code>Depends(get_current_active_account)</code> to require an active account.</td>
+<td>A callable class for <code>dependencies=[Depends(RoleCheck([...]))]</code>. Passes only when the account's role attribute is in <code>roles</code>; otherwise 403. An account without an id is a 401, and a request without a tenant is refused before any role is checked. It does not check the account's status; add <code>Depends(get_current_active_account)</code> to require an active account.</td>
 </tr>
 </tbody>
 </table>
@@ -4309,7 +4336,53 @@
 <p><code>get_current_active_superuser</code> hard-codes <code>account.role == "root"</code> and ignores <code>account_role_attr</code>. If your role attribute or superuser role differs, require both <code>get_current_active_account</code> and <code>RoleCheck([...])</code> with the roles you want. <code>RoleCheck</code> alone depends on <code>get_current_account</code>, so it also admits inactive accounts that have a matching role.</p>
 </div>
 <p><code>RoleCheck</code> is an exact membership test. <code>RoleCheck(["admin"])</code> does not admit <code>root</code>; list every role you want to allow.</p>
-<p><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> compare a role attribute and read nothing else. For roles that admins create and assign at runtime, tiers and permissions, use the guards in <a href="../authz/#two-ways-to-guard-a-route">authz</a>; <code>msflib-auth</code> does not depend on it.</p>
+<p><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> read roles only from a role attribute, but each still resolves the request's envelope first, so a missing account (401), a missing tenant (403) or, for <code>WorkspaceRoleCheck</code>, a workspace of another tenant (404) is answered before any role or workspace user is looked at. Each check runs through <code>msflib.scope.ConstraintEvaluator</code> as a <code>RoleConstraint</code> on the request's envelope, so a decision is recorded with the request's tenant (and workspace, for <code>WorkspaceRoleCheck</code>) like any other scope decision. The tenant comes from the <code>get_current_tenant</code> passed to <code>get_account_dependencies</code>; a site without tenancy passes the <code>msflib.tenancy</code> resolver, which falls back to the default tenant.</p>
+<h3 id="roles-for-the-guard">Roles for the guard<a class="headerlink" href="#roles-for-the-guard" title="Permanent link">&para;</a></h3>
+<p><code>build_role_source</code> (in <code>msflib.auth.roles</code>) returns a <code>msflib.scope.RoleSource</code> that reads the same attributes. Pass it to <code>msflib.guard.build_guard(..., role_registry=ROLE_REGISTRY, role_source=roles)</code> and the guard asks it for the caller's roles where each check runs, only when a role check runs:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Role</th>
+<th>Counts when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>account role <code>root</code></td>
+<td><code>platform:root</code></td>
+<td>always</td>
+</tr>
+<tr>
+<td>any other account role</td>
+<td><code>tenant:&lt;role&gt;</code></td>
+<td><code>is_tenant_member</code> accepts the account at the request's tenant, or no check is given</td>
+</tr>
+<tr>
+<td>workspace user type</td>
+<td><code>workspace:&lt;type&gt;</code></td>
+<td>the request has a workspace, the account has a <code>UserModel</code> row in it, and <code>is_workspace_member</code> accepts it, or no check is given</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.roles</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_role_source</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_workspace_member</span>
+
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">roles</span> <span class="o">=</span> <span class="n">build_role_source</span><span class="p">(</span>
+    <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
+    <span class="n">UserModel</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
+    <span class="n">is_tenant_member</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">is_tenant_member</span><span class="p">,</span>
+    <span class="n">is_workspace_member</span><span class="o">=</span><span class="n">is_workspace_member</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Use the <code>is_tenant_member</code> from <code>get_tenant_dependencies</code>: it is bound to the tenancy settings. The bare <code>msflib.tenancy.is_tenant_member</code> also needs <code>tenancy_settings</code> and raises <code>TypeError</code> without it.</p>
+<p>The account has no tenant of its own, so pass <code>is_tenant_member</code> in a multi-tenant app; without it an account-level <code>admin</code> is an admin in every tenant.</p>
+<p>For roles that admins create and assign at runtime, tiers and permissions, use the guards in <a href="../authz/#two-ways-to-guard-a-route">authz</a>; <code>msflib-auth</code> does not depend on it.</p>
 <h3 id="workspace-resolution">Workspace resolution<a class="headerlink" href="#workspace-resolution" title="Permanent link">&para;</a></h3>
 <p><code>get_user_dependencies(...)</code> turns a request into a workspace and a membership. The strategy for finding the workspace is a <code>WorkspaceResolver</code>, chosen once at startup.</p>
 <p>A resolver receives a <code>ResolverContext</code> (<code>session</code>, <code>account</code>, <code>path_params</code>, <code>headers</code>) and returns a workspace <strong>slug</strong>, or <code>None</code> when the request does not identify one. Header keys in <code>headers</code> are lower-case. Two resolvers ship in <code>msflib.auth.resolvers</code>:</p>
@@ -4365,7 +4438,7 @@
 </tr>
 <tr>
 <td><code>WorkspaceRoleCheck(roles)</code></td>
-<td>Passes when the membership's role attribute (<code>type</code> by default) is in <code>roles</code>; otherwise 403.</td>
+<td>Passes when the membership's role attribute (<code>type</code> by default) is in <code>roles</code>; otherwise 403. A workspace of another tenant than the request's is a 404.</td>
 </tr>
 </tbody>
 </table>
@@ -4439,6 +4512,7 @@
     <span class="n">secret_key</span><span class="o">=</span><span class="n">SECRET_KEY</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">user_deps</span> <span class="o">=</span> <span class="n">get_user_dependencies</span><span class="p">(</span>
     <span class="n">UserModel</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>

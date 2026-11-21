@@ -3828,7 +3828,7 @@
 <tr>
 <td><code>get_account_dependencies</code></td>
 <td><code>msflib.auth.deps</code></td>
-<td><code>AccountModel</code>, <code>oauth_token_url</code>, <code>secret_key</code>, <code>session_dep</code>, <code>keystore_dep</code></td>
+<td><code>AccountModel</code>, <code>oauth_token_url</code>, <code>secret_key</code>, <code>session_dep</code>, <code>keystore_dep</code>, <code>get_current_tenant</code></td>
 <td><code>get_current_account</code>, <code>get_current_account_or_none</code>, <code>get_current_active_account</code>, <code>get_current_active_superuser</code>, <code>RoleCheck</code></td>
 </tr>
 <tr>
@@ -3867,15 +3867,16 @@
 <span class="c1"># Account, get_session, get_keystore and settings are your app's own objects.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
 
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">account_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
     <span class="n">oauth_token_url</span><span class="o">=</span><span class="s2">"/api/v1/login/access-token"</span><span class="p">,</span>
     <span class="n">secret_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
-    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">scope_deps</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>

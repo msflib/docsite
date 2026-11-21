@@ -4446,8 +4446,9 @@ Remove this note when #397 lands.</p>
 <li><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> (<code>msflib-auth</code>) are the path for simple
   apps; they decide through the evaluator too. Recommend authz role-permission
   for enterprise and multi-tenant apps.</li>
-<li>A role source fills the principal's roles: <code>msflib.auth.roles.build_role_source</code>
-  for role attributes, and authz for assignments. Pass <code>is_tenant_member</code> in a
+<li>A role source gives the guard the caller's roles where the check runs:
+  <code>msflib.auth.roles.build_role_source</code> for role attributes, and authz for
+  assignments. <code>build_guard</code> takes it with <code>role_registry</code>. Pass <code>is_tenant_member</code> in a
   multi-tenant app, because an account has no tenant of its own.</li>
 </ul>
 

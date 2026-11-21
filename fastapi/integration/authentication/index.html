@@ -4008,17 +4008,22 @@
 <p>You create the dependency namespace once and pass pieces of it to the routers. This is the setup from the previous guide:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
 
 <span class="n">get_session</span> <span class="o">=</span> <span class="n">get_session_factory</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
 <span class="n">get_keystore</span> <span class="o">=</span> <span class="n">get_keystore_factory</span><span class="p">()</span>
 
+<span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
+    <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span> <span class="n">tenancy_settings</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"TENANCY"</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">auth_deps</span> <span class="o">=</span> <span class="n">get_account_dependencies</span><span class="p">(</span>
     <span class="n">AccountModel</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>
     <span class="n">oauth_token_url</span><span class="o">=</span><span class="s2">"/api/v1/login"</span><span class="p">,</span>
     <span class="n">secret_key</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">"CORE"</span><span class="p">)</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">,</span>
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
+    <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
@@ -4034,6 +4039,7 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
+<p><code>RoleCheck</code> decides in the request's tenant, so build the tenant dependencies before the account dependencies. A site that does not use tenancy passes the same resolver; it falls back to the default tenant.</p>
 <p>The secret passed to <code>get_account_dependencies</code> and the one in <code>settings</code> must be the same value, since one signs and the other verifies. <code>active_statuses</code> (on both the router and the dependencies) lists the account statuses that count as active; the default is <code>["active", "online"]</code>. Pass the same list to both.</p>
 <h2 id="2-log-in">2. Log in<a class="headerlink" href="#2-log-in" title="Permanent link">&para;</a></h2>
 <p><code>POST /login</code> takes an OAuth2 password form, so the fields are form-encoded and the email goes in <code>username</code>.</p>
@@ -4092,8 +4098,8 @@
 </tr>
 <tr>
 <td><code>RoleCheck(roles)</code></td>
-<td>The account's <code>role</code> is in <code>roles</code></td>
-<td><code>403 Not authorized</code></td>
+<td>The request has a tenant, and the account's <code>role</code> is in <code>roles</code></td>
+<td><code>401 Authentication required</code> (account without an id), <code>403 No tenant resolved for this request.</code>, or <code>403 Not authorized</code></td>
 </tr>
 </tbody>
 </table>
@@ -4280,8 +4286,8 @@
 </tr>
 <tr>
 <td><code>WorkspaceRoleCheck(roles)</code></td>
-<td>The membership <code>type</code> is in <code>roles</code> (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>)</td>
-<td><code>403 Not authorized</code></td>
+<td>The membership <code>type</code> is in <code>roles</code> (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>), in a workspace of the request's tenant</td>
+<td><code>404 No active workspace.</code> (another tenant's workspace) or <code>403 Not authorized</code></td>
 </tr>
 </tbody>
 </table>
