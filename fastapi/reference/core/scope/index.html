@@ -8708,7 +8708,7 @@ scope_map = compiler.compile_map(envelope, operation="retrieval.search")
 
 
 <h4 id="msflib.scope.DimensionCompiler.register_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.DimensionCompiler.register_profile" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -8716,7 +8716,7 @@ scope_map = compiler.compile_map(envelope, operation="retrieval.search")
     <div class="doc doc-contents ">
 
         <p>Register (or replace) an operation profile by <em>name</em>.</p>
-<p><code>scope_type</code> is checked against the profile as in
+<p><code>scope_class</code> is checked against the profile as in
 :meth:<code>ProfileRegistry.register</code>.</p>
 
 
@@ -10041,7 +10041,7 @@ workspace-less bucket per decision D3).</p>
 
 
 <h4 id="msflib.scope.ScopeEnvelope.build" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build</span><span class="p">(</span><span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">principal</span><span class="p">:</span> <span class="n">PrincipalContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dimensions</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build</span><span class="p">(</span><span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">principal</span><span class="p">:</span> <span class="n">PrincipalContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dimensions</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -10052,8 +10052,8 @@ workspace-less bucket per decision D3).</p>
 
     <div class="doc doc-contents ">
 
-        <p>An envelope whose scope is a <code>scope_type</code> holding <code>dimensions</code>.</p>
-<p>Each dimension is a field of <code>scope_type</code> and holds the field's type; a
+        <p>An envelope whose scope is a <code>scope_class</code> holding <code>dimensions</code>.</p>
+<p>Each dimension is a field of <code>scope_class</code> and holds the field's type; a
 field left out takes its default. Raises <code>ScopeValidationError</code> for an
 unknown name, a value of the wrong type or a field with no value.</p>
 
@@ -10066,17 +10066,17 @@ unknown name, a value of the wrong type or a field with no value.</p>
 
 
 <h4 id="msflib.scope.ScopeEnvelope.extend" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">**</span><span class="n">selectors</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">**</span><span class="n">selectors</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
 
 <a href="#msflib.scope.ScopeEnvelope.extend" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>This envelope with its scope extended to <code>scope_type</code>.</p>
+        <p>This envelope with its scope extended to <code>scope_class</code>.</p>
 <p>A field takes its selector, else the value this envelope's scope holds, else
 its default; the principal, attributes and metadata are kept. Nothing is
-parsed. Raises <code>ScopeValidationError</code> for a selector <code>scope_type</code> has no
+parsed. Raises <code>ScopeValidationError</code> for a selector <code>scope_class</code> has no
 field for, a value of the wrong type or a field with no value.</p>
 
 
@@ -10289,7 +10289,7 @@ with <code>"&lt;redacted&gt;"</code> when <code>registry</code> is provided.</p>
 
 
 <h4 id="msflib.scope.TenantPlacement.of" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">of</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">PlacedRow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TenantPlacement</span></code>
+            <code class="highlight language-python"><span class="n">of</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">PlacedRow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -10301,6 +10301,7 @@ with <code>"&lt;redacted&gt;"</code> when <code>registry</code> is provided.</p>
     <div class="doc doc-contents ">
 
         <p>The placement <code>source</code> names: a stored row's, or the scope a new row is written in.</p>
+<p>Reads each of the placement's dimensions off <code>source</code>.</p>
 
 
     </div>
@@ -10311,7 +10312,7 @@ with <code>"&lt;redacted&gt;"</code> when <code>registry</code> is provided.</p>
 
 
 <h4 id="msflib.scope.TenantPlacement.values" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">values</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">values</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.scope.TenantPlacement.values" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -11318,7 +11319,7 @@ automatically loaded at construction time.</p>
 
 
 <h4 id="msflib.scope.ProfileRegistry.register" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.ProfileRegistry.register" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -11374,7 +11375,7 @@ automatically loaded at construction time.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>scope_type</code>
+                <code>scope_class</code>
             </td>
             <td>
                   <code><span title="type">type</span> | None</code>
@@ -11421,7 +11422,7 @@ and not on the first request.</p>
             <td>
               <div class="doc-md-description">
                 <p>If <em>profile</em> declares overlapping required
-and required_nullable dimensions, or disagrees with <em>scope_type</em>.</p>
+and required_nullable dimensions, or disagrees with <em>scope_class</em>.</p>
               </div>
             </td>
           </tr>
@@ -12419,7 +12420,7 @@ deterministic and derived from the same canonical ordered shape.</p>
 
 
 <h5 id="msflib.scope.compiler.DimensionCompiler.register_profile" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register_profile</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.compiler.DimensionCompiler.register_profile" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -12427,7 +12428,7 @@ deterministic and derived from the same canonical ordered shape.</p>
     <div class="doc doc-contents ">
 
         <p>Register (or replace) an operation profile by <em>name</em>.</p>
-<p><code>scope_type</code> is checked against the profile as in
+<p><code>scope_class</code> is checked against the profile as in
 :meth:<code>ProfileRegistry.register</code>.</p>
 
 
@@ -14264,7 +14265,7 @@ workspace-less bucket per decision D3).</p>
 
 
 <h5 id="msflib.scope.model.ScopeEnvelope.build" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build</span><span class="p">(</span><span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">principal</span><span class="p">:</span> <span class="n">PrincipalContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dimensions</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build</span><span class="p">(</span><span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">principal</span><span class="p">:</span> <span class="n">PrincipalContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dimensions</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -14275,8 +14276,8 @@ workspace-less bucket per decision D3).</p>
 
     <div class="doc doc-contents ">
 
-        <p>An envelope whose scope is a <code>scope_type</code> holding <code>dimensions</code>.</p>
-<p>Each dimension is a field of <code>scope_type</code> and holds the field's type; a
+        <p>An envelope whose scope is a <code>scope_class</code> holding <code>dimensions</code>.</p>
+<p>Each dimension is a field of <code>scope_class</code> and holds the field's type; a
 field left out takes its default. Raises <code>ScopeValidationError</code> for an
 unknown name, a value of the wrong type or a field with no value.</p>
 
@@ -14289,17 +14290,17 @@ unknown name, a value of the wrong type or a field with no value.</p>
 
 
 <h5 id="msflib.scope.model.ScopeEnvelope.extend" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">**</span><span class="n">selectors</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">extend</span><span class="p">(</span><span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">],</span> <span class="o">**</span><span class="n">selectors</span><span class="p">:</span> <span class="n">DimensionValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">OtherScopeT</span><span class="p">]</span></code>
 
 <a href="#msflib.scope.model.ScopeEnvelope.extend" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>This envelope with its scope extended to <code>scope_type</code>.</p>
+        <p>This envelope with its scope extended to <code>scope_class</code>.</p>
 <p>A field takes its selector, else the value this envelope's scope holds, else
 its default; the principal, attributes and metadata are kept. Nothing is
-parsed. Raises <code>ScopeValidationError</code> for a selector <code>scope_type</code> has no
+parsed. Raises <code>ScopeValidationError</code> for a selector <code>scope_class</code> has no
 field for, a value of the wrong type or a field with no value.</p>
 
 
@@ -14463,6 +14464,8 @@ id field must hold a row id, and <code>None</code> stays <code>None</code>.</p>
 <p>A placement belongs to a resource and is set when it is written; a request has a
 scope (<code>TenantScope</code>) instead. The two carry the same fields, but are not
 interchangeable.</p>
+<p>A narrower placement is a subclass that adds its dimensions as fields; <code>of</code> and
+<code>values</code> cover them without being redefined.</p>
 
 
 
@@ -14577,7 +14580,7 @@ interchangeable.</p>
 
 
 <h5 id="msflib.scope.placement.TenantPlacement.of" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">of</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">PlacedRow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TenantPlacement</span></code>
+            <code class="highlight language-python"><span class="n">of</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">PlacedRow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -14589,6 +14592,7 @@ interchangeable.</p>
     <div class="doc doc-contents ">
 
         <p>The placement <code>source</code> names: a stored row's, or the scope a new row is written in.</p>
+<p>Reads each of the placement's dimensions off <code>source</code>.</p>
 
 
     </div>
@@ -14599,7 +14603,7 @@ interchangeable.</p>
 
 
 <h5 id="msflib.scope.placement.TenantPlacement.values" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">values</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">values</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
 <a href="#msflib.scope.placement.TenantPlacement.values" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -15731,7 +15735,7 @@ automatically loaded at construction time.</p>
 
 
 <h5 id="msflib.scope.profiles.ProfileRegistry.register" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.scope.profiles.ProfileRegistry.register" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -15787,7 +15791,7 @@ automatically loaded at construction time.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>scope_type</code>
+                <code>scope_class</code>
             </td>
             <td>
                   <code><span title="type">type</span> | None</code>
@@ -15834,7 +15838,7 @@ and not on the first request.</p>
             <td>
               <div class="doc-md-description">
                 <p>If <em>profile</em> declares overlapping required
-and required_nullable dimensions, or disagrees with <em>scope_type</em>.</p>
+and required_nullable dimensions, or disagrees with <em>scope_class</em>.</p>
               </div>
             </td>
           </tr>
@@ -16520,14 +16524,14 @@ Match semantics belong to the action that filters on a field, not to the type.</
 
 
 <h4 id="msflib.scope.typed.find_mismatches" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">find_mismatches</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">scope_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">find_mismatches</span><span class="p">(</span><span class="n">profile</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">scope_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
 <a href="#msflib.scope.typed.find_mismatches" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>List how <code>profile</code> disagrees with the dataclass <code>scope_type</code>.</p>
+        <p>List how <code>profile</code> disagrees with the dataclass <code>scope_class</code>.</p>
 <p>The profile is the policy view of a scope and the dataclass is the working
 view; both name which dimensions are required, required-nullable or optional.
 A field with no default must sit in the matching tier, a field with a default

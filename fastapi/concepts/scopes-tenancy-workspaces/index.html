@@ -4027,7 +4027,7 @@
 <ul>
 <li>A selector must name a field of the scope class and hold the field's type. Nothing is parsed: an <code>int</code> field takes an <code>int</code>, not <code>"7"</code>.</li>
 <li>A null selector keeps <code>None</code> on a nullable field and is rejected on a non-nullable one. The field default applies only when neither a selector nor the envelope's scope supplies the field. A field with no value and no default fails.</li>
-<li><code>validate_profile</code> rejects a null required dimension and a set dimension the profile does not declare. Registering the profile with <code>scope_type=</code> checks the class against it at startup.</li>
+<li><code>validate_profile</code> rejects a null required dimension and a set dimension the profile does not declare. Registering the profile with <code>scope_class=</code> checks the class against it at startup.</li>
 </ul>
 <p><code>ScopeEnvelope.build(ScopeType, principal=..., **dimensions)</code> makes an envelope from dimension names and values, with the same checks.</p>
 <p>The type shares fields, not match semantics. Whether <code>None</code> means "only the workspace-less bucket" or something wider is decided by the action method that filters on it. See SCP-4 in the <a href="../../contributing/guidelines/architecture/">architecture guidelines</a>.</p>

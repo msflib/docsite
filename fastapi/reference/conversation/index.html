@@ -10466,7 +10466,7 @@ write conversation state under a guessed tenant.</p>
 
 
 <h4 id="msflib.conversation.integrations.ai_bridge.cleanup_ai_core_memories" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">cleanup_ai_core_memories</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">memory_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+            <code class="highlight language-python"><span class="n">cleanup_ai_core_memories</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">memory_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
 
 <a href="#msflib.conversation.integrations.ai_bridge.cleanup_ai_core_memories" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -10481,9 +10481,9 @@ doesn't outlive the transcript it was extracted from. No-ops (returns
 <code>conversation_id</code> dimension of its own, so conversation identity is
 threaded through as <code>sub_namespace</code> instead (an opaque segment
 <code>scoped_namespace</code> appends after <code>memory_type</code>).</p>
-<p>Only the tenant and workspace of <code>scope</code> are used: a purge clears the conversation's
-memories for every caller, and a request envelope's selectors (conversation, sub-thread)
-are not memory dimensions.</p>
+<p><code>placement</code> is the tenant and workspace the conversation lives in: a purge clears
+the conversation's memories for every caller, so it runs from the conversation's
+placement and not from any one request.</p>
 
 
     </div>

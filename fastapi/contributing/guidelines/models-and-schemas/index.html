@@ -3956,7 +3956,7 @@ a cross-entity <code>schema.py</code>; when reworking a module that has one, del
 nothing in it lacks a model-file home. Existing <code>schema.py</code> files are not
 moved as a side effect of other work.</p>
 <p>Shared column groups go in <code>SchemaBase</code> mixins (<code>AccountFieldsMixin</code>,
-<code>KnowledgeScopeMixin</code>).</p>
+<code>KnowledgePlacementMixin</code>).</p>
 <h3 id="mdl-3-createupdate-hold-only-caller-supplied-fields">MDL-3 · <code>Create</code>/<code>Update</code> hold only caller-supplied fields<a class="headerlink" href="#mdl-3-createupdate-hold-only-caller-supplied-fields" title="Permanent link">&para;</a></h3>
 <p>Anything the server derives — principal, path-resolved ids, tenant/workspace
 scope, computed defaults, timestamps, counters — stays off the schema, even as
@@ -3991,7 +3991,7 @@ define <code>Read</code> classes speculatively; an unused <code>Read</code> is d
 <p>If a child table's queries really need scope columns, denormalise every
 dimension they filter on, never tenant alone. Otherwise the parent foreign key
 is the single source of truth, and the few queries that need scope join to the
-parent. Symmetric precedent: <code>KnowledgeScopeMixin</code>.</p>
+parent. Symmetric precedent: <code>KnowledgePlacementMixin</code>.</p>
 <h3 id="mdl-8-use-portable-column-types">MDL-8 · Use portable column types<a class="headerlink" href="#mdl-8-use-portable-column-types" title="Permanent link">&para;</a></h3>
 <p>Use <code>sqlalchemy.JSON</code>, not <code>JSONB</code>, unless a Postgres-only feature is required;
 tests run on SQLite.</p>

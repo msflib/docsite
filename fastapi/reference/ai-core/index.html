@@ -3905,6 +3905,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.ai_core.services.memory_store_policy.MemoryStoreScope.from_placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from_placement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ai_core.services.memory_store_policy.MemoryStoreScope.scoped_namespace" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7664,6 +7675,17 @@
     <span class="md-ellipsis">
       
         from_envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.ai_core.services.memory_store_policy.MemoryStoreScope.from_placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from_placement
       
     </span>
   </a>
@@ -12654,7 +12676,7 @@ future caller) share one implementation instead of drifting.</p>
 
 
 <h4 id="msflib.ai_core.services.memory_store_policy.MemoryStoreScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">MemoryStoreScope</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">MemoryStoreScope</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">|</span> <span class="n">TenantPlacement</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
@@ -12667,8 +12689,9 @@ future caller) share one implementation instead of drifting.</p>
 
 
 
-        <p>Thin scope wrapper that validates and produces LangGraph memory namespace keys.</p>
-<p>The envelope carries the cross-cutting dimensions (tenant, workspace).
+        <p>Thin wrapper that validates and produces LangGraph memory namespace keys.</p>
+<p><code>source</code> carries the cross-cutting dimensions (tenant, workspace): a request's
+<code>ScopeEnvelope</code>, or the placement of the memories for code that has no request.
 Memory-type routing (semantic, episodic, etc.) is an ai_core-level concern
 and is supplied at namespace-construction time via :meth:<code>scoped_namespace</code>.</p>
 
@@ -12708,7 +12731,30 @@ and is supplied at namespace-construction time via :meth:<code>scoped_namespace<
 
     <div class="doc doc-contents ">
 
-        <p>Validate <em>envelope</em> against the memory profile and return a new instance.</p>
+        <p>The memory namespaces a request at <em>envelope</em> reads and writes.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.ai_core.services.memory_store_policy.MemoryStoreScope.from_placement" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">from_placement</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">TenantPlacement</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MemoryStoreScope</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#msflib.ai_core.services.memory_store_policy.MemoryStoreScope.from_placement" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The memory namespaces of the memories that live at <em>placement</em>.</p>
+<p>For a worker or an event handler, which has no request and so no envelope.</p>
 
 
     </div>

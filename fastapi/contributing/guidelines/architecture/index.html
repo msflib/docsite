@@ -4149,7 +4149,7 @@ come from <code>get_scope_dependencies</code>; <code>get_scope_ids</code> is dep
 doesn't call it. <code>TenantScope</code> (<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a
 module needing more dimensions subclasses it and does not redeclare the
 identity pair.
-Register the profile with <code>scope_type=</code> so it is checked against the dataclass at
+Register the profile with <code>scope_class=</code> so it is checked against the dataclass at
 startup; the profile stays hand-written because one type can serve operations with
 different required dimensions. Filter on the
 typed object, never on raw <code>ScopeEnvelope.get_dim(...)</code> calls, and don't parse
@@ -4169,11 +4169,9 @@ and <code>ai_core/services/scope_metadata.py</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Target design (msflib/fastapi#403)</p>
 <p>The vocabulary and naming rules apply now. These parts are planned, not yet in
-code: the shared per-facet filter helper, module <code>*Placement</code> types, and
-reach filtering in search. The existing filters were written before this rule and
-differ from one another: knowledge <code>scoped_statement</code>, documents
-<code>list_for_scope</code>, and ai_core retrieval metadata. #403 brings them in line.
-Also planned: the placement reader that replaces <code>RowScope</code> (#403).</p>
+code: the shared per-facet filter helper and reach filtering in search. The
+existing filters were written before this rule and differ from one another: knowledge <code>scoped_statement</code>, documents
+<code>list_for_scope</code>, and ai_core retrieval metadata. #403 brings them in line.</p>
 </div>
 <p>Each word has one meaning:</p>
 <table>
@@ -4196,7 +4194,7 @@ Also planned: the placement reader that replaces <code>RowScope</code> (#403).</
 <td><code>*Placement</code></td>
 <td>a resource</td>
 <td>Where the resource lives. Set on write; changed only by promotion or a move.</td>
-<td><code>KnowledgePlacement</code> (planned)</td>
+<td><code>TenantPlacement</code>, <code>RecordPlacement</code>, <code>DocumentPlacement</code></td>
 </tr>
 <tr>
 <td><code>*Reach</code></td>
@@ -4273,8 +4271,9 @@ before a function takes an envelope, ask what its final filter is for:</p>
 from a row so a job can call a function, is a sign the function wanted a
 placement.</p>
 <p>A worker or an event handler has no request, so it has no envelope: it reads the
-placement of the row it acts for. <code>RowScope</code> and the knowledge write path
-predate this rule and build an envelope from a row; #403 replaces them.</p>
+placement of the row it acts for (<code>msflib.core.records.PlacementReader</code> reads one
+off any row). Two sites still hand ai_core's registry an envelope built from a
+record, to pick an LLM; #401 removes them.</p>
 <p>Don't add core types for stored grants, or module types that duplicate
 authz's. A module may still define its own <code>*Reach</code> for reach it derives
 itself, such as <code>KnowledgeReach</code> from memberships (planned in #403) or
@@ -4292,9 +4291,8 @@ itself, such as <code>KnowledgeReach</code> from memberships (planned in #403) o
 <li><code>ConfigTier</code> (workspace_config) and <code>ProviderTier</code> (ai_core) also have a
   <code>user</code> level. That level is the account facet, not a tier: the tiers in those
   enums follow this rule, and #403 separates the account facet from them.</li>
-<li><code>settings.scope("AI_CORE")</code> is a settings namespace, and the <code>scope_type=</code>
-  parameter of <code>ProfileRegistry.register</code> takes a scope dataclass. Neither is a
-  tier.</li>
+<li><code>settings.scope("AI_CORE")</code> is a settings namespace, not a tier. The scope
+  dataclass a profile is checked against is passed as <code>scope_class=</code>.</li>
 </ul>
 <p><strong>Tiers and facets.</strong> A scope dimension is either a tier or a facet.</p>
 <ul>

@@ -4013,22 +4013,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope" class="md-nav__link">
+  <a href="#msflib.core.records.placement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        scope
+        placement
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="scope">
+    <nav class="md-nav" aria-label="placement">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.RecordScope" class="md-nav__link">
+  <a href="#msflib.core.records.placement.RecordPlacement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RecordScope
+        RecordPlacement
       
     </span>
   </a>
@@ -4036,19 +4036,19 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.RowScope" class="md-nav__link">
+  <a href="#msflib.core.records.placement.PlacementReader" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RowScope
+        PlacementReader
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="RowScope">
+    <nav class="md-nav" aria-label="PlacementReader">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.RowScope.bind" class="md-nav__link">
+  <a href="#msflib.core.records.placement.PlacementReader.bind" class="md-nav__link">
     <span class="md-ellipsis">
       
         bind
@@ -4064,10 +4064,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.scope_from_row" class="md-nav__link">
+  <a href="#msflib.core.records.placement.placement_from_row" class="md-nav__link">
     <span class="md-ellipsis">
       
-        scope_from_row
+        placement_from_row
       
     </span>
   </a>
@@ -8286,22 +8286,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope" class="md-nav__link">
+  <a href="#msflib.core.records.placement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        scope
+        placement
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="scope">
+    <nav class="md-nav" aria-label="placement">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.RecordScope" class="md-nav__link">
+  <a href="#msflib.core.records.placement.RecordPlacement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RecordScope
+        RecordPlacement
       
     </span>
   </a>
@@ -8309,19 +8309,19 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.RowScope" class="md-nav__link">
+  <a href="#msflib.core.records.placement.PlacementReader" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RowScope
+        PlacementReader
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="RowScope">
+    <nav class="md-nav" aria-label="PlacementReader">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.RowScope.bind" class="md-nav__link">
+  <a href="#msflib.core.records.placement.PlacementReader.bind" class="md-nav__link">
     <span class="md-ellipsis">
       
         bind
@@ -8337,10 +8337,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.core.records.scope.scope_from_row" class="md-nav__link">
+  <a href="#msflib.core.records.placement.placement_from_row" class="md-nav__link">
     <span class="md-ellipsis">
       
-        scope_from_row
+        placement_from_row
       
     </span>
   </a>
@@ -13497,7 +13497,7 @@ as before: it can still time out, but cannot be stopped, so its late output is n
 
         <p>Helpers for turning app data and rows into structured records.</p>
 <p>Payload normalization, field selection, content hashing, row versions, row
-scope and primary-key ids. <code>ModelAction</code> write hooks live in
+placement and primary-key ids. <code>ModelAction</code> write hooks live in
 <code>msflib.actions</code>; sensitive-key
 handling lives in <code>msflib.core.pii</code>.</p>
 
@@ -13849,15 +13849,15 @@ Pass <code>sensitive_fields=()</code> to disable that deliberately.</p>
 
 
 
-<h4 id="msflib.core.records.scope" class="doc doc-heading">
-            <code>scope</code>
+<h4 id="msflib.core.records.placement" class="doc doc-heading">
+            <code>placement</code>
 
 
-<a href="#msflib.core.records.scope" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.core.records.placement" class="headerlink" title="Permanent link">&para;</a></h4>
 
     <div class="doc doc-contents ">
 
-        <p>Read a row's tenant, workspace, project, conversation and sub-thread into a <code>ScopeEnvelope</code>.</p>
+        <p>Read a row's placement: its tenant, workspace, project, conversation and sub-thread.</p>
 <p><code>workspace_id</code> must be mapped to a real attribute, or set to <code>None</code> to
 put every row in the anonymous workspace; a model that lacks it never lands
 there silently.</p>
@@ -13885,29 +13885,27 @@ there silently.</p>
 
 
 
-<h5 id="msflib.core.records.scope.RecordScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">RecordScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+<h5 id="msflib.core.records.placement.RecordPlacement" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">RecordPlacement</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">workspace_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
   </span>
 
-<a href="#msflib.core.records.scope.RecordScope" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#msflib.core.records.placement.RecordPlacement" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="TenantScope(tenant_id: int, workspace_id: int | None)
+              Bases: <code><a class="autorefs autorefs-internal" title="TenantPlacement(tenant_id: int, workspace_id: int | None)
 
   
       dataclass
-   (msflib.scope.TenantScope)" href="../scope/#msflib.scope.TenantScope">TenantScope</a></code></p>
+   (msflib.scope.TenantPlacement)" href="../scope/#msflib.scope.TenantPlacement">TenantPlacement</a></code></p>
 
 
 
-        <p>The scope an operation on a row runs in, read from the row's placement.</p>
-<p>A row has a placement, not a scope (SCP-5); this is the scope a job acting for
-that row works in: the row's tenant and workspace, and its narrower dimensions.</p>
+        <p>Where a row lives: its tenant and workspace, and its narrower dimensions.</p>
 
 
 
@@ -13942,21 +13940,21 @@ that row works in: the row's tenant and workspace, and its narrower dimensions.<
 
 
 
-<h5 id="msflib.core.records.scope.RowScope" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">RowScope</span><span class="p">(</span><span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span></code>
+<h5 id="msflib.core.records.placement.PlacementReader" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">PlacementReader</span><span class="p">(</span><span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
   </span>
 
-<a href="#msflib.core.records.scope.RowScope" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#msflib.core.records.placement.PlacementReader" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
 
 
-        <p>How to read each scope dimension off a row: attribute name, callable, or <code>None</code>.</p>
+        <p>How to read each placement dimension off a row: attribute name, callable, or <code>None</code>.</p>
 <p><code>project</code>/<code>conversation</code>/<code>sub_thread</code> default to <code>"auto"</code>: the
 conventionally named attribute when the model has it, otherwise <code>None</code>.</p>
 
@@ -13984,10 +13982,10 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 <div class="doc doc-object doc-function">
 
 
-<h6 id="msflib.core.records.scope.RowScope.bind" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RowScope</span></code>
+<h6 id="msflib.core.records.placement.PlacementReader.bind" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlacementReader</span></code>
 
-<a href="#msflib.core.records.scope.RowScope.bind" class="headerlink" title="Permanent link">&para;</a></h6>
+<a href="#msflib.core.records.placement.PlacementReader.bind" class="headerlink" title="Permanent link">&para;</a></h6>
 
 
     <div class="doc doc-contents ">
@@ -14011,15 +14009,15 @@ conventionally named attribute when the model has it, otherwise <code>None</code
 <div class="doc doc-object doc-function">
 
 
-<h5 id="msflib.core.records.scope.scope_from_row" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">scope_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">ScopeField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
+<h5 id="msflib.core.records.placement.placement_from_row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">placement_from_row</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tenant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'tenant_id'</span><span class="p">,</span> <span class="n">workspace</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">=</span> <span class="s1">'workspace_id'</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">,</span> <span class="n">sub_thread</span><span class="p">:</span> <span class="n">PlacementField</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">AUTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RecordPlacement</span></code>
 
-<a href="#msflib.core.records.scope.scope_from_row" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#msflib.core.records.placement.placement_from_row" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
-        <p>One-shot <code>RowScope(...).bind(type(row)).read(row)</code>.</p>
+        <p>One-shot <code>PlacementReader(...).bind(type(row)).read(row)</code>.</p>
 
 
     </div>
