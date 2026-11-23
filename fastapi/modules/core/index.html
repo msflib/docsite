@@ -4725,7 +4725,11 @@ AUTH__ENABLE_GOOGLE_OAUTH=true
 
 <span class="n">envelope</span> <span class="o">=</span> <span class="n">build_context_envelope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">compiler</span> <span class="o">=</span> <span class="n">DimensionCompiler</span><span class="p">(</span><span class="n">registry</span><span class="o">=</span><span class="n">create_default_registry</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"retrieval.search"</span><span class="p">))</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">register_profile</span><span class="p">(</span>
+    <span class="s2">"items.search"</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"tenant_id"</span><span class="p">],</span> <span class="s2">"required_nullable"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"workspace_id"</span><span class="p">,</span> <span class="s2">"account_id"</span><span class="p">]},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">))</span>
 <span class="c1"># t/1/a/3/w/7</span>
 </code></pre></div>
 <h3 id="passwords-and-tokens">Passwords and tokens<a class="headerlink" href="#passwords-and-tokens" title="Permanent link">&para;</a></h3>

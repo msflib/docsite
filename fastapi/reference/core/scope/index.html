@@ -8916,6 +8916,10 @@ belong in the subsystem classes that use them (e.g., CheckpointScope, factories)
 
 registry = create_default_registry()
 compiler = DimensionCompiler(registry=registry)
+compiler.register_profile(
+    "items.search",
+    {"required": ["tenant_id"], "required_nullable": ["workspace_id", "account_id"]},
+)
 
 # ``scope`` is where the request is; ``principal`` is who is calling.
 envelope = ScopeEnvelope(
@@ -8924,13 +8928,13 @@ envelope = ScopeEnvelope(
 )
 
 # Compile to canonical scope string
-scope_string = compiler.compile_string(envelope, operation="retrieval.search")
+scope_string = compiler.compile_string(envelope, operation="items.search")
 
 # Compile to canonical scope segments tuple
-segments = compiler.compile_segments(envelope, operation="retrieval.search")
+segments = compiler.compile_segments(envelope, operation="items.search")
 
 # Compile to canonical scope mapping
-scope_map = compiler.compile_map(envelope, operation="retrieval.search")
+scope_map = compiler.compile_map(envelope, operation="items.search")
 </code></pre></div>
 
 
@@ -9001,7 +9005,7 @@ scope_map = compiler.compile_map(envelope, operation="retrieval.search")
                 <code>profile_registry</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="ProfileRegistry(*, load_built_ins: bool = True) (msflib.scope.profiles.ProfileRegistry)" href="#msflib.scope.profiles.ProfileRegistry">ProfileRegistry</a> | None</code>
+                  <code><a class="autorefs autorefs-internal" title="ProfileRegistry() (msflib.scope.profiles.ProfileRegistry)" href="#msflib.scope.profiles.ProfileRegistry">ProfileRegistry</a> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -11779,7 +11783,7 @@ for observability and debugging.</p>
 
 
 <h3 id="msflib.scope.ProfileRegistry" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">ProfileRegistry</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">load_built_ins</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">ProfileRegistry</span><span class="p">()</span></code>
 
 <a href="#msflib.scope.ProfileRegistry" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -11802,8 +11806,8 @@ registry.register(
 profile = registry.get("my_op")
 </code></pre></div>
 
-<p>Built-in profiles (<code>retrieval.search</code>, <code>memory.put</code>, etc.) are
-automatically loaded at construction time.</p>
+<p>A registry starts empty. A module registers the profiles for its own operations in
+its <code>scope_profiles.py</code>.</p>
 
 
 
@@ -12892,7 +12896,7 @@ deterministic and derived from the same canonical ordered shape.</p>
                 <code>profile_registry</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="ProfileRegistry(*, load_built_ins: bool = True) (msflib.scope.profiles.ProfileRegistry)" href="#msflib.scope.profiles.ProfileRegistry">ProfileRegistry</a> | None</code>
+                  <code><a class="autorefs autorefs-internal" title="ProfileRegistry() (msflib.scope.profiles.ProfileRegistry)" href="#msflib.scope.profiles.ProfileRegistry">ProfileRegistry</a> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -16345,7 +16349,7 @@ Defaults to <code>"log-only"</code> (D5 locked decision).</p>
 
     <div class="doc doc-contents ">
 
-        <p>Operation profile registry and built-in profiles.</p>
+        <p>Operation profile registry.</p>
 <p>A profile defines the required/optional dimensions and policy-level
 enforcement settings for a named operation.  The compiler validates
 envelopes against profiles before compiling.</p>
@@ -16374,7 +16378,7 @@ envelopes against profiles before compiling.</p>
 
 
 <h4 id="msflib.scope.profiles.ProfileRegistry" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">ProfileRegistry</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">load_built_ins</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></code>
+              <code class="highlight language-python"><span class="n">ProfileRegistry</span><span class="p">()</span></code>
 
 <a href="#msflib.scope.profiles.ProfileRegistry" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -16397,8 +16401,8 @@ registry.register(
 profile = registry.get("my_op")
 </code></pre></div>
 
-<p>Built-in profiles (<code>retrieval.search</code>, <code>memory.put</code>, etc.) are
-automatically loaded at construction time.</p>
+<p>A registry starts empty. A module registers the profiles for its own operations in
+its <code>scope_profiles.py</code>.</p>
 
 
 
