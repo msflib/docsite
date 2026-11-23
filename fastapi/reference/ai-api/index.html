@@ -4585,6 +4585,9 @@ than re-implementing it; only adds the request-level <code>k</code> -&gt;
   resolved for the request's tenant/workspace/account tiers via
   ai_core's <code>get_provider_dependencies</code>, with the request's <code>k</code>
   (if set) layered on as <code>RETRIEVER_K</code>.</li>
+<li><code>get_store_ai_settings</code> — AICoreSettings resolved for the request's
+  tenant and workspace only, for choosing a vector store and its embeddings:
+  an index is shared, so no user-tier value may select it.</li>
 <li><code>get_registry_service</code> — ProviderRegistryService bound to the
   resolved settings (delegates to ai_core; see
   :func:<code>msflib.ai_core.deps.get_provider_dependencies</code>).</li>
@@ -5118,11 +5121,12 @@ goes into PrincipalContext only; the channel is a policy input, so it is an attr
 
     <div class="doc doc-contents ">
 
-        <p>Resolve a vector store from the caller's scope via the DB-backed registry.</p>
+        <p>Resolve a vector store for the request via the DB-backed registry.</p>
 <p>Unlike <code>resolve_default_vector_store</code> (static <code>AICoreSettings.VECTOR_STORE_*</code>,
 cached for the router's lifetime), this re-resolves per call against
-<code>VectorStoreProfile</code> rows ranked user &lt; workspace &lt; tenant &lt; global for
-<code>scope</code>, falling back to the static settings when none match or
+<code>VectorStoreProfile</code> rows ranked workspace &lt; tenant &lt; platform for the
+request's tenant and workspace (a store is shared, never per account), falling
+back to the static settings when none match or
 <code>DB_VECTOR_STORE_REGISTRY_ENABLED</code> is off. <code>ai_settings</code> should already
 be the per-request tiered settings from <code>get_ai_api_settings_dependencies</code> so a
 workspace-level <code>VECTOR_STORE_BACKEND</code> override is honored too.</p>

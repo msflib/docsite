@@ -11365,7 +11365,7 @@ remains for callers with no request/job context to route through.</p>
 
 
 <h4 id="msflib.knowledge.integrations.ai_core.resolve_registry_extractor" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">resolve_registry_extractor</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge.extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Extractor</span></code>
+            <code class="highlight language-python"><span class="n">resolve_registry_extractor</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">AccountPlacement</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge.extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Extractor</span></code>
 
 <a href="#msflib.knowledge.integrations.ai_core.resolve_registry_extractor" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -11378,11 +11378,11 @@ of a single static <code>LLM_*</code> config, so a tenant/workspace can bind
 <code>task</code> to a specific <code>AIProviderProfile</code> via
 <code>AICoreSettings.TASK_PROFILES</code> and gets automatic failover across
 candidates (see <code>ProviderRegistryService.build_llm_with_failover</code>). When
-no profile is registered for the scope, resolution falls back to the same
+no profile covers the placement, resolution falls back to the same
 static config <code>resolve_default_extractor</code> uses, so this is a strict
 superset — safe to use wherever a DB <code>session</code> is available.</p>
-<p><code>envelope</code> is the caller's (the worker's <code>_build_envelope</code>, say) and goes to the
-registry unchanged, so it is built in one place per call chain.</p>
+<p><code>placement</code> is where the extracted record lives and whose it is; the caller
+builds it once, from the record.</p>
 
 
     </div>
@@ -11532,7 +11532,7 @@ their parser directly. Imports nothing from <code>msflib.documents</code>.</p>
 
 
 <h4 id="msflib.knowledge.integrations.extraction_common.default_llm_parser" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">default_llm_parser</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ontology</span><span class="p">:</span> <span class="n">OntologyRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMExtractionParser</span></code>
+            <code class="highlight language-python"><span class="n">default_llm_parser</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">placement</span><span class="p">:</span> <span class="n">AccountPlacement</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ontology</span><span class="p">:</span> <span class="n">OntologyRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'knowledge extraction'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LLMExtractionParser</span></code>
 
 <a href="#msflib.knowledge.integrations.extraction_common.default_llm_parser" class="headerlink" title="Permanent link">&para;</a></h4>
 

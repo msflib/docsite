@@ -4490,6 +4490,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.core.validators.is_valid_int_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_valid_int_row_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.core.validators.validate_cors_url" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8756,6 +8767,17 @@
     <span class="md-ellipsis">
       
         is_valid_row_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.core.validators.is_valid_int_row_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_valid_int_row_id
       
     </span>
   </a>
@@ -15259,6 +15281,25 @@ time instead of relying on this alone.</p>
 <p>An <code>int</code> from 1 to <code>INTEGER_MAX</code> passes, and so does its decimal string
 written without leading zeros (one row, one spelling). <code>None</code> passes: whether
 a value may be null is the caller's rule, not the id's. <code>bool</code> does not pass.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.core.validators.is_valid_int_row_id" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_valid_int_row_id</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#msflib.core.validators.is_valid_int_row_id" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether <code>value</code> is an <code>int</code> a database row can have as its id.</p>
+<p>Stricter than :func:<code>is_valid_row_id</code>: <code>None</code> and an id's string form fail.</p>
 
 
     </div>
