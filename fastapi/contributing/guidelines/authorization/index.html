@@ -3955,7 +3955,7 @@ assignments another way, or a second copy of the rule.</p>
 three checks.</p>
 <h3 id="auz-3-compare-roles-by-tier-qualified-key">AUZ-3 · Compare roles by tier-qualified key<a class="headerlink" href="#auz-3-compare-roles-by-tier-qualified-key" title="Permanent link">&para;</a></h3>
 <p>Use <code>RoleKey(tier, key)</code>. A bare key cannot tell the seeded tenant <code>admin</code> from
-the workspace <code>admin</code>. The authz guards (<code>require_role</code>) take <code>RoleKey</code> only, and
+the workspace <code>admin</code>. <code>ROLE_REGISTRY</code> takes <code>RoleKey</code> only (a bare string is a <code>TypeError</code>), and
 a legacy <code>admin</code> mirrored by a backfill is a tenant-tier role that never satisfies
 a platform <code>RoleKey</code>.</p>
 <h3 id="auz-4-authority-comes-from-the-tier-never-from-null-ids">AUZ-4 · Authority comes from the tier, never from NULL ids<a class="headerlink" href="#auz-4-authority-comes-from-the-tier-never-from-null-ids" title="Permanent link">&para;</a></h3>
@@ -3966,13 +3966,14 @@ add database CHECKs for everything a single table can express.</p>
 <h3 id="auz-5-two-ways-to-guard-a-route-authz-does-not-leak-into-auth">AUZ-5 · Two ways to guard a route; authz does not leak into auth<a class="headerlink" href="#auz-5-two-ways-to-guard-a-route-authz-does-not-leak-into-auth" title="Permanent link">&para;</a></h3>
 <p><code>msflib-auth</code> guards (<code>RoleCheck</code>, <code>WorkspaceRoleCheck</code>) compare a role attribute
 and are supported as the simple way. <code>msflib-authz</code> guards read assignments:
-<code>require_permission(key, tier=...)</code> for an action, <code>require_role(RoleKey(tier, key))</code>
-for a role. Pick one way per route. <code>auth</code> must not import <code>authz</code>, and authz
-must not import <code>auth</code>; identity arrives as injected callables.</p>
+the <code>guard(key, tier=...)</code> from <code>get_authz_dependencies</code>, by permission key, with
+<code>role_registry=ROLE_REGISTRY</code> to accept registered roles too. Pick one way per
+route. <code>auth</code> must not import <code>authz</code>, and authz must not import <code>auth</code>; identity
+arrives as injected callables.</p>
 <p>Name permission keys <code>&lt;module&gt;.&lt;action&gt;</code>, register them at import time, and
 choose <code>tenant_cascade</code> deliberately: <code>True</code> lets a tenant-tier role grant the
-permission inside any workspace of its tenant. <code>require_role</code> takes <code>RoleKey</code>
-only; a bare string is a <code>TypeError</code>.</p>
+permission inside any workspace of its tenant. Register roles for a key as
+<code>RoleKey(tier, key)</code>, never a bare string.</p>
 <h3 id="auz-6-write-through-roleservice-actions-skip-validation">AUZ-6 · Write through <code>RoleService</code>; actions skip validation<a class="headerlink" href="#auz-6-write-through-roleservice-actions-skip-validation" title="Permanent link">&para;</a></h3>
 <p>Actions are plain data access. A row created through one is checked by nobody,
 so do it only in tests that need an invalid row. Actions take the client

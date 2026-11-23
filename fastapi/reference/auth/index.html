@@ -2665,10 +2665,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.auth.roles.holds" class="md-nav__link">
+  <a href="#msflib.auth.roles.add_roles" class="md-nav__link">
     <span class="md-ellipsis">
       
-        holds
+        add_roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.auth.roles.build_role_evaluator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_role_evaluator
       
     </span>
   </a>
@@ -4191,10 +4202,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.auth.roles.holds" class="md-nav__link">
+  <a href="#msflib.auth.roles.add_roles" class="md-nav__link">
     <span class="md-ellipsis">
       
-        holds
+        add_roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.auth.roles.build_role_evaluator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_role_evaluator
       
     </span>
   </a>
@@ -4566,6 +4588,8 @@ which falls back to the default tenant.</p>
 <li><code>RoleCheck</code>                   — callable class for role-based guards.</li>
 <li><code>get_current_tenant</code>          — the tenant resolver passed in, for
   <code>get_user_dependencies</code>.</li>
+<li><code>get_account_envelope</code>        — the request's envelope; its principal
+  holds the account's role.</li>
 </ul>
               </div>
             </td>
@@ -4661,7 +4685,8 @@ which falls back to the default tenant.</p>
             <td>
               <div class="doc-md-description">
                 <p>The namespace returned by :func:<code>get_account_dependencies</code>; its tenant
-resolver places the workspace, so a workspace of another tenant is a 404.</p>
+resolver places the workspace, so a workspace of another tenant is a 404, and
+its <code>get_account_envelope</code> gives the account's role.</p>
               </div>
             </td>
             <td>
@@ -4734,6 +4759,8 @@ resolver = PathParameterResolver()
 <li><code>get_current_workspace</code>           — requires authenticated account.</li>
 <li><code>get_current_workspace_anonymous</code> — no authentication needed.</li>
 <li><code>get_current_user</code>                — resolves workspace member.</li>
+<li><code>get_user_envelope</code>               — the request's envelope in its workspace;
+  its principal holds the account's role and the workspace user's type.</li>
 <li><code>WorkspaceRoleCheck</code>              — callable class for workspace role guards.</li>
 </ul>
               </div>
@@ -5406,18 +5433,38 @@ resolver = HttpHeaderResolver(header_name="X-Active-Workspace")
 <div class="doc doc-object doc-function">
 
 
-<h3 id="msflib.auth.roles.holds" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">holds</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">roles</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">],</span> <span class="n">required</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+<h3 id="msflib.auth.roles.add_roles" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">add_roles</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">roles</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
 
-<a href="#msflib.auth.roles.holds" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#msflib.auth.roles.add_roles" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Whether the envelope's caller, holding <code>roles</code>, holds any of <code>required</code>.</p>
-<p>The evaluator decides and records the check in the request's scope, including the
-denial of an envelope without a caller. With nothing <code>required</code> there is no
-constraint to evaluate, and it answers <code>False</code>.</p>
+        <p><code>envelope</code> with <code>roles</code> added to those its principal holds; unchanged without one.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="msflib.auth.roles.build_role_evaluator" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_role_evaluator</span><span class="p">(</span><span class="n">required</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ConstraintEvaluator</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.auth.roles.build_role_evaluator" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The evaluator a role check asks whether a principal holds any of <code>required</code>.</p>
+<p><code>permits(envelope)</code> decides and records the check in the request's scope,
+including the denial of an envelope without a caller. It runs at the <code>guard.check</code>
+profile's level: under <code>shadow</code> a denial is recorded and the request still passes.
+With nothing <code>required</code> there is no constraint to evaluate and it returns <code>None</code>;
+the check then denies.</p>
 
 
     </div>

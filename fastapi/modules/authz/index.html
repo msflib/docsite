@@ -589,10 +589,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#require_permission" class="md-nav__link">
+  <a href="#guard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        require_permission
+        guard
       
     </span>
   </a>
@@ -600,10 +600,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#require_role" class="md-nav__link">
+  <a href="#guard-by-role" class="md-nav__link">
     <span class="md-ellipsis">
       
-        require_role
+        Guard by role
       
     </span>
   </a>
@@ -4091,10 +4091,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#require_permission" class="md-nav__link">
+  <a href="#guard" class="md-nav__link">
     <span class="md-ellipsis">
       
-        require_permission
+        guard
       
     </span>
   </a>
@@ -4102,10 +4102,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#require_role" class="md-nav__link">
+  <a href="#guard-by-role" class="md-nav__link">
     <span class="md-ellipsis">
       
-        require_role
+        Guard by role
       
     </span>
   </a>
@@ -4420,8 +4420,8 @@
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
 <p><code>msflib-authz</code> stores roles and their permissions in the database and assigns them to accounts at runtime. It answers two questions:</p>
 <ul>
-<li><em>Does this account hold permission <code>X</code> here?</em> (<code>RoleService.has_permission</code>, the <code>require_permission</code> guard)</li>
-<li><em>Which roles does this account hold here?</em> (<code>RoleService.get_role_keys_for</code>, the <code>require_role</code> guard)</li>
+<li><em>Does this account hold permission <code>X</code> here?</em> (<code>RoleService.has_permission</code>, the authz <code>guard</code>)</li>
+<li><em>Which roles does this account hold here?</em> (<code>RoleService.get_role_keys_for</code>, the authz <code>role_source</code>)</li>
 </ul>
 <p>It sits beside the simple role attributes (<code>Account.role</code>, <code>User.type</code>) that <a href="../auth/">auth</a> guards compare, rather than replacing them. Apps pick either way, or both; see <a href="#two-ways-to-guard-a-route">Two ways to guard a route</a> and <a href="#legacy-roles">Legacy roles</a>. <code>msflib-auth</code> does not depend on this module.</p>
 <p>The terms <em>tier</em>, <em>owner</em> and <em>assignment reach</em> are easy to confuse because they all mention tenants and workspaces. Read <a href="#three-questions-about-a-role">Three questions about a role</a> before the rest.</p>
@@ -4439,7 +4439,7 @@
    <code>group</code> and <code>resource_access</code> also carry a required <code>tenant_id</code>, copied from the request's tenant on create and from the resource on a grant. An app that created either table earlier must add the column and backfill it before upgrading: add it nullable, set it from each row's tenant (the default tenant for an app that predates tenancy), then make it <code>NOT NULL</code>, and index it. Until then, groups and grants without a tenant are invisible to every tenant-scoped query. Also replace the unique index on <code>resource_access</code>: drop <code>ux_resource_access_identity</code> and recreate it on <code>(resource_type, resource_id, tenant_id, principal_kind, principal_id)</code>, otherwise same-id grants in two tenants still collide.</li>
 <li>Register permission keys at import time.</li>
 <li>Seed the system roles at startup, after every module has registered its keys.</li>
-<li>Build the guards with <code>get_authz_dependencies</code> and protect routes with <code>require_permission</code> or <code>require_role</code>.</li>
+<li>Build the guard with <code>get_authz_dependencies</code> and protect routes with <code>guard(key, tier=...)</code>.</li>
 </ol>
 <h3 id="register-permission-keys">Register permission keys<a class="headerlink" href="#register-permission-keys" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">PERMISSION_REGISTRY</span>
@@ -4523,8 +4523,8 @@
 </div>
 <p>Both backfills are transitional and go away once assignments replace the legacy attributes.</p>
 <h3 id="guards">Guards<a class="headerlink" href="#guards" title="Permanent link">&para;</a></h3>
-<h4 id="require_permission"><code>require_permission</code><a class="headerlink" href="#require_permission" title="Permanent link">&para;</a></h4>
-<p><code>get_authz_dependencies(session_dep=..., get_current_account=..., get_current_tenant=..., get_current_workspace=..., is_workspace_member=...)</code> returns a namespace with <code>require_permission(key, tier=...)</code>:</p>
+<h4 id="guard"><code>guard</code><a class="headerlink" href="#guard" title="Permanent link">&para;</a></h4>
+<p><code>get_authz_dependencies(session_dep=..., get_current_account=..., get_current_tenant=..., get_current_workspace=..., is_workspace_member=..., role_registry=None, enforcement=None)</code> returns a namespace with <code>guard(key, tier=...)</code>, <code>role_source</code> and <code>role_service</code>. <code>guard</code> has the call shape of <code>msflib.guard.build_guard</code>, so it is what a host passes to a module router's <code>guard</code> parameter:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 
 <span class="n">tenant_deps</span> <span class="o">=</span> <span class="n">get_tenant_dependencies</span><span class="p">(</span>
@@ -4540,17 +4540,15 @@
 
 <span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/docs"</span><span class="p">,</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">))],</span>  <span class="c1"># workspace</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">guard</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">))],</span>  <span class="c1"># workspace</span>
 <span class="p">)</span>
 <span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">"/tenant-settings"</span><span class="p">,</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"tenant"</span><span class="p">))],</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">guard</span><span class="p">(</span><span class="s2">"documents.share"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"tenant"</span><span class="p">))],</span>
 <span class="p">)</span>
 <span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">"/ops"</span><span class="p">,</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"authz.manage_roles"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"platform"</span><span class="p">))</span>
-    <span class="p">],</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">guard</span><span class="p">(</span><span class="s2">"authz.manage_roles"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"platform"</span><span class="p">))],</span>
 <span class="p">)</span>
 </code></pre></div>
 <ul>
@@ -4591,37 +4589,23 @@
 <li>the workspace belongs to another tenant, or a workspace guard has no workspace in the request;</li>
 <li>the matching assignment is expired, or its reach does not fit its role's tier.</li>
 </ul>
-<p>Both guards run their check through <code>msflib.scope.ConstraintEvaluator</code> (<code>require_permission</code> as a <code>PermissionConstraint</code>, <code>require_role</code> as a <code>RoleConstraint</code>) under core's <code>guard.check</code> profile (<code>msflib.guard.scope.GUARD_CHECK_PROFILE</code>), which enforces. A denial by the constraint is therefore a <code>ScopeDecision</code>: it emits <code>scope.decision.denied</code> with the constraint, reason code and caller, and counts in the scope decision metrics. Denials raised while resolving the request (no account, no tenant, no workspace for a workspace guard, a workspace of another tenant, or not a member of the workspace) answer before the constraints run and emit no decision: a workspace guard resolves the account through <code>get_member_account_dependency</code>, which answers 404 when the request has no workspace. Each guard still runs <code>CheckScopeConstraint</code> first, as a backstop for an envelope that reaches the evaluator without a tenant, or without a workspace for a workspace guard; that is a recorded <code>scope_invalid</code> denial. <code>RoleService</code> is the <code>PermissionResolver</code> behind <code>require_permission</code>.</p>
-<p>Prefer <code>require_permission</code> for new code: a permission names <em>what</em> may be done, and does not depend on what the roles happen to be called. Use <a href="#require_role"><code>require_role</code></a> when the route is about holding a role.</p>
+<p><code>guard</code> is <code>msflib.guard.build_guard</code> with <code>RoleService</code> as its <code>PermissionResolver</code>, so every check runs through <code>msflib.scope.ConstraintEvaluator</code> under core's <code>guard.check</code> profile (<code>msflib.guard.scope.GUARD_CHECK_PROFILE</code>), which enforces. A denial by the constraint is therefore a <code>ScopeDecision</code>: it emits <code>scope.decision.denied</code> with the constraint, reason code and caller, and counts in the scope decision metrics. Denials raised while resolving the request (no account, no tenant, no workspace for a workspace guard, a workspace of another tenant, or not a member of the workspace) answer before the constraints run and emit no decision: a workspace guard resolves the account through <code>get_member_account_dependency</code>, which answers 404 when the request has no workspace. Each guard still runs <code>CheckScopeConstraint</code> first, as a backstop for an envelope that reaches the evaluator without a tenant, or without a workspace for a workspace guard; that is a recorded <code>scope_invalid</code> denial.</p>
+<p>A permission names <em>what</em> may be done, and does not depend on what the roles happen to be called, so guard routes by permission key.</p>
+<p>To roll the guard out without enforcing it, pass <code>enforcement="shadow"</code> to <code>get_authz_dependencies</code>: a denial is recorded and the route still runs. It is <code>build_guard</code>'s <code>enforcement</code>, so <code>log-only</code> is refused.</p>
 <p>To check a permission outside a route, for example inside a service, call <code>RoleService.has_permission</code> with the account, tenant and (for workspace permissions) workspace (see <a href="#how-a-permission-is-resolved">How a permission is resolved</a>).</p>
-<h4 id="require_role"><code>require_role</code><a class="headerlink" href="#require_role" title="Permanent link">&para;</a></h4>
-<p><code>Depends(authz.require_role(RoleKey(tier, key), ...))</code> passes when the caller holds <strong>any</strong> of the roles. Each key is matched at its own tier: a platform role anywhere, a tenant role in the request's tenant, a workspace role in the request's workspace.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.authz</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoleKey</span><span class="p">,</span> <span class="n">RoleTier</span>
+<h4 id="guard-by-role">Guard by role<a class="headerlink" href="#guard-by-role" title="Permanent link">&para;</a></h4>
+<p>Pass <code>role_registry</code> (usually <code>msflib.guard.ROLE_REGISTRY</code>) to accept the roles a module registered for a key as well as the key's permission bundles. The caller's roles are then read from assignments through <code>role_source</code> (<code>msflib.authz.deps.build_role_source</code>, the <code>msflib.scope.RoleSource</code> over role assignments), and either a bundled permission or a registered role passes:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.guard</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROLE_REGISTRY</span><span class="p">,</span> <span class="n">RoleKey</span><span class="p">,</span> <span class="n">RoleTier</span>
 
-<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-    <span class="s2">"/ops"</span><span class="p">,</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_role</span><span class="p">(</span><span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">platform</span><span class="p">,</span> <span class="s2">"root"</span><span class="p">)))],</span>
-<span class="p">)</span>
-<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-    <span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin"</span><span class="p">,</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">Depends</span><span class="p">(</span>
-            <span class="n">authz</span><span class="o">.</span><span class="n">require_role</span><span class="p">(</span>
-                <span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">),</span> <span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">tenant</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">],</span>
-<span class="p">)</span>
+<span class="n">ROLE_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"docs.manage"</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">(</span><span class="n">RoleTier</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"admin"</span><span class="p">)])</span>
+
+<span class="n">authz</span> <span class="o">=</span> <span class="n">get_authz_dependencies</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">role_registry</span><span class="o">=</span><span class="n">ROLE_REGISTRY</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/admin"</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">guard</span><span class="p">(</span><span class="s2">"docs.manage"</span><span class="p">))])</span>
 </code></pre></div>
 <ul>
-<li>It takes <code>RoleKey</code> only. A bare string raises <code>TypeError</code> when the dependency is built, and no keys raises <code>ValueError</code>.</li>
-<li>The same key at another tier does not satisfy it: a tenant <code>admin</code> is not a workspace <code>admin</code>.</li>
-<li>A guard with a workspace-tier key needs a workspace in the request and denies without one. Tenant and platform keys never resolve a workspace.</li>
-<li>Tenant and workspace handling is the same as for <code>require_permission</code>: the request's tenant (denied when missing), a workspace of another tenant denied, account identified from the membership pair or <code>get_current_account</code>.</li>
-<li>A tenant-tier key is held at a workspace route too: a tenant <code>admin</code> passes <code>require_role(RoleKey(RoleTier.tenant, "admin"))</code> on a workspace route. Unlike <code>require_permission</code>, there is no <code>tenant_cascade</code> switch, because the caller named the tenant role explicitly.</li>
+<li>A role counts at its own tier and every tier below it: a platform <code>root</code> registered for a key passes its tenant and workspace guards. The same key at another tier does not count: a tenant <code>admin</code> is not a workspace <code>admin</code>.</li>
 <li>It reads assignments only. The legacy attributes do not count (see <a href="#legacy-roles">Legacy roles</a>).</li>
 </ul>
-<p>Prefer <code>require_permission</code> where the guard names an action, and <code>require_role</code> where it names a role.</p>
 <h3 id="two-ways-to-guard-a-route">Two ways to guard a route<a class="headerlink" href="#two-ways-to-guard-a-route" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4635,7 +4619,7 @@
 <tr>
 <td>Guards</td>
 <td><code>RoleCheck</code>, <code>WorkspaceRoleCheck</code></td>
-<td><code>require_permission</code>, <code>require_role</code></td>
+<td><code>guard</code> (<code>get_authz_dependencies</code>)</td>
 </tr>
 <tr>
 <td>Reads</td>
@@ -4898,10 +4882,10 @@
 <li>Tenant roles are included for <code>scope.tenant_id</code>.</li>
 <li>Workspace roles are included for exactly <code>(tenant_id, workspace_id)</code>.</li>
 </ul>
-<p>The scope is core's <code>TenantScope</code>, which <code>require_permission</code> and <code>require_role</code> build once from the request; <code>workspace_id=None</code> is a check at tenant level. The tenant is required: there is no tenant-less check, so a platform role is found at any tenant.</p>
+<p>The scope is core's <code>TenantScope</code>, which the guard builds once from the request; <code>workspace_id=None</code> is a check at tenant level. The tenant is required: there is no tenant-less check, so a platform role is found at any tenant.</p>
 <h3 id="legacy-roles">Legacy roles<a class="headerlink" href="#legacy-roles" title="Permanent link">&para;</a></h3>
 <p><code>Account.role</code> (<code>root</code>, <code>admin</code>, <code>user</code>) and <code>User.type</code> (<code>owner</code>, <code>admin</code>, <code>member</code>, <code>guest</code>) are read by the <code>auth</code> guards. The authz guards ignore them: only assignments and their bundled permissions count.</p>
-<p>To move a route from <code>RoleCheck</code> to <code>require_role</code> without losing access, mirror the attributes into assignments first with the backfills (see <a href="#seeding">Seeding</a>). They write <code>legacy_backfill</code> assignments; a runtime grant is a separate row. The two sources are independent afterwards: revoking an assignment does not change the attribute, and editing the attribute does not change assignments until the backfill runs again.</p>
+<p>To move a route from <code>RoleCheck</code> to the authz <code>guard</code> without losing access, mirror the attributes into assignments first with the backfills (see <a href="#seeding">Seeding</a>). They write <code>legacy_backfill</code> assignments; a runtime grant is a separate row. The two sources are independent afterwards: revoking an assignment does not change the attribute, and editing the attribute does not change assignments until the backfill runs again.</p>
 <p>The seeded role keys reuse the legacy values so the backfills mirror existing data. The shared names are safe because they live at different tiers and every authz check is tier-aware: a legacy <code>admin</code> becomes a tenant-tier <code>admin</code>, <code>root</code> a platform-tier <code>root</code>.</p>
 <h3 id="writing-roles">Writing roles<a class="headerlink" href="#writing-roles" title="Permanent link">&para;</a></h3>
 <p>Write through <code>RoleService</code>; the actions are plain data access.</p>
@@ -5206,7 +5190,7 @@
 <span class="c1"># 5. Guard the route (authz comes from get_authz_dependencies, see above).</span>
 <span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/</span><span class="si">{workspace_slug}</span><span class="s2">/docs/</span><span class="si">{doc_id}</span><span class="s2">/publish"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">publish</span><span class="p">(</span>
-    <span class="n">doc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"docs.publish"</span><span class="p">))</span>
+    <span class="n">doc_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">guard</span><span class="p">(</span><span class="s2">"docs.publish"</span><span class="p">))</span>
 <span class="p">):</span> <span class="o">...</span>
 </code></pre></div>
 <p>What happens for account 42:</p>
@@ -5248,7 +5232,7 @@
 
 <span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">"/audit"</span><span class="p">,</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">require_permission</span><span class="p">(</span><span class="s2">"docs.audit"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"tenant"</span><span class="p">))],</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">authz</span><span class="o">.</span><span class="n">guard</span><span class="p">(</span><span class="s2">"docs.audit"</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="s2">"tenant"</span><span class="p">))],</span>
 <span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">audit</span><span class="p">():</span> <span class="o">...</span>
 </code></pre></div>
@@ -5257,7 +5241,7 @@
 <li><strong>A role is assigned but grants nothing.</strong> The assignment is not effective. Check, in order, that its <code>tenant_id</code> / <code>workspace_id</code> match the role's tier (platform: none; tenant: tenant only; workspace: both), that they lie inside the role's owner, and that <code>expires_at</code> has not passed. Rows written through a raw action are not validated, and resolution silently ignores a bad one.</li>
 <li><strong><code>ValueError</code> from <code>grant</code>.</strong> The message names the rule that failed: tier shape, owner, a missing role, an <code>expires_at</code> that is not in the future, or an existing unexpired assignment (<code>AssignmentExistsError</code>).</li>
 <li><strong>Two processes seeded at once.</strong> Seeding and the backfills use <code>ensure_role</code> / <code>ensure_assignment</code>, so concurrent startups converge on the same rows instead of failing on the unique index.</li>
-<li><strong>A workspace <code>admin</code> does not pass <code>require_role(RoleKey(RoleTier.tenant, "admin"))</code>.</strong> Intended. The tier is part of the key; ask for the workspace-tier key, or use <code>require_permission</code>.</li>
+<li><strong>A workspace <code>admin</code> does not pass a key registered for <code>RoleKey(RoleTier.tenant, "admin")</code>.</strong> Intended. The tier is part of the key; register the workspace-tier key, or bundle the permission into the workspace role.</li>
 <li><strong>A tenant admin cannot act in a workspace.</strong> Tenant roles reach workspaces only for permissions registered with <code>tenant_cascade=True</code>. Otherwise grant a workspace-tier role in that workspace.</li>
 <li><strong>A new permission is missing from <code>root</code> or <code>admin</code>.</strong> <code>seed_role_permissions</code> bundles the keys registered when it runs. Run it after every module has been imported.</li>
 <li><strong>A role's key, tier or owner cannot be changed.</strong> They are immutable because changing them would reinterpret existing assignments. Create a new role and move the assignments.</li>

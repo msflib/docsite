@@ -2223,6 +2223,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.scope.validate_check_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate_check_level
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.build_check_evaluator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_check_evaluator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.scope.narrow_envelope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3961,6 +3983,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.scope.validate_check_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate_check_level
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.build_check_evaluator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_check_evaluator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.scope.narrow_envelope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4143,7 +4187,7 @@ guards, build <code>scope_deps</code> with
 
 
 <h4 id="msflib.guard.deps.build_guard" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_guard</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'enforce'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Guard</span></code>
+            <code class="highlight language-python"><span class="n">build_guard</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Guard</span></code>
 
 <a href="#msflib.guard.deps.build_guard" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4158,9 +4202,11 @@ route's permission or role; it checks no membership. Membership is a grant too,
 checked by the request's envelope dependency after the envelope is built (SCP-7):
 for workspace guards, <code>get_envelope</code> resolves the account through
 <code>msflib.scope.get_member_account_dependency</code>. A denial is a recorded
-scope decision answered with 403; under <code>shadow</code> the route still runs. A guard
+scope decision answered with 403. The enforcement level is the <code>guard.check</code>
+profile's (<code>enforce</code>); <code>enforcement</code> overrides it for a host rolling guards
+out, so under <code>shadow</code> a denial is recorded and the route still runs. A guard
 is <code>enforce</code> or <code>shadow</code>: <code>log-only</code> would let every request through. Raises
-<code>ValueError</code> for any other <code>enforcement</code>, without a source, when
+<code>ValueError</code> for any other <code>enforcement</code> or profile level, without a source, when
 <code>role_registry</code> and <code>role_source</code> don't come together, or when no registered
 role can pass.</p>
 
@@ -4270,6 +4316,7 @@ ROLE_REGISTRY.register(
     <div class="doc doc-contents ">
 
         <p>Register the roles for <code>key</code>; idempotent unless the roles differ (ValueError).</p>
+<p>A role that is not a <code>RoleKey</code>, such as a bare string, raises <code>TypeError</code>.</p>
 
 
     </div>
@@ -4433,6 +4480,43 @@ role passes where there is no tenant, or no workspace to hold a workspace role.<
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.guard.scope.validate_check_level" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">validate_check_level</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.guard.scope.validate_check_level" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Raise <code>ValueError</code> unless <code>level</code> is one a check runs at.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.guard.scope.build_check_evaluator" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_check_evaluator</span><span class="p">(</span><span class="n">constraints</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ScopeConstraint</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConstraintEvaluator</span></code>
+
+<a href="#msflib.guard.scope.build_check_evaluator" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The evaluator for a <code>guard.check</code>, at the profile's level or <code>enforcement</code>.</p>
+<p>Raises <code>ValueError</code> unless that level is <code>enforce</code> or <code>shadow</code>.</p>
+
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 

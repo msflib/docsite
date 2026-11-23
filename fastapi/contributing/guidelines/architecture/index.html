@@ -4439,6 +4439,11 @@ Remove this note when #397 lands.</p>
 <li>Every allow or deny goes through <code>ConstraintEvaluator</code> and is a
   <code>ScopeDecision</code>, so denials are recorded the same way everywhere. Don't
   compare a role attribute or ask a resolver inline in a route.</li>
+<li>Build an evaluator with <code>ConstraintEvaluator.for_operation(profile_registry,
+  operation, constraints)</code>, so its enforcement level comes from the operation's
+  profile, and ask it <code>permits(envelope, session=...)</code>. Pass <code>enforcement=</code> only to
+  forward a host's rollout override, and don't map a decision to allow or deny by
+  hand.</li>
 <li>Guard routes with <code>msflib.guard.build_guard</code>. It takes a <code>PermissionResolver</code>
   (<code>msflib-authz</code>), role attributes mapped in <code>ROLE_REGISTRY</code>, or both.</li>
 <li><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> (<code>msflib-auth</code>) are the path for simple
