@@ -3291,6 +3291,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#scp-7-membership-is-a-scope-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCP-7 · Membership is a scope constraint
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3994,6 +4005,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#scp-7-membership-is-a-scope-constraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SCP-7 · Membership is a scope constraint
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4131,7 +4153,7 @@ a host that wants that passes <code>allow_any_member</code>. The same checks bac
 <code>MembershipConstraint</code> and gate the tenant and workspace roles a role source
 returns (SCP-6). Never infer membership from the account's
 <code>current_workspace_id</code>; it is a preference, not a grant. Parameter names and
-order: API-7.</p>
+order: API-7. Where membership is defined and enforced is moving to SCP-7.</p>
 <h3 id="scp-4-compile-scope-once-through-the-modules-profile">SCP-4 · Compile scope once, through the module's profile<a class="headerlink" href="#scp-4-compile-scope-once-through-the-modules-profile" title="Permanent link">&para;</a></h3>
 <p>Register profiles in <code>scope_profiles.py</code> via <code>ProfileRegistry</code> with namespaced
 names (<code>"&lt;module&gt;.&lt;operation&gt;"</code>). A <code>ScopeEnvelope</code> holds the typed scope
@@ -4272,8 +4294,8 @@ from a row so a job can call a function, is a sign the function wanted a
 placement.</p>
 <p>A worker or an event handler has no request, so it has no envelope: it reads the
 placement of the row it acts for (<code>msflib.core.records.PlacementReader</code> reads one
-off any row). Two sites still hand ai_core's registry an envelope built from a
-record, to pick an LLM; #401 removes them.</p>
+off any row). Two sites that handed ai_core's registry an envelope built from a
+record were removed in #401.</p>
 <p>Don't add core types for stored grants, or module types that duplicate
 authz's. A module may still define its own <code>*Reach</code> for reach it derives
 itself, such as <code>KnowledgeReach</code> from memberships (planned in #403) or
@@ -4428,8 +4450,7 @@ separated per account (<code>AccountScope</code>), not as a way to say who calls
 <p>This rule describes where authorization is going. <code>build_guard</code>,
 <code>narrow_envelope</code>, <code>RoleSource</code> and <code>PermissionResolver</code> are in code. Not yet:
 <code>build_role_source</code>, and <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through
-the evaluator (msflib/fastapi#397). Write new authorization code to this shape.
-Remove this note when #397 lands.</p>
+the evaluator (msflib/fastapi#397). Write new authorization code to this shape.</p>
 </div>
 <ul>
 <li>A role is <code>RoleKey(tier, key)</code> (<code>msflib.scope.roles</code>): the account role <code>root</code>
@@ -4454,6 +4475,125 @@ Remove this note when #397 lands.</p>
   assignments. <code>build_guard</code> takes it with <code>role_registry</code>. Pass <code>is_tenant_member</code> in a
   multi-tenant app, because an account has no tenant of its own.</li>
 </ul>
+<h3 id="scp-7-membership-is-a-scope-constraint">SCP-7 · Membership is a scope constraint<a class="headerlink" href="#scp-7-membership-is-a-scope-constraint" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Target design (msflib/fastapi#393, section 10)</p>
+<p>This rule describes where membership checks are going. The core pieces
+(<code>MEMBERSHIP_REGISTRY</code>, <code>MembershipConstraint(dimension)</code>,
+<code>build_envelope_dependency</code>) land in msflib/fastapi#424.
+<code>get_member_account_dependency</code> is deprecated in 0.3.0 (warning raised at
+call time) and will be removed with no shim in 0.4.0, together with the
+hand-written membership copies in modules. Write new code to this shape
+where it can, using <code>build_envelope_dependency</code> once #424 is on <code>dev</code>.</p>
+</div>
+<p>A membership is a grant whose reach is a whole container: a tenant, a
+workspace, a conversation, a project, a department. It is checked at the grant
+stage of the access stack (AUZ-12), by the same evaluator and in the same
+constraint list as roles and permissions. Tenant is not special, and every
+membership is defined and enforced the same way.</p>
+<ul>
+<li><strong>Defined by the owning module.</strong> The module that owns the container owns its
+  dimension (<code>DimensionRegistry</code>), its membership rows and the query for them
+  (its action), and its <code>MembershipCheck</code>, which it registers for its dimension
+  at import time, the way documents registers its source adapters. Core holds
+  only the protocol and the registry (ARC-1). A check is a fact about the
+  container, so its owner registers it; where roles come from is the host's
+  choice, so a <code>RoleSource</code> is passed to the guard builder, not registered.</li>
+<li><strong>A host replaces a check only to state a choice,</strong> such as <code>allow_any_member</code>
+  for a site without membership rows, with one registry call at startup that
+  passes <code>replace=True</code>. Registering a second check for a dimension without it
+  is a startup error. The replacement applies wherever the dimension is checked.</li>
+<li><strong>A check answers one question,</strong> and the owner decides the answer. It may be
+  wider than a membership row: conversation admits a workspace member to a
+  public conversation. Every caller of that dimension gets the same answer, so
+  an HTTP route and a realtime channel (ADR 0009 A8) cannot disagree. A
+  membership dimension is a row-id dimension: its spec lists <code>is_valid_row_id</code>
+  in <code>validators</code>, as the built-in id dimensions do (SCP-4). The check keeps the
+  <code>MembershipCheck</code> signature, <code>(session, *, account_id, container_id) -&gt; bool</code>.
+  A route that needs the membership row (for a role) loads it in its context
+  dependency. Returning the row from the check later would break every custom
+  check; a separate, optional lookup registered beside it would not.</li>
+<li><strong>The envelope comes first.</strong> The request boundary builds the envelope:
+  resolvers give its scope and principal, and each selector (SCP-3) is resolved
+  to a row in the scope and added with <code>envelope.extend(ScopeClass, **selectors)</code>.
+  Containment, such as a workspace belonging to the request's tenant, is
+  checked here (the place stage, AUZ-12), not in the constraint list. The
+  constraints then run on that envelope. <code>MembershipConstraint(dimension)</code> reads
+  the container's id from <code>envelope.scope</code>, the caller from <code>envelope.principal</code>
+  and the check from the registry, and takes the session as an argument
+  (<code>evaluate(envelope, *, session)</code>). Nothing reads a dimension string, and
+  nothing writes a result back onto the envelope.</li>
+<li><strong>The operation lists its memberships</strong> in its profile's <code>constraints</code>, in
+  container order (tenant, workspace, conversation) and before its role and
+  permission constraints; the evaluator stops at the first denial. A dimension
+  that is <code>None</code> on the scope skips its check (SCP-2). A membership follows the
+  profile's enforcement level like every other grant check (AUZ-12), so a
+  profile that lists one is <code>enforce</code>; a constraint not ready to enforce waits
+  in a profile of its own.</li>
+<li><strong>Opting out is explicit.</strong> An endpoint that admits non-members names an
+  operation whose profile leaves that membership out: accepting a workspace
+  invite lists tenant membership only. An endpoint that reads no scoped data
+  takes no envelope dependency. Which router a route sits on never decides it.</li>
+<li><strong>One mechanism wherever there is a request.</strong> The envelope dependency, the
+  guards (SCP-6), realtime subscriptions and code that runs inside a request
+  (an agent tool holding the request's envelope) decide through the same
+  evaluator: <code>ConstraintEvaluator.for_operation(...)</code> and
+  <code>permits(envelope, session=...)</code>. The envelope dependency takes <code>get_session</code>
+  once (API-7); no layer threads a check or a session further. A role source
+  that counts a role only for members reads the check from the registry rather
+  than taking it as an argument.</li>
+<li><strong>Background work runs no membership check.</strong> A job, a worker or an eventbus
+  handler has no envelope (SCP-5): access was decided by the request that
+  queued the work, and the job acts on a row's placement. What happens to queued
+  work when a membership ends is decided by the code that ends it, not by the
+  worker. Work that acts on a person's behalf (sending a message as them) needs
+  its own design and is not covered here.</li>
+</ul>
+<p>Where each part lives:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Membership work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Module import</td>
+<td>The owning module registers its dimension's <code>MembershipCheck</code>.</td>
+</tr>
+<tr>
+<td>Host startup</td>
+<td>Replaces a check, only to state a choice (<code>replace=True</code>).</td>
+</tr>
+<tr>
+<td>Dependency builder (mount time)</td>
+<td>Validates wiring: every <code>MembershipConstraint</code> a profile lists has a registered check whose signature binds; otherwise a startup error.</td>
+</tr>
+<tr>
+<td>Envelope dependency (per request, one per operation)</td>
+<td>Builds the envelope, resolves and extends its selectors, checks containment, runs the evaluator, maps the decision to HTTP, returns the envelope.</td>
+</tr>
+<tr>
+<td>Router</td>
+<td>Nothing. It may attach an envelope dependency router-wide when every route shares the operation.</td>
+</tr>
+<tr>
+<td>Endpoint</td>
+<td>Never checks. A membership row it needs (for a role) comes from an access-checked context dependency (API-1); a missing row means no role, not "not a member".</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Checks the accounts a request names (a share target, a new group member) with an injected <code>MembershipCheck</code>, and raises a domain error that the router answers with 404 (ERR-1).</td>
+</tr>
+<tr>
+<td>Action</td>
+<td>Holds the membership query only (SVC-2).</td>
+</tr>
+</tbody>
+</table>
+<p>The envelope dependency answers a missing principal with 401, a failed
+containment check or unknown selector with 404, and a denied membership with 403.</p>
 
 
 

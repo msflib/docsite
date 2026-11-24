@@ -4388,6 +4388,14 @@ Put it in <code>eventbus/context.py</code> inside the module that owns the hook.
 <td>Consistency between rows the action already has in memory</td>
 <td>inline in the action, only when no extra query is needed</td>
 </tr>
+<tr>
+<td>The caller belongs to the request's tenant, workspace or other container</td>
+<td>a membership constraint on the envelope, run by the operation's envelope dependency (SCP-7); never in the router, endpoint, service or action</td>
+</tr>
+<tr>
+<td>An account the request names belongs to the container</td>
+<td>inline in the service, with an injected <code>MembershipCheck</code> (SCP-7)</td>
+</tr>
 </tbody>
 </table>
 <p>Don't inject an extra action just to re-check something the caller already

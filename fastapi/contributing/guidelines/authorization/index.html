@@ -3604,6 +3604,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#auz-12-each-check-belongs-to-one-stage-of-the-access-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AUZ-12 · Each check belongs to one stage of the access stack
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3887,6 +3898,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#auz-12-each-check-belongs-to-one-stage-of-the-access-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AUZ-12 · Each check belongs to one stage of the access stack
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3909,7 +3931,8 @@
 of <code>msflib-authz</code> (#306). They apply to <code>modules/authz</code>, to the guards in
 <code>modules/auth</code>, and to any module that protects an endpoint. The module's own
 page (<a href="../../../modules/authz/">msflib-authz</a>, added with #306) has the tables
-and examples; these rules say what to preserve when changing it.</p>
+and examples; these rules say what to preserve when changing it.
+AUZ-12 places every check in the four stages of the access stack.</p>
 <h3 id="auz-1-keep-tier-owner-and-reach-apart">AUZ-1 · Keep tier, owner and reach apart<a class="headerlink" href="#auz-1-keep-tier-owner-and-reach-apart" title="Permanent link">&para;</a></h3>
 <p>A role has three separate facts, and each lives in a different column (see
 <a href="../../../modules/authz/#three-questions-about-a-role">Three questions about a role</a>):</p>
@@ -4025,6 +4048,179 @@ service as <code>owner=RoleOwner(...)</code>, <code>reach=RoleAssignmentReach(..
 <code>granted_by_account_id</code> and <code>created_by_account_id</code> (MDL-11). Build them in the
 endpoint from the request context, never from the body. A test asserts that the
 client schemas declare none of those fields.</p>
+<h3 id="auz-12-each-check-belongs-to-one-stage-of-the-access-stack">AUZ-12 · Each check belongs to one stage of the access stack<a class="headerlink" href="#auz-12-each-check-belongs-to-one-stage-of-the-access-stack" title="Permanent link">&para;</a></h3>
+<p>A request passes four stages, in order. Each stage answers one question and
+fails one way, and no stage answers another stage's question.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Question</th>
+<th>On failure</th>
+<th>Policy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Identity</td>
+<td>Who is calling?</td>
+<td>401</td>
+<td>no</td>
+</tr>
+<tr>
+<td>2. Place</td>
+<td>Does the place the request names exist, and do its parts belong together?</td>
+<td>404</td>
+<td>no</td>
+</tr>
+<tr>
+<td>3. Grant</td>
+<td>Does the caller hold a grant whose reach covers this place, at the level the operation needs?</td>
+<td>403</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>4. Filter</td>
+<td>Which rows does the request see?</td>
+<td>fewer rows, never an error</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>Stages 1 and 2 build the envelope (SCP-4): identity gives <code>envelope.principal</code>
+and the place gives <code>envelope.scope</code>. Stage 3 decides on the envelope. Stage 4
+receives it and filters on <code>envelope.scope</code>.</p>
+<ul>
+<li><strong>Only stage 3 is policy.</strong> An enforcement level (<code>log-only</code>, <code>shadow</code>,
+  <code>enforce</code>) applies to stage 3 alone; stages 1, 2 and 4 always hold. A check
+  that must never be switched off does not go in a constraint list.</li>
+<li><strong>Every grant is checked at stage 3.</strong> Membership, roles, permissions and
+  resource access are all grants (SCP-5). Membership reaches a whole container,
+  so it runs first, but it is checked the same way as the others.</li>
+<li><strong>404 hides, 403 refuses.</strong> A place that does not exist, or a workspace of
+  another tenant, is 404 at stage 2, so a caller cannot probe for another
+  tenant's ids. Within a place the caller can see, a missing grant is 403.</li>
+<li><strong>A filter never decides access.</strong> An action filters on the scope it is given
+  and checks no grant (SVC-2); an empty result is not a denial.</li>
+<li><strong>A third party's grant is stage 3 in a service.</strong> When a request names another
+  account (a share target, a new group member), the service checks it with an
+  injected <code>MembershipCheck</code> and raises a domain error that the router answers
+  with 404 (ERR-1).</li>
+<li><strong>Background work skips stages 1 to 3.</strong> A job or event handler has no request:
+  the request that queued it was allowed, and the job filters by the placement
+  of the row it acts on (SCP-5).</li>
+</ul>
+<p>Where each control sits:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Control</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The host's <code>get_current_account</code>; <code>get_scope_dependencies</code> puts a <code>PrincipalContext</code> (int <code>account_id</code>) on the envelope and answers 401 without one</td>
+<td>host app, core</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Realtime stream ticket (planned, ADR 0009 A8)</td>
+<td>realtime</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>get_current_tenant</code> (the default tenant when the app has no tenancy)</td>
+<td>tenancy</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>get_current_workspace</code> by slug, and the check that the workspace belongs to the request's tenant</td>
+<td>workspaces, core</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Id dimensions hold row ids (<code>is_valid_row_id</code>), checked when the envelope is built (SCP-4)</td>
+<td>core</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Checks on the scope's own values, such as <code>DimensionMatchConstraint</code> (moving here from the constraint list, ADR 0009 A9)</td>
+<td>core</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Selectors such as <code>conversation_id</code> resolve to a row in this scope before <code>envelope.extend</code> adds them (SCP-3)</td>
+<td>the selector's module</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>MembershipConstraint</code> with the container's <code>MembershipCheck</code> (<code>is_workspace_member</code>, tenancy's check, or <code>allow_any_member</code>)</td>
+<td>core; the check from the container's module</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Route guard: <code>RoleConstraint</code> with a <code>RoleSource</code> (auth attributes or authz assignments) and <code>PermissionConstraint</code> with the authz <code>RoleService</code> resolver, through <code>build_guard</code> or authz <code>guard(key, tier=)</code></td>
+<td>core, authz</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>RoleCheck</code>, <code>WorkspaceRoleCheck</code> (AUZ-5)</td>
+<td>auth</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>ResourceAccess</code> rows through <code>AccessService</code>, for one resource; share links (planned, #367)</td>
+<td>authz</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>ChannelConstraint</code> and other constraints an operation's profile lists, such as ai_api's <code>evaluate_scope_constraints</code></td>
+<td>core, modules</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Actions filter on <code>envelope.scope</code>; <code>workspace_id=None</code> is the workspace-less bucket (SCP-2)</td>
+<td>module actions</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Knowledge <code>scoped_statement</code>, documents <code>list_for_scope</code>, and <code>PlacementReader</code> (replaced <code>RowScope</code> in #413)</td>
+<td>knowledge, documents, core</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>DimensionCompiler</code> sinks: vector-store metadata filters, memory namespaces</td>
+<td>core, ai_core</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Reach filtering in search (planned, #403)</td>
+<td>knowledge, ai_core</td>
+</tr>
+</tbody>
+</table>
+<p>Not yet in line with this rule (ADR 0009 A9 decides each):</p>
+<ul>
+<li><code>get_scope_dependencies</code> answers a request with no tenant with 403. It is a
+  stage 2 failure, so it becomes 404, as a request that needs a workspace and
+  resolves none already is.</li>
+<li><code>get_member_account_dependency</code> runs the stage 2 workspace check and the stage
+  3 membership check together. It is deprecated in 0.3.0 and removed in 0.4.0;
+  msflib/fastapi#424 brings <code>build_envelope_dependency</code> as the replacement.
+  Until then a membership is checked outside the evaluator, so it ignores the
+  profile's enforcement level.</li>
+<li><code>DimensionMatchConstraint</code> checks the scope's values, a stage 2 question, from
+  the constraint list, so a <code>log-only</code> profile switches it off. It is removed in
+  msflib/fastapi#424 (no current users outside tests).</li>
+<li>Some operation profiles explicitly opt into <code>log-only</code> as a rollout exception
+  (ai_api's profiles, workspaces' profiles), so their stage 3 grant constraints
+  log rather than reject. <code>log-only</code> and <code>shadow</code> are valid explicit choices with
+  a startup warning; whether these modules should move to <code>enforce</code> is undecided
+  (msflib/fastapi#270).</li>
+</ul>
 
 
 

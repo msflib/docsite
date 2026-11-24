@@ -4075,10 +4075,11 @@ def list_items(): ...
 
 <p><code>ROLE_REGISTRY</code> holds the roles that satisfy each permission key; a
 <code>msflib.scope.RoleSource</code> says which roles the caller holds. A guard decides the
-route's permission or role; it checks no membership. Membership is a grant too, checked
-by the request's envelope dependency after the envelope is built (SCP-7): for workspace
-guards, build <code>scope_deps</code> with
-<code>get_current_account=get_member_account_dependency(...)</code>, as authz does.</p>
+route's permission or role; it checks no membership. Pass the operation's envelope
+dependency (<code>msflib.scope.build_envelope_dependency</code>) as <code>get_envelope</code> so its
+profile's <code>MembershipConstraint</code>s run first (SCP-7). Until routers move,
+<code>get_scope_dependencies</code> with
+<code>get_current_account=get_member_account_dependency(...)</code> is the pre-SCP-7 path.</p>
 
 
 

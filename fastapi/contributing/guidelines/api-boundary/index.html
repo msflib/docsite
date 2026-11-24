@@ -3868,8 +3868,10 @@ and one without membership rules passes <code>allow_any_member</code>.</p>
 <ul>
 <li><code>get_current_workspace</code> may resolve to <code>None</code>, the workspace-less bucket
   (SCP-2); the workspace membership check is not asked then. A route that needs
-  a workspace takes <code>msflib.scope.get_member_account_dependency</code>, which answers
-  404 when there is none.</li>
+  a workspace currently uses <code>msflib.scope.get_member_account_dependency</code>
+  (deprecated in 0.3.0, removed in 0.4.0), which answers 404 when there is
+  none. The SCP-7 target is <code>msflib.scope.build_envelope_dependency</code>, which runs
+  the operation's profile's <code>MembershipConstraint</code>s (msflib/fastapi#424).</li>
 <li>A resolved workspace that belongs to another tenant than the request's is a
   404 (<code>msflib.scope.check_workspace_tenant</code>); a non-member is a 403; a missing
   account is a 401 (API-3).</li>
