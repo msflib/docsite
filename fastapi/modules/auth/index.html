@@ -565,6 +565,72 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#token-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-time-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-time codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login-by-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Login by code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#second-factor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Second factor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#events" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4001,6 +4067,72 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#token-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-time-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-time codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login-by-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Login by code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#second-factor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Second factor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#events" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4215,23 +4347,35 @@
 <tbody>
 <tr>
 <td><code>POST /login</code></td>
-<td>OAuth2 password form (<code>username</code> is the email). Returns <code>access_token</code>, <code>expires</code>, <code>token_type</code>, <code>account</code> and <code>user</code>.</td>
+<td>OAuth2 password form (<code>username</code> is the email). Returns <code>access_token</code>, <code>expires</code>, <code>token_type</code>, <code>account</code> and <code>user</code>. With a <a href="#second-factor">second factor</a> it may answer 202 with a challenge and no token.</td>
+</tr>
+<tr>
+<td><code>POST /login/otp/request</code>, <code>POST /login/otp</code></td>
+<td><a href="#login-by-code">Login by code</a> in place of the password. Return 403 unless <code>ENABLE_OTP_LOGIN</code> is true.</td>
+</tr>
+<tr>
+<td><code>POST /email-verification</code>, <code>POST /verify-email</code></td>
+<td><a href="#email-verification">Email verification</a>: send a code, then confirm it.</td>
+</tr>
+<tr>
+<td><code>POST /login/second-factor</code></td>
+<td>Only when the router is given <code>second_factor</code>. Exchanges a challenge token and a code for the access token.</td>
 </tr>
 <tr>
 <td><code>DELETE /logout</code></td>
-<td>Revokes the caller's token.</td>
+<td>Revokes every token issued so far for the caller's account.</td>
 </tr>
 <tr>
 <td><code>POST /password-recovery</code></td>
-<td>Emails a reset link and a short code.</td>
+<td>Emails a reset link and a short code. The answer is the same whether or not the email is registered.</td>
 </tr>
 <tr>
 <td><code>POST /verify-token</code></td>
-<td>Checks a reset token or a short code plus email.</td>
+<td>Checks a reset token or a short code plus email. A wrong code counts as a guess.</td>
 </tr>
 <tr>
 <td><code>POST /reset-password</code></td>
-<td>Sets a new password from a valid reset token.</td>
+<td>Sets a new password from a valid reset token or code, once, and revokes the account's tokens.</td>
 </tr>
 <tr>
 <td><code>GET /google/login</code>, <code>POST /google/callback</code></td>
@@ -4241,7 +4385,7 @@
 </table>
 <p>The router takes optional hooks: <code>access_token_claims_decorator(account, context)</code> adds claims to the JWT, <code>access_token_decorator(payload, context)</code> rewrites the login response, <code>send_reset_pwd_email_override</code> replaces the recovery email sender, <code>access_token_response_type</code> replaces the <code>Token</code> response model, <code>auth_payload_type</code> validates extra data a client sends to the Google callback, and <code>account_action</code> replaces the action the router uses to look up accounts and record logins and password resets (see <a href="../../integration/subclassing-actions/">Subclassing actions</a>). Because those writes go through the action, password resets fire the account's <code>update-pre-commit</code> and <code>update-post-commit</code> events. Logins fire those events only when the account model defines a <code>last_login_date</code> field (the update is skipped otherwise).</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<p>Settings live in the <code>AUTH</code> namespace (<code>msflib.auth.config.AuthSettings</code>).</p>
+<p>Settings live in the <code>AUTH</code> namespace (<code>msflib.auth.config.AuthSettings</code>). Lifetimes and attempt limits must be at least 1, and the pauses and the lock wait at least 0; a lower value is refused when the settings load.</p>
 <table>
 <thead>
 <tr>
@@ -4259,7 +4403,72 @@
 <tr>
 <td><code>EMAIL_RESET_TOKEN_EXPIRE_HOURS</code></td>
 <td><code>48</code></td>
-<td>Lifetime of password reset tokens and codes.</td>
+<td>Lifetime of the password reset link.</td>
+</tr>
+<tr>
+<td><code>PASSWORD_RESET_CODE_EXPIRE_MINUTES</code></td>
+<td><code>15</code></td>
+<td>Lifetime of the short code in the same email.</td>
+</tr>
+<tr>
+<td><code>PASSWORD_RESET_MAX_ATTEMPTS</code></td>
+<td><code>5</code></td>
+<td>Wrong codes allowed before the reset must be requested again.</td>
+</tr>
+<tr>
+<td><code>PASSWORD_RESET_MIN_INTERVAL_SECONDS</code></td>
+<td><code>60</code></td>
+<td>A second request for the same email inside this time sends nothing.</td>
+</tr>
+<tr>
+<td><code>OTP_CODE_EXPIRE_MINUTES</code></td>
+<td><code>10</code></td>
+<td>Lifetime of an email verification or login code.</td>
+</tr>
+<tr>
+<td><code>OTP_MAX_ATTEMPTS</code></td>
+<td><code>5</code></td>
+<td>Wrong codes allowed before a new one must be requested.</td>
+</tr>
+<tr>
+<td><code>OTP_MIN_INTERVAL_SECONDS</code></td>
+<td><code>60</code></td>
+<td>A second request for the same email and purpose inside this time sends nothing.</td>
+</tr>
+<tr>
+<td><code>ENABLE_OTP_LOGIN</code></td>
+<td><code>false</code></td>
+<td>Allows login with a code sent to the account's email.</td>
+</tr>
+<tr>
+<td><code>REQUIRE_EMAIL_VERIFICATION</code></td>
+<td><code>false</code></td>
+<td>Refuses login (403 "Email not verified") until the account's email is verified. Needs <code>email_verification=</code> on the router.</td>
+</tr>
+<tr>
+<td><code>SEND_VERIFICATION_ON_REGISTRATION</code></td>
+<td><code>false</code></td>
+<td>Sends the verification code when an account is registered. Needs <code>register_event_hooks</code>, and <code>email_verification</code> on the router (the router refuses to start without it).</td>
+</tr>
+<tr>
+<td><code>SECOND_FACTOR_CHALLENGE_EXPIRE_MINUTES</code></td>
+<td><code>5</code></td>
+<td>Time to enter the second-factor code after the password.</td>
+</tr>
+<tr>
+<td><code>SECOND_FACTOR_MAX_ATTEMPTS</code></td>
+<td><code>5</code></td>
+<td>Wrong second-factor codes allowed per challenge.</td>
+</tr>
+<tr>
+<td><code>EMAIL_LOCK_WAIT_SECONDS</code></td>
+<td><code>5</code></td>
+<td>How long a login, code or recovery request waits for an email that is being changed before answering 503.</td>
+</tr>
+<tr>
+<td><code>EMAIL_LOCK_HOLD_SECONDS</code></td>
+<td><code>30</code></td>
+<td>When the lock an email change takes frees itself if the update never finishes (for example, it was rolled back).</td>
 </tr>
 <tr>
 <td><code>PASSWORD_RESET_PATH</code></td>
@@ -4460,7 +4669,58 @@
 <p>Pass an instance as <code>workspace_resolver=</code>. A resolver is a plain synchronous object, so it is easy to unit-test with a hand-built <code>ResolverContext</code>.</p>
 <p>One resolver applies to everything built by one <code>get_user_dependencies</code> call. To use two strategies in one app, call the factory twice and use each namespace on its own routers.</p>
 <h3 id="token-revocation">Token revocation<a class="headerlink" href="#token-revocation" title="Permanent link">&para;</a></h3>
-<p>Tokens are JWTs whose <code>sub</code> is the account email. Logout stores the email in the keystore, and <code>get_current_account</code> rejects any token whose <code>sub</code> is in the keystore. Revocation therefore applies to the account rather than to individual tokens, and logging in again clears it. If you need to end a single session, put a unique claim in the token with <code>access_token_claims_decorator</code> and check it in your own dependency.</p>
+<p>Tokens are JWTs whose <code>sub</code> is the account email and whose <code>iat</code> is the moment they were issued. Logout (and a password reset) stores the current time under the email in the keystore, and <code>get_current_account</code> rejects any token for that account issued up to that time. Revocation therefore applies to the account rather than to individual tokens: every session ends. Logging in again issues a later token, which is valid; the earlier ones stay revoked. The record is kept for <code>ACCESS_TOKEN_EXPIRE_MINUTES</code>, after which those tokens have expired anyway. If you need to end a single session, put a unique claim in the token with <code>access_token_claims_decorator</code> and check it in your own dependency.</p>
+<p>Code of your own that accepts a token outside <code>get_current_account</code> (a websocket or stream handshake, for example) should call <code>msflib.core.security.verify_access_token(token, secret_key, token_store)</code>. It returns the subject after the same checks (signature, expiry, token type, revocation) and raises <code>InvalidTokenError</code>, or its subclass <code>RevokedTokenError</code>, otherwise. Decoding the JWT yourself skips the type and revocation checks.</p>
+<h3 id="token-types">Token types<a class="headerlink" href="#token-types" title="Permanent link">&para;</a></h3>
+<p>Access, password-reset and second-factor tokens are all JWTs signed with <code>SECRET_KEY</code> that name the account in <code>sub</code>. A <code>typ</code> claim keeps them apart: <code>get_current_account</code> accepts only <code>access</code>, and the reset routes only <code>password_reset</code>. A caller's extra claims cannot set <code>typ</code>. A token without the claim is accepted nowhere, so tokens issued before this release stop working: everyone logs in again once after the upgrade.</p>
+<h3 id="password-reset">Password reset<a class="headerlink" href="#password-reset" title="Permanent link">&para;</a></h3>
+<p>One reset is pending per account, kept in the key store: a new request replaces the code and the link of the previous one. The six-digit code is the weak part, so it expires sooner than the link, allows <code>PASSWORD_RESET_MAX_ATTEMPTS</code> wrong guesses in total (across <code>/verify-token</code> and <code>/reset-password</code>). After the last one neither the code nor the link works, and a new reset can be requested once <code>PASSWORD_RESET_MIN_INTERVAL_SECONDS</code> have passed since the last one was sent. Code and link both stop working once the password is set. The limits are per account; limiting requests per client address belongs in the host or the proxy.</p>
+<p>Because the pending reset lives in the key store, use <code>RedisStore</code> in production: with the in-memory <code>MapStore</code>, a restart discards pending resets and several workers do not share them.</p>
+<p>A key store of your own must implement <code>put_if</code>, <code>remove</code> and <code>remove_if</code> as single steps (see <code>StoreInterface</code>). The email lock relies on <code>remove_if</code>: a holder releases the lock only while it still owns it, so a holder whose lock expired never frees someone else's. The codes rely on <code>put_if</code>: every change to a pending code (a counted wrong guess, the mark that it was used, a new code) is written only over the record that was read. So when requests arrive together a code is accepted once, each wrong guess is counted, one code is sent, and a code that was replaced or used is never written back. A login that waits for its second factor relies on <code>remove</code>, which hands the record to one request.</p>
+<h3 id="one-time-codes">One-time codes<a class="headerlink" href="#one-time-codes" title="Permanent link">&para;</a></h3>
+<p>Password reset, email verification and login by code all send a six-digit code by email, and share one set of rules (<code>msflib.auth.services.codes.OneTimeCodeManager</code>): one pending code per account and purpose, a short lifetime, a limited number of wrong guesses, single use, and a pause before another is sent. Neither using a code nor using up its guesses shortens the pause: the code stops working, and the next one is sent only after the pause has passed since it was sent. A code works only for the purpose it was sent for. The endpoints that send one answer the same way whether or not the email is registered, also when sending fails: the error is logged, and the code (or the reset) is dropped so the user can ask again at once. The email is sent after the lock described under "When the email changes" is released, so a slow mail server never holds up an email change.</p>
+<p>Sending is split in two. Core's <code>msflib.services.email</code> renders a template and sends it, and knows nothing about auth. <code>msflib.auth.services.email</code> adds what only auth knows: it reads the <code>AUTH</code> settings, and calls your override when you pass one. Verification and login codes go through core's <code>send_otp_email</code> and the <code>verify_email.html</code> template, which receives <code>valid_for</code> (for example "10 minutes"); the subject says "Email Verification" or "Login Code". The reset email's template receives <code>valid_hours</code> for the link and <code>code_minutes</code> for the code. Pass <code>send_code_email_override(email_to, username, code, action)</code> to the router to send them your own way.</p>
+<h3 id="email-verification">Email verification<a class="headerlink" href="#email-verification" title="Permanent link">&para;</a></h3>
+<p>Auth sends and checks the code; where the result is kept is passed in, so auth does not depend on the account module. <code>msflib-account</code> keeps it in its <code>identity_verification</code> table:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.services.verification</span><span class="w"> </span><span class="kn">import</span> <span class="n">IdentityVerifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.eventbus</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_event_hooks</span>
+
+<span class="n">verification</span> <span class="o">=</span> <span class="n">IdentityVerifier</span><span class="p">()</span>          <span class="c1"># email; the table also holds phone</span>
+<span class="n">auth_router</span> <span class="o">=</span> <span class="n">router</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">email_verification</span><span class="o">=</span><span class="n">verification</span><span class="p">)</span>
+
+<span class="c1"># Optional: react to accounts being registered and to their email changing.</span>
+<span class="n">register_event_hooks</span><span class="p">(</span>
+    <span class="n">emitter</span><span class="o">=</span><span class="n">app_emitter</span><span class="p">,</span>
+    <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
+    <span class="n">token_store</span><span class="o">=</span><span class="n">token_store</span><span class="p">,</span>                <span class="c1"># the store the router's get_keystore returns</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><strong>At registration.</strong> With <code>SEND_VERIFICATION_ON_REGISTRATION=true</code> the hook sends the code when the account module emits <code>account-created</code>. The setting is read on each event, so it can be switched without rewiring.</li>
+<li><strong>When the email changes.</strong> Tokens, resets and codes are all issued for an email. When the account module emits <code>account-updated-strict</code> with <code>email</code> in its <code>changes</code>, the hook revokes the access tokens of the old email and drops its pending reset and codes, so none of them can be used on an account that takes that email later. Without <code>register_event_hooks</code> they stay valid until they expire. A login that is waiting for its second factor is tied to the account's id as well as its email, so it cannot be finished once the email has changed, with or without the hook. The event is strict and comes before the update is committed: if the key store fails, the error is raised and the email change is rolled back, so an email never changes while what was issued for the old one still works. The old email is also locked in the key store from the cleanup until the update is committed (<code>account-updated</code>), and every route that issues something for an email (login, the second-factor step, Google login, login and verification codes, password recovery) takes the same lock before it looks up the account. A login writes <code>last_login_date</code> and emits <code>account-logged-in</code> after the lock is released, so it never waits on an email change that holds the account row. Email verification and the password change of a reset take it too, so a code or reset checked for the old email cannot then be applied to an account that has changed or taken that email. So nothing can be issued for the old email between the cleanup and the commit. A route that waits longer than <code>EMAIL_LOCK_WAIT_SECONDS</code> for the lock answers 503; the second-factor step then keeps the pending login, with its wrong guesses, for a retry. An email change that waits that long fails with <code>EmailLockedError</code>, a <code>ServiceUnavailableError</code>, which core's exception handlers answer with 503. If the update is rolled back after the cleanup, the lock lasts until it expires (<code>EMAIL_LOCK_HOLD_SECONDS</code>).</li>
+<li><strong><code>POST /email-verification</code></strong> with <code>{"email"}</code> sends a code to an account whose email is not verified. It is the resend: for a code that expired, ran out of guesses or never arrived, for accounts that existed before verification was turned on, for an account whose email changed, and for accounts created by another route than registration.</li>
+<li><strong><code>POST /verify-email</code></strong> with <code>{"email", "code"}</code> records the email as verified and emits <code>account-email-verified</code>.</li>
+<li><strong><code>REQUIRE_EMAIL_VERIFICATION=true</code></strong> refuses every login with 403 "Email not verified" until then. The router refuses to start with it when no <code>email_verification</code> is given.</li>
+<li>A Google login whose <code>verified_email</code> is true, and a login by code, both prove the address and record it.</li>
+</ul>
+<p>Without <code>email_verification</code> the two routes answer as usual and do nothing. Any object with <code>is_verified(*, session, account)</code> and <code>mark_verified(*, session, account)</code> can stand in for <code>IdentityVerifier</code>. The shape (<code>msflib.auth.services.verification.IdentityVerifier</code>) is not tied to email: one verifier covers one kind of identity, and the router takes the one for email as <code>email_verification</code>. The codes themselves (<code>OneTimeCodeManager</code>) are keyed by recipient, so a phone number works the same way once there is a sender for it.</p>
+<h3 id="login-by-code">Login by code<a class="headerlink" href="#login-by-code" title="Permanent link">&para;</a></h3>
+<p>With <code>ENABLE_OTP_LOGIN=true</code>, <code>POST /login/otp/request</code> with <code>{"email"}</code> sends a code to an active account, and <code>POST /login/otp</code> with <code>{"email", "code"}</code> returns the usual login response. The code takes the place of the password, so whoever can read the account's mailbox can log in; that is already true of password reset. A <a href="#second-factor">second factor</a>, when one is configured, is asked whether it is still required after the code: one of another kind (an authenticator app, SMS) should be, one that is itself an email code adds nothing.</p>
+<h3 id="second-factor">Second factor<a class="headerlink" href="#second-factor" title="Permanent link">&para;</a></h3>
+<p>Pass <code>second_factor=</code> to the router to add a step after the password. It is an object with three methods, each called with keyword arguments:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Totp</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">required</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">first_factor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">account</span><span class="o">.</span><span class="n">totp_secret</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">challenge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"method"</span><span class="p">:</span> <span class="s2">"totp"</span><span class="p">}</span>          <span class="c1"># sent to the client; send an SMS here if that is the method</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pyotp</span><span class="o">.</span><span class="n">TOTP</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">totp_secret</span><span class="p">)</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</code></pre></div>
+<p><code>required</code> is told how the first step was passed, as a <code>msflib.auth.models.FirstFactor</code>: <code>password</code>, <code>email_code</code> (login by code) or <code>google</code>. A second factor only helps when it proves something the first step did not, so a factor that sends its code by email should return false after <code>FirstFactor.email_code</code>; otherwise the user reads two codes from the same mailbox and nothing is gained. An authenticator app or SMS factor ignores the argument.</p>
+<p>When <code>required</code> is true, <code>POST /login</code> (and the Google callback and login by code) answers <strong>202</strong> with <code>{"second_factor_required": true, "challenge_token": "...", "challenge": {...}}</code> and no access token. The client then posts <code>{"challenge_token", "code"}</code> to <code>POST /login/second-factor</code> and receives the usual login response.</p>
+<p>The router keeps the order safe: a challenge token is issued only after the first step succeeded, is recorded in the key store, works once, expires after <code>SECOND_FACTOR_CHALLENGE_EXPIRE_MINUTES</code> and allows <code>SECOND_FACTOR_MAX_ATTEMPTS</code> wrong codes. A code without a challenge, or a challenge the router did not issue, is refused, so the second factor can never stand in for the password. A challenge token is not an access token. Enrolment (creating and storing the secret) is the host's.</p>
 <h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
 <p>Event names are in <code>msflib.auth.eventbus.EventName</code>:</p>
 <table>
@@ -4478,6 +4738,10 @@
 <tr>
 <td><code>google-account-create</code></td>
 <td>A Google login names an unknown email and <code>ALLOW_GOOGLE_OAUTH_SIGNUP</code> is true. Required: a listener must create the account, or the callback returns 500.</td>
+</tr>
+<tr>
+<td><code>account-email-verified</code></td>
+<td>An account's email is recorded as verified: by <code>/verify-email</code>, a login by code, or a Google login with a verified address. Optional.</td>
 </tr>
 </tbody>
 </table>
@@ -4623,7 +4887,15 @@
 </tr>
 <tr>
 <td>401 "Token expired" right after logout</td>
-<td>Expected: logout revoked the account. A new login clears it.</td>
+<td>Expected: logout revoked every token issued up to then. Log in again for a new one; the old ones stay revoked.</td>
+</tr>
+<tr>
+<td>403 "Email not verified" at login</td>
+<td><code>REQUIRE_EMAIL_VERIFICATION</code> is on and the account's current email has not been verified. Send a code with <code>POST /email-verification</code> and confirm it with <code>POST /verify-email</code>.</td>
+</tr>
+<tr>
+<td>400 "Invalid token" for a reset code that was right</td>
+<td>The code expired (<code>PASSWORD_RESET_CODE_EXPIRE_MINUTES</code>), was used, was replaced by a newer request, or ran out of guesses. Request the reset again.</td>
 </tr>
 <tr>
 <td>404 "No workspace specified."</td>

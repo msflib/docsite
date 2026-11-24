@@ -4067,8 +4067,9 @@ matters (<code>members_by_id</code>).</p>
 </ul>
 <h3 id="sdc-4-classes-uppercamelcase-nouns-that-say-what-the-class-is">SDC-4 · Classes: UpperCamelCase nouns that say what the class is<a class="headerlink" href="#sdc-4-classes-uppercamelcase-nouns-that-say-what-the-class-is" title="Permanent link">&para;</a></h3>
 <p><code>ConversationThread</code>, <code>ChunkingRegistry</code>, <code>MemberEligibility</code>. Avoid vague
-suffixes such as <code>Manager</code>, <code>Helper</code>, <code>Utils</code>, <code>Handler</code> and <code>Impl</code>. Use the
-established role suffixes:</p>
+suffixes such as <code>Helper</code>, <code>Utils</code>, <code>Handler</code> and <code>Impl</code>. Use <code>Manager</code> only
+for a class that manages one named thing (<code>OneTimeCodeManager</code>), never for a
+class that groups unrelated operations. Use the established role suffixes:</p>
 <table>
 <thead>
 <tr>
@@ -4084,6 +4085,10 @@ established role suffixes:</p>
 <tr>
 <td>Service class</td>
 <td><code>&lt;Domain&gt;Service</code></td>
+</tr>
+<tr>
+<td>Manager of one thing</td>
+<td><code>&lt;Thing&gt;Manager</code></td>
 </tr>
 <tr>
 <td>Module settings</td>

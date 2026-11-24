@@ -2278,6 +2278,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.services.email.send_otp_email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        send_otp_email
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3725,6 +3736,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#msflib.services.email.send_otp_email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        send_otp_email
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3833,6 +3855,87 @@
     <div class="doc doc-contents ">
 
         <p>Return the template directory: user-specified if valid, otherwise library templates.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.services.email.send_otp_email" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">send_otp_email</span><span class="p">(</span><span class="n">email_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span><span class="p">,</span> <span class="n">template_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'verify_email.html'</span><span class="p">,</span> <span class="n">valid_for</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Email Verification'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.services.email.send_otp_email" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Send a short code.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>action</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>completes "You recently requested to ... your account" in the message.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>valid_for</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>how long the code works, as text ("10 minutes").</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>topic</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>what the code is for, in the subject line.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;Email Verification&#39;</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
     </div>

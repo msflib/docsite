@@ -3588,6 +3588,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cnc-12-key-store-records-are-claimed-and-replaced-in-one-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNC-12 · Key-store records are claimed and replaced in one step
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4043,6 +4054,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cnc-12-key-store-records-are-claimed-and-replaced-in-one-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNC-12 · Key-store records are claimed and replaced in one step
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4289,6 +4311,16 @@ exercises the happy path. The test must fail without the fix (TST-6).</p>
 </code></pre></div>
 <p>Real concurrency (two sessions on Postgres) is not covered by this; say so in
 the pull request when it matters.</p>
+<h3 id="cnc-12-key-store-records-are-claimed-and-replaced-in-one-step">CNC-12 · Key-store records are claimed and replaced in one step<a class="headerlink" href="#cnc-12-key-store-records-are-claimed-and-replaced-in-one-step" title="Permanent link">&para;</a></h3>
+<p>The key store has no transactions, so a <code>get</code> followed by a <code>put</code> or <code>remove</code>
+is a race like CNC-1. Use the two single-step operations of <code>StoreInterface</code>:
+<code>remove</code> to claim a single-use record (only one caller gets the value; put it
+back if it is still usable), and <code>put_if(key, expected, value)</code> to write only
+over what you read (<code>expected=None</code> writes only when the key is absent), and
+<code>remove_if(key, expected)</code> to remove only what you still hold (a lock).
+Reference: <code>auth/services/codes.py</code>, <code>core.security.revoke_access_token</code>.</p>
+<p><strong>Why:</strong> a one-time code checked with <code>get</code> and deleted afterwards is accepted
+twice by two requests that arrive together (#423).</p>
 <h2 id="edge-values">Edge values<a class="headerlink" href="#edge-values" title="Permanent link">&para;</a></h2>
 <h3 id="edg-1-null-in-a-unique-key-needs-a-sentinel-outside-the-valid-domain">EDG-1 · NULL in a unique key needs a sentinel outside the valid domain<a class="headerlink" href="#edg-1-null-in-a-unique-key-needs-a-sentinel-outside-the-valid-domain" title="Permanent link">&para;</a></h3>
 <p>SQL treats NULLs as distinct, so a unique index over nullable scope columns

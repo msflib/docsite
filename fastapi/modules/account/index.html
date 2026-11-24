@@ -549,6 +549,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#identity-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#actions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3996,6 +4007,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#identity-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#actions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4383,6 +4405,10 @@
 <li>Schemas: <code>AccountCreatePublic</code> (client input for open registration), <code>AccountCreate</code> (adds <code>status</code>, <code>role</code>, nested <code>profile</code>), <code>AccountRead</code>, <code>AccountReadPublic</code>, <code>AccountUpdate</code>, and the profile equivalents.</li>
 </ul>
 <p>Subclass <code>AccountBase</code> with <code>table=True</code> to add columns, and pass your class as <code>account_type</code>. See <a href="../../integration/overriding-models/">Overriding models</a>.</p>
+<h3 id="identity-verification">Identity verification<a class="headerlink" href="#identity-verification" title="Permanent link">&para;</a></h3>
+<p><code>IdentityVerification</code> (table <code>identity_verification</code>) records that an account proved it controls its email address or phone number: one row per account and <code>kind</code> (<code>email</code> or <code>phone</code>), with the <code>value</code> that was verified and <code>verified_at</code>. It is a table of its own, so adding it changes nothing in an existing <code>account</code> table; <code>create_all</code> creates it, and an Alembic host adds one revision.</p>
+<p>The row holds the value that was verified. When the account's email or phone changes, the row no longer matches and the new value counts as unverified until it is verified again.</p>
+<p><code>msflib.account.services.verification.IdentityVerifier(kind)</code> has <code>is_verified(session=, account=)</code> and <code>mark_verified(session=, account=)</code>; one instance covers one kind, email by default. The module does not send or check codes: pass <code>IdentityVerifier()</code> to the auth router as <code>email_verification</code> (see <a href="../auth/#email-verification">auth</a>). Nothing verifies phone numbers yet; the table is ready for it.</p>
 <h3 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h3>
 <p><code>AccountAction</code> and <code>ProfileAction</code> are generic <code>ModelAction</code> subclasses; parameterise them with your model and schema types:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountAction</span><span class="p">,</span> <span class="n">ProfileAction</span>
@@ -4502,7 +4528,7 @@
 </tr>
 </tbody>
 </table>
-<p>The function loads the account, runs the password check (if requested), checks uniqueness, emits <code>account-pre-update</code>, rechecks the password if a listener introduced an email change, checks uniqueness again, saves the update, and emits <code>account-updated</code>.</p>
+<p>The function loads the account, runs the password check (if requested), checks uniqueness, emits <code>account-pre-update</code>, rechecks the password if a listener introduced an email change, checks uniqueness again, writes the update, emits <code>account-updated-strict</code>, commits, and emits <code>account-updated</code>.</p>
 <p><code>update_account</code> and <code>get_account</code> raise <code>NotFoundError</code> (404 over HTTP) when the account does not exist. The exceptions live in <code>msflib.core.exceptions</code>; call <code>register_exception_handlers(app)</code> from <code>msflib.api</code> so an app maps them to responses.</p>
 <h4 id="get_account"><code>get_account</code><a class="headerlink" href="#get_account" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="n">get_account</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
@@ -4530,8 +4556,8 @@
 <td>Inside <code>create_account</code>, after the welcome email, so on open registration and admin creation. The <code>data</code> in the payload has <code>password</code> set to <code>"[redacted]"</code>; use <code>account-pre-create</code> or <code>account-created-pre-email</code> if a listener needs the plaintext password.</td>
 </tr>
 <tr>
-<td><code>account-pre-update</code>, <code>account-updated</code></td>
-<td>Inside <code>update_account</code>, so on <code>PUT /account/me</code> and the admin update route. The pre-update event is emitted strictly: a listener error aborts the update. The <code>data</code> in both payloads has <code>current_password</code> and <code>new_password</code> set to <code>"[redacted]"</code> when the caller sent them, and the plaintext is never stored: the caller's own <code>new_password</code> is hashed into <code>hashed_password</code>, and a password added by a listener is ignored.</td>
+<td><code>account-pre-update</code>, <code>account-updated-strict</code>, <code>account-updated</code></td>
+<td>Inside <code>update_account</code>, so on <code>PUT /account/me</code> and the admin update route. The pre-update event is emitted strictly: a listener error aborts the update. <code>account-updated-strict</code> is emitted with the updated account before the commit, also strictly: a listener error is raised to the caller and the update is rolled back, so use it for work that must succeed for the update to stand (msflib-auth drops what it issued for the old email here). <code>account-updated</code> is emitted after the commit, and a listener error is logged, not raised. Both carry <code>changes</code>: each account field the update changed, as <code>(old, new)</code>, so a listener can tell what changed and act on the old value. A field sent with the value it already had is not in it, and passwords never are. The <code>data</code> in all three payloads has <code>current_password</code> and <code>new_password</code> set to <code>"[redacted]"</code> when the caller sent them, and the plaintext is never stored: the caller's own <code>new_password</code> is hashed into <code>hashed_password</code>, and a password added by a listener is ignored.</td>
 </tr>
 <tr>
 <td><code>profile-pre-create</code>, <code>profile-created</code>, <code>profile-pre-update</code>, <code>profile-updated</code>, <code>profile-avatar-pre-update</code>, <code>profile-avatar-updated</code></td>
