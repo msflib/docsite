@@ -4448,7 +4448,8 @@ separated per account (<code>AccountScope</code>), not as a way to say who calls
 <div class="admonition note">
 <p class="admonition-title">Target design (msflib/fastapi#391, amendment A5)</p>
 <p>This rule describes where authorization is going. <code>build_guard</code>,
-<code>narrow_envelope</code>, <code>RoleSource</code> and <code>PermissionResolver</code> are in code. Not yet:
+<code>build_operation_envelope_factory</code>, <code>narrow_envelope</code>, <code>RoleSource</code> and
+<code>PermissionResolver</code> are in code. Not yet:
 <code>build_role_source</code>, and <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through
 the evaluator (msflib/fastapi#397). Write new authorization code to this shape.</p>
 </div>
@@ -4460,12 +4461,31 @@ the evaluator (msflib/fastapi#397). Write new authorization code to this shape.<
 <li>Every allow or deny goes through <code>ConstraintEvaluator</code> and is a
   <code>ScopeDecision</code>, so denials are recorded the same way everywhere. Don't
   compare a role attribute or ask a resolver inline in a route.</li>
+<li>An operation is what a request does; a permission is one of the grants it
+  needs. The operation's profile lists its grants in <code>constraints</code>, as
+  <code>ScopeConstraint</code> objects in the order they run: memberships (SCP-7), then
+  <code>PermissionConstraint(key, tier=)</code> and <code>RoleConstraint</code>. A profile lists a
+  permission or a role without the host's sources. A constraint that holds
+  other constraints implements <code>CompositeConstraint.map_constraints</code>, as
+  <code>AnyConstraint</code> does, so the builder can bind what it holds; one that does
+  not leaves a permission inside it unbound, and that denies.</li>
+<li>A route names its operation and takes
+  <code>Depends(get_operation_envelope("&lt;module&gt;.&lt;operation&gt;"))</code>, from
+  <code>msflib.guard.build_operation_envelope_factory</code>. The builder takes the host's
+  <code>PermissionResolver</code>, <code>ROLE_REGISTRY</code> and <code>RoleSource</code> once and binds them to
+  what each profile lists, so remapping an operation's grants changes its
+  profile and never the endpoint. A host replaces a module's profile by
+  registering the operation again before it builds the module's router.</li>
 <li>Build an evaluator with <code>ConstraintEvaluator.for_operation(profile_registry,
-  operation, constraints)</code>, so its enforcement level comes from the operation's
-  profile, and ask it <code>permits(envelope, session=...)</code>. Pass <code>enforcement=</code> only to
-  forward a host's rollout override, and don't map a decision to allow or deny by
-  hand.</li>
-<li>Guard routes with <code>msflib.guard.build_guard</code>. It takes a <code>PermissionResolver</code>
+  operation)</code>: it runs the profile's constraints at the profile's enforcement
+  level. Pass constraints only when the profile cannot list them, and
+  <code>enforcement=</code> only to forward a host's rollout override. Ask it
+  <code>permits(envelope, session=...)</code>, and don't map a decision to allow or deny
+  by hand.</li>
+<li>A route that needs one permission and has no operation of its own uses
+  <code>msflib.guard.build_guard</code>: <code>guard(key, tier=)</code> is the short form of an
+  operation with that one grant. A route takes an envelope dependency or a
+  guard, never both. <code>build_guard</code> takes a <code>PermissionResolver</code>
   (<code>msflib-authz</code>), role attributes mapped in <code>ROLE_REGISTRY</code>, or both.</li>
 <li><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> (<code>msflib-auth</code>) are the path for simple
   apps; they decide through the evaluator too. Recommend authz role-permission
@@ -4478,13 +4498,15 @@ the evaluator (msflib/fastapi#397). Write new authorization code to this shape.<
 <h3 id="scp-7-membership-is-a-scope-constraint">SCP-7 · Membership is a scope constraint<a class="headerlink" href="#scp-7-membership-is-a-scope-constraint" title="Permanent link">&para;</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Target design (msflib/fastapi#393, section 10)</p>
-<p>This rule describes where membership checks are going. The core pieces
-(<code>MEMBERSHIP_REGISTRY</code>, <code>MembershipConstraint(dimension)</code>,
-<code>build_envelope_dependency</code>) land in msflib/fastapi#424.
-<code>get_member_account_dependency</code> is deprecated in 0.3.0 (warning raised at
-call time) and will be removed with no shim in 0.4.0, together with the
-hand-written membership copies in modules. Write new code to this shape
-where it can, using <code>build_envelope_dependency</code> once #424 is on <code>dev</code>.</p>
+<p>This rule describes where membership checks are going. In code: the
+membership registry (<code>msflib.scope.MEMBERSHIP_REGISTRY</code>),
+<code>MembershipConstraint(dimension)</code> and the per-operation envelope dependency
+(<code>msflib.guard.build_operation_envelope_factory</code>). Not yet: the owning modules
+registering their checks, and routers on the envelope dependency. Today routers
+take <code>MembershipCheck</code> callbacks (SCP-3, API-7) and the deprecated
+<code>get_member_account_dependency</code> checks workspace membership; it and the
+hand-written copies in modules are removed, with no shim, when the routers move.
+Write new code to this shape where it can, and remove this note then.</p>
 </div>
 <p>A membership is a grant whose reach is a whole container: a tenant, a
 workspace, a conversation, a project, a department. It is checked at the grant
@@ -4525,8 +4547,8 @@ membership is defined and enforced the same way.</p>
   nothing writes a result back onto the envelope.</li>
 <li><strong>The operation lists its memberships</strong> in its profile's <code>constraints</code>, in
   container order (tenant, workspace, conversation) and before its role and
-  permission constraints; the evaluator stops at the first denial. A dimension
-  that is <code>None</code> on the scope skips its check (SCP-2). A membership follows the
+  permission constraints (SCP-6); the evaluator stops at the first denial. A dimension
+  that is <code>None</code> on the scope skips its check once the request has a caller, a session and a registered check (SCP-2). A membership follows the
   profile's enforcement level like every other grant check (AUZ-12), so a
   profile that lists one is <code>enforce</code>; a constraint not ready to enforce waits
   in a profile of its own.</li>
@@ -4567,12 +4589,12 @@ membership is defined and enforced the same way.</p>
 <td>Replaces a check, only to state a choice (<code>replace=True</code>).</td>
 </tr>
 <tr>
-<td>Dependency builder (mount time)</td>
-<td>Validates wiring: every <code>MembershipConstraint</code> a profile lists has a registered check whose signature binds; otherwise a startup error.</td>
+<td>Dependency builder (when a route is declared)</td>
+<td><code>get_operation_envelope(operation)</code> validates wiring: every <code>MembershipConstraint</code> the profile lists has a registered check, and every permission has a source that can grant it; otherwise a startup error.</td>
 </tr>
 <tr>
 <td>Envelope dependency (per request, one per operation)</td>
-<td>Builds the envelope, resolves and extends its selectors, checks containment, runs the evaluator, maps the decision to HTTP, returns the envelope.</td>
+<td>Takes the envelope its source builds (selectors resolved and extended, containment checked), checks it against the profile's dimensions (404), runs the evaluator, maps the decision to HTTP, returns the envelope.</td>
 </tr>
 <tr>
 <td>Router</td>

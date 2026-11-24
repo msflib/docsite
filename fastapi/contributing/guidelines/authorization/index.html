@@ -3990,8 +3990,9 @@ add database CHECKs for everything a single table can express.</p>
 <p><code>msflib-auth</code> guards (<code>RoleCheck</code>, <code>WorkspaceRoleCheck</code>) compare a role attribute
 and are supported as the simple way. <code>msflib-authz</code> guards read assignments:
 the <code>guard(key, tier=...)</code> from <code>get_authz_dependencies</code>, by permission key, with
-<code>role_registry=ROLE_REGISTRY</code> to accept registered roles too. Pick one way per
-route. <code>auth</code> must not import <code>authz</code>, and authz must not import <code>auth</code>; identity
+<code>role_registry=ROLE_REGISTRY</code> to accept registered roles too. A route that
+performs a named operation lists the permission in the operation's profile instead
+and takes the operation's envelope dependency (SCP-6). Pick one way per route. <code>auth</code> must not import <code>authz</code>, and authz must not import <code>auth</code>; identity
 arrives as injected callables.</p>
 <p>Name permission keys <code>&lt;module&gt;.&lt;action&gt;</code>, register them at import time, and
 choose <code>tenant_cascade</code> deliberately: <code>True</code> lets a tenant-tier role grant the
@@ -4147,22 +4148,22 @@ receives it and filters on <code>envelope.scope</code>.</p>
 </tr>
 <tr>
 <td>2</td>
-<td>Checks on the scope's own values, such as <code>DimensionMatchConstraint</code> (moving here from the constraint list, ADR 0009 A9)</td>
-<td>core</td>
-</tr>
-<tr>
-<td>2</td>
 <td>Selectors such as <code>conversation_id</code> resolve to a row in this scope before <code>envelope.extend</code> adds them (SCP-3)</td>
 <td>the selector's module</td>
 </tr>
 <tr>
-<td>3</td>
-<td><code>MembershipConstraint</code> with the container's <code>MembershipCheck</code> (<code>is_workspace_member</code>, tenancy's check, or <code>allow_any_member</code>)</td>
-<td>core; the check from the container's module</td>
+<td>2</td>
+<td>The operation's envelope dependency checks the envelope against the dimensions its profile lists: a required one missing, or one not allowed, is 404</td>
+<td>core</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Route guard: <code>RoleConstraint</code> with a <code>RoleSource</code> (auth attributes or authz assignments) and <code>PermissionConstraint</code> with the authz <code>RoleService</code> resolver, through <code>build_guard</code> or authz <code>guard(key, tier=)</code></td>
+<td>The operation's profile lists its grants in <code>constraints</code>, and its envelope dependency (<code>msflib.guard.build_operation_envelope_factory</code>) runs them in order: <code>MembershipConstraint(dimension)</code> with the <code>MembershipCheck</code> registered for the dimension (<code>is_workspace_member</code>, tenancy's check, or <code>allow_any_member</code>), then <code>PermissionConstraint(key, tier=)</code> and <code>RoleConstraint</code>, bound to the host's <code>PermissionResolver</code> (authz <code>RoleService</code>) and <code>RoleSource</code> (auth attributes or authz assignments)</td>
+<td>core; the check from the container's module; authz, auth</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Route guard, for a route that names one permission key and no operation: <code>build_guard</code> or authz <code>guard(key, tier=)</code>. A route takes an envelope dependency or a guard, never both</td>
 <td>core, authz</td>
 </tr>
 <tr>
@@ -4177,7 +4178,7 @@ receives it and filters on <code>envelope.scope</code>.</p>
 </tr>
 <tr>
 <td>3</td>
-<td><code>ChannelConstraint</code> and other constraints an operation's profile lists, such as ai_api's <code>evaluate_scope_constraints</code></td>
+<td><code>ChannelConstraint</code> and other constraints an operation's profile lists, such as those ai_api's <code>evaluate_scope_constraints</code> runs</td>
 <td>core, modules</td>
 </tr>
 <tr>
@@ -4202,24 +4203,23 @@ receives it and filters on <code>envelope.scope</code>.</p>
 </tr>
 </tbody>
 </table>
-<p>Not yet in line with this rule (ADR 0009 A9 decides each):</p>
+<p>Profiles and <code>ConstraintEvaluator</code> default to <code>enforce</code> (ADR 0009 A9). <code>log-only</code>
+and <code>shadow</code> are an explicit choice, and a profile that lists constraints at either
+level logs a warning when it is registered.</p>
+<p>Not yet in line with this rule:</p>
 <ul>
-<li><code>get_scope_dependencies</code> answers a request with no tenant with 403. It is a
-  stage 2 failure, so it becomes 404, as a request that needs a workspace and
-  resolves none already is.</li>
-<li><code>get_member_account_dependency</code> runs the stage 2 workspace check and the stage
-  3 membership check together. It is deprecated in 0.3.0 and removed in 0.4.0;
-  msflib/fastapi#424 brings <code>build_envelope_dependency</code> as the replacement.
-  Until then a membership is checked outside the evaluator, so it ignores the
-  profile's enforcement level.</li>
-<li><code>DimensionMatchConstraint</code> checks the scope's values, a stage 2 question, from
-  the constraint list, so a <code>log-only</code> profile switches it off. It is removed in
-  msflib/fastapi#424 (no current users outside tests).</li>
+<li>authz's group router (<code>msflib.authz.router.router</code>) checks the tenant itself and answers a
+  request with no tenant with 400, where <code>get_scope_dependencies</code> answers 404. The
+  hand-written check goes when the router moves to its operation's envelope
+  dependency (SCP-7).</li>
+<li><code>get_member_account_dependency</code> (deprecated) runs the stage 2 workspace check
+  and the stage 3 membership check together, outside the evaluator, so it ignores
+  the profile's enforcement level. Routers move to <code>build_operation_envelope_factory</code>
+  with <code>MembershipConstraint</code> in their profiles (SCP-7), and it is removed in 0.4.0.</li>
 <li>Some operation profiles explicitly opt into <code>log-only</code> as a rollout exception
   (ai_api's profiles, workspaces' profiles), so their stage 3 grant constraints
-  log rather than reject. <code>log-only</code> and <code>shadow</code> are valid explicit choices with
-  a startup warning; whether these modules should move to <code>enforce</code> is undecided
-  (msflib/fastapi#270).</li>
+  log rather than reject. Whether these modules should move to <code>enforce</code> is
+  undecided (msflib/fastapi#270).</li>
 </ul>
 
 

@@ -2111,6 +2111,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.deps.OperationEnvelopeFactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OperationEnvelopeFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.deps.build_operation_envelope_factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_operation_envelope_factory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.deps.build_guard" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2216,6 +2238,17 @@
     <span class="md-ellipsis">
       
         CheckScopeConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.scope.TierGrantConstraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TierGrantConstraint
       
     </span>
   </a>
@@ -3871,6 +3904,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.deps.OperationEnvelopeFactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OperationEnvelopeFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.deps.build_operation_envelope_factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_operation_envelope_factory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.deps.build_guard" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3983,6 +4038,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.scope.TierGrantConstraint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TierGrantConstraint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.scope.validate_check_level" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4058,10 +4124,11 @@
 
     <div class="doc doc-contents first">
 
-        <p>Route guards: who may call a route, decided by the scope evaluator.</p>
-<p>A host builds one guard from its sources and a router guards its routes with it::</p>
-<div class="codehilite"><pre><span></span><code>scope_deps = get_scope_dependencies(...)
-guard = build_guard(
+        <p>Route access: who may call a route, decided by the scope evaluator.</p>
+<p>A route names the operation it performs and takes the envelope, once the grants the
+operation's profile lists are checked (membership, permission, role)::</p>
+<div class="codehilite"><pre><span></span><code>get_operation_envelope = build_operation_envelope_factory(
+    profile_registry=PROFILE_REGISTRY,
     get_envelope=scope_deps.get_account_envelope,
     get_session=get_session,
     resolver=role_service,        # msflib-authz assignments, or
@@ -4069,16 +4136,21 @@ guard = build_guard(
     role_source=roles,            # read from the caller's role attributes, or both
 )
 
+@router.get("")
+def list_items(envelope: ScopeEnvelope = Depends(get_operation_envelope("items.read"))): ...
+</code></pre></div>
+
+<p>A route that needs one permission and has no operation of its own names the key::</p>
+<div class="codehilite"><pre><span></span><code>guard = build_guard(get_envelope=..., get_session=..., resolver=role_service)
+
 @router.get("", dependencies=[Depends(guard("notifications.manage", tier=RoleTier.tenant))])
 def list_items(): ...
 </code></pre></div>
 
-<p><code>ROLE_REGISTRY</code> holds the roles that satisfy each permission key; a
-<code>msflib.scope.RoleSource</code> says which roles the caller holds. A guard decides the
-route's permission or role; it checks no membership. Pass the operation's envelope
-dependency (<code>msflib.scope.build_envelope_dependency</code>) as <code>get_envelope</code> so its
-profile's <code>MembershipConstraint</code>s run first (SCP-7). Until routers move,
-<code>get_scope_dependencies</code> with
+<p>A route takes one or the other, never both. <code>ROLE_REGISTRY</code> holds the roles that
+satisfy each permission key; a <code>msflib.scope.RoleSource</code> says which roles the caller
+holds. A guard checks no membership; an operation lists its <code>MembershipConstraint</code>s
+in its profile (SCP-7). Until routers move, <code>get_scope_dependencies</code> with
 <code>get_current_account=get_member_account_dependency(...)</code> is the pre-SCP-7 path.</p>
 
 
@@ -4114,7 +4186,7 @@ profile's <code>MembershipConstraint</code>s run first (SCP-7). Until routers mo
 
     <div class="doc doc-contents ">
 
-        <p>The route guard: one dependency per permission key, decided by the scope evaluator.</p>
+        <p>Route dependencies that decide access: an operation's envelope, or a permission guard.</p>
 
 
 
@@ -4183,6 +4255,113 @@ profile's <code>MembershipConstraint</code>s run first (SCP-7). Until routers mo
 
 </div>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.guard.deps.OperationEnvelopeFactory" class="doc doc-heading">
+            <code>OperationEnvelopeFactory</code>
+
+
+<a href="#msflib.guard.deps.OperationEnvelopeFactory" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>Builds an operation's dependency: <code>Depends(get_operation_envelope("things.read"))</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.guard.deps.build_operation_envelope_factory" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_operation_envelope_factory</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">profile_registry</span><span class="p">:</span> <span class="n">ProfileRegistry</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OperationEnvelopeFactory</span></code>
+
+<a href="#msflib.guard.deps.build_operation_envelope_factory" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the factory of operation envelope dependencies, named <code>get_operation_envelope</code>.</p>
+<p>Call it once per router factory. <code>get_operation_envelope(operation)</code> returns the
+dependency a route takes; it yields the request's envelope once the operation allows
+the request::</p>
+<div class="codehilite"><pre><span></span><code>get_operation_envelope = build_operation_envelope_factory(
+    profile_registry=PROFILE_REGISTRY,
+    get_envelope=scope_deps.get_account_envelope,
+    get_session=get_session,
+    resolver=role_service,
+)
+
+@router.delete("/things/{id}")
+def delete_thing(
+    envelope: ScopeEnvelope = Depends(get_operation_envelope("things.manage")),
+): ...
+</code></pre></div>
+
+<p>For each request the dependency:</p>
+<ol>
+<li>takes the envelope <code>get_envelope</code> builds (one of <code>get_scope_dependencies</code>'s),
+   which answers a missing caller with 401 and a missing or foreign place with 404.
+   An operation whose scope holds selectors passes its own source,
+   <code>get_operation_envelope(operation, get_envelope=...)</code>: a module dependency that
+   resolves them and extends the envelope;</li>
+<li>checks the envelope against the dimensions the operation's profile lists, and
+   answers 404 when a required one is missing or one is not allowed;</li>
+<li>runs the constraints the profile lists, in order and at its enforcement level, and
+   answers a denial through <code>msflib.scope.authorize</code>: 401 without a caller, 403
+   otherwise.</li>
+</ol>
+<p>The host's sources are <code>build_guard</code>'s. A <code>PermissionConstraint</code> a profile lists
+is granted by <code>resolver</code>, or by a role <code>role_registry</code> lists for its key at or
+above its tier. A <code>RoleConstraint</code> reads <code>role_source</code>; without one it reads the
+roles on the envelope's principal, which only an envelope source that sets them
+(<code>msflib-auth</code>'s) fills. <code>enforcement</code> overrides every profile's level, for a host
+rolling its checks out; <code>log-only</code> records a denial and lets the request through,
+which <code>build_guard</code> refuses.</p>
+<p>Wiring is checked early. Building the factory raises <code>ValueError</code> for an unknown
+<code>enforcement</code>, or for <code>role_registry</code> without <code>role_source</code> or the reverse.
+Declaring a route raises <code>ProfileValidationError</code> for an unknown <code>operation</code>, and
+<code>ValueError</code> for a permission no source can grant or a membership with no
+registered check. Each operation's dependency is built once.</p>
+
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -4195,15 +4374,15 @@ profile's <code>MembershipConstraint</code>s run first (SCP-7). Until routers mo
 
     <div class="doc doc-contents ">
 
-        <p>Return the <code>Guard</code> for routes whose caller comes from <code>get_envelope</code>.</p>
-<p>A route passes when <code>resolver</code> grants the key at <code>tier</code>, or when <code>role_source</code>
-says the caller holds a role <code>role_registry</code> lists for the key at or above
-<code>tier</code>. Each check asks a source only when it runs. The guard decides the
-route's permission or role; it checks no membership. Membership is a grant too,
-checked by the request's envelope dependency after the envelope is built (SCP-7):
-for workspace guards, <code>get_envelope</code> resolves the account through
-<code>msflib.scope.get_member_account_dependency</code>. A denial is a recorded
-scope decision answered with 403. The enforcement level is the <code>guard.check</code>
+        <p>Return the <code>Guard</code> for routes that name a permission key and no operation.</p>
+<p><code>guard(key, tier=...)</code> is the short form for a route that needs one permission
+and has no profile of its own; a route with an operation takes its envelope
+dependency (<code>build_operation_envelope_factory</code>) and no guard. A route passes when
+<code>resolver</code> grants the key at <code>tier</code>, or when <code>role_source</code> says the caller
+holds a role <code>role_registry</code> lists for the key at or above <code>tier</code>. Each check
+asks a source only when it runs. The guard checks no membership. A denial is a
+recorded scope decision answered by <code>msflib.scope.authorize</code>: 401 without a
+caller, 403 otherwise. The enforcement level is the <code>guard.check</code>
 profile's (<code>enforce</code>); <code>enforcement</code> overrides it for a host rolling guards
 out, so under <code>shadow</code> a denial is recorded and the route still runs. A guard
 is <code>enforce</code> or <code>shadow</code>: <code>log-only</code> would let every request through. Raises
@@ -4451,6 +4630,54 @@ ROLE_REGISTRY.register(
         <p>Denies a check without a tenant, or a workspace check without a workspace.</p>
 <p>Both are <code>scope_invalid</code>. The guard runs it before its sources, so no grant or
 role passes where there is no tenant, or no workspace to hold a workspace role.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.guard.scope.TierGrantConstraint" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">TierGrantConstraint</span><span class="p">(</span><span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grant</span><span class="p">:</span> <span class="n">ScopeConstraint</span><span class="p">)</span></code>
+
+<a href="#msflib.guard.scope.TierGrantConstraint" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Runs <code>grant</code> where a check at <code>tier</code> runs: on the envelope narrowed to the tier.</p>
+<p>It denies first what <code>CheckScopeConstraint</code> denies, so <code>grant</code> is never asked
+without a tenant, or at the workspace tier without a workspace. Its decision is the
+one that denied or allowed, under that constraint's name.</p>
 
 
 
