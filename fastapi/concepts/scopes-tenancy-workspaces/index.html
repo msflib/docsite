@@ -1700,6 +1700,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#your-own-dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your own dimensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Your own dimensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-basic-case-register-at-import-use-per-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The basic case: register at import, use per request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-module-with-a-dimension-of-its-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A module with a dimension of its own
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-advanced-case-a-compiler-at-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The advanced case: a compiler at startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tenants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3834,6 +3884,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#your-own-dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your own dimensions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Your own dimensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-basic-case-register-at-import-use-per-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The basic case: register at import, use per request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-module-with-a-dimension-of-its-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A module with a dimension of its own
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-advanced-case-a-compiler-at-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The advanced case: a compiler at startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tenants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4071,7 +4171,7 @@
 <p>A route that needs one permission and has no operation of its own names the key instead: <code>dependencies=[Depends(guard("notifications.manage", tier=RoleTier.tenant))]</code>, with <code>guard</code> from <code>msflib.guard.build_guard</code> or authz's <code>get_authz_dependencies</code>. It is the short form of an operation with that one grant. A route takes an envelope dependency or a guard, never both.</p>
 <p>Code that runs inside a request, such as an agent tool holding the request's envelope, checks another operation with <code>ConstraintEvaluator.for_operation(PROFILE_REGISTRY, "documents.read").permits(envelope, session=session)</code>. That works for an operation whose profile lists no permission: a <code>PermissionConstraint</code> without a resolver denies. A service never builds an envelope, and a job or worker checks no grant: it acts on a row's placement.</p>
 <h2 id="typed-scopes">Typed scopes<a class="headerlink" href="#typed-scopes" title="Permanent link">&para;</a></h2>
-<p>Code that filters rows takes the envelope's <code>scope</code>, passed down unchanged. <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) is the shared shape. A module that needs more dimensions subclasses it and does not redeclare the identity pair. A row's own tenant and workspace is its placement, not a scope: read it with <code>TenantPlacement.of(row)</code> and stamp a new row with <code>placement.values()</code> (<code>msflib.scope.TenantPlacement</code>). <code>envelope.extend(ScopeType, **selectors)</code> returns the envelope with its scope extended to the module's type: each field takes the selector you pass, else the value the envelope's scope holds, else its default. The principal, attributes and metadata are kept:</p>
+<p>Code that filters rows takes the envelope's <code>scope</code>, passed down unchanged. <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) is the shared shape. A module that needs more dimensions subclasses it and does not redeclare the identity pair. A row's own tenant and workspace is its placement, not a scope: read it with <code>TenantPlacement.of(row)</code> and stamp a new row with <code>placement.column_values()</code> (<code>msflib.scope.TenantPlacement</code>). <code>envelope.extend(ScopeType, **selectors)</code> returns the envelope with its scope extended to the module's type: each field takes the selector you pass, else the value the envelope's scope holds, else its default. The principal, attributes and metadata are kept. A facet the envelope's scope holds that the new type has no field for is never dropped silently: <code>extend</code> raises <code>ScopeValidationError</code> naming it, whether it is held in a <code>Facets</code> field or as a field of its own. The typed scope has no static check for this, so the error is the check. Extending the other way carries the facets into the new type's fields named like them (<code>project_id</code>, <code>conversation_id</code>), so a <code>FacetScope</code> and a module's typed scope convert in both directions. A facet that holds nothing is no loss, and other fields keep their old behaviour (a type with no field for one does not carry it):</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">DimensionCompiler</span><span class="p">,</span> <span class="n">TenantScope</span>
@@ -4109,6 +4209,112 @@
 <p>The type shares fields, not match semantics. Whether <code>None</code> means "only the workspace-less bucket" or something wider is decided by the action method that filters on it. See SCP-4 in the <a href="../../contributing/guidelines/architecture/">architecture guidelines</a>.</p>
 <h3 id="membership-checks">Membership checks<a class="headerlink" href="#membership-checks" title="Permanent link">&para;</a></h3>
 <p>Resolving a tenant or workspace does not prove the caller belongs to it. A router or guard that needs that takes <code>MembershipCheck</code> callbacks, one for the tenant and one for the workspace: <code>check(session, *, account_id=..., container_id=...) -&gt; bool</code>. The module that owns the membership data supplies them and the host passes them in. A host with a single tenant or no membership rules passes <code>allow_any_member</code> explicitly; nothing in msflib assumes it.</p>
+<h2 id="your-own-dimensions">Your own dimensions<a class="headerlink" href="#your-own-dimensions" title="Permanent link">&para;</a></h2>
+<p>Core registers the built-in dimensions (<code>tenant_id</code>, <code>workspace_id</code>, <code>account_id</code>, <code>conversation_id</code>, <code>sub_thread_id</code> and a few more) in <code>msflib.scope.DIMENSION_REGISTRY</code>. You add your own there with a <code>DimensionSpec</code>. One marked <code>is_facet=True</code> is a dimension rows are placed on. A request's facets live in one field, <code>FacetScope.facets</code>, keyed by the dimension's name, so a facet never becomes an attribute of the scope and cannot clash with <code>tenant_id</code> or a method.</p>
+<h3 id="the-basic-case-register-at-import-use-per-request">The basic case: register at import, use per request<a class="headerlink" href="#the-basic-case-register-at-import-use-per-request" title="Permanent link">&para;</a></h3>
+<p>Most apps need only this. Register the dimension in a module your entry point imports before the routers, so it runs once at startup, and declare a typed key for code that reads it:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/scope.py, imported by app/main.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">DIMENSION_REGISTRY</span><span class="p">,</span> <span class="n">DimensionKind</span><span class="p">,</span> <span class="n">DimensionSpec</span><span class="p">,</span> <span class="n">FacetKey</span><span class="p">,</span> <span class="n">NullMatch</span>
+
+<span class="n">DIMENSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">DimensionSpec</span><span class="p">(</span>
+        <span class="n">canonical_key</span><span class="o">=</span><span class="s2">"site_id"</span><span class="p">,</span>
+        <span class="n">kind</span><span class="o">=</span><span class="n">DimensionKind</span><span class="o">.</span><span class="n">row_id</span><span class="p">,</span>  <span class="c1"># an int row id; the default is text</span>
+        <span class="n">null_match</span><span class="o">=</span><span class="n">NullMatch</span><span class="o">.</span><span class="n">wildcard</span><span class="p">,</span>  <span class="c1"># a row with no site is read from every site</span>
+        <span class="n">is_facet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">SITE</span> <span class="o">=</span> <span class="n">FacetKey</span><span class="p">(</span><span class="s2">"site_id"</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+</code></pre></div>
+<p>In an endpoint, add the value to the request's envelope and pass the result down:</p>
+<div class="highlight"><pre><span></span><code><span class="n">extended</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">with_facets</span><span class="p">(</span><span class="n">site_id</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">extended</span><span class="o">.</span><span class="n">scope</span>
+<span class="c1"># FacetScope(tenant_id=1, workspace_id=None, account_id=5, facets=Facets({'site_id': 12}))</span>
+<span class="n">extended</span><span class="o">.</span><span class="n">scope</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">SITE</span><span class="p">)</span>
+<span class="c1"># 12, typed int | None</span>
+</code></pre></div>
+<p><code>with_facets</code> keeps the tenant, workspace, account and any facet already set; a <code>None</code> value removes one. Each value is checked against its spec when it is set: <code>site_id="12"</code> raises <code>ScopeValidationError</code>, as does a name that is not a registered facet. A facet cannot be named like a field of <code>FacetScope</code> or <code>FacetPlacement</code> (or a subclass of either): registering one raises <code>DimensionConflictError</code>, and a subclass that declares the name of a registered facet raises <code>TypeError</code>. Code that filters on every facet, as knowledge does, reads them all with <code>scope.facets.items()</code>. The key the compiler builds lists dimensions by priority and then by name, never by the order they were registered, so two processes that register in different orders build the same key. The msflib modules you call load their own dimensions and profiles when they are first used, so there is nothing else to import.</p>
+<h3 id="a-module-with-a-dimension-of-its-own">A module with a dimension of its own<a class="headerlink" href="#a-module-with-a-dimension-of-its-own" title="Permanent link">&para;</a></h3>
+<p>A module registers its dimensions at module scope in its <code>scope_profiles.py</code>, beside its profiles:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># inventory/scope_profiles.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DIMENSION_REGISTRY</span><span class="p">,</span>
+    <span class="n">DimensionKind</span><span class="p">,</span>
+    <span class="n">DimensionSpec</span><span class="p">,</span>
+    <span class="n">FacetKey</span><span class="p">,</span>
+    <span class="n">NullMatch</span><span class="p">,</span>
+    <span class="n">ProfileRegistry</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">WAREHOUSE_DIMENSION</span> <span class="o">=</span> <span class="n">DimensionSpec</span><span class="p">(</span>
+    <span class="n">canonical_key</span><span class="o">=</span><span class="s2">"warehouse_id"</span><span class="p">,</span>
+    <span class="n">key_alias</span><span class="o">=</span><span class="s2">"wh"</span><span class="p">,</span>
+    <span class="n">priority</span><span class="o">=</span><span class="mi">66</span><span class="p">,</span>
+    <span class="n">kind</span><span class="o">=</span><span class="n">DimensionKind</span><span class="o">.</span><span class="n">row_id</span><span class="p">,</span>
+    <span class="n">null_match</span><span class="o">=</span><span class="n">NullMatch</span><span class="o">.</span><span class="n">wildcard</span><span class="p">,</span>
+    <span class="n">is_facet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">DIMENSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">WAREHOUSE_DIMENSION</span><span class="p">)</span>
+<span class="n">WAREHOUSE</span> <span class="o">=</span> <span class="n">FacetKey</span><span class="p">(</span><span class="s2">"warehouse_id"</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_profile_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ProfileRegistry</span><span class="p">:</span>
+    <span class="n">registry</span> <span class="o">=</span> <span class="n">ProfileRegistry</span><span class="p">()</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+        <span class="s2">"inventory.count"</span><span class="p">,</span>
+        <span class="p">{</span><span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"tenant_id"</span><span class="p">,</span> <span class="s2">"warehouse_id"</span><span class="p">],</span> <span class="s2">"required_nullable"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"workspace_id"</span><span class="p">]},</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">registry</span>
+
+
+<span class="n">PROFILE_REGISTRY</span> <span class="o">=</span> <span class="n">create_profile_registry</span><span class="p">()</span>
+</code></pre></div>
+<p>A package's <code>__init__.py</code> is lazy, so <code>import inventory</code> registers nothing. <code>warehouse_id</code> appears when <code>inventory.scope_profiles</code> is first loaded, which the module's own code does before it compiles a scope. In msflib, knowledge registers <code>project_id</code> this way, in <code>msflib.knowledge.scope_profiles</code>.</p>
+<h3 id="the-advanced-case-a-compiler-at-startup">The advanced case: a compiler at startup<a class="headerlink" href="#the-advanced-case-a-compiler-at-startup" title="Permanent link">&para;</a></h3>
+<p>A <code>DimensionCompiler</code> fixes its dimension order when it is built. If your app builds one at startup, load every dimension first: import <code>&lt;module&gt;.scope_profiles</code> for each installed module that registers one, then register your own, then build. A profile registered with <code>scope_class=FacetScope</code> may name any registered facet.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/scope.py, imported by app/main.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inventory.scope_profiles</span>  <span class="c1"># noqa: F401  registers warehouse_id</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DIMENSION_REGISTRY</span><span class="p">,</span>
+    <span class="n">DimensionCompiler</span><span class="p">,</span>
+    <span class="n">DimensionKind</span><span class="p">,</span>
+    <span class="n">DimensionSpec</span><span class="p">,</span>
+    <span class="n">FacetScope</span><span class="p">,</span>
+    <span class="n">NullMatch</span><span class="p">,</span>
+    <span class="n">ProfileRegistry</span><span class="p">,</span>
+    <span class="n">list_facets</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">DIMENSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">DimensionSpec</span><span class="p">(</span>
+        <span class="n">canonical_key</span><span class="o">=</span><span class="s2">"site_id"</span><span class="p">,</span>
+        <span class="n">key_alias</span><span class="o">=</span><span class="s2">"s"</span><span class="p">,</span>
+        <span class="n">priority</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span>
+        <span class="n">kind</span><span class="o">=</span><span class="n">DimensionKind</span><span class="o">.</span><span class="n">row_id</span><span class="p">,</span>
+        <span class="n">null_match</span><span class="o">=</span><span class="n">NullMatch</span><span class="o">.</span><span class="n">wildcard</span><span class="p">,</span>
+        <span class="n">is_facet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">facets</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">canonical_key</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">list_facets</span><span class="p">(</span><span class="n">DIMENSION_REGISTRY</span><span class="p">)]</span>
+<span class="c1"># ['conversation_id', 'warehouse_id', 'site_id', 'sub_thread_id']</span>
+<span class="n">PROFILE_REGISTRY</span> <span class="o">=</span> <span class="n">ProfileRegistry</span><span class="p">()</span>
+<span class="n">PROFILE_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="s2">"reports.export"</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"tenant_id"</span><span class="p">],</span>
+        <span class="s2">"required_nullable"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"workspace_id"</span><span class="p">],</span>
+        <span class="s2">"optional"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"account_id"</span><span class="p">,</span> <span class="o">*</span><span class="n">facets</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">scope_class</span><span class="o">=</span><span class="n">FacetScope</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">DimensionCompiler</span><span class="p">(</span><span class="n">profile_registry</span><span class="o">=</span><span class="n">PROFILE_REGISTRY</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">extended</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">with_facets</span><span class="p">(</span><span class="n">warehouse_id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">site_id</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">extended</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"reports.export"</span><span class="p">)</span>
+<span class="c1"># 't/1/a/5/w/-/wh/3/s/12'</span>
+</code></pre></div>
+<p>Without the first import, a compiler built before <code>inventory</code> loads would not know <code>warehouse_id</code>'s key alias or priority.</p>
 <h2 id="tenants">Tenants<a class="headerlink" href="#tenants" title="Permanent link">&para;</a></h2>
 <p><code>msflib-tenancy</code> provides the <code>Tenant</code> table (<code>name</code>, unique <code>slug</code>, <code>status</code>, a soft <code>owner_account_id</code>), <code>TenantAction</code>, and <code>TenancySettings</code> (namespace <code>TENANCY</code>, with <code>DEFAULT_TENANT_SLUG</code> and <code>DEFAULT_TENANT_NAME</code>, defaulting to <code>"default"</code> and <code>"Default Tenant"</code>).</p>
 <p>Today the library runs single-tenant: one default tenant, resolved by slug. Rows that belong to a tenant carry a <code>tenant_id</code> foreign key to it (workspaces, for example). Three entry points matter to a host app:</p>

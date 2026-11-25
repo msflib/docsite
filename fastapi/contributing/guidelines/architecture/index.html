@@ -4163,14 +4163,17 @@ values, and its <code>dimensions</code> are the string view of the scope for the
 sinks. Nothing converts a scope to strings and back (ADR 0009, A7). Build a
 module's own scope with
 <code>envelope.extend(ScopeType, **selectors)</code>, once, at the request boundary, check
-it with <code>DimensionCompiler.validate_profile(envelope, operation)</code> where an
+it with <code>DimensionCompiler.validate_profile(envelope, operation)</code> (<code>extend</code> raises
+rather than drop a facet the scope holds and the new type has no field for) where an
 operation requires dimensions, and pass it unchanged to every call below. The one derived
 scope is a guard's: a check below the workspace tier runs at the tenant's
 scope (<code>msflib.guard.narrow_envelope(envelope, tier=)</code>, SCP-6). Request dependencies
 come from <code>get_scope_dependencies</code>; <code>get_scope_ids</code> is deprecated, and new code
 doesn't call it. <code>TenantScope</code> (<code>tenant_id</code>, <code>workspace_id</code>) is the shared shape: a
-module needing more dimensions subclasses it and does not redeclare the
-identity pair.
+module needing more dimensions subclasses it and adds fields. A subclass of
+<code>TenantScope</code> or <code>TenantPlacement</code> cannot redeclare a field or hide a method it
+inherits: defining the class raises <code>TypeError</code>, so no subclass can make
+<code>tenant_id</code> nullable or replace <code>of</code>.
 Register the profile with <code>scope_class=</code> so it is checked against the dataclass at
 startup; the profile stays hand-written because one type can serve operations with
 different required dimensions. Filter on the
@@ -4179,12 +4182,56 @@ dimension strings by hand. A check asks who is calling from <code>envelope.princ
 scope has an <code>account_id</code> field only where code filters or keys on it, as the
 boundary's <code>AccountScope</code> does. The type shares fields, not match semantics; an
 equality or hierarchical match belongs to the action method.
-The built-in id dimensions (<code>tenant_id</code>, <code>workspace_id</code>, <code>account_id</code>,
-<code>private_to_account_id</code>) accept only a row id, an integer from 1 to
-<code>INTEGER_MAX</code>, so an envelope whose scope holds <code>0</code>, <code>"7"</code> or an out-of-range id
-is rejected when it is built, and <code>PrincipalContext</code> checks its <code>account_id</code> the same
-way. Every <code>DimensionRegistry</code> puts <code>is_valid_row_id</code> first in each id dimension's
-<code>validators</code>; a custom validator only adds checks. A module does not repeat that check.
+A dimension is described once, by its <code>DimensionSpec</code>, and registered in
+<code>msflib.scope.DIMENSION_REGISTRY</code>: core registers the built-ins, and a module or a
+host app registers its own at import or startup (knowledge registers
+<code>project_id</code>).</p>
+<p>A module registers its dimensions at module scope in its <code>scope_profiles.py</code>,
+beside its profiles. A package's <code>__init__.py</code> is lazy (MOD-2), so importing the
+package registers nothing: the dimensions appear when <code>scope_profiles</code> is first
+loaded, which the module's own code does before it compiles a scope. Code that
+reads the registry earlier must load them itself. A host app that builds a
+<code>DimensionCompiler</code> at startup first imports <code>&lt;module&gt;.scope_profiles</code> for each
+installed module that registers a dimension: a compiler fixes its dimension
+order when it is built.
+<a href="../../../concepts/scopes-tenancy-workspaces/#your-own-dimensions">Your own dimensions</a>
+has a worked example of each case.</p>
+<p>The spec says:</p>
+<ul>
+<li><code>kind</code> (<code>DimensionKind</code>): what the value is. <code>KIND_VALIDATORS</code> maps each kind
+  to its validators, which run before the spec's own <code>validators</code>, so a spec
+  lists only extra checks and never repeats its kind's. <code>row_id</code> is an integer
+  from 1 to <code>INTEGER_MAX</code>; <code>text</code> is a non-blank string of at most 255
+  characters.</li>
+<li><code>null_match</code> (<code>NullMatch</code>): which scopes a row matches when its placement has
+  no value on the dimension. <code>exact</code> makes the missing value a partition of
+  its own (<code>workspace_id</code>, SCP-2); <code>wildcard</code> means the row is not narrowed by
+  the dimension (a row outside any conversation).</li>
+<li><code>parent_key</code>: the dimension it nests under (<code>sub_thread_id</code> under
+  <code>conversation_id</code>).</li>
+<li><code>is_facet</code>: whether rows are placed on the dimension. <code>conversation_id</code> and
+  <code>sub_thread_id</code> are facets; <code>role</code> and <code>channel</code> are not.</li>
+</ul>
+<p>Several modules contribute facets, so the set is open, and a facet's name is
+data rather than a field: registering a facet named like a field of a facet
+holder, or declaring a field named like a registered facet, is an error.
+Dimensions are ordered by priority and then by key, so a compiled key does not
+depend on registration order. <code>msflib.scope.FacetScope</code> (an <code>AccountScope</code>) and
+<code>FacetPlacement</code> hold every facet in one field, <code>facets: Facets</code>, keyed by
+canonical dimension key; a facet's name can therefore never shadow a field or a
+method. A module adds its facet with <code>envelope.with_facets(conversation_id=...)</code>,
+which keeps the facets, the tenant, workspace and account the scope already
+holds, and checks each value against its spec. Code that reads one facet
+declares a typed key beside the spec (<code>FacetKey("site_id", int)</code>) and reads
+<code>scope.facets.get(key)</code>, which is typed and raises for a key that names no
+registered facet, so a misspelled name never reads as "not placed"; a module that stores rows reads every
+facet with <code>scope.facets.items()</code>, naming none. The placement holds no account.</p>
+<p>The built-in row-id dimensions are <code>tenant_id</code>, <code>workspace_id</code>, <code>account_id</code> and
+<code>private_to_account_id</code>. An envelope whose scope holds <code>0</code>, <code>"7"</code> or an
+out-of-range id for one is rejected when it is built, and <code>PrincipalContext</code>
+checks its <code>account_id</code> the same way. A registry that has no spec for a
+dimension checks its values with <code>DIMENSION_REGISTRY</code>'s spec, so a row-id
+dimension is a row id everywhere, and a module does not repeat that check.
 Reference: <code>knowledge/planner/scope_rewriter.py</code> with <code>contracts.KnowledgeScope</code>,
 and <code>ai_core/services/scope_metadata.py</code>.</p>
 <h3 id="scp-5-scope-placement-and-reach-tiers-and-facets">SCP-5 · Scope, placement and reach; tiers and facets<a class="headerlink" href="#scp-5-scope-placement-and-reach-tiers-and-facets" title="Permanent link">&para;</a></h3>
@@ -4529,8 +4576,10 @@ membership is defined and enforced the same way.</p>
   wider than a membership row: conversation admits a workspace member to a
   public conversation. Every caller of that dimension gets the same answer, so
   an HTTP route and a realtime channel (ADR 0009 A8) cannot disagree. A
-  membership dimension is a row-id dimension: its spec lists <code>is_valid_row_id</code>
-  in <code>validators</code>, as the built-in id dimensions do (SCP-4). The check keeps the
+  membership dimension is a row-id dimension: its spec has <code>kind=DimensionKind.row_id</code>,
+  as the built-in id dimensions do (SCP-4), and <code>MembershipConstraint</code> reads its
+  value from the scope's field or, for a facet, from <code>scope.facets</code>; a facet the
+  scope is not placed on skips the check (SCP-2). The check keeps the
   <code>MembershipCheck</code> signature, <code>(session, *, account_id, container_id) -&gt; bool</code>.
   A route that needs the membership row (for a role) loads it in its context
   dependency. Returning the row from the check later would break every custom
