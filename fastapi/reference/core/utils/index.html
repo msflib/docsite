@@ -2340,6 +2340,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.utils.random" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        random
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="random">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.utils.random.random_string_matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        random_string_matching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.utils.random.random_value_for_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        random_value_for_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.utils.uploads" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3847,6 +3886,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.utils.random" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        random
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="random">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.utils.random.random_string_matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        random_string_matching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.utils.random.random_value_for_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        random_value_for_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.utils.uploads" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4076,6 +4154,90 @@
 
 
 
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.utils.random" class="doc doc-heading">
+            <code>random</code>
+
+
+<a href="#msflib.utils.random" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.utils.random.random_string_matching" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">random_string_matching</span><span class="p">(</span><span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">min_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#msflib.utils.random.random_string_matching" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a random string that <code>pattern</code> matches and that fits the length limits.</p>
+<p>Supports literals, character classes (including digit, word and space), <code>.</code>,
+groups, alternation and repetition. Returns None for patterns using anything
+else (lookarounds, backreferences) or when no candidate fits within <code>tries</code>.
+Accepts a compiled <code>re.Pattern</code> object as well as a plain string.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="msflib.utils.random.random_value_for_field" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">random_value_for_field</span><span class="p">(</span><span class="n">annotation</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
+
+<a href="#msflib.utils.random.random_value_for_field" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Like <code>random_value_for_type</code>, but the value also meets the field's constraints.</p>
+<p>Honours <code>gt</code>/<code>ge</code>/<code>lt</code>/<code>le</code> on int and float fields and <code>min_length</code>,
+<code>max_length</code> and <code>pattern</code> on str fields (from <code>Field(...)</code> or
+<code>Annotated[str, StringConstraints(...)]</code>). Other types and types with a
+registered generator fall back to <code>random_value_for_type</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-module">
 
