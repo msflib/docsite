@@ -3954,7 +3954,7 @@
 <p>Two processes share one broker, one database and one set of registered pipeline kinds:</p>
 <ul>
 <li>The <strong>FastAPI process</strong> enqueues jobs and never runs them. It builds a producer handle with <code>build_dispatch_task(settings)</code> and gives it to an <code>IngestionDispatchService</code> (or an <code>IngestionSubjectQueue</code>, below). Optionally it mounts the management router.</li>
-<li>A <strong>Celery worker process</strong> runs the jobs. Its entrypoint registers every pipeline kind, then calls <code>build_celery_app(settings, session_factory=...)</code> and is started with <code>celery -A your_module worker</code>.</li>
+<li>A <strong>Celery worker process</strong> runs the jobs. Its entrypoint loads and locks the scope dimensions with <code>register_dimensions(settings)</code> (see <a href="../../concepts/scopes-tenancy-workspaces/">scopes</a>), registers every pipeline kind, then calls <code>build_celery_app(settings, session_factory=...)</code> and is started with <code>celery -A your_module worker</code>.</li>
 </ul>
 <p>Add <code>IngestionSettings</code> to your settings class, and make sure the ingestion tables are on your metadata (<code>import msflib.ingestion.models</code>) so your migrations or <code>create_all</code> create them.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">SettingsBase</span>
@@ -3987,8 +3987,10 @@
 </code></pre></div>
 <p>Worker side:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ingestion.celery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_celery_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_dimensions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
 
+<span class="n">register_dimensions</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>         <span class="c1"># the same dimensions the API process loads</span>
 <span class="n">register_my_pipeline_kinds</span><span class="p">()</span>          <span class="c1"># your code: fills the PipelineKindRegistry</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">build_celery_app</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">))</span>
 </code></pre></div>
@@ -4278,6 +4280,10 @@
 <tr>
 <td>Worker raises <code>KeyError: no pipeline registered for kind</code></td>
 <td>Registration is per process. Register every kind in the worker entrypoint.</td>
+</tr>
+<tr>
+<td>A job fails with <code>UnlockedRegistryError</code></td>
+<td>The worker never locked the dimension registry. The registry is per process: call <code>register_dimensions(settings)</code> in the worker entrypoint, after registering your own dimensions, as the API process does.</td>
 </tr>
 <tr>
 <td><code>POST /jobs/trigger</code> returns 422 <code>Unknown pipeline_kind</code></td>

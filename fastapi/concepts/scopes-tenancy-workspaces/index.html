@@ -1734,10 +1734,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#the-advanced-case-a-compiler-at-startup" class="md-nav__link">
+  <a href="#the-advanced-case-listing-the-facets-at-startup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The advanced case: a compiler at startup
+        The advanced case: listing the facets at startup
       
     </span>
   </a>
@@ -3918,10 +3918,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#the-advanced-case-a-compiler-at-startup" class="md-nav__link">
+  <a href="#the-advanced-case-listing-the-facets-at-startup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The advanced case: a compiler at startup
+        The advanced case: listing the facets at startup
       
     </span>
   </a>
@@ -4095,9 +4095,10 @@
 <li>None of them checks membership. An operation lists <code>MembershipConstraint(dimension)</code> in its profile's <code>constraints</code>, and its envelope dependency runs them on the envelope, with the check the container's module registered in <code>MEMBERSHIP_REGISTRY</code> (see <a href="#operations-and-permissions">Operations and permissions</a>). It answers 401 for a missing caller and 403 for a non-member. Routers still use the deprecated <code>get_member_account_dependency(..., get_current_tenant=..., is_workspace_member=...)</code>, where the check is <code>msflib.workspaces.is_workspace_member</code> (active memberships by default) or <code>allow_any_member</code> for a host without membership rules. It answers 404 with no workspace or a workspace of another tenant, and 403 for a non-member.</li>
 </ul>
 <h2 id="compiling-a-scope">Compiling a scope<a class="headerlink" href="#compiling-a-scope" title="Permanent link">&para;</a></h2>
-<p><code>DimensionCompiler</code> turns an envelope into a key string, segments or a mapping, validating it against a named operation profile first.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">DimensionCompiler</span>
+<p><code>DimensionCompiler</code> turns an envelope into a key string, segments or a mapping, validating it against a named operation profile first. It compiles only once the dimension registry is locked, which <code>register_dimensions(settings)</code> does when the process starts (see <a href="#your-own-dimensions">Your own dimensions</a>).</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">DimensionCompiler</span><span class="p">,</span> <span class="n">register_dimensions</span>
 
+<span class="n">register_dimensions</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>  <span class="c1"># once, when the process starts</span>
 <span class="n">compiler</span> <span class="o">=</span> <span class="n">DimensionCompiler</span><span class="p">()</span>
 <span class="n">compiler</span><span class="o">.</span><span class="n">register_profile</span><span class="p">(</span>
     <span class="s2">"items.search"</span><span class="p">,</span>
@@ -4233,7 +4234,50 @@
 <span class="n">extended</span><span class="o">.</span><span class="n">scope</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">SITE</span><span class="p">)</span>
 <span class="c1"># 12, typed int | None</span>
 </code></pre></div>
-<p><code>with_facets</code> keeps the tenant, workspace, account and any facet already set; a <code>None</code> value removes one. Each value is checked against its spec when it is set: <code>site_id="12"</code> raises <code>ScopeValidationError</code>, as does a name that is not a registered facet. A facet cannot be named like a field of <code>FacetScope</code> or <code>FacetPlacement</code> (or a subclass of either): registering one raises <code>DimensionConflictError</code>, and a subclass that declares the name of a registered facet raises <code>TypeError</code>. Code that filters on every facet, as knowledge does, reads them all with <code>scope.facets.items()</code>. The key the compiler builds lists dimensions by priority and then by name, never by the order they were registered, so two processes that register in different orders build the same key. The msflib modules you call load their own dimensions and profiles when they are first used, so there is nothing else to import.</p>
+<p><code>with_facets</code> keeps the tenant, workspace, account and any facet already set; a <code>None</code> value removes one. Each value is checked against its spec when it is set: <code>site_id="12"</code> raises <code>ScopeValidationError</code>, as does a name that is not a registered facet. A facet cannot be named like a field of <code>FacetScope</code> or <code>FacetPlacement</code> (or a subclass of either): registering one raises <code>DimensionConflictError</code>, and a subclass that declares the name of a registered facet raises <code>TypeError</code>. Code that filters on every facet, as knowledge does, reads them all with <code>scope.facets.items()</code>. The key the compiler builds lists dimensions by priority and then by name, never by the order they were registered, so two processes that register in different orders build the same key. The msflib modules your settings compose register their dimensions when <code>register_dimensions(settings)</code> imports their <code>scope_profiles</code>, below; there is nothing else to import.</p>
+<p>Then load the dimensions of every module your settings compose when the application starts, after your own are registered:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># app/main.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">app.scope</span>  <span class="c1"># noqa: F401  registers site_id</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_dimensions</span>
+
+<span class="n">register_dimensions</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</code></pre></div>
+<p><code>register_dimensions</code> imports <code>&lt;package&gt;.scope_profiles</code> for every module your settings class composes, then locks the registry. A conflict between two modules stops the application at startup, not on the first request that reaches one of them, and the log lists the dimensions and facets the application runs with.</p>
+<div class="admonition warning">
+<p class="admonition-title">Call <code>register_dimensions</code> in every process</p>
+<p>A <code>DimensionCompiler</code> compiles only against a locked registry: before the lock, every <code>compile_string</code>, <code>compile_map</code>, <code>compile_segments</code> and <code>compile_items</code> raises <code>UnlockedRegistryError</code>. A key compiled while dimensions can still be registered could differ from one compiled later, and a row written with it would not match a filter built afterwards, so the compiler refuses instead.</p>
+<p>What happens without the call:</p>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>What fails</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The application</td>
+<td>The first request that compiles a scope key (a tiered config lookup, a document upload, an AI checkpoint or memory namespace, a provider or vector-store lookup, a vector-store search filter) fails with <code>UnlockedRegistryError</code>, a 500. Nothing fails at startup, so a deployment looks healthy until it serves one.</td>
+</tr>
+<tr>
+<td>A Celery worker</td>
+<td>Every job that compiles a key fails with <code>UnlockedRegistryError</code> and is marked failed after its retries. The worker is a separate process, so the application's call does not cover it: its entrypoint makes its own.</td>
+</tr>
+<tr>
+<td>A script or CLI (seeding, a one-off migration)</td>
+<td>The same error at the first compile. <code>run_seed_cli(settings=...)</code> makes the call for a seed command.</td>
+</tr>
+</tbody>
+</table>
+<p>With the call, in each process:</p>
+<ul>
+<li>A conflict between two modules stops the process at startup, not on a request.</li>
+<li>A module that registers a dimension after the lock raises <code>LockedRegistryError</code> (a <code>RuntimeError</code>), naming the dimension. A module whose settings you do not compose is not loaded by the call: compose its settings, or import its <code>scope_profiles</code> before the call.</li>
+<li>Every process holds the same dimensions, so the application and its workers build the same keys.</li>
+</ul>
+<p>Tests lock the registry too, once registrations are done: <code>DIMENSION_REGISTRY.lock()</code> in a session fixture, or <code>registry.lock()</code> on a private one.</p>
+</div>
 <h3 id="a-module-with-a-dimension-of-its-own">A module with a dimension of its own<a class="headerlink" href="#a-module-with-a-dimension-of-its-own" title="Permanent link">&para;</a></h3>
 <p>A module registers its dimensions at module scope in its <code>scope_profiles.py</code>, beside its profiles:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># inventory/scope_profiles.py</span>
@@ -4269,11 +4313,12 @@
 
 <span class="n">PROFILE_REGISTRY</span> <span class="o">=</span> <span class="n">create_profile_registry</span><span class="p">()</span>
 </code></pre></div>
-<p>A package's <code>__init__.py</code> is lazy, so <code>import inventory</code> registers nothing. <code>warehouse_id</code> appears when <code>inventory.scope_profiles</code> is first loaded, which the module's own code does before it compiles a scope. In msflib, knowledge registers <code>project_id</code> this way, in <code>msflib.knowledge.scope_profiles</code>.</p>
-<h3 id="the-advanced-case-a-compiler-at-startup">The advanced case: a compiler at startup<a class="headerlink" href="#the-advanced-case-a-compiler-at-startup" title="Permanent link">&para;</a></h3>
-<p>A <code>DimensionCompiler</code> fixes its dimension order when it is built. If your app builds one at startup, load every dimension first: import <code>&lt;module&gt;.scope_profiles</code> for each installed module that registers one, then register your own, then build. A profile registered with <code>scope_class=FacetScope</code> may name any registered facet.</p>
+<p>A package's <code>__init__.py</code> is lazy, so <code>import inventory</code> registers nothing. <code>warehouse_id</code> is registered when <code>inventory.scope_profiles</code> is imported: by <code>register_dimensions(settings)</code> when the application composes the module's settings, or by your own import before that call when it does not (see the next section). It must be imported before the call, because the call locks the registry and a later registration raises <code>LockedRegistryError</code>. In msflib, knowledge registers <code>project_id</code> this way, in <code>msflib.knowledge.scope_profiles</code>.</p>
+<h3 id="the-advanced-case-listing-the-facets-at-startup">The advanced case: listing the facets at startup<a class="headerlink" href="#the-advanced-case-listing-the-facets-at-startup" title="Permanent link">&para;</a></h3>
+<p>A <code>DimensionCompiler</code> may be built before every dimension is registered: it compiles in the order of the locked registry, and refuses to compile before the lock. Code that lists the facets does depend on timing: a profile that allows every facet, as knowledge's do, holds only the facets registered when it is built. If your app builds one at startup, load every dimension first: register your own, call <code>register_dimensions(settings)</code>, then build. A package that composes no settings class is not found by that call, so import its <code>scope_profiles</code> yourself, as <code>inventory</code> is here. A profile registered with <code>scope_class=FacetScope</code> may name any registered facet.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># app/scope.py, imported by app/main.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inventory.scope_profiles</span>  <span class="c1"># noqa: F401  registers warehouse_id</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">DIMENSION_REGISTRY</span><span class="p">,</span>
     <span class="n">DimensionCompiler</span><span class="p">,</span>
@@ -4283,6 +4328,7 @@
     <span class="n">NullMatch</span><span class="p">,</span>
     <span class="n">ProfileRegistry</span><span class="p">,</span>
     <span class="n">list_facets</span><span class="p">,</span>
+    <span class="n">register_dimensions</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">DIMENSION_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
@@ -4295,6 +4341,9 @@
         <span class="n">is_facet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
+
+<span class="c1"># Every other module's dimensions, then the lock.</span>
+<span class="n">register_dimensions</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
 
 <span class="n">facets</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">canonical_key</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">list_facets</span><span class="p">(</span><span class="n">DIMENSION_REGISTRY</span><span class="p">)]</span>
 <span class="c1"># ['conversation_id', 'warehouse_id', 'site_id', 'sub_thread_id']</span>
@@ -4314,7 +4363,10 @@
 <span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">extended</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"reports.export"</span><span class="p">)</span>
 <span class="c1"># 't/1/a/5/w/-/wh/3/s/12'</span>
 </code></pre></div>
-<p>Without the first import, a compiler built before <code>inventory</code> loads would not know <code>warehouse_id</code>'s key alias or priority.</p>
+<p>Without the first import, <code>facets</code> would lack <code>warehouse_id</code>, and <code>inventory</code> would fail when it later tried to register it:</p>
+<div class="highlight"><pre><span></span><code>msflib.scope.errors.LockedRegistryError: Dimension 'warehouse_id' was registered after the DimensionRegistry was locked. Register every dimension at import or startup: call msflib.scope.register_dimensions(settings) when the application starts, and register your own dimensions before that call.
+</code></pre></div>
+<p>The <code>scope.dimensions</code> <a href="../../integration/readiness/">readiness check</a> loads the same modules without locking anything, so a conflict shows up in <code>python -m msflib.core.readiness</code> too. Run on its own it cannot see the order your application imports modules in. It imports the modules as startup does: in a worker process (Linux) nothing outlives the check, and where checks run in a thread the imports and their registrations stay in that process, unlocked.</p>
 <h2 id="tenants">Tenants<a class="headerlink" href="#tenants" title="Permanent link">&para;</a></h2>
 <p><code>msflib-tenancy</code> provides the <code>Tenant</code> table (<code>name</code>, unique <code>slug</code>, <code>status</code>, a soft <code>owner_account_id</code>), <code>TenantAction</code>, and <code>TenancySettings</code> (namespace <code>TENANCY</code>, with <code>DEFAULT_TENANT_SLUG</code> and <code>DEFAULT_TENANT_NAME</code>, defaulting to <code>"default"</code> and <code>"Default Tenant"</code>).</p>
 <p>Today the library runs single-tenant: one default tenant, resolved by slug. Rows that belong to a tenant carry a <code>tenant_id</code> foreign key to it (workspaces, for example). Three entry points matter to a host app:</p>

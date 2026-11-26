@@ -3920,7 +3920,8 @@ each one blocks and how to fix it), then <strong>Next steps</strong> in the orde
 <span class="p">)</span>
 </code></pre></div>
 <p><code>Suite.from_settings</code> collects core's own checks plus <code>&lt;package&gt;.readiness.registry</code> of every
-module whose settings class the application settings inherit. A module with no readiness checks
+module whose settings class the application settings inherit or hold as a field
+(<code>msflib.core.module.discovery.list_module_packages</code> finds them). A module with no readiness checks
 is skipped; one whose checks fail to import is reported as a failing check, not hidden.</p>
 <div class="admonition note">
 <p class="admonition-title">Worker processes</p>
@@ -3993,6 +3994,11 @@ mode needs <code>connect_args={"check_same_thread": False}</code>.</p>
 <td><code>db.unmanaged</code></td>
 <td>database</td>
 <td>objects outside the models (information only)</td>
+</tr>
+<tr>
+<td><code>scope.dimensions</code></td>
+<td>scope</td>
+<td>the scope dimensions of every module your settings compose register together without a conflict. A package that is installed but not composed is not loaded. It cannot see the order your application imports modules in; <code>register_dimensions(settings)</code> at startup settles that</td>
 </tr>
 <tr>
 <td><code>storage.directory</code></td>

@@ -4494,7 +4494,7 @@ localhost), is sensitive.</p>
 
 
 <h3 id="msflib.seed.run_seed_cli" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.run_seed_cli" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4595,6 +4595,26 @@ localhost), is sensitive.</p>
               <div class="doc-md-description">
                 <p>Optional settings object that provides database
 URL if not provided via CLI.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>settings</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="SettingsBase(**data: Any) (msflib.core.config.SettingsBase)" href="../core/#msflib.core.config.SettingsBase">SettingsBase</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The application's settings. When given, the command loads and locks
+the scope dimensions (<code>msflib.scope.register_dimensions</code>) before seeding, as
+the application does at startup, so a seeder that writes scoped rows (tiered
+config, documents) can compile their keys. Without it, such a seeder fails
+with <code>UnlockedRegistryError</code>.</p>
               </div>
             </td>
             <td>
@@ -5031,7 +5051,7 @@ localhost), is sensitive.</p>
 
 
 <h4 id="msflib.seed.cli.run_seed_cli" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">run_seed_cli</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'Run database seeders.'</span><span class="p">,</span> <span class="n">default_seeders_yml</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_data_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">core_settings</span><span class="p">:</span> <span class="n">CoreSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">SettingsBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">import_models</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">is_production_db</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_production_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.seed.cli.run_seed_cli" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -5132,6 +5152,26 @@ localhost), is sensitive.</p>
               <div class="doc-md-description">
                 <p>Optional settings object that provides database
 URL if not provided via CLI.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>settings</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="SettingsBase(**data: Any) (msflib.core.config.SettingsBase)" href="../core/#msflib.core.config.SettingsBase">SettingsBase</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The application's settings. When given, the command loads and locks
+the scope dimensions (<code>msflib.scope.register_dimensions</code>) before seeding, as
+the application does at startup, so a seeder that writes scoped rows (tiered
+config, documents) can compile their keys. Without it, such a seeder fails
+with <code>UnlockedRegistryError</code>.</p>
               </div>
             </td>
             <td>

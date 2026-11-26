@@ -4189,11 +4189,15 @@ host app registers its own at import or startup (knowledge registers
 <p>A module registers its dimensions at module scope in its <code>scope_profiles.py</code>,
 beside its profiles. A package's <code>__init__.py</code> is lazy (MOD-2), so importing the
 package registers nothing: the dimensions appear when <code>scope_profiles</code> is first
-loaded, which the module's own code does before it compiles a scope. Code that
-reads the registry earlier must load them itself. A host app that builds a
-<code>DimensionCompiler</code> at startup first imports <code>&lt;module&gt;.scope_profiles</code> for each
-installed module that registers a dimension: a compiler fixes its dimension
-order when it is built.
+loaded, which the module's own code does before it compiles a scope. A host
+app calls <code>msflib.scope.register_dimensions(settings)</code> once when it starts,
+after registering its own dimensions: it imports <code>&lt;package&gt;.scope_profiles</code> for
+every module the settings compose and locks the registry, so a conflict stops
+the application at startup and a later registration raises <code>LockedRegistryError</code> (a <code>RuntimeError</code>)
+naming the dimension. A <code>DimensionCompiler</code> compiles only against a locked
+registry (<code>UnlockedRegistryError</code> otherwise), so every process, workers
+included, calls it before its first compile, and the order a key is compiled in
+never depends on when the compiler was built.
 <a href="../../../concepts/scopes-tenancy-workspaces/#your-own-dimensions">Your own dimensions</a>
 has a worked example of each case.</p>
 <p>The spec says:</p>
