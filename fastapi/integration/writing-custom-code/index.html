@@ -3989,6 +3989,7 @@
 <div class="highlight"><pre><span></span><code><span class="c1"># myapp/deps.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROLE_LOOKUP_REGISTRY</span><span class="p">,</span> <span class="n">no_workspace</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">StaticPool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlmodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
@@ -4014,7 +4015,10 @@
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">role_lookup</span><span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
 </code></pre></div>
 <p>The <code>StaticPool</code> engine is for a single-process development database that lives in memory. Use a real database URL in production. For one dependency namespace per <code>deps.py</code>, see <a href="../../concepts/dependency-injection/">Dependency injection</a>.</p>
 <h2 id="5-a-router-of-your-own">5. A router of your own<a class="headerlink" href="#5-a-router-of-your-own" title="Permanent link">&para;</a></h2>

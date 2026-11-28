@@ -2755,17 +2755,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.auth.roles.add_roles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        add_roles
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.auth.roles.build_role_evaluator" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2777,10 +2766,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.auth.roles.build_role_source" class="md-nav__link">
+  <a href="#msflib.auth.roles.build_role_lookup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build_role_source
+        build_role_lookup
       
     </span>
   </a>
@@ -4910,17 +4899,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.auth.roles.add_roles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        add_roles
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#msflib.auth.roles.build_role_evaluator" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4932,10 +4910,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#msflib.auth.roles.build_role_source" class="md-nav__link">
+  <a href="#msflib.auth.roles.build_role_lookup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build_role_source
+        build_role_lookup
       
     </span>
   </a>
@@ -5656,7 +5634,7 @@
 
 
 <h3 id="msflib.auth.deps.get_account_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_account_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">AccountModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">oauth_token_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">active_statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseEnum</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'role'</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">keystore_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_account_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">AccountModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">oauth_token_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">active_statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseEnum</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'role'</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">keystore_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.auth.deps.get_account_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -5796,6 +5774,25 @@ which falls back to the default tenant.</p>
                 <em>required</em>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>get_current_workspace</code>
+            </td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The workspace of the envelope <code>RoleCheck</code> decides in. Account roles sit at the
+tenant level, inside no workspace, so a host usually passes
+<code>msflib.scope.no_workspace</code>; the workspace user's type is
+<code>get_user_dependencies</code>'s <code>WorkspaceRoleCheck</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -5824,8 +5821,11 @@ which falls back to the default tenant.</p>
 <li><code>RoleCheck</code>                   — callable class for role-based guards.</li>
 <li><code>get_current_tenant</code>          — the tenant resolver passed in, for
   <code>get_user_dependencies</code>.</li>
-<li><code>get_account_envelope</code>        — the request's envelope; its principal
-  holds the account's role.</li>
+<li><code>role_lookup</code>                 — the <code>RoleLookup</code> reading the account's
+  role attribute (<code>root</code> as <code>platform:root</code>, any other as
+  <code>tenant:&lt;role&gt;</code>), for a host to register in
+  <code>msflib.scope.ROLE_LOOKUP_REGISTRY</code>. <code>RoleCheck</code> reads the registered
+  lookup, whichever module's it is.</li>
 </ul>
               </div>
             </td>
@@ -5922,7 +5922,7 @@ which falls back to the default tenant.</p>
               <div class="doc-md-description">
                 <p>The namespace returned by :func:<code>get_account_dependencies</code>; its tenant
 resolver places the workspace, so a workspace of another tenant is a 404, and
-its <code>get_account_envelope</code> gives the account's role.</p>
+its <code>role_lookup</code> gives the account's role to this namespace's <code>role_lookup</code>.</p>
               </div>
             </td>
             <td>
@@ -5995,9 +5995,11 @@ resolver = PathParameterResolver()
 <li><code>get_current_workspace</code>           — requires authenticated account.</li>
 <li><code>get_current_workspace_anonymous</code> — no authentication needed.</li>
 <li><code>get_current_user</code>                — resolves workspace member.</li>
-<li><code>get_user_envelope</code>               — the request's envelope in its workspace;
-  its principal holds the account's role and the workspace user's type.</li>
-<li><code>WorkspaceRoleCheck</code>              — callable class for workspace role guards.</li>
+<li><code>WorkspaceRoleCheck</code>              — callable class for workspace role guards;
+  it decides on the request's envelope with the roles the registered lookup reads.</li>
+<li><code>role_lookup</code>                     — the <code>RoleLookup</code> reading the account's
+  role and the workspace user's type, for a host that keeps roles as
+  attributes to register in <code>msflib.scope.ROLE_LOOKUP_REGISTRY</code>.</li>
 </ul>
               </div>
             </td>
@@ -6909,24 +6911,6 @@ resolver = HttpHeaderResolver(header_name="X-Active-Workspace")
 <div class="doc doc-object doc-function">
 
 
-<h3 id="msflib.auth.roles.add_roles" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">add_roles</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">roles</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span></code>
-
-<a href="#msflib.auth.roles.add_roles" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p><code>envelope</code> with <code>roles</code> added to those its principal holds; unchanged without one.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
 <h3 id="msflib.auth.roles.build_role_evaluator" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">build_role_evaluator</span><span class="p">(</span><span class="n">required</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ConstraintEvaluator</span> <span class="o">|</span> <span class="kc">None</span></code>
 
@@ -6935,12 +6919,16 @@ resolver = HttpHeaderResolver(header_name="X-Active-Workspace")
 
     <div class="doc doc-contents ">
 
-        <p>The evaluator a role check asks whether a principal holds any of <code>required</code>.</p>
+        <p>The evaluator a role check asks whether the caller holds any of <code>required</code>.</p>
+<p>The caller's roles are those the site's registered role lookup
+(<code>msflib.scope.ROLE_LOOKUP_REGISTRY</code>) returns at the request's scope, read when
+the check decides (stage 3); nothing stamps them on the envelope.</p>
 <p><code>permits(envelope)</code> decides and records the check in the request's scope,
 including the denial of an envelope without a caller. It runs at the <code>guard.check</code>
 profile's level: under <code>shadow</code> a denial is recorded and the request still passes.
 With nothing <code>required</code> there is no constraint to evaluate and it returns <code>None</code>;
-the check then denies.</p>
+the check then denies. Without a registered, locked role lookup it raises <code>ValueError</code>, so a
+<code>RoleCheck</code> or <code>WorkspaceRoleCheck</code> fails when its route is declared.</p>
 
 
     </div>
@@ -6950,20 +6938,21 @@ the check then denies.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="msflib.auth.roles.build_role_source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_role_source</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">AccountModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">UserModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'role'</span><span class="p">,</span> <span class="n">user_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">is_tenant_member</span><span class="p">:</span> <span class="n">MembershipCheck</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleSource</span></code>
+<h3 id="msflib.auth.roles.build_role_lookup" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_role_lookup</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">AccountModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">UserModel</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">account_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'role'</span><span class="p">,</span> <span class="n">user_role_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'type'</span><span class="p">,</span> <span class="n">is_tenant_member</span><span class="p">:</span> <span class="n">MembershipCheck</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleLookup</span></code>
 
-<a href="#msflib.auth.roles.build_role_source" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#msflib.auth.roles.build_role_lookup" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Return a <code>RoleSource</code> reading the same attributes <code>RoleCheck</code> and
+        <p>Return a <code>RoleLookup</code> reading the same attributes <code>RoleCheck</code> and
 <code>WorkspaceRoleCheck</code> read.</p>
 <p><code>root</code> counts everywhere. Any other account role counts at the request's
 tenant when <code>is_tenant_member</code> accepts the account there (or when no check is
-given). The workspace user's type counts when the scope has a workspace, the
-account has a user row in it, and <code>is_workspace_member</code> accepts it.</p>
+given); without <code>AccountModel</code> no account role is read. The workspace user's type
+counts when the scope has a workspace, the account has a user row in it, and
+<code>is_workspace_member</code> accepts it.</p>
 
 
     </div>

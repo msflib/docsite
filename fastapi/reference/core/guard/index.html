@@ -2122,6 +2122,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.deps.check_constraint_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_constraint_sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.deps.build_operation_envelope_factory" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2161,22 +2172,67 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.registry.RoleRegistry" class="md-nav__link">
+  <a href="#msflib.guard.registry.RolePermissionMap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RoleRegistry
+        RolePermissionMap
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="RoleRegistry">
+    <nav class="md-nav" aria-label="RolePermissionMap">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.registry.RoleRegistry.register" class="md-nav__link">
+  <a href="#msflib.guard.registry.RolePermissionMap.register" class="md-nav__link">
     <span class="md-ellipsis">
       
         register
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.resolvers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolvers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="resolvers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.resolvers.RolePermissionResolver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RolePermissionResolver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RolePermissionResolver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.resolvers.RolePermissionResolver.check_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_ready
       
     </span>
   </a>
@@ -3915,6 +3971,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.guard.deps.check_constraint_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_constraint_sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.guard.deps.build_operation_envelope_factory" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3954,22 +4021,67 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.registry.RoleRegistry" class="md-nav__link">
+  <a href="#msflib.guard.registry.RolePermissionMap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RoleRegistry
+        RolePermissionMap
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="RoleRegistry">
+    <nav class="md-nav" aria-label="RolePermissionMap">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.guard.registry.RoleRegistry.register" class="md-nav__link">
+  <a href="#msflib.guard.registry.RolePermissionMap.register" class="md-nav__link">
     <span class="md-ellipsis">
       
         register
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.resolvers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolvers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="resolvers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.resolvers.RolePermissionResolver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RolePermissionResolver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RolePermissionResolver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#msflib.guard.resolvers.RolePermissionResolver.check_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_ready
       
     </span>
   </a>
@@ -4129,11 +4241,11 @@
 operation's profile lists are checked (membership, permission, role)::</p>
 <div class="codehilite"><pre><span></span><code>get_operation_envelope = build_operation_envelope_factory(
     profile_registry=PROFILE_REGISTRY,
-    get_envelope=scope_deps.get_account_envelope,
+    get_envelope=scope_deps.get_base_envelope,
     get_session=get_session,
-    resolver=role_service,        # msflib-authz assignments, or
-    role_registry=ROLE_REGISTRY,  # roles mapped per permission key,
-    role_source=roles,            # read from the caller's role attributes, or both
+    # msflib-authz's RoleService, or RolePermissionResolver(ROLE_PERMISSION_MAP)
+    # on a site without authz
+    resolver=role_service,
 )
 
 @router.get("")
@@ -4147,10 +4259,13 @@ def list_items(envelope: ScopeEnvelope = Depends(get_operation_envelope("items.r
 def list_items(): ...
 </code></pre></div>
 
-<p>A route takes one or the other, never both. <code>ROLE_REGISTRY</code> holds the roles that
-satisfy each permission key; a <code>msflib.scope.RoleSource</code> says which roles the caller
-holds. A guard checks no membership; an operation lists its <code>MembershipConstraint</code>s
-in its profile (SCP-7). Until routers move, <code>get_scope_dependencies</code> with
+<p>A route takes one or the other, never both. <code>resolver</code> answers who holds a
+permission key: authz's <code>RoleService</code> from each role's permissions, or, on a site
+without authz, <code>RolePermissionResolver</code> from <code>ROLE_PERMISSION_MAP</code>, the roles that
+grant each key, and the site's one <code>RoleLookup</code>, registered and locked at startup in
+<code>msflib.scope.ROLE_LOOKUP_REGISTRY</code>, which says which roles the caller holds. A guard
+checks no membership; an operation lists its <code>MembershipConstraint</code>s in its profile
+(SCP-7). Until routers move, <code>get_scope_dependencies</code> with
 <code>get_current_account=get_member_account_dependency(...)</code> is the pre-SCP-7 path.</p>
 
 
@@ -4307,8 +4422,32 @@ in its profile (SCP-7). Until routers move, <code>get_scope_dependencies</code> 
 <div class="doc doc-object doc-function">
 
 
+<h4 id="msflib.guard.deps.check_constraint_sources" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_constraint_sources</span><span class="p">(</span><span class="n">constraint</span><span class="p">:</span> <span class="n">ScopeConstraint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeConstraint</span></code>
+
+<a href="#msflib.guard.deps.check_constraint_sources" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>constraint</code> unchanged, once each role check and membership in it is registered.</p>
+<p>It looks inside every <code>CompositeConstraint</code>, so a check nested in an
+<code>AnyConstraint</code> is found too. The operation builder calls it when a route is
+declared; a module that evaluates a profile itself calls it at startup.</p>
+<p>Raises <code>ValueError</code> for a <code>RoleConstraint</code> whose role lookup registry is not
+ready (empty or not locked) or a
+<code>MembershipConstraint</code> with no registered check for its dimension.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="msflib.guard.deps.build_operation_envelope_factory" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_operation_envelope_factory</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">profile_registry</span><span class="p">:</span> <span class="n">ProfileRegistry</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OperationEnvelopeFactory</span></code>
+            <code class="highlight language-python"><span class="n">build_operation_envelope_factory</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">profile_registry</span><span class="p">:</span> <span class="n">ProfileRegistry</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OperationEnvelopeFactory</span></code>
 
 <a href="#msflib.guard.deps.build_operation_envelope_factory" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4321,7 +4460,7 @@ dependency a route takes; it yields the request's envelope once the operation al
 the request::</p>
 <div class="codehilite"><pre><span></span><code>get_operation_envelope = build_operation_envelope_factory(
     profile_registry=PROFILE_REGISTRY,
-    get_envelope=scope_deps.get_account_envelope,
+    get_envelope=scope_deps.get_base_envelope,
     get_session=get_session,
     resolver=role_service,
 )
@@ -4345,18 +4484,21 @@ def delete_thing(
    answers a denial through <code>msflib.scope.authorize</code>: 401 without a caller, 403
    otherwise.</li>
 </ol>
-<p>The host's sources are <code>build_guard</code>'s. A <code>PermissionConstraint</code> a profile lists
-is granted by <code>resolver</code>, or by a role <code>role_registry</code> lists for its key at or
-above its tier. A <code>RoleConstraint</code> reads <code>role_source</code>; without one it reads the
-roles on the envelope's principal, which only an envelope source that sets them
-(<code>msflib-auth</code>'s) fills. <code>enforcement</code> overrides every profile's level, for a host
-rolling its checks out; <code>log-only</code> records a denial and lets the request through,
-which <code>build_guard</code> refuses.</p>
+<p>A <code>PermissionConstraint</code> a profile lists without a resolver is granted by
+<code>resolver</code>, the site's answer to who holds a permission key: authz's
+<code>RoleService</code> (each role's permissions), or, on a site without authz,
+<code>RolePermissionResolver(ROLE_PERMISSION_MAP)</code>. A <code>RoleConstraint</code> reads the
+site's role lookup, registered and locked in <code>msflib.scope.ROLE_LOOKUP_REGISTRY</code> at
+startup.
+<code>enforcement</code> overrides every profile's level, for a host rolling its checks out;
+<code>log-only</code> records a denial and lets the request through, which <code>build_guard</code>
+refuses.</p>
 <p>Wiring is checked early. Building the factory raises <code>ValueError</code> for an unknown
-<code>enforcement</code>, or for <code>role_registry</code> without <code>role_source</code> or the reverse.
-Declaring a route raises <code>ProfileValidationError</code> for an unknown <code>operation</code>, and
-<code>ValueError</code> for a permission no source can grant or a membership with no
-registered check. Each operation's dependency is built once.</p>
+<code>enforcement</code>. Declaring a route raises <code>ProfileValidationError</code> for an unknown
+<code>operation</code>, and <code>ValueError</code> for a permission with no resolver or with one
+that is not ready (<code>PermissionResolver.check_ready</code>), a membership with no registered
+check, or a role check without a registered, locked role lookup. Each
+operation's dependency is built once.</p>
 
 
     </div>
@@ -4367,7 +4509,7 @@ registered check. Each operation's dependency is built once.</p>
 
 
 <h4 id="msflib.guard.deps.build_guard" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_guard</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_source</span><span class="p">:</span> <span class="n">RoleSource</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Guard</span></code>
+            <code class="highlight language-python"><span class="n">build_guard</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_envelope</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">resolver</span><span class="p">:</span> <span class="n">PermissionResolver</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Guard</span></code>
 
 <a href="#msflib.guard.deps.build_guard" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -4378,17 +4520,17 @@ registered check. Each operation's dependency is built once.</p>
 <p><code>guard(key, tier=...)</code> is the short form for a route that needs one permission
 and has no profile of its own; a route with an operation takes its envelope
 dependency (<code>build_operation_envelope_factory</code>) and no guard. A route passes when
-<code>resolver</code> grants the key at <code>tier</code>, or when <code>role_source</code> says the caller
-holds a role <code>role_registry</code> lists for the key at or above <code>tier</code>. Each check
-asks a source only when it runs. The guard checks no membership. A denial is a
-recorded scope decision answered by <code>msflib.scope.authorize</code>: 401 without a
-caller, 403 otherwise. The enforcement level is the <code>guard.check</code>
-profile's (<code>enforce</code>); <code>enforcement</code> overrides it for a host rolling guards
-out, so under <code>shadow</code> a denial is recorded and the route still runs. A guard
-is <code>enforce</code> or <code>shadow</code>: <code>log-only</code> would let every request through. Raises
-<code>ValueError</code> for any other <code>enforcement</code> or profile level, without a source, when
-<code>role_registry</code> and <code>role_source</code> don't come together, or when no registered
-role can pass.</p>
+<code>resolver</code> grants the key at <code>tier</code>: authz's <code>RoleService</code>, or
+<code>RolePermissionResolver(ROLE_PERMISSION_MAP)</code> on a site without authz. The
+resolver is asked only when the check runs. The guard checks no membership. A
+denial is a recorded scope decision answered by <code>msflib.scope.authorize</code>: 401
+without a caller, 403 otherwise. The enforcement level is the <code>guard.check</code>
+profile's (<code>enforce</code>); <code>enforcement</code> overrides it for a host rolling guards out,
+so under <code>shadow</code> a denial is recorded and the route still runs. A guard is
+<code>enforce</code> or <code>shadow</code>: <code>log-only</code> would let every request through. Raises
+<code>ValueError</code> for any other <code>enforcement</code> or profile level, and, when a route is
+declared, for a resolver that is not ready (<code>PermissionResolver.check_ready</code>),
+such as a <code>RolePermissionResolver</code> without a registered, locked role lookup.</p>
 
 
     </div>
@@ -4415,12 +4557,15 @@ role can pass.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Code-level registry of the roles that satisfy a permission key.</p>
+        <p>The role-permission map: the roles that grant each permission key, in code.</p>
+<p>It is static: modules fill it at import and only a code change alters it. It is the
+grant of a site without authz. authz's role-permission model is in the database instead,
+seeded at startup and changed at runtime, and on an authz site this map does not count.</p>
 <p>A module registers, next to its permission key, the roles that hold it for a host
 that guards by role attribute instead of by authz assignment::</p>
-<div class="codehilite"><pre><span></span><code>from msflib.guard import ROLE_REGISTRY, RoleKey, RoleTier
+<div class="codehilite"><pre><span></span><code>from msflib.guard import ROLE_PERMISSION_MAP, RoleKey, RoleTier
 
-ROLE_REGISTRY.register(
+ROLE_PERMISSION_MAP.register(
     "notifications.manage",
     roles=[RoleKey(RoleTier.tenant, "admin"), RoleKey(RoleTier.platform, "root")],
 )
@@ -4451,17 +4596,17 @@ ROLE_REGISTRY.register(
 
 
 
-<h4 id="msflib.guard.registry.RoleRegistry" class="doc doc-heading">
-              <code class="highlight language-python"><span class="n">RoleRegistry</span><span class="p">()</span></code>
+<h4 id="msflib.guard.registry.RolePermissionMap" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">RolePermissionMap</span><span class="p">()</span></code>
 
-<a href="#msflib.guard.registry.RoleRegistry" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#msflib.guard.registry.RolePermissionMap" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
 
 
-        <p>Registered permission keys and the roles that satisfy each.</p>
+        <p>Permission keys and the roles that grant each, for a site without authz.</p>
 
 
 
@@ -4487,16 +4632,126 @@ ROLE_REGISTRY.register(
 <div class="doc doc-object doc-function">
 
 
-<h5 id="msflib.guard.registry.RoleRegistry.register" class="doc doc-heading">
+<h5 id="msflib.guard.registry.RolePermissionMap.register" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">register</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">roles</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">RoleKey</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
-<a href="#msflib.guard.registry.RoleRegistry.register" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#msflib.guard.registry.RolePermissionMap.register" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
 
         <p>Register the roles for <code>key</code>; idempotent unless the roles differ (ValueError).</p>
 <p>A role that is not a <code>RoleKey</code>, such as a bare string, raises <code>TypeError</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="msflib.guard.resolvers" class="doc doc-heading">
+            <code>resolvers</code>
+
+
+<a href="#msflib.guard.resolvers" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+        <p>The permission resolver of a site without authz, over <code>ROLE_PERMISSION_MAP</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="msflib.guard.resolvers.RolePermissionResolver" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">RolePermissionResolver</span><span class="p">(</span><span class="n">role_permission_map</span><span class="p">:</span> <span class="n">RolePermissionMap</span> <span class="o">=</span> <span class="n">ROLE_PERMISSION_MAP</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">role_lookup_registry</span><span class="p">:</span> <span class="n">RoleLookupRegistry</span> <span class="o">=</span> <span class="n">ROLE_LOOKUP_REGISTRY</span><span class="p">)</span></code>
+
+<a href="#msflib.guard.resolvers.RolePermissionResolver" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Grants a permission key to a caller holding a role <code>role_permission_map</code> lists for it.</p>
+<p>A listed role counts at the check's tier or above it. The caller's roles are those
+the site's <code>RoleLookup</code>, registered in <code>role_lookup_registry</code>, returns where the request
+is. A key with no listed role at or above the tier grants nothing. A site with no
+registered and locked role lookup is a wiring error: <code>check_ready</code> raises for it when a route
+is declared, and a request that still reaches <code>allows</code> is denied and logged.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.guard.resolvers.RolePermissionResolver.check_ready" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_ready</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.guard.resolvers.RolePermissionResolver.check_ready" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Raise <code>ValueError</code> unless a role lookup is registered and locked.</p>
 
 
     </div>

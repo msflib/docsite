@@ -4150,7 +4150,7 @@ owning module (<code>msflib.tenancy</code>, <code>msflib.workspaces</code>) and 
 It uses them for the caller (403) and for any account the request names (404).
 Don't fall back to a default tenant or to "any account" when a check is missing;
 a host that wants that passes <code>allow_any_member</code>. The same checks back
-<code>MembershipConstraint</code> and gate the tenant and workspace roles a role source
+<code>MembershipConstraint</code> and gate the tenant and workspace roles a role lookup
 returns (SCP-6). Never infer membership from the account's
 <code>current_workspace_id</code>; it is a preference, not a grant. Parameter names and
 order: API-7. Where membership is defined and enforced is moving to SCP-7.</p>
@@ -4164,7 +4164,7 @@ sinks. Nothing converts a scope to strings and back (ADR 0009, A7). Build a
 module's own scope with
 <code>envelope.extend(ScopeType, **selectors)</code>, once, at the request boundary, check
 it with <code>DimensionCompiler.validate_profile(envelope, operation)</code> (<code>extend</code> raises
-rather than drop a facet the scope holds and the new type has no field for) where an
+rather than drop a value the scope holds and the new type has no field for) where an
 operation requires dimensions, and pass it unchanged to every call below. The one derived
 scope is a guard's: a check below the workspace tier runs at the tenant's
 scope (<code>msflib.guard.narrow_envelope(envelope, tier=)</code>, SCP-6). Request dependencies
@@ -4179,8 +4179,8 @@ startup; the profile stays hand-written because one type can serve operations wi
 different required dimensions. Filter on the
 typed object, never on raw <code>ScopeEnvelope.get_dim(...)</code> calls, and don't parse
 dimension strings by hand. A check asks who is calling from <code>envelope.principal</code>; a
-scope has an <code>account_id</code> field only where code filters or keys on it, as the
-boundary's <code>AccountScope</code> does. The type shares fields, not match semantics; an
+scope has an <code>account_id</code> field only where code filters or keys on it, as
+<code>AccountScope</code> does; the boundary's scope never has one. The type shares fields, not match semantics; an
 equality or hierarchical match belongs to the action method.
 A dimension is described once, by its <code>DimensionSpec</code>, and registered in
 <code>msflib.scope.DIMENSION_REGISTRY</code>: core registers the built-ins, and a module or a
@@ -4220,7 +4220,7 @@ has a worked example of each case.</p>
 data rather than a field: registering a facet named like a field of a facet
 holder, or declaring a field named like a registered facet, is an error.
 Dimensions are ordered by priority and then by key, so a compiled key does not
-depend on registration order. <code>msflib.scope.FacetScope</code> (an <code>AccountScope</code>) and
+depend on registration order. <code>msflib.scope.FacetScope</code> (a <code>TenantScope</code>) and
 <code>FacetPlacement</code> hold every facet in one field, <code>facets: Facets</code>, keyed by
 canonical dimension key; a facet's name can therefore never shadow a field or a
 method. A module adds its facet with <code>envelope.with_facets(conversation_id=...)</code>,
@@ -4359,11 +4359,10 @@ itself, such as <code>KnowledgeReach</code> from memberships (planned in #403) o
   <code>ScopeEnvelope</code> is named <code>envelope</code>, in variables, parameters and
   dependencies, whether or not the code holds both. A dependency or builder is
   named for what it returns: <code>get_scope</code> and <code>build_scope(envelope)</code> return a
-  typed scope; <code>get_account_envelope</code> and <code>build_context_envelope</code> return an
-  envelope. Don't use another word for either, such as <code>position</code>.</li>
+  typed scope; <code>get_base_envelope</code> returns an envelope. Don't use another word for either, such as <code>position</code>.</li>
 <li><code>ConfigTier</code> (workspace_config) and <code>ProviderTier</code> (ai_core) also have a
-  <code>user</code> level. That level is the account facet, not a tier: the tiers in those
-  enums follow this rule, and #403 separates the account facet from them.</li>
+  <code>user</code> level. That level is the account dimension, not a tier: the tiers in those
+  enums follow this rule, and #403 separates the account dimension from them.</li>
 <li><code>settings.scope("AI_CORE")</code> is a settings namespace, not a tier. The scope
   dataclass a profile is checked against is passed as <code>scope_class=</code>.</li>
 </ul>
@@ -4467,7 +4466,7 @@ reachable conversation is included and no other.</p>
    values (ADR 0009 A7). Use the scope:</p>
 <ul>
 <li>where an int-typed column is filtered;</li>
-<li>where it is handed to an authorization protocol (<code>RoleSource</code>,
+<li>where it is handed to an authorization protocol (<code>RoleLookup</code>,
   <code>PermissionResolver</code>, a guard's <code>narrow_envelope</code>: SCP-6).</li>
 </ul>
 <p>Strings (checkpoint keys, memory namespaces, retrieval metadata, row keys)
@@ -4486,10 +4485,18 @@ values to strings and back.
 - policy inputs: envelope attributes such as channel.</p>
 <p>Never put a principal, role or channel inside a typed scope. The
 <code>ScopeEnvelope</code> does carry the caller as <code>principal</code>, with the roles a
-<code>RoleSource</code> returns for the request's scope; a check asks the principal
+<code>RoleLookup</code> returns for the request's scope; a check asks the principal
 who is calling. A typed scope has a field if and only if code filters or
-keys on it: <code>account_id</code> is a scope dimension where rows or keys are
-separated per account (<code>AccountScope</code>), not as a way to say who calls.
+keys on it. <code>account_id</code> is a dimension, registered by core, for an
+operation that runs in an account's own space (user-tier settings, a memory
+namespace per account): its scope is an <code>AccountScope</code>. The request's base
+envelope (<code>get_base_envelope</code>) has the caller on its principal and no account
+in its scope: the boundary never stamps it. An operation in an account's
+space adds it where its envelope is built, with <code>envelope.extend(AccountScope,
+account_id=...)</code>: the principal's <code>account_id</code> for the caller's own space, or
+an access-checked selector for another account's. Both fields may hold the
+same id and stay separate: a check reads the principal, a filter or key
+reads the scope, and the scope's account is never read as the caller.
 5. A global (platform-level) profile or row applies everywhere and needs no request
    scope; creating one takes a reach, not a scope. A request scope always has a
    tenant and fails closed.</p>
@@ -4499,9 +4506,9 @@ separated per account (<code>AccountScope</code>), not as a way to say who calls
 <div class="admonition note">
 <p class="admonition-title">Target design (msflib/fastapi#391, amendment A5)</p>
 <p>This rule describes where authorization is going. <code>build_guard</code>,
-<code>build_operation_envelope_factory</code>, <code>narrow_envelope</code>, <code>RoleSource</code> and
+<code>build_operation_envelope_factory</code>, <code>narrow_envelope</code>, <code>RoleLookup</code> and
 <code>PermissionResolver</code> are in code. Not yet:
-<code>build_role_source</code>, and <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through
+<code>build_role_lookup</code>, and <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> deciding through
 the evaluator (msflib/fastapi#397). Write new authorization code to this shape.</p>
 </div>
 <ul>
@@ -4523,8 +4530,9 @@ the evaluator (msflib/fastapi#397). Write new authorization code to this shape.<
 <li>A route names its operation and takes
   <code>Depends(get_operation_envelope("&lt;module&gt;.&lt;operation&gt;"))</code>, from
   <code>msflib.guard.build_operation_envelope_factory</code>. The builder takes the host's
-  <code>PermissionResolver</code>, <code>ROLE_REGISTRY</code> and <code>RoleSource</code> once and binds them to
-  what each profile lists, so remapping an operation's grants changes its
+  <code>PermissionResolver</code> once and binds it to each permission a profile lists,
+  and every <code>RoleConstraint</code> reads the site's registered
+  <code>RoleLookup</code>, so remapping an operation's grants changes its
   profile and never the endpoint. A host replaces a module's profile by
   registering the operation again before it builds the module's router.</li>
 <li>Build an evaluator with <code>ConstraintEvaluator.for_operation(profile_registry,
@@ -4536,15 +4544,34 @@ the evaluator (msflib/fastapi#397). Write new authorization code to this shape.<
 <li>A route that needs one permission and has no operation of its own uses
   <code>msflib.guard.build_guard</code>: <code>guard(key, tier=)</code> is the short form of an
   operation with that one grant. A route takes an envelope dependency or a
-  guard, never both. <code>build_guard</code> takes a <code>PermissionResolver</code>
-  (<code>msflib-authz</code>), role attributes mapped in <code>ROLE_REGISTRY</code>, or both.</li>
+  guard, never both. <code>build_guard</code> takes a <code>PermissionResolver</code>.</li>
+<li>Who holds a permission key is answered by one <code>PermissionResolver</code>, as who
+  holds a role is by one <code>RoleLookup</code>: authz's <code>RoleService</code> (each role's
+  permissions) on an authz site, or <code>msflib.guard.RolePermissionResolver(ROLE_PERMISSION_MAP)</code>
+  (roles listed per key, read from the role lookup) on a site without authz.
+  Never both: on an authz site the roles that grant a key are those whose
+  permissions include it. A builder takes
+  that resolver and no role map of its own.</li>
 <li><code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> (<code>msflib-auth</code>) are the path for simple
   apps; they decide through the evaluator too. Recommend authz role-permission
   for enterprise and multi-tenant apps.</li>
-<li>A role source gives the guard the caller's roles where the check runs:
-  <code>msflib.auth.roles.build_role_source</code> for role attributes, and authz for
-  assignments. <code>build_guard</code> takes it with <code>role_registry</code>. Pass <code>is_tenant_member</code> in a
-  multi-tenant app, because an account has no tenant of its own.</li>
+<li>A site has one answer to who holds which roles: its role lookup, which the
+  host registers once at startup with <code>msflib.scope.ROLE_LOOKUP_REGISTRY.register(...)</code>
+  and locks with <code>ROLE_LOOKUP_REGISTRY.lock()</code>,
+  before it builds routers. It is <code>msflib-auth</code>'s <code>role_lookup</code> (role attributes;
+  <code>msflib.auth.roles.build_role_lookup</code>) or <code>msflib-authz</code>'s
+  <code>build_role_lookup(...)</code> (assignments, backfilled from the attributes). Neither
+  module registers on import, and nothing takes a role lookup as a parameter:
+  every role check reads the registered one, <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code>,
+  guards, operation envelopes and module profiles alike, so a caller holds the same
+  roles whichever route asks. Every role check refuses to start without a
+  registered, locked lookup: an operation's <code>RoleConstraint</code>, a guard over
+  <code>RolePermissionResolver</code>, <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code>, and a module
+  that evaluates a profile per request itself (ai_api's scope dependencies) raise
+  <code>ValueError</code> when their route is declared. A lookup cleared after startup
+  denies every role check, logged. Pass
+  <code>is_tenant_member</code> to auth's lookup in a multi-tenant app, because an account
+  has no tenant of its own.</li>
 </ul>
 <h3 id="scp-7-membership-is-a-scope-constraint">SCP-7 · Membership is a scope constraint<a class="headerlink" href="#scp-7-membership-is-a-scope-constraint" title="Permanent link">&para;</a></h3>
 <div class="admonition note">
@@ -4571,7 +4598,7 @@ membership is defined and enforced the same way.</p>
   at import time, the way documents registers its source adapters. Core holds
   only the protocol and the registry (ARC-1). A check is a fact about the
   container, so its owner registers it; where roles come from is the host's
-  choice, so a <code>RoleSource</code> is passed to the guard builder, not registered.</li>
+  choice, so the host registers the site's one <code>RoleLookup</code> at startup (SCP-6).</li>
 <li><strong>A host replaces a check only to state a choice,</strong> such as <code>allow_any_member</code>
   for a site without membership rows, with one registry call at startup that
   passes <code>replace=True</code>. Registering a second check for a dimension without it
@@ -4614,7 +4641,7 @@ membership is defined and enforced the same way.</p>
   (an agent tool holding the request's envelope) decide through the same
   evaluator: <code>ConstraintEvaluator.for_operation(...)</code> and
   <code>permits(envelope, session=...)</code>. The envelope dependency takes <code>get_session</code>
-  once (API-7); no layer threads a check or a session further. A role source
+  once (API-7); no layer threads a check or a session further. A role lookup
   that counts a role only for members reads the check from the registry rather
   than taking it as an argument.</li>
 <li><strong>Background work runs no membership check.</strong> A job, a worker or an eventbus

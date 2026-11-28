@@ -3985,7 +3985,8 @@
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">"workspace_user"</span>
 </code></pre></div>
 <p>Create the actions with your classes and pass them to the router and the dependencies. Your composed <code>Settings</code> class needs <code>WorkspaceSettings</code> and <code>TenancySettings</code> (from <code>msflib.workspaces.config</code> and <code>msflib.tenancy.config</code>) among its bases.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">no_workspace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAction</span><span class="p">,</span> <span class="n">WorkspaceAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.workspaces.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">UserCreate</span><span class="p">,</span>
@@ -4006,6 +4007,7 @@
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account</span><span class="p">,</span>
     <span class="n">get_current_account_or_none</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">get_current_account_or_none</span><span class="p">,</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
     <span class="n">role_check</span><span class="o">=</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">RoleCheck</span><span class="p">,</span>
     <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
     <span class="n">account_type</span><span class="o">=</span><span class="n">Account</span><span class="p">,</span>

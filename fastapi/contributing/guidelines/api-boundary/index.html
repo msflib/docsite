@@ -3854,8 +3854,8 @@ request bodies and responses. Response builders substitute the related row's
 <p>See MDL-3 and MDL-4. Router-only request classes are the exception and live in
 the entity's model file.</p>
 <h3 id="api-7-identity-parameters-are-required-and-ordered">API-7 · Identity parameters are required and ordered<a class="headerlink" href="#api-7-identity-parameters-are-required-and-ordered" title="Permanent link">&para;</a></h3>
-<p>A router that scopes data by identity takes these parameters, in this order and
-without defaults: <code>get_session</code>, <code>get_current_account</code>, <code>get_current_tenant</code>,
+<p>A router or dependency factory that scopes data by identity takes these
+parameters, in this order and without defaults: <code>get_session</code>, <code>get_current_account</code>, <code>get_current_tenant</code>,
 <code>get_current_workspace</code>, then the membership checks it uses (SCP-3), in the same
 tenant-then-workspace order: <code>is_tenant_member</code> where the router validates the
 tenant tier (the tenant check is the default-tenant stub until #268, so most
@@ -3867,7 +3867,10 @@ without tenancy passes <code>msflib.tenancy.deps.get_tenant_dependencies(...)
 and one without membership rules passes <code>allow_any_member</code>.</p>
 <ul>
 <li><code>get_current_workspace</code> may resolve to <code>None</code>, the workspace-less bucket
-  (SCP-2); the workspace membership check is not asked then. A route that needs
+  (SCP-2): the tenant level, inside no workspace. The workspace membership check
+  is not asked then. A factory whose routes sit at the tenant or account level on
+  a site that has workspaces (the workspaces router, <code>auth.get_account_dependencies</code>)
+  still takes the parameter; the host passes <code>no_workspace</code>, never omits it. A route that needs
   a workspace currently uses <code>msflib.scope.get_member_account_dependency</code>
   (deprecated in 0.3.0, removed in 0.4.0), which answers 404 when there is
   none. The SCP-7 target is <code>msflib.guard.build_operation_envelope_factory</code>: a route

@@ -2711,10 +2711,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.authz.deps.build_role_source" class="md-nav__link">
+  <a href="#msflib.authz.deps.build_role_lookup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build_role_source
+        build_role_lookup
       
     </span>
   </a>
@@ -3478,6 +3478,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.authz.services.RoleService.check_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.authz.services.RoleService.allows" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3843,6 +3854,17 @@
     <span class="md-ellipsis">
       
         has_permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.authz.services.roles.RoleService.check_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_ready
       
     </span>
   </a>
@@ -5807,10 +5829,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#msflib.authz.deps.build_role_source" class="md-nav__link">
+  <a href="#msflib.authz.deps.build_role_lookup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build_role_source
+        build_role_lookup
       
     </span>
   </a>
@@ -6574,6 +6596,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#msflib.authz.services.RoleService.check_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.authz.services.RoleService.allows" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6939,6 +6972,17 @@
     <span class="md-ellipsis">
       
         has_permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msflib.authz.services.roles.RoleService.check_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_ready
       
     </span>
   </a>
@@ -8047,15 +8091,15 @@ Rows for other principals are not loaded.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="msflib.authz.deps.build_role_source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_role_source</span><span class="p">(</span><span class="n">service</span><span class="p">:</span> <span class="n">RoleService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleSource</span></code>
+<h3 id="msflib.authz.deps.build_role_lookup" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_role_lookup</span><span class="p">(</span><span class="n">service</span><span class="p">:</span> <span class="n">RoleService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleLookup</span></code>
 
-<a href="#msflib.authz.deps.build_role_source" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#msflib.authz.deps.build_role_lookup" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>A <code>msflib.scope.RoleSource</code> over <code>RoleAssignment</code> rows.</p>
+        <p>A <code>msflib.scope.RoleLookup</code> over <code>RoleAssignment</code> rows.</p>
 <p>It returns the platform roles and the roles assigned at the scope's tenant and, when
 the scope has a workspace, at that workspace (<code>RoleService.get_role_keys_for</code>).</p>
 
@@ -8068,30 +8112,35 @@ the scope has a workspace, at that workspace (<code>RoleService.get_role_keys_fo
 
 
 <h3 id="msflib.authz.deps.get_authz_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_authz_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_service</span><span class="p">:</span> <span class="n">RoleService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">role_registry</span><span class="p">:</span> <span class="n">RoleRegistry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_authz_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">session_dep</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">is_workspace_member</span><span class="p">:</span> <span class="n">MembershipCheck</span><span class="p">,</span> <span class="n">role_service</span><span class="p">:</span> <span class="n">RoleService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">enforcement</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.authz.deps.get_authz_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Return a <code>DependencyNamespace</code> with <code>guard</code>, <code>role_source</code> and <code>role_service</code>.</p>
+        <p>Return a <code>DependencyNamespace</code> with <code>guard</code>, <code>role_lookup</code> and <code>role_service</code>.</p>
 <p><code>guard(key, *, tier=RoleTier.workspace)</code> is <code>msflib.guard.build_guard</code>'s call
 shape, the one module routers take: a route passes when <code>RoleService</code> grants the
-permission key at <code>tier</code>, or, with <code>role_registry</code> (usually
-<code>msflib.guard.ROLE_REGISTRY</code>), when the caller is assigned a role it lists for the
-key at or above <code>tier</code>. An unknown <code>tier</code> raises <code>ValueError</code>. <code>enforcement</code>
-is <code>build_guard</code>'s: <code>"shadow"</code> records a denial and lets the route run.</p>
+permission key at <code>tier</code>, through the permissions of the caller's assigned roles.
+<code>msflib.guard.ROLE_PERMISSION_MAP</code> does not count: on an authz site the roles that
+grant a key are those whose permissions include it. A site that
+uses authz registers this namespace's <code>role_lookup</code> (the caller's assignments) at
+startup with <code>msflib.scope.ROLE_LOOKUP_REGISTRY.register(...)</code>, then locks it
+with <code>ROLE_LOOKUP_REGISTRY.lock()</code>. An unknown <code>tier</code>
+raises <code>ValueError</code>. <code>enforcement</code> is <code>build_guard</code>'s: <code>"shadow"</code> records a
+denial and lets the route run.</p>
 <p>The identity callables are those of <code>msflib.scope.get_scope_dependencies</code>:
-<code>get_current_account</code> and <code>get_current_tenant</code> are required, and
-<code>get_current_workspace</code> is optional. An app that does not deal with tenancy
-passes <code>msflib.tenancy.deps.get_tenant_dependencies(...).get_current_tenant</code>,
+<code>get_current_account</code>, <code>get_current_tenant</code> and <code>get_current_workspace</code> are
+required; a site without workspaces passes <code>msflib.scope.no_workspace</code>. An app
+that does not deal with tenancy passes
+<code>msflib.tenancy.deps.get_tenant_dependencies(...).get_current_tenant</code>,
 which supplies the default tenant. A workspace belonging to a different tenant
-is denied. Platform and tenant guards never resolve a workspace.</p>
-<p>Workspace guards check the caller against the workspace, so
-<code>get_current_workspace</code> comes with <code>is_workspace_member</code>
-(<code>msflib.workspaces.is_workspace_member</code>, or <code>allow_any_member</code> for a host
-without membership rules), and a workspace guard needs both.</p>
+is denied. Platform and tenant guards decide at the tenant level, inside no
+workspace (<code>no_workspace</code>), so they never resolve one.</p>
+<p>Workspace guards check the caller against the workspace with
+<code>is_workspace_member</code> (<code>msflib.workspaces.is_workspace_member</code>, or
+<code>allow_any_member</code> for a host without membership rules).</p>
 
 
     </div>
@@ -10194,6 +10243,24 @@ is revoked. Runtime grants are separate rows and are never touched.</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="msflib.authz.services.RoleService.check_ready" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_ready</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.authz.services.RoleService.check_ready" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>msflib.scope.PermissionResolver</code>: it reads its own tables, so it is always ready.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="msflib.authz.services.RoleService.allows" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">allows</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">TenantScope</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="n">RoleTier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
@@ -11033,6 +11100,24 @@ is revoked. Runtime grants are separate rows and are never touched.</p>
 
         <p>Whether the account holds the permission at <code>scope</code>.</p>
 <p><code>platform_only</code> counts only platform-tier roles.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="msflib.authz.services.roles.RoleService.check_ready" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_ready</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.authz.services.roles.RoleService.check_ready" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>msflib.scope.PermissionResolver</code>: it reads its own tables, so it is always ready.</p>
 
 
     </div>

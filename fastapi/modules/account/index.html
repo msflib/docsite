@@ -4238,6 +4238,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.account.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">account_admin_router</span><span class="p">,</span> <span class="n">account_router</span><span class="p">,</span> <span class="n">profile_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthSettings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROLE_LOOKUP_REGISTRY</span><span class="p">,</span> <span class="n">no_workspace</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.core.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreSettings</span><span class="p">,</span> <span class="n">SettingsBase</span>
@@ -4283,7 +4284,10 @@
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">auth</span><span class="o">.</span><span class="n">role_lookup</span><span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">auth_router</span><span class="p">(</span>
         <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>

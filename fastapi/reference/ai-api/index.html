@@ -2666,6 +2666,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.ai_api.services.scope_evaluator.check_role_lookups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_role_lookups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4215,6 +4226,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#msflib.ai_api.services.scope_evaluator.check_role_lookups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_role_lookups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4464,8 +4486,9 @@ tool was built for the (keyless) default backend.</p>
 and <code>ai_core.router</code>, which wires <code>get_provider_dependencies</code> and
 <code>msflib.scope.get_scope_dependencies</code> as two separate factory calls): scope
 building and settings/service resolution are two distinct factories here too.
-The scope factory takes the three identity callables; the settings factory
-takes <code>get_session</code> for tiered resolution.</p>
+The scope factory takes <code>get_session</code> and the three identity callables, and
+evaluates each operation's scope constraints with that session; the settings
+factory takes <code>get_session</code> for tiered resolution.</p>
 
 
 
@@ -4491,7 +4514,7 @@ takes <code>get_session</code> for tiered resolution.</p>
 
 
 <h3 id="msflib.ai_api.deps.get_ai_api_scope_dependencies" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_ai_api_scope_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
+            <code class="highlight language-python"><span class="n">get_ai_api_scope_dependencies</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">get_session</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_account</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_tenant</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_current_workspace</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DependencyNamespace</span></code>
 
 <a href="#msflib.ai_api.deps.get_ai_api_scope_dependencies" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -4509,7 +4532,10 @@ is resolved once at the endpoint boundary, the same way
 <code>msflib.tenancy.deps.get_tenant_dependencies</code>) -- yields a <code>Tenant</code>
 row. Workspace membership is not checked here: guard the routes with
 <code>msflib.scope.get_member_account_dependency</code>, as <code>create_llm_router</code> and
-<code>create_agent_router</code> do.</p>
+<code>create_agent_router</code> do. The operations' <code>RoleConstraint</code> reads the caller's
+roles from the site's registered role lookup (<code>msflib.scope.ROLE_LOOKUP_REGISTRY</code>);
+without one registered and locked, building these dependencies raises
+<code>ValueError</code>.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -4591,6 +4617,8 @@ than re-implementing it; only adds the request-level <code>k</code> -&gt;
 <li><code>get_registry_service</code> — ProviderRegistryService bound to the
   resolved settings (delegates to ai_core; see
   :func:<code>msflib.ai_core.deps.get_provider_dependencies</code>).</li>
+<li><code>get_account_placement</code> — the request's AccountPlacement in the caller's
+  own space, for choosing its LLM (user-tier profiles apply).</li>
 </ul>
               </div>
             </td>
@@ -4979,18 +5007,21 @@ this router calls -- declared locally so this module never imports
 
 
 <h3 id="msflib.ai_api.scope.build_request_envelope" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_request_envelope</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">AccountBase</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">RequestScope</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">build_request_envelope</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sub_thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScopeEnvelope</span><span class="p">[</span><span class="n">RequestScope</span><span class="p">]</span></code>
 
 <a href="#msflib.ai_api.scope.build_request_envelope" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Layer the request's caller, channel and selectors onto the identity <code>base</code>.</p>
-<p><code>base</code> carries the server-decided tenant and workspace (see
-<code>msflib.scope.get_scope_dependencies</code>). The account is the individual user identity and
-goes into PrincipalContext only; the channel is a policy input, so it is an attribute.
-<code>conversation_id</code> and <code>sub_thread_id</code> are selectors from the validated request body.</p>
+        <p>Layer the channel and the selectors onto the request's <code>base</code> (AUZ-12 stage 2b).</p>
+<p><code>base</code> carries the server-decided tenant and workspace and the caller on its
+principal (see <code>msflib.scope.get_scope_dependencies</code>). The operations this
+envelope reaches (retrieval, conversation, knowledge) do not run in an account's
+space, so the account is not in the scope. The channel is a policy input, so it is
+an attribute. <code>conversation_id</code> and <code>sub_thread_id</code> are selectors from the
+validated request body. Roles are not added here: the role constraint reads them
+from the host's <code>RoleLookup</code> at stage 3.</p>
 
 
     </div>
@@ -5197,15 +5228,38 @@ workspace-level <code>VECTOR_STORE_BACKEND</code> override is honored too.</p>
 <div class="doc doc-object doc-function">
 
 
+<h4 id="msflib.ai_api.services.scope_evaluator.check_role_lookups" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_role_lookups</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#msflib.ai_api.services.scope_evaluator.check_role_lookups" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Raise <code>ValueError</code> when a check an operation lists has no registered source.</p>
+<p>The evaluators are built per request, so this is the startup check the guard
+builders make for theirs (<code>msflib.guard.check_constraint_sources</code>, which looks
+inside composite constraints): the scope dependencies call it when they are built.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h4 id="msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">evaluate_scope_constraints</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">evaluate_scope_constraints</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#msflib.ai_api.services.scope_evaluator.evaluate_scope_constraints" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Check <code>envelope</code> against <code>operation</code>'s profile.</p>
+        <p>Check <code>envelope</code> against <code>operation</code>'s profile (AUZ-12 stage 3).</p>
+<p>The profile's role constraint reads the caller's roles from the site's registered
+role lookup (<code>msflib.scope.ROLE_LOOKUP_REGISTRY</code>).</p>
 <p>Workspace membership is not checked here: the routers check it once per request
 with <code>get_member_account_dependency</code> before this runs.</p>
 

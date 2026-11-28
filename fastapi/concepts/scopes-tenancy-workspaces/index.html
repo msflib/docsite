@@ -1669,6 +1669,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Operations and permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-grants-a-permission-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who grants a permission key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3853,6 +3870,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Operations and permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-grants-a-permission-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who grants a permission key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4040,7 +4074,7 @@
 </tr>
 <tr>
 <td><code>principal</code></td>
-<td>Who is calling: a <code>PrincipalContext</code> with an int <code>account_id</code> and the caller's roles, or <code>None</code> for a service call</td>
+<td>Who is calling: a <code>PrincipalContext</code> with an int <code>account_id</code>, or <code>None</code> for a service call. Its roles are read from the site's <code>RoleLookup</code> when a role check decides, not carried here</td>
 </tr>
 <tr>
 <td><code>attributes</code></td>
@@ -4052,25 +4086,33 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrincipalContext</span><span class="p">,</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">TenantScope</span><span class="p">,</span> <span class="n">build_context_envelope</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrincipalContext</span><span class="p">,</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">TenantScope</span>
 
-<span class="n">envelope</span> <span class="o">=</span> <span class="n">build_context_envelope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">envelope</span> <span class="o">=</span> <span class="n">ScopeEnvelope</span><span class="p">(</span>
+    <span class="n">scope</span><span class="o">=</span><span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="n">principal</span><span class="o">=</span><span class="n">PrincipalContext</span><span class="p">(</span><span class="n">account_id</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+<span class="p">)</span>
 <span class="n">envelope</span><span class="o">.</span><span class="n">scope</span>
-<span class="c1"># AccountScope(tenant_id=1, workspace_id=None, account_id=5)</span>
+<span class="c1"># TenantScope(tenant_id=1, workspace_id=None)</span>
 <span class="n">envelope</span><span class="o">.</span><span class="n">principal</span><span class="o">.</span><span class="n">account_id</span>
 <span class="c1"># 5</span>
 <span class="n">envelope</span><span class="o">.</span><span class="n">dimensions</span>
-<span class="c1"># {'tenant_id': '1', 'workspace_id': None, 'account_id': '5'}</span>
+<span class="c1"># {'tenant_id': '1', 'workspace_id': None}</span>
 </code></pre></div>
 <p><code>scope</code> is the source of truth. <code>dimensions</code> is its string view, built once when the envelope is created, in the form the compiler writes into storage keys and filters. You never pass <code>dimensions</code> in. Every field of the scope is a key, and <code>None</code> stays <code>None</code>: for <code>workspace_id</code> that is the workspace-less bucket (see below). Text is trimmed on the scope itself, so a filter and a key read the same value. An id field must hold a row id, so <code>ScopeEnvelope(scope=TenantScope(tenant_id=0, workspace_id=None))</code> raises <code>ScopeValidationError</code>.</p>
-<p><code>build_context_envelope</code> returns an <code>AccountScope</code>: a <code>TenantScope</code> plus the <code>account_id</code> dimension, so a storage key that includes the account (a memory namespace, for example) stays separate per account. A check asks about the principal, not that dimension.</p>
+<p>The account appears in two places, and they mean different things:</p>
+<ul>
+<li><code>principal.account_id</code> is who is calling. A check (a role, a membership, a permission) asks the principal.</li>
+<li><code>account_id</code> in the scope is an account's own space that the request runs in: its user-tier settings, a memory namespace kept apart per account, or a member's records an admin opens. It is a dimension like <code>workspace_id</code>, registered by core, and it is present only when the operation runs in an account's space.</li>
+</ul>
+<p>A request's base envelope always has the caller on its principal and no account in its scope: the boundary never stamps it. An operation that runs in an account's space adds it where its envelope is built, the principal's account for the caller's own space or an access-checked selector for another account's: <code>envelope.extend(AccountScope, account_id=envelope.principal.account_id)</code>. The two fields can hold the same id and still stay separate: code that filters or keys reads the scope, and code that checks reads the principal. Extending to a scope type with no field for a value the scope holds raises instead of dropping it.</p>
 <p>Envelopes are immutable. A module that needs more dimensions (<code>conversation_id</code>, <code>project_id</code>, ...) declares a scope type with those fields and builds it from the request's envelope (see <a href="#typed-scopes">Typed scopes</a>).</p>
 <h2 id="getting-the-scope-in-an-endpoint">Getting the scope in an endpoint<a class="headerlink" href="#getting-the-scope-in-an-endpoint" title="Permanent link">&para;</a></h2>
-<p><code>get_scope_dependencies</code> returns a <code>DependencyNamespace</code> of FastAPI dependencies that build the envelope from the caller's resolved identity. You pass in your site's own <code>get_current_*</code> dependencies (from <code>auth.get_account_dependencies</code>, <code>auth.get_user_dependencies</code> and <code>tenancy.deps.get_tenant_dependencies</code>).</p>
+<p><code>get_scope_dependencies</code> returns a <code>DependencyNamespace</code> with one FastAPI dependency, <code>get_base_envelope</code>, which builds the request's envelope from the site's resolved identity. The envelope is a fact of the request, so there is one per request. You pass in your site's own <code>get_current_*</code> dependencies (from <code>auth.get_account_dependencies</code>, <code>auth.get_user_dependencies</code> and <code>tenancy.deps.get_tenant_dependencies</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">get_scope_dependencies</span>
 
-<span class="n">scopes</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
+<span class="n">scope_deps</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">get_current_workspace</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">get_current_account</span><span class="p">,</span>
@@ -4078,25 +4120,20 @@
 
 
 <span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/items"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">list_items</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scopes</span><span class="o">.</span><span class="n">get_account_envelope</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_items</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scope_deps</span><span class="o">.</span><span class="n">get_base_envelope</span><span class="p">)):</span>
     <span class="k">return</span> <span class="n">item_service</span><span class="o">.</span><span class="n">list_for_scope</span><span class="p">(</span><span class="n">envelope</span><span class="o">.</span><span class="n">scope</span><span class="p">)</span>
 </code></pre></div>
-<p>The namespace exposes:</p>
-<ul>
-<li><code>get_account_envelope</code>: every tier the caller has. Use for member-facing reads and writes.</li>
-<li><code>get_workspace_envelope</code>: tenant and workspace, no account. Use for admin surfaces over workspace-scoped rows. Present only when a workspace dependency was passed.</li>
-<li><code>get_tenant_envelope</code>: tenant only, for platform-level surfaces.</li>
-</ul>
+<p>Its scope is the tenant and the workspace (<code>None</code> is the workspace-less bucket); its principal is the current account. An operation narrows it from there: a module's selectors (<code>conversation_id</code>), facets, or the account it runs in.</p>
 <p>The callables follow one rule:</p>
 <ul>
 <li><code>get_current_tenant</code> and <code>get_current_account</code> are required. A site that does not deal with tenancy passes the <code>get_current_tenant</code> from <code>get_tenant_dependencies</code> (see Tenants), which resolves the default tenant.</li>
-<li><code>get_current_workspace</code> is optional in this factory. Omit it for a site with no workspace concept. A workspace that resolves to <code>None</code> is the workspace-less bucket, never "any workspace". The router factories of documents, ingestion, drivelink, conversation and ai-api require it; a site without workspaces passes <code>msflib.scope.no_workspace</code>.</li>
+<li><code>get_current_workspace</code> is required here and in every router and dependency factory that takes identity (API-7). A workspace that resolves to <code>None</code> is the workspace-less bucket: the tenant level, inside no workspace, never "any workspace". A site without workspaces passes <code>msflib.scope.no_workspace</code>, and so do routes at the tenant or account level on a site that has them (the workspaces router, <code>auth.get_account_dependencies</code>), so the absence is stated.</li>
 <li><code>get_scope_ids(...)</code> is deprecated in core 0.3.0 and removed in the next minor; read the typed scope from <code>envelope.scope</code> instead. It takes the same callables and returns <code>account_id</code>, <code>tenant_id</code> and <code>workspace_id</code> dependencies that yield plain ids and fail closed (401 for no account, 404 for no tenant or a workspace of another tenant); <code>workspace_id</code> is <code>None</code> for the workspace-less bucket. Routers use it instead of unpacking <code>.id</code> in each endpoint.</li>
 <li>None of them checks membership. An operation lists <code>MembershipConstraint(dimension)</code> in its profile's <code>constraints</code>, and its envelope dependency runs them on the envelope, with the check the container's module registered in <code>MEMBERSHIP_REGISTRY</code> (see <a href="#operations-and-permissions">Operations and permissions</a>). It answers 401 for a missing caller and 403 for a non-member. Routers still use the deprecated <code>get_member_account_dependency(..., get_current_tenant=..., is_workspace_member=...)</code>, where the check is <code>msflib.workspaces.is_workspace_member</code> (active memberships by default) or <code>allow_any_member</code> for a host without membership rules. It answers 404 with no workspace or a workspace of another tenant, and 403 for a non-member.</li>
 </ul>
 <h2 id="compiling-a-scope">Compiling a scope<a class="headerlink" href="#compiling-a-scope" title="Permanent link">&para;</a></h2>
 <p><code>DimensionCompiler</code> turns an envelope into a key string, segments or a mapping, validating it against a named operation profile first. It compiles only once the dimension registry is locked, which <code>register_dimensions(settings)</code> does when the process starts (see <a href="#your-own-dimensions">Your own dimensions</a>).</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">DimensionCompiler</span><span class="p">,</span> <span class="n">register_dimensions</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">AccountScope</span><span class="p">,</span> <span class="n">DimensionCompiler</span><span class="p">,</span> <span class="n">register_dimensions</span>
 
 <span class="n">register_dimensions</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>  <span class="c1"># once, when the process starts</span>
 <span class="n">compiler</span> <span class="o">=</span> <span class="n">DimensionCompiler</span><span class="p">()</span>
@@ -4104,19 +4141,23 @@
     <span class="s2">"items.search"</span><span class="p">,</span>
     <span class="p">{</span><span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"tenant_id"</span><span class="p">],</span> <span class="s2">"required_nullable"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"workspace_id"</span><span class="p">,</span> <span class="s2">"account_id"</span><span class="p">]},</span>
 <span class="p">)</span>
-<span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">)</span>
+<span class="c1"># The items are kept per account; this operation runs in account 5's own space.</span>
+<span class="n">keyed</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">AccountScope</span><span class="p">,</span> <span class="n">account_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">keyed</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">)</span>
 <span class="c1"># 't/1/a/5/w/-'</span>
-<span class="n">compiler</span><span class="o">.</span><span class="n">compile_map</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">)</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_map</span><span class="p">(</span><span class="n">keyed</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">)</span>
 <span class="c1"># {'tenant_id': '1', 'account_id': '5', 'workspace_id': '-'}</span>
-<span class="n">compiler</span><span class="o">.</span><span class="n">compile_map</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">,</span> <span class="n">use_sentinel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_map</span><span class="p">(</span><span class="n">keyed</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">,</span> <span class="n">use_sentinel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="c1"># {'tenant_id': '1', 'account_id': '5', 'workspace_id': None}</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"items.search"</span><span class="p">)</span>
+<span class="c1"># 't/1/a/-/w/-': the request envelope holds no account</span>
 </code></pre></div>
 <p>A profile lists required dimensions, required-but-nullable dimensions and optional ones. In <code>items.search</code> above <code>tenant_id</code> is required, so compiling an envelope without a tenant raises <code>ScopeValidationError</code>; <code>workspace_id</code> and <code>account_id</code> are nullable and compile to the sentinel <code>-</code> when null. A new <code>ProfileRegistry</code> is empty: core registers no profile for a data operation, and the one profile it does register, <code>guard.check</code>, lives in the guards' own registry (<code>msflib.guard.scope</code>). Register a profile for each of your operations on the compiler (<code>register_profile</code>). Modules do this for theirs in their <code>scope_profiles.py</code>: ai_core registers its <code>aicore.*</code> operations (<code>aicore.retrieval</code>, <code>aicore.memory</code>, <code>aicore.checkpoint</code> and others), and <code>msflib.workspace_config.scope_profiles</code> defines <code>workspace_config.storage_key</code>, where tenant, workspace and account are all required-but-nullable, so a tenant-tier row can have a null workspace and a workspace-tier row a null tenant.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/267">#267</a>)</p>
 <p>Scope profiles currently require <code>tenant_id</code> but allow a null <code>workspace_id</code>, so the two dimensions are not treated symmetrically. Whether the profiles should treat the two the same is undecided.</p>
 </div>
-<p>You can also evaluate access rules over a scope with the constraint classes exported from <code>msflib.scope</code> (<code>MembershipConstraint</code>, <code>RoleConstraint</code>, <code>PermissionConstraint</code>, <code>AnyConstraint</code>, <code>ConstraintEvaluator</code>). A constraint is evaluated with <code>evaluate(envelope, *, session=None)</code>: it reads where the request is from <code>envelope.scope</code>, who is calling from <code>envelope.principal</code> and policy inputs from <code>envelope.attributes</code>, and takes the database session as an argument when it reads rows. There is no separate evaluation context. A guard narrows the envelope's scope to the tier it checks at (<code>msflib.guard.narrow_envelope</code>). <code>MembershipConstraint</code> takes a dimension and reads the check registered for it. <code>AnyConstraint</code> allows when any of its constraints does. An operation's profile lists them in <code>constraints</code>, and its envelope dependency runs them for a route (see <a href="#operations-and-permissions">Operations and permissions</a>). <code>ConstraintEvaluator.for_operation(profile_registry, operation)</code> builds an evaluator that runs the profile's constraints at the profile's enforcement level, and <code>permits(envelope, session=...)</code> says whether the request goes on: an allow, or a deny the level only records (<code>log-only</code>, <code>shadow</code>). <code>PrincipalContext.roles</code> holds tier-qualified <code>RoleKey</code>s (written <code>tier:key</code>, for example <code>tenant:admin</code>, when serialized), and <code>RoleConstraint</code> allows a caller holding any of the <code>RoleKey</code>s it is given: those its <code>role_source</code> (a <code>msflib.scope.RoleSource</code>) returns, or without one, those of the envelope's principal. <code>PermissionConstraint</code> asks a <code>PermissionResolver</code> (authz's <code>RoleService</code>) whether the caller holds a permission key at a tier. Profiles and <code>ConstraintEvaluator</code> enforce by default; <code>log-only</code> and <code>shadow</code> are an explicit choice, and a profile that lists constraints at either level logs a warning when it is registered.</p>
+<p>You can also evaluate access rules over a scope with the constraint classes exported from <code>msflib.scope</code> (<code>MembershipConstraint</code>, <code>RoleConstraint</code>, <code>PermissionConstraint</code>, <code>AnyConstraint</code>, <code>ConstraintEvaluator</code>). A constraint is evaluated with <code>evaluate(envelope, *, session=None)</code>: it reads where the request is from <code>envelope.scope</code>, who is calling from <code>envelope.principal</code> and policy inputs from <code>envelope.attributes</code>, and takes the database session as an argument when it reads rows. There is no separate evaluation context. A guard narrows the envelope's scope to the tier it checks at (<code>msflib.guard.narrow_envelope</code>). <code>MembershipConstraint</code> takes a dimension and reads the check registered for it. <code>AnyConstraint</code> allows when any of its constraints does. An operation's profile lists them in <code>constraints</code>, and its envelope dependency runs them for a route (see <a href="#operations-and-permissions">Operations and permissions</a>). <code>ConstraintEvaluator.for_operation(profile_registry, operation)</code> builds an evaluator that runs the profile's constraints at the profile's enforcement level, and <code>permits(envelope, session=...)</code> says whether the request goes on: an allow, or a deny the level only records (<code>log-only</code>, <code>shadow</code>). Roles are tier-qualified <code>RoleKey</code>s (written <code>tier:key</code>, for example <code>tenant:admin</code>, when serialized). <code>RoleConstraint</code> allows a caller holding any of the <code>RoleKey</code>s it is given, as the site's one <code>RoleLookup</code> (registered and locked in <code>msflib.scope.ROLE_LOOKUP_REGISTRY</code> at startup) returns them for the caller at <code>envelope.scope</code>; it never reads roles off the principal. <code>PermissionConstraint</code> asks a <code>PermissionResolver</code> (authz's <code>RoleService</code>) whether the caller holds a permission key at a tier. Profiles and <code>ConstraintEvaluator</code> enforce by default; <code>log-only</code> and <code>shadow</code> are an explicit choice, and a profile that lists constraints at either level logs a warning when it is registered.</p>
 <div class="admonition note">
 <p class="admonition-title">Behaviour may change (<a href="https://github.com/msflib/fastapi/issues/270">#270</a>)</p>
 <p>The AI API's own profiles choose <code>log-only</code> explicitly, as a rollout exception to the <code>enforce</code> default: a failing constraint there is logged rather than rejected unless <code>SCOPE_CONSTRAINTS_ENFORCE</code> is set. Whether those profiles should move to <code>enforce</code> is undecided.</p>
@@ -4142,15 +4183,15 @@
 <span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># documents/router.py, inside the router factory</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.guard</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROLE_REGISTRY</span><span class="p">,</span> <span class="n">build_operation_envelope_factory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.guard</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_operation_envelope_factory</span>
 
 <span class="n">get_operation_envelope</span> <span class="o">=</span> <span class="n">build_operation_envelope_factory</span><span class="p">(</span>
     <span class="n">profile_registry</span><span class="o">=</span><span class="n">PROFILE_REGISTRY</span><span class="p">,</span>
-    <span class="n">get_envelope</span><span class="o">=</span><span class="n">scope_deps</span><span class="o">.</span><span class="n">get_account_envelope</span><span class="p">,</span>
+    <span class="n">get_envelope</span><span class="o">=</span><span class="n">scope_deps</span><span class="o">.</span><span class="n">get_base_envelope</span><span class="p">,</span>
     <span class="n">get_session</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
-    <span class="n">resolver</span><span class="o">=</span><span class="n">role_service</span><span class="p">,</span>        <span class="c1"># msflib-authz assignments, or</span>
-    <span class="n">role_registry</span><span class="o">=</span><span class="n">ROLE_REGISTRY</span><span class="p">,</span>  <span class="c1"># roles registered per permission key,</span>
-    <span class="n">role_source</span><span class="o">=</span><span class="n">role_source</span><span class="p">,</span>      <span class="c1"># read from the caller's roles, or both</span>
+    <span class="c1"># msflib-authz's RoleService, or RolePermissionResolver(ROLE_PERMISSION_MAP)</span>
+    <span class="c1"># on a site without authz</span>
+    <span class="n">resolver</span><span class="o">=</span><span class="n">role_service</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="nd">@router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/documents/</span><span class="si">{document_id}</span><span class="s2">"</span><span class="p">)</span>
@@ -4162,17 +4203,61 @@
     <span class="n">document_service</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">envelope</span><span class="o">.</span><span class="n">scope</span><span class="p">,</span> <span class="n">document_id</span><span class="p">)</span>
 </code></pre></div>
 <ul>
-<li><code>get_operation_envelope(operation)</code> returns the operation's dependency. It is built once per operation, when the route is declared, so an unknown operation, a membership with no registered check, or a permission no source can grant stops the app at startup.</li>
+<li><code>get_operation_envelope(operation)</code> returns the operation's dependency. It is built once per operation, when the route is declared, so an unknown operation, a membership with no registered check, a permission with no resolver or whose resolver is not ready, or a role check without a registered, locked role lookup stops the app at startup. A guard and auth's <code>RoleCheck</code> and <code>WorkspaceRoleCheck</code> refuse to start the same way.</li>
 <li>For each request it takes the envelope <code>get_envelope</code> builds (401 for no caller, 404 for no tenant or a foreign workspace). It checks the envelope against the dimensions the profile lists and answers 404 when a required one is missing or one is not allowed. It then runs the profile's constraints in order at the profile's enforcement level, and answers a denial with 403.</li>
-<li>A profile lists <code>PermissionConstraint(key, tier=)</code> and <code>RoleConstraint(roles)</code> without saying who answers. The builder binds the host's <code>resolver</code>, <code>role_registry</code> and <code>role_source</code> to them. A permission is granted by the resolver, or by a role the registry lists for its key at or above its tier, and it is asked at its tier: a tenant-tier permission is checked at the tenant, whatever workspace the request is in. A <code>RoleConstraint</code> reads the host's <code>role_source</code>; a host that passes none must use an envelope source that puts the caller's roles on the principal, as <code>msflib-auth</code>'s does, or the constraint denies everyone. <code>AnyConstraint([...])</code> accepts any one of the grants it holds, and each is bound the same way.</li>
+<li>A profile lists <code>PermissionConstraint(key, tier=)</code> and <code>RoleConstraint(roles)</code> without saying who answers. The builder binds the host's <code>resolver</code> to each permission: the site's one answer to who holds a permission key. That is <code>msflib-authz</code>'s <code>RoleService</code>, which reads each role's permissions, or, on a site without authz, <code>msflib.guard.RolePermissionResolver(ROLE_PERMISSION_MAP)</code>, which grants a key to a caller holding a role listed for it at or above its tier. Never both: on an authz site the roles that grant a key are those whose permissions include it. A permission is asked at its tier: a tenant-tier permission is checked at the tenant, whatever workspace the request is in. A <code>RoleConstraint</code> reads the site's one role lookup, which the host registers at startup with <code>ROLE_LOOKUP_REGISTRY.register(...)</code> and then locks with <code>ROLE_LOOKUP_REGISTRY.lock()</code>, so it cannot change after routes are built: <code>msflib-auth</code>'s <code>role_lookup</code> for role attributes, or <code>msflib-authz</code>'s <code>build_role_lookup(...)</code> for assignments. Every role check reads it, so a caller holds the same roles whichever route asks. <code>AnyConstraint([...])</code> accepts any one of the grants it holds, and each is bound the same way.</li>
 <li>An operation whose scope holds selectors passes its own envelope source: <code>get_operation_envelope("conversation.read", get_envelope=get_conversation_envelope)</code>.</li>
 <li>To change what an operation needs, change its profile. A host that wants different grants for a module's operation registers the operation again before it builds the module's router; the endpoint stays as it is.</li>
 <li>Where an operation needs exactly one permission, give both the same name. They differ when one permission covers several operations, or when an operation needs none.</li>
 </ul>
 <p>A route that needs one permission and has no operation of its own names the key instead: <code>dependencies=[Depends(guard("notifications.manage", tier=RoleTier.tenant))]</code>, with <code>guard</code> from <code>msflib.guard.build_guard</code> or authz's <code>get_authz_dependencies</code>. It is the short form of an operation with that one grant. A route takes an envelope dependency or a guard, never both.</p>
 <p>Code that runs inside a request, such as an agent tool holding the request's envelope, checks another operation with <code>ConstraintEvaluator.for_operation(PROFILE_REGISTRY, "documents.read").permits(envelope, session=session)</code>. That works for an operation whose profile lists no permission: a <code>PermissionConstraint</code> without a resolver denies. A service never builds an envelope, and a job or worker checks no grant: it acts on a row's placement.</p>
+<h3 id="who-grants-a-permission-key">Who grants a permission key<a class="headerlink" href="#who-grants-a-permission-key" title="Permanent link">&para;</a></h3>
+<p>A permission key is granted to roles in one of two ways, and a site uses exactly one. The host picks it by the <code>resolver</code> it passes to the guard builders.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Role-permission map (<code>msflib.guard.ROLE_PERMISSION_MAP</code>)</th>
+<th>Role-permission model (<code>msflib-authz</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where it lives</td>
+<td>In code, in the process</td>
+<td>In the database (<code>Role</code>, <code>RolePermission</code> rows)</td>
+</tr>
+<tr>
+<td>Who writes it</td>
+<td>Modules, at import: <code>ROLE_PERMISSION_MAP.register("things.manage", roles=[...])</code></td>
+<td>Seeded once at startup (<code>seed_role_permissions</code>), then changed at runtime through <code>RoleService</code> (<code>create_role</code>, <code>add_permissions</code>), for example from an admin tool the host builds</td>
+</tr>
+<tr>
+<td>Changing it</td>
+<td>A code change and a deploy</td>
+<td>A data change; no deploy</td>
+</tr>
+<tr>
+<td>Roles it names</td>
+<td>The roles a <code>RoleLookup</code> returns: auth's attribute roles (<code>platform:root</code>, <code>tenant:admin</code>, <code>workspace:owner</code>, ...)</td>
+<td>The roles assigned in authz, which may include custom roles</td>
+</tr>
+<tr>
+<td>Resolver</td>
+<td><code>RolePermissionResolver(ROLE_PERMISSION_MAP)</code></td>
+<td><code>RoleService</code></td>
+</tr>
+<tr>
+<td>Site</td>
+<td>Without authz</td>
+<td>With authz</td>
+</tr>
+</tbody>
+</table>
+<p>On an authz site the map does not count: the roles that grant a key are those whose permissions include it, so what an admin changes in the database is the whole answer. A site moving to authz gives its roles the keys as permissions (<code>seed_role_permissions</code>, or <code>RoleService.add_permissions</code>) and stops relying on the map.</p>
 <h2 id="typed-scopes">Typed scopes<a class="headerlink" href="#typed-scopes" title="Permanent link">&para;</a></h2>
-<p>Code that filters rows takes the envelope's <code>scope</code>, passed down unchanged. <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) is the shared shape. A module that needs more dimensions subclasses it and does not redeclare the identity pair. A row's own tenant and workspace is its placement, not a scope: read it with <code>TenantPlacement.of(row)</code> and stamp a new row with <code>placement.column_values()</code> (<code>msflib.scope.TenantPlacement</code>). <code>envelope.extend(ScopeType, **selectors)</code> returns the envelope with its scope extended to the module's type: each field takes the selector you pass, else the value the envelope's scope holds, else its default. The principal, attributes and metadata are kept. A facet the envelope's scope holds that the new type has no field for is never dropped silently: <code>extend</code> raises <code>ScopeValidationError</code> naming it, whether it is held in a <code>Facets</code> field or as a field of its own. The typed scope has no static check for this, so the error is the check. Extending the other way carries the facets into the new type's fields named like them (<code>project_id</code>, <code>conversation_id</code>), so a <code>FacetScope</code> and a module's typed scope convert in both directions. A facet that holds nothing is no loss, and other fields keep their old behaviour (a type with no field for one does not carry it):</p>
+<p>Code that filters rows takes the envelope's <code>scope</code>, passed down unchanged. <code>TenantScope</code> (<code>tenant_id: int</code>, <code>workspace_id: int | None</code>) is the shared shape. A module that needs more dimensions subclasses it and does not redeclare the identity pair. A row's own tenant and workspace is its placement, not a scope: read it with <code>TenantPlacement.of(row)</code> and stamp a new row with <code>placement.column_values()</code> (<code>msflib.scope.TenantPlacement</code>). <code>envelope.extend(ScopeType, **selectors)</code> returns the envelope with its scope extended to the module's type: each field takes the selector you pass, else the value the envelope's scope holds, else its default. The principal, attributes and metadata are kept. A value the envelope's scope holds that the new type has no field for is never dropped silently: <code>extend</code> raises <code>ScopeValidationError</code> naming it, whether it is a facet (in a <code>Facets</code> field or a field of its own), an account or a restriction such as <code>private_to_account_id</code>. The typed scope has no static check for this, so the error is the check. Extending the other way carries the facets into the new type's fields named like them (<code>project_id</code>, <code>conversation_id</code>), so a <code>FacetScope</code> and a module's typed scope convert in both directions. A field that holds nothing (<code>None</code>, no facets) is no loss:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">DimensionCompiler</span><span class="p">,</span> <span class="n">TenantScope</span>
@@ -4361,7 +4446,7 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">extended</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">with_facets</span><span class="p">(</span><span class="n">warehouse_id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">site_id</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">compiler</span><span class="o">.</span><span class="n">compile_string</span><span class="p">(</span><span class="n">extended</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"reports.export"</span><span class="p">)</span>
-<span class="c1"># 't/1/a/5/w/-/wh/3/s/12'</span>
+<span class="c1"># 't/1/w/-/wh/3/s/12'</span>
 </code></pre></div>
 <p>Without the first import, <code>facets</code> would lack <code>warehouse_id</code>, and <code>inventory</code> would fail when it later tried to register it:</p>
 <div class="highlight"><pre><span></span><code>msflib.scope.errors.LockedRegistryError: Dimension 'warehouse_id' was registered after the DimensionRegistry was locked. Register every dimension at import or startup: call msflib.scope.register_dimensions(settings) when the application starts, and register your own dimensions before that call.
@@ -4396,7 +4481,7 @@
 <h2 id="pitfalls">Pitfalls<a class="headerlink" href="#pitfalls" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Build the scope from the authenticated caller at the endpoint, not from request parameters. A client-supplied <code>workspace_id</code> that nothing verifies is how data crosses workspaces.</li>
-<li><code>get_workspace_envelope</code> does not by itself prove the account belongs to the workspace on sites without a membership row.</li>
+<li><code>get_base_envelope</code> does not by itself prove the account belongs to the workspace on sites without a membership row.</li>
 <li>Filter on <code>envelope.scope</code>, which holds typed values. <code>envelope.dimensions</code> is the string view for storage keys; do not parse it.</li>
 <li><code>ScopeEnvelope</code> is immutable and its mapping fields are read-only proxies. Make a new one instead of mutating.</li>
 </ul>

@@ -3828,7 +3828,7 @@
 <tr>
 <td><code>get_account_dependencies</code></td>
 <td><code>msflib.auth.deps</code></td>
-<td><code>AccountModel</code>, <code>oauth_token_url</code>, <code>secret_key</code>, <code>session_dep</code>, <code>keystore_dep</code>, <code>get_current_tenant</code></td>
+<td><code>AccountModel</code>, <code>oauth_token_url</code>, <code>secret_key</code>, <code>session_dep</code>, <code>keystore_dep</code>, <code>get_current_tenant</code>, <code>get_current_workspace</code> (usually <code>no_workspace</code>)</td>
 <td><code>get_current_account</code>, <code>get_current_account_or_none</code>, <code>get_current_active_account</code>, <code>get_current_active_superuser</code>, <code>RoleCheck</code></td>
 </tr>
 <tr>
@@ -3847,7 +3847,7 @@
 <td><code>get_scope_dependencies</code></td>
 <td><code>msflib.scope</code></td>
 <td>the <code>get_current_*</code> callables above, <code>get_current_tenant</code> required</td>
-<td><code>get_account_envelope</code>, <code>get_workspace_envelope</code>, <code>get_tenant_envelope</code></td>
+<td><code>get_base_envelope</code></td>
 </tr>
 <tr>
 <td><code>get_provider_dependencies</code></td>
@@ -3857,11 +3857,16 @@
 </tr>
 </tbody>
 </table>
-<p>Check each factory's docstring for its exact parameters and return members; some members only exist when you pass certain inputs. For instance <code>get_scope_dependencies</code> omits <code>get_workspace_envelope</code> on a site with no workspace dependency.</p>
+<p>Check each factory's docstring for its exact parameters and return members; some members only exist when you pass certain inputs.</p>
 <h2 id="wiring-a-host-app">Wiring a host app<a class="headerlink" href="#wiring-a-host-app" title="Permanent link">&para;</a></h2>
 <p>Create the namespaces once at import time or in your app factory, then reference their members in endpoints. The dependencies resolve per request.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">get_scope_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ROLE_LOOKUP_REGISTRY</span><span class="p">,</span>
+    <span class="n">ScopeEnvelope</span><span class="p">,</span>
+    <span class="n">get_scope_dependencies</span><span class="p">,</span>
+    <span class="n">no_workspace</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 
 <span class="c1"># Account, get_session, get_keystore and settings are your app's own objects.</span>
@@ -3877,17 +3882,21 @@
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>  <span class="c1"># account roles sit in no workspace</span>
 <span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">account_deps</span><span class="o">.</span><span class="n">role_lookup</span><span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
 <span class="n">scope_deps</span> <span class="o">=</span> <span class="n">get_scope_dependencies</span><span class="p">(</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
     <span class="n">get_current_account</span><span class="o">=</span><span class="n">account_deps</span><span class="o">.</span><span class="n">get_current_active_account</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>  <span class="c1"># this site has no workspaces</span>
 <span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/whoami"</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">whoami</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scope_deps</span><span class="o">.</span><span class="n">get_account_envelope</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">whoami</span><span class="p">(</span><span class="n">envelope</span><span class="p">:</span> <span class="n">ScopeEnvelope</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">scope_deps</span><span class="o">.</span><span class="n">get_base_envelope</span><span class="p">)):</span>
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">envelope</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
 </code></pre></div>
 <p>Module routers take these callables as arguments in the same spirit. The workspace-config router, for example, is built as <code>router(get_session=..., settings=..., get_current_workspace=..., get_current_workspace_anonymous=..., get_current_account=..., is_workspace_member=..., workspace_role_check=..., ...)</code>, with each argument coming from your namespaces. Router factories take keyword-only arguments, so a positional call raises <code>TypeError</code>.</p>

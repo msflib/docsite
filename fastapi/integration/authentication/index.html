@@ -4008,6 +4008,7 @@
 <p>You create the dependency namespace once and pass pieces of it to the routers. This is the setup from the previous guide:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.api.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_keystore_factory</span><span class="p">,</span> <span class="n">get_session_factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_account_dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROLE_LOOKUP_REGISTRY</span><span class="p">,</span> <span class="n">no_workspace</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.tenancy.deps</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tenant_dependencies</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">msflib.auth.router</span><span class="w"> </span><span class="kn">import</span> <span class="n">router</span> <span class="k">as</span> <span class="n">auth_router</span>
 
@@ -4024,7 +4025,10 @@
     <span class="n">session_dep</span><span class="o">=</span><span class="n">get_session</span><span class="p">,</span>
     <span class="n">keystore_dep</span><span class="o">=</span><span class="n">get_keystore</span><span class="p">,</span>
     <span class="n">get_current_tenant</span><span class="o">=</span><span class="n">tenant_deps</span><span class="o">.</span><span class="n">get_current_tenant</span><span class="p">,</span>
+    <span class="n">get_current_workspace</span><span class="o">=</span><span class="n">no_workspace</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">auth_deps</span><span class="o">.</span><span class="n">role_lookup</span><span class="p">)</span>
+<span class="n">ROLE_LOOKUP_REGISTRY</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
     <span class="n">auth_router</span><span class="p">(</span>
@@ -4039,6 +4043,7 @@
     <span class="n">prefix</span><span class="o">=</span><span class="s2">"/api/v1"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
+<p><code>ROLE_LOOKUP_REGISTRY</code> holds the site's one answer to which roles a caller holds; every role check reads it. Register it and lock it before you build any router: a route that checks roles refuses to build otherwise, and after the lock the lookup cannot change. With workspaces, register <code>user_deps.role_lookup</code> instead (see <a href="#workspaces">Workspaces</a>), which adds the membership type to the account's role.</p>
 <p><code>RoleCheck</code> decides in the request's tenant, so build the tenant dependencies before the account dependencies. A site that does not use tenancy passes the same resolver; it falls back to the default tenant.</p>
 <p>The secret passed to <code>get_account_dependencies</code> and the one in <code>settings</code> must be the same value, since one signs and the other verifies. <code>active_statuses</code> (on both the router and the dependencies) lists the account statuses that count as active; the default is <code>["active", "online"]</code>. Pass the same list to both.</p>
 <h2 id="2-log-in">2. Log in<a class="headerlink" href="#2-log-in" title="Permanent link">&para;</a></h2>
@@ -4258,6 +4263,7 @@
     <span class="n">workspace_resolver</span><span class="o">=</span><span class="n">HttpHeaderResolver</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
+<p>With workspaces, the site's role lookup is <code>user_deps.role_lookup</code>: build <code>user_deps</code> before registering, and register it instead of <code>auth_deps.role_lookup</code>.</p>
 <p><code>WorkspaceMember</code> and <code>Workspace</code> are tables defined from the <code>msflib-workspaces</code> bases (see <a href="../overriding-models/#add-columns-to-the-workspace">Overriding models</a>); the module's own <code>Workspace</code> and <code>User</code> tables work too if you do not need extra columns.</p>
 <p><code>user_deps</code> provides:</p>
 <table>

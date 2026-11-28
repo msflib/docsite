@@ -3908,7 +3908,7 @@
 <h2 id="4-storing-and-searching-with-tenant-isolation">4. Storing and searching with tenant isolation<a class="headerlink" href="#4-storing-and-searching-with-tenant-isolation" title="Permanent link">&para;</a></h2>
 <p>This section continues from sections 1 to 3 (<code>ai_settings</code>, <code>embeddings</code> and <code>result</code>). It needs the <code>pgvector</code> extra and a Postgres database with the vector extension.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">msflib.ai_core.vector_store</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_vector_store</span><span class="p">,</span> <span class="n">similarity_search_scoped</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_context_envelope</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">msflib.scope</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScopeEnvelope</span><span class="p">,</span> <span class="n">TenantScope</span>
 
 <span class="n">store</span> <span class="o">=</span> <span class="n">get_vector_store</span><span class="p">(</span><span class="n">ai_settings</span><span class="p">,</span> <span class="s2">"faq"</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">)</span>
 
@@ -3920,7 +3920,7 @@
     <span class="p">],</span>
 <span class="p">)</span>
 
-<span class="n">envelope</span> <span class="o">=</span> <span class="n">build_context_envelope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">envelope</span> <span class="o">=</span> <span class="n">ScopeEnvelope</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="n">TenantScope</span><span class="p">(</span><span class="n">tenant_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">workspace_id</span><span class="o">=</span><span class="mi">7</span><span class="p">))</span>
 <span class="n">hits</span> <span class="o">=</span> <span class="n">similarity_search_scoped</span><span class="p">(</span>
     <span class="n">store</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="s2">"How long do refunds take?"</span><span class="p">,</span> <span class="n">envelope</span><span class="o">=</span><span class="n">envelope</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span>
 <span class="p">)</span>
@@ -3929,7 +3929,7 @@
 <ul>
 <li><code>get_vector_store</code> returns a <code>ScopedVectorStore</code>. It supports <code>similarity_search</code>, <code>add_texts</code>, <code>add_documents</code>, <code>delete</code> and <code>close</code>. The native langchain store is available as <code>store.raw</code>.</li>
 <li><strong>Always search with <code>similarity_search_scoped</code></strong> in multi-tenant code. It builds mandatory tenant and workspace metadata filters from the <code>ScopeEnvelope</code>. Calling <code>store.similarity_search(...)</code> directly applies no filter.</li>
-<li><code>build_context_envelope</code> takes typed ids (<code>tenant_id=1</code>). In the metadata you write, store them as strings (<code>"1"</code>), because the filter compares strings.</li>
+<li><code>TenantScope</code> takes typed ids (<code>tenant_id=1</code>). In the metadata you write, store them as strings (<code>"1"</code>), because the filter compares strings.</li>
 <li>The metadata you write must carry the dimensions the filter reads. <code>tenant_id</code> and <code>workspace_id</code> are required, exact-match string values; an envelope with no workspace matches only content written with no workspace. Conversation, sub-thread and private-account dimensions are optional: content written without <code>conversation_id</code>, <code>sub_thread_id</code> or <code>private_to_account_id</code> is treated as shared across the workspace, so tag anything that belongs to a single conversation, sub-thread or account. Write through the <code>ScopedVectorStore</code>, not <code>store.raw</code>: on backends without native missing-key filters (Pinecone, Chroma, Milvus) it adds the <code>__null__</code> markers that make untagged content visible as shared. <code>build_retrieval_filters(envelope=envelope)</code> shows exactly what a search requires.</li>
 <li>Collection names are <code>"&lt;VECTOR_STORE_COLLECTION_PREFIX&gt;_&lt;name&gt;"</code>, sanitised for the backend. The prefix organises collections; it does not isolate tenants. Isolation comes from the metadata filters.</li>
 <li>The default backend is pgvector (<code>extras = ["pgvector"]</code>, and <code>CREATE EXTENSION vector;</code> once on the database). Qdrant, Pinecone, Chroma, Weaviate, Milvus and FAISS are also supported (each has an extra of the same name); set <code>VECTOR_STORE_BACKEND</code>.</li>

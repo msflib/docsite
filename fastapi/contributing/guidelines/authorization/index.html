@@ -3978,7 +3978,7 @@ assignments another way, or a second copy of the rule.</p>
 three checks.</p>
 <h3 id="auz-3-compare-roles-by-tier-qualified-key">AUZ-3 · Compare roles by tier-qualified key<a class="headerlink" href="#auz-3-compare-roles-by-tier-qualified-key" title="Permanent link">&para;</a></h3>
 <p>Use <code>RoleKey(tier, key)</code>. A bare key cannot tell the seeded tenant <code>admin</code> from
-the workspace <code>admin</code>. <code>ROLE_REGISTRY</code> takes <code>RoleKey</code> only (a bare string is a <code>TypeError</code>), and
+the workspace <code>admin</code>. <code>ROLE_PERMISSION_MAP</code> takes <code>RoleKey</code> only (a bare string is a <code>TypeError</code>), and
 a legacy <code>admin</code> mirrored by a backfill is a tenant-tier role that never satisfies
 a platform <code>RoleKey</code>.</p>
 <h3 id="auz-4-authority-comes-from-the-tier-never-from-null-ids">AUZ-4 · Authority comes from the tier, never from NULL ids<a class="headerlink" href="#auz-4-authority-comes-from-the-tier-never-from-null-ids" title="Permanent link">&para;</a></h3>
@@ -3989,11 +3989,15 @@ add database CHECKs for everything a single table can express.</p>
 <h3 id="auz-5-two-ways-to-guard-a-route-authz-does-not-leak-into-auth">AUZ-5 · Two ways to guard a route; authz does not leak into auth<a class="headerlink" href="#auz-5-two-ways-to-guard-a-route-authz-does-not-leak-into-auth" title="Permanent link">&para;</a></h3>
 <p><code>msflib-auth</code> guards (<code>RoleCheck</code>, <code>WorkspaceRoleCheck</code>) compare a role attribute
 and are supported as the simple way. <code>msflib-authz</code> guards read assignments:
-the <code>guard(key, tier=...)</code> from <code>get_authz_dependencies</code>, by permission key, with
-<code>role_registry=ROLE_REGISTRY</code> to accept registered roles too. A route that
-performs a named operation lists the permission in the operation's profile instead
-and takes the operation's envelope dependency (SCP-6). Pick one way per route. <code>auth</code> must not import <code>authz</code>, and authz must not import <code>auth</code>; identity
-arrives as injected callables.</p>
+the <code>guard(key, tier=...)</code> from <code>get_authz_dependencies</code>, by permission key,
+granted only by a role's permissions. They are authz's role-permission model, in the
+database, seeded at startup and changed at runtime; <code>ROLE_PERMISSION_MAP</code> is the
+code-level map modules fill at import for a site without authz, and on an authz site
+it does not count. A route that performs a named
+operation lists the permission in the operation's profile instead and takes the
+operation's envelope dependency (SCP-6). Pick one way per route. <code>auth</code> must not
+import <code>authz</code>, and authz must not import <code>auth</code>; identity arrives as injected
+callables.</p>
 <p>Name permission keys <code>&lt;module&gt;.&lt;action&gt;</code>, register them at import time, and
 choose <code>tenant_cascade</code> deliberately: <code>True</code> lets a tenant-tier role grant the
 permission inside any workspace of its tenant. Register roles for a key as
@@ -4091,6 +4095,63 @@ fails one way, and no stage answers another stage's question.</p>
 <p>Stages 1 and 2 build the envelope (SCP-4): identity gives <code>envelope.principal</code>
 and the place gives <code>envelope.scope</code>. Stage 3 decides on the envelope. Stage 4
 receives it and filters on <code>envelope.scope</code>.</p>
+<p>Who may do what at each stage:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Question / failure</th>
+<th>Who does it</th>
+<th>What they may do</th>
+<th>What they may not do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Identity</strong>: authenticate</td>
+<td>Who is calling? 401</td>
+<td>The host's <code>get_current_account</code> (auth: token, revocation, account status). <code>get_base_envelope</code> turns its result into <code>PrincipalContext(account_id=...)</code>.</td>
+<td>Authenticate and reject. Set the principal's <code>account_id</code>, plus <code>request_id</code> for tracing.</td>
+<td>Add roles. Touch the scope. Check anything about a place.</td>
+</tr>
+<tr>
+<td><strong>2a. Place</strong>: resolve and build</td>
+<td>Does the place exist? 404</td>
+<td><code>get_current_tenant</code> and <code>get_current_workspace</code> (tenancy, workspaces). <code>get_base_envelope</code> builds the <code>TenantScope</code> and checks the workspace belongs to the tenant (<code>check_workspace_tenant</code>).</td>
+<td>Resolve the place the request names. Build the base envelope. Reject a foreign or missing place.</td>
+<td>Check membership or grants (that would leak access decisions as 404s). Stamp the account into the scope.</td>
+</tr>
+<tr>
+<td><strong>2b. Place</strong>: extend for the operation</td>
+<td>Do the selected parts exist in this place? 404</td>
+<td>The operation's envelope source, the module dependency passed as <code>get_operation_envelope(op, get_envelope=...)</code>: conversation's selector resolution, ai_api's selectors, ai_core's own-account extension.</td>
+<td>Resolve a selector (<code>conversation_id</code>) to a row in this scope, then <code>extend</code> with it. Add facets (<code>with_facets</code>). Add <code>account_id</code> for an operation in an account's space (from the principal, or an access-checked selector). Set attributes such as the channel.</td>
+<td>Change the principal. Add roles. Decide a grant.</td>
+</tr>
+<tr>
+<td><strong>2c. Place</strong>: validate containment</td>
+<td>Does the envelope have the dimensions this operation needs, and only those? 404</td>
+<td><code>get_operation_envelope</code>, against the operation's profile.</td>
+<td>Reject a missing required dimension or one the profile doesn't allow.</td>
+<td>Change the envelope.</td>
+</tr>
+<tr>
+<td><strong>3. Grant</strong>: authorize</td>
+<td>Does the caller hold a grant whose reach covers this place? 403 (401 without a caller)</td>
+<td><code>get_operation_envelope</code> runs the profile's constraints through <code>ConstraintEvaluator</code>. Membership uses the container module's <code>MembershipCheck</code>, permissions use the <code>PermissionResolver</code> (authz <code>RoleService</code>), and roles use the site's one <code>RoleLookup</code> (auth's or authz's), registered and locked by the host in <code>ROLE_LOOKUP_REGISTRY</code> at startup. Channel and other constraints are listed in the profile.</td>
+<td>Read roles and permissions from their sources at decision time. Decide, and record the decision. Apply the profile's enforcement level. This is the only stage that is policy.</td>
+<td>Change the envelope.</td>
+</tr>
+<tr>
+<td><strong>4. Filter</strong></td>
+<td>Which rows does the request see? Fewer rows, never an error</td>
+<td>The endpoint passes the checked envelope to services, then actions, compilers and vector-store filters.</td>
+<td>Filter on <code>envelope.scope</code>; <code>workspace_id=None</code> is the bucket. Compile keys.</td>
+<td>Re-decide access. Widen a <code>None</code> to "any".</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Background work</strong> skips stages 1 to 3: the job filters by the placement of the row it acts on (SCP-5).</p>
 <ul>
 <li><strong>Only stage 3 is policy.</strong> An enforcement level (<code>log-only</code>, <code>shadow</code>,
   <code>enforce</code>) applies to stage 3 alone; stages 1, 2 and 4 always hold. A check
@@ -4158,7 +4219,7 @@ receives it and filters on <code>envelope.scope</code>.</p>
 </tr>
 <tr>
 <td>3</td>
-<td>The operation's profile lists its grants in <code>constraints</code>, and its envelope dependency (<code>msflib.guard.build_operation_envelope_factory</code>) runs them in order: <code>MembershipConstraint(dimension)</code> with the <code>MembershipCheck</code> registered for the dimension (<code>is_workspace_member</code>, tenancy's check, or <code>allow_any_member</code>), then <code>PermissionConstraint(key, tier=)</code> and <code>RoleConstraint</code>, bound to the host's <code>PermissionResolver</code> (authz <code>RoleService</code>) and <code>RoleSource</code> (auth attributes or authz assignments)</td>
+<td>The operation's profile lists its grants in <code>constraints</code>, and its envelope dependency (<code>msflib.guard.build_operation_envelope_factory</code>) runs them in order: <code>MembershipConstraint(dimension)</code> with the <code>MembershipCheck</code> registered for the dimension (<code>is_workspace_member</code>, tenancy's check, or <code>allow_any_member</code>), then <code>PermissionConstraint(key, tier=)</code> and <code>RoleConstraint</code>, bound to the host's <code>PermissionResolver</code> (authz <code>RoleService</code>); <code>RoleConstraint</code> reads the site's registered <code>RoleLookup</code> (auth attributes or authz assignments)</td>
 <td>core; the check from the container's module; authz, auth</td>
 </tr>
 <tr>

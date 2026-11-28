@@ -9498,7 +9498,8 @@ checked here: pass an account that a router has already checked (see
               <div class="doc-md-description">
                 <ul>
 <li><code>get_account_placement</code> / <code>get_workspace_placement</code> — the
-  request's AccountPlacement, with and without the account.</li>
+  request's AccountPlacement in the caller's own space (with the current
+  account), and in the workspace (without one).</li>
 <li><code>get_resolved_ai_settings</code> — AICoreSettings resolved for the
   request's tenant/workspace/account tiers.</li>
 <li><code>get_workspace_ai_settings</code> — same with the user/account
@@ -9576,9 +9577,9 @@ between.</p>
             <td>
               <div class="doc-md-description">
                 <ul>
-<li><code>get_account_placement</code> — the request's AccountPlacement: its tenant,
-  workspace and account. The account identifies the caller only: store
-  lookups and their settings ignore it, since a store is shared.</li>
+<li><code>get_account_placement</code> — the request's AccountPlacement in the caller's
+  own space: its tenant, workspace and the current account. Store lookups
+  and their settings ignore the account, since a store is shared.</li>
 <li><code>get_workspace_placement</code> — tenant and workspace only: for the
   /manage listing.</li>
 <li><code>get_registry_service</code> / <code>get_workspace_registry_service</code> —
@@ -13396,7 +13397,9 @@ readers of an index share one model.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Where a request uses AI: its scope's tenant and workspace, and its principal's account.</p>
+        <p>Where a request uses AI: its scope's tenant, workspace and account.</p>
+<p>The account is set when the request runs in an account's own space (its scope is an
+<code>AccountScope</code>); who is calling does not place anything.</p>
 <p>The tenant is a resolved real id (a <code>get_current_tenant</code>-backed dependency fills it at
 the endpoint boundary) and is never defaulted here. Raises :exc:<code>ValueError</code> for an
 envelope the <code>aicore.caller</code> profile rejects, such as one without a tenant.</p>
